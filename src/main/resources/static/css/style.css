@@ -94,18 +94,18 @@ ul,li{
 }
 
 
-/*** Navbar ***/
-.navbar.sticky-top {
+/*** header ***/
+.header .sticky-top {
     top: -100px;
     transition: .5s;
 }
 
-.navbar .navbar-brand,
-.navbar a.btn {
+.header .header-brand,
+.header a.btn {
     height: 80px
 }
 
-.navbar .navbar-nav .nav-link {
+.header .header-nav .nav-link {
     margin-right: 35px;
     padding: 25px 0;
     color: var(--dark);
@@ -114,12 +114,12 @@ ul,li{
     outline: none;
 }
 
-.navbar .navbar-nav .nav-link:hover,
-.navbar .navbar-nav .nav-link.active {
+.header .header-nav .nav-link:hover,
+.header .header-nav .nav-link.active {
     color: var(--primary);
 }
 
-.navbar .dropdown-toggle::after {
+.header .dropdown-toggle::after {
     border: none;
     content: "\f107";
     font-family: "Font Awesome 5 Free";
@@ -129,18 +129,18 @@ ul,li{
 }
 
 @media (max-width: 991.98px) {
-    .navbar .navbar-nav .nav-link  {
+    .header .header-nav .nav-link  {
         margin-right: 0;
         padding: 10px 0;
     }
 
-    .navbar .navbar-nav {
+    .header .header-nav {
         border-top: 1px solid #EEEEEE;
     }
 }
 
 @media (min-width: 992px) {
-    .navbar .nav-item .dropdown-menu {
+    .header .nav-item .dropdown-menu {
         display: block;
         border: none;
         margin-top: 0;
@@ -150,7 +150,7 @@ ul,li{
         transition: .5s;
     }
 
-    .navbar .nav-item:hover .dropdown-menu {
+    .header .nav-item:hover .dropdown-menu {
         top: 100%;
         visibility: visible;
         transition: .5s;
@@ -205,7 +205,7 @@ ul,li{
         position: relative;
         min-height: 450px;
     }
-    
+
     #header-carousel .carousel-item img,
     #header-search .search-item img {
         position: absolute;
@@ -331,7 +331,7 @@ ul,li{
 
 /*** Project Portfolio ***/
 #portfolio-flters {
-    display: inline-block; 
+    display: inline-block;
     background: var(--bs-gray-200);
     padding: 10px 15px;
 }
