@@ -54,6 +54,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> review;
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE)
-    private Cart cart;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    private List<Cart> cart;
 }

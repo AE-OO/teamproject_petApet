@@ -26,6 +26,7 @@ class CommunityRepositoryTest {
                     .communityTitle("communityTitle " + i)
                     .member(member)
                     .communityContent("communityContent " + i)
+                    .communityCategory("커뮤니티")
                     .build();
 
             communityRepository.save(community);

@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * 박채원 22.10.01 작성
+ * 
+ * 박채원 22.10.09 수정 - 카테고리 컬럼 추가
  */
 
 @Entity
@@ -34,6 +36,9 @@ public class Community {
 
     @Column(columnDefinition = "TEXT NOT NULL")
     private String communityContent;
+
+    @Column(length = 45, nullable = false)
+    private String communityCategory;
 
     @CreationTimestamp
     @Column(updatable = false)
