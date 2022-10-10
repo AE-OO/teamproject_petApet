@@ -9,6 +9,6 @@ import java.util.List;
  */
 
 public interface ProductService {
-
     List<Product> getProductList();
+    void updateProductStatus(String selectStatus, Long productId);
 }

@@ -23,4 +23,9 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> getProductList() {
         return productRepository.findAll();
     }
+
+    @Override
+    public void updateProductStatus(String selectStatus, Long productId) {
+        productRepository.updateProductStatus(selectStatus, productId);
+    }
 }

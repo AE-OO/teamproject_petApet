@@ -20,8 +20,9 @@ $(document).ready(function () {
         $(".memberDelete").empty();
 
         var modalBody = '';
-        modalBody += '아이디 ' + memberId;
-        modalBody += '를 삭제하겠습니까?<br/>확인을 누르면 삭제됩니다.<br/>';
+        modalBody += '아이디<br/>';
+        modalBody += '<div style="color: red">' + memberId + '</div>';
+        modalBody += '을(를) 삭제하겠습니까?<br/>확인을 누르면 삭제됩니다.<br/>';
         $(".memberDelete").append(modalBody);
         $(".confirmMemberDelete").attr("id",memberId);
         $("#confirmDelete").modal('show');
@@ -39,4 +40,20 @@ $(document).ready(function () {
            }
        })
     });
+
+    $(".setProductStatus").click(function(){
+        var productId = $(this).attr("value");
+        var selectedStatus = $(this).parent().parent().find("select[name=productStatus]").val();
+        console.log(productId);
+        console.log(selectedStatus);
+
+        $.ajax({
+            url: "/admin/updateProductStatus/" + productId,
+            type: "get",
+            data: {status : selectedStatus},
+            success(){
+                location.href="/admin/adminPage";
+            }
+        })
+    })
 })

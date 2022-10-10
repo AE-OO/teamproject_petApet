@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 박채원 22.10.09 작성
  */
@@ -63,6 +65,22 @@ public class AdminController {
     public String deleteFAQ(@PathVariable("FAQId") Long FAQId){
         inquiredService.deleteFAQ(FAQId);
         return "redirect:/admin/adminPage";
+    }
+
+    @GetMapping("/registerProduct")
+    public String registerProductForm(){
+        return "/admin/registerProduct";
+    }
+
+    @PostMapping("/registerProduct")
+    public String registerProduct(){
+        return "redirect:/admin/adminPage";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateProductStatus/{productId}", method = RequestMethod.GET)
+    public void updateProductStatus(@RequestParam Map<String, Object> map, @PathVariable("productId") Long productId){
+        productService.updateProductStatus((String)map.get("status"), productId);
     }
 
     @GetMapping("/deleteMember/{memberId}")
