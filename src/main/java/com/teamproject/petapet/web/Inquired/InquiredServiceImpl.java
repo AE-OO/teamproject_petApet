@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 박채원 22.10.09 작성
@@ -27,5 +28,32 @@ public class InquiredServiceImpl implements InquiredService{
     @Override
     public List<Inquired> getOtherInquiries() {
         return inquiredRepository.getOtherInquiries();
+    }
+
+    @Override
+    public void registerFAQ(InquiredFAQDTO inquiredFAQDTO) {
+        log.info("========== FAQ 등록 ==========");
+        Inquired inquired = dtoToEntity(inquiredFAQDTO);
+        inquiredRepository.save(inquired);
+    }
+
+    @Override
+    public InquiredFAQDTO getOneFAQ(Long FAQId) {
+        Inquired inquired = inquiredRepository.getOne(FAQId);
+        InquiredFAQDTO inquiredFAQDTO = entityToDTO(inquired);
+        return inquiredFAQDTO;
+    }
+
+    @Override
+    public void updateFAQ(InquiredFAQDTO inquiredFAQDTO) {
+        log.info("========== FAQ 수정 ==========");
+        Inquired inquired = dtoToEntity(inquiredFAQDTO);
+        inquiredRepository.updateFAQ(inquired.getInquiredTitle(), inquired.getInquiredContent(), inquired.getInquiredId());
+    }
+
+    @Override
+    public void deleteFAQ(Long FAQId) {
+        log.info("========== FAQ 삭제 ==========");
+        inquiredRepository.deleteById(FAQId);
     }
 }

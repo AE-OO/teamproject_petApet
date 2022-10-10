@@ -23,4 +23,9 @@ public class MemberServiceImpl implements MemberService{
     public List<Member> getMemberList() {
         return memberRepository.findAll();
     }
+
+    @Override
+    public void deleteMember(String memberId) {
+        memberRepository.deleteById(memberId);
+    }
 }

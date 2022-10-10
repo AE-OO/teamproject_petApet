@@ -92,7 +92,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="registerFAQ.html">
+                    <a class="nav-link" th:href="@{/admin/registerFAQ}">
                         <i class="icon-paper menu-icon"></i>
                         <span class="menu-title">FAQ 등록</span>
                     </a>
@@ -135,7 +135,7 @@
                             <div class="card-body">
                                 <div>
                                     <p class="card-title mb-0" style="float: left;">FAQ관리</p>
-                                    <a href="registerFAQ.html">
+                                    <a href="/admin/registerFAQ">
                                         <button type="button" class="btn btn-primary btn-sm" style="float: right;">
                                             FAQ등록
                                         </button>
@@ -154,9 +154,11 @@
                                         <tbody>
                                         <tr th:each="FAQ : ${FAQ}">
                                             <td class="pl-0">[[${FAQ.inquiredId}]]</td>
-                                            <td><a href="#">[[${FAQ.inquiredTitle}]]</a></td>
-                                            <td><a href="#"><label class="btn btn-success btn-sm">수정</label></a></td>
-                                            <td><a href="#"><label class="btn btn-danger btn-sm">삭제</label></a></td>
+                                            <td><a th:href="@{/admin/updateFAQForm/{FAQId}(FAQId = ${FAQ.inquiredId})}">[[${FAQ.inquiredTitle}]]</a></td>
+                                            <td>
+                                                <a th:href="@{/admin/updateFAQForm/{FAQId}(FAQId = ${FAQ.inquiredId})}"><button class="btn btn-success btn-sm updateFAQ" type="button">수정</button></a>
+                                            </td>
+                                            <td><button class="btn btn-danger btn-sm deleteFAQ" type="button" th:id="${FAQ.inquiredId}">삭제</button></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -304,8 +306,7 @@
                                             <td>[[${#temporals.format(member.memberJoinDate,'yyyy/MM/dd')}]]</td>
                                             <td class="text-danger">[[${member.memberReport}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm" type="button"
-                                                        data-bs-toggle="modal" data-bs-target="#confirmDelete">회원탈퇴/정지
+                                                <button class="btn btn-danger btn-sm memberModal" type="button" th:id="${member.memberId}">회원탈퇴/정지
                                                 </button>
                                             </td>
                                         </tr>
@@ -323,15 +324,13 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">삭제 확인</h1>
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">회원 정지/탈퇴</h1>
                         </div>
-                        <div class="modal-body">
-                            확인을 누르면 삭제됩니다.<br/>
-                            정말로 삭제하시겠습니까?
+                        <div class="modal-body memberDelete" style="text-align: center">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                            <button type="button" class="btn btn-primary">확인</button>
+                            <button type="button" class="btn btn-primary confirmMemberDelete" data-bs-dismiss="modal">강제탈퇴</button>
                         </div>
                     </div>
                 </div>
@@ -383,6 +382,7 @@
 <!-- Custom js for this page-->
 <script src="/js/chart.js"></script>
 <!-- End custom js for this page-->
+<script type="text/javascript" src="/js/adminJS.js"></script>
 </body>
 
 </html>
