@@ -4,7 +4,6 @@ import com.teamproject.petapet.domain.member.Member;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.jws.HandlerChain;
 import javax.persistence.*;
 import java.sql.Date;
 
