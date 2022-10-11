@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class Product {
     private Long productStock;
 
     @Lob
-    @Column(columnDefinition = "BLOB")
+    @Column(columnDefinition = "MEDIUMBLOB")
     private byte[] productImg;
 
     @Column(length = 45)
@@ -56,4 +57,11 @@ public class Product {
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE)
     private Cart cart;
+
+    public Product(String productName, Long productPrice, byte[] productImg, String productContent) {
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productImg = productImg;
+        this.productContent = productContent;
+    }
 }
