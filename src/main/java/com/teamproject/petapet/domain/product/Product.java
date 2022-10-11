@@ -1,11 +1,11 @@
 package com.teamproject.petapet.domain.product;
 
 import com.teamproject.petapet.domain.cart.Cart;
+import com.teamproject.petapet.domain.product.fileupload.UploadFile;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.List;
 
 /**
@@ -34,9 +34,9 @@ public class Product {
     @Column(columnDefinition = "bigint(5) default 0")
     private Long productStock;
 
-    @Lob
-    @Column(columnDefinition = "MEDIUMBLOB")
-    private byte[] productImg;
+    @ElementCollection
+    @CollectionTable(name = "ProductImg",joinColumns = @JoinColumn(name = "productImgId", referencedColumnName = "productId"))
+    private List<UploadFile> productImg;
 
     @Column(length = 45)
     private String productStatus;
@@ -58,7 +58,7 @@ public class Product {
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE)
     private Cart cart;
 
-    public Product(String productName, Long productPrice, byte[] productImg, String productContent) {
+    public Product(String productName, Long productPrice, List<UploadFile> productImg, String productContent) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productImg = productImg;

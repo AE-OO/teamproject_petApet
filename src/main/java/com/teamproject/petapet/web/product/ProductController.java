@@ -38,23 +38,23 @@ public class ProductController {
 
         return "product/productList";
     }
-    @PostMapping("/test")
-    public void test2(@Param("test") MultipartFile test) throws IOException, SQLException {
-        byte[] bytes = test.getBytes();
-        Blob blob = new SerialBlob(bytes);
-        log.info("blob = {}", blob.length());
-        productRepository.save(new Product("Name",2000L,bytes,"test"));
-    }
-
-    @GetMapping("/test2")
-    public String test3(Model model) throws IOException, SQLException {
-        Optional<Product> byId = productRepository.findById(4L);
-        Product product = byId.get();
-        byte[] productImg = product.getProductImg();
-        log.info("productImg={}", productImg);
-        byte[] bytes = Base64.encodeBase64(productImg);
-        String s = new String(bytes);
-        model.addAttribute("test", s);
-        return "/product/blodTest2";
-    }
+//    @PostMapping("/test")
+//    public void test2(@Param("test") MultipartFile test) throws IOException, SQLException {
+//        byte[] bytes = test.getBytes();
+//        Blob blob = new SerialBlob(bytes);
+//        log.info("blob = {}", blob.length());
+//        productRepository.save(new Product("Name",2000L,bytes,"test"));
+//    }
+//
+//    @GetMapping("/test2")
+//    public String test3(Model model) throws IOException, SQLException {
+//        Optional<Product> byId = productRepository.findById(4L);
+//        Product product = byId.get();
+//        byte[] productImg = product.getProductImg();
+//        log.info("productImg={}", productImg);
+//        byte[] bytes = Base64.encodeBase64(productImg);
+//        String s = new String(bytes);
+//        model.addAttribute("test", s);
+//        return "/product/blodTest2";
+//    }
 }
