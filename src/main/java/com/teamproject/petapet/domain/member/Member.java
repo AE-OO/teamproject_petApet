@@ -53,6 +53,8 @@ public class Member {
     @Column(columnDefinition = "bigint(3) default 0")
     private Long memberReport;
 
+
+
     //멤버가 어떤 글을 썼는지도 알아야하기 때문에 양방향으로 작성함
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Community> community;
