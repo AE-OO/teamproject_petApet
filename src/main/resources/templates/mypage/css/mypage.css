@@ -1,0 +1,1228 @@
+
+@import "reset.css";
+
+
+/* Components */
+
+/* Screens */
+
+*{ box-sizing: border-box;}
+
+body {
+    color: #2e363e;
+    /* font-family: "Open Sans", sans-serif; */
+    min-width: 1020px;
+    background-color: #ffffff;
+    display: block;
+    font-family: "맑은 고딕", malgun gothic, apple sd gothic neo, "나눔고딕", nanumgothic, "돋움", dotum, sans-serif;
+  }
+
+div{
+  display: block;
+}
+
+#container{
+  position: relative;
+  min-width: 980px;
+  overflow: hidden;
+}
+
+.header, .footer{
+  display: block;
+  background-color: bisque;
+}
+
+.contents{
+  z-index: inherit !important;
+  width: 980px;
+  margin: 0 auto;
+  padding: 0 0 40px;
+  position: relative;
+  background-color: #ffffff;
+}
+
+.__mypage-wrap{
+  position: relative;
+  min-height: 1000px;
+  line-height: 1.42857;
+  color: #333;
+  box-sizing: border-box;
+}
+
+#pap-left-menu{
+  width: 150px;
+  float: left;
+}
+
+.pap-contents{
+  width: 830px;
+  float: left;
+}
+
+.mypage-text{
+  height: 122px;
+  padding: 1px;
+  background: rgb(40, 109, 180);
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.mytext{
+  width: auto;
+}
+
+.tspan{
+  width: 95px;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    text-indent: inherit;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -2px;
+}
+
+.myMenu{
+  background-color: rgb(249, 249, 249);
+  border-width: 0px 1px 1px;
+  border-style: solid;
+  border-color: rgb(225, 228, 230);
+  border-image: initial;
+  color: rgb(17, 17, 17);
+  padding: 10px 0px;
+  margin: 0px;
+}
+
+/* 마이 PAP 메뉴 */
+.gvaWmd {
+  overflow: hidden;
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  text-indent: -9999px;
+  text-align: left;
+}
+/* 마이 PAP 메뉴 - 박스 구분 */
+.jzNnfi {
+  padding: 15px 10px 16px 17px;
+  border-bottom: 1px solid rgb(225, 228, 230);
+}
+/* 마이 PAP 메뉴 - 박스 구분 마지막 부분*/
+.fRuGsa {
+  padding: 15px 10px 16px 17px;
+  border-bottom: 0px solid;
+}
+/* 마이 PAP 메뉴 - 헤더 */
+.OvTJQ {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgb(17, 17, 17);
+}
+
+/* 마이 PAP 메뉴 - 리스트 박스 */
+.gvMCBX {
+  font-size: 12px;
+  line-height: 16px;
+  margin-top: 11px;
+}
+
+/* 마이 PAP 메뉴 - 리스트 링크 */
+.gvMCBX a {
+  color: rgb(17, 17, 17);
+  display: block;
+  padding: 3px 0px;
+}
+
+/* 신상품 뱃지 */
+/* .fBiFRr {
+  width: 12px;
+  height: 12px;
+  display: none;
+  overflow: hidden;
+  vertical-align: -1px;
+  margin-left: 2px;
+  background: url(//img1a.coupangcdn.com/image/my/desktop/sprite-lnb_161021_1.png) -110px 0px no-repeat;
+} */
+
+
+/* 대쉬보드 */
+.bqsWKB {
+  height: auto;
+  margin-bottom: 40px;
+}
+
+/* 대쉬보드 컨텐츠 ul*/
+.iXDHHJ {
+  background-color: rgb(130, 188, 226);
+  color: rgb(255, 255, 255);
+  border-width: 1px 1px 1px 0px;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-top-color: rgb(119, 174, 209);
+  border-right-color: rgb(119, 174, 209);
+  border-bottom-color: rgb(119, 174, 209);
+  border-image: initial;
+  border-left-style: initial;
+  border-left-color: initial;
+  height: 122px;
+  font-weight: 100;
+  font-style: normal;
+  box-sizing: border-box;
+  font-family: robotoThinNumber, roboto, "Courier New", Tahoma, NanumGothic, MalgunGothic, 돋움, dotum, sans-serif;
+}
+
+/* 대쉬보드 컨텐츠 li*/
+.kiFKDs {
+  position: relative;
+  float: left;
+  min-width: 156px;
+  height: 120px;
+  padding: 19px 0px 0px 30px;
+  border-right: 1px solid rgb(155, 201, 232);
+  border-left: 1px solid rgb(120, 173, 208);
+  box-sizing: border-box;
+} 
+
+/* 대쉬보드 컨텐츠 타이틀*/
+.cKtRUT {
+  display: block;
+  margin-bottom: 13px;
+  height: 21px;
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  font-weight: bold;
+  text-shadow: rgb(0 0 0 / 20%) 0px 1px 0px;
+  font-family: AppleSDGothicNeo;
+}
+
+/* 대쉬보드 컨텐츠 타이틀 내용*/
+.itAKak {
+  display: block;
+  margin-top: -5px;
+  text-shadow: rgb(0 0 50 / 15%) 0px 1px 1px;
+}
+
+.itAKak > a {
+  color: rgb(51, 51, 51);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.itAKak span {
+  color: rgb(255, 255, 255);
+}
+
+.itAKak .my__stat__num-font {
+  color: rgb(255, 255, 255);
+  font-size: 50px;
+  line-height: 60px;
+  cursor: pointer;
+}
+
+.itAKak .my__stat__unit {
+  margin-left: 5px;
+  vertical-align: 2px;
+  font-size: 12px;
+}
+
+/* 보유 금액  */
+.kiFKDs:nth-child(4) {
+  border-right: 0px;
+  padding-left: 0px;
+  padding-top: 0px;
+  height: 118px;
+}
+
+.gpLVbX {
+  width: 360px;
+  height: 62px;
+  border-bottom: 1px solid rgb(120, 173, 208);
+  box-sizing: border-box;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.kVyKwc {
+  float: left;
+  margin: 0px 0px 0px 30px;
+  height: 21px;
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  font-weight: bold;
+  text-shadow: rgb(0 0 0 / 20%) 0px 1px 0px;
+  font-family: AppleSDGothicNeo;
+}
+
+.evuTdi {
+  color: rgb(51, 51, 51);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.gpLVbX span {
+  color: rgb(255, 255, 255);
+}
+
+.evuTdi .mc-item-right-number {
+  margin: 0px 2px 0px 0px;
+  color: rgb(255, 255, 255);
+  font-size: 28px;
+  line-height: 35px;
+  text-shadow: rgb(0 0 0 / 20%) 0px 1px 0px;
+}
+
+.evuTdi .mc-item-right-unit {
+  margin: 12px 30px 0px 2px;
+  vertical-align: 2px;
+  font-size: 12px;
+  text-shadow: rgb(0 0 0 / 20%) 0px 1px 0px;
+}
+
+/* 메인창 */
+.dHwqA-d {
+  margin: 0px 0px 0px 30px;
+  zoom: 1;
+}
+
+/* 주문목록 헤더 */
+.gdQXGY {
+  margin: 0px 0px 16px;
+}
+
+.QxeWJ {
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  color: rgb(15, 15, 15);
+}
+
+/* 주문목록 검색 */
+.nmLXi {
+  margin-bottom: 24px;
+}
+
+.cyJYiM {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  width: 480px;
+  height: 36px;
+  padding: 0px 5px 0px 8px;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 4px;
+}
+
+/* 주문목록 검색 - 입력창 */
+.eCiRxv {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+
+/* 주문목록 검색 - 아이콘 */
+.dKPECc {
+  width: 20px;
+  margin-right: 5px;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.ktMLQz {
+  width: 100%;
+  margin-right: 10px;
+  border: none;
+  font-size: 0.875rem;
+}
+
+/* 검색 태그 */
+
+.ihglTs {
+  display: flex;
+  flex-direction: row;
+}
+
+.ghaYID {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.dLgQrg {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  width: 72px;
+  height: 26px;
+  border-radius: 13px;
+  border: 1px solid rgb(52, 106, 255);
+  background-color: rgb(52, 106, 255);
+  color: rgb(255, 255, 255);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 5px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.krUtDN {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  width: 54px;
+  height: 26px;
+  border-radius: 13px;
+  border: 1px solid rgb(196, 205, 213);
+  background-color: rgb(255, 255, 255);
+  color: rgb(69, 79, 91);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 5px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* 탭 메뉴  */
+
+.lddMdG {
+  margin: 0px 0px 24px;
+}
+
+.bRxIbf {
+  position: relative;
+  height: 45px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+.jekmPy {
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgb(61, 130, 247) rgb(61, 130, 247) transparent;
+  border-image: initial;
+  background-color: rgb(255, 255, 255);
+  color: rgb(61, 130, 247);
+}
+
+.ebMaZa {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  position: relative;
+  height: 45px;
+  width: 25%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  border-style: solid;
+  border-width: 1px 1px 2px;
+  border-color: rgb(215, 215, 215) rgb(215, 215, 215) rgb(61, 130, 247);
+  background-color: rgb(249, 249, 249);
+  padding-top: 10px;
+}
+
+/* 주문리스트 */
+
+.gKYVxm {
+  width: 800px;
+  border-radius: 12px;
+  box-shadow: rgb(0 0 0 / 8%) 0px 2px 4px 0px, rgb(0 0 0 / 16%) 0px 0px 1px 0px;
+  background-color: rgb(255, 255, 255);
+  margin-bottom: 20px;
+  padding: 24px 24px 16px;
+}
+
+/* 주문리스트 - 헤더 */
+.kcHmyx {
+  height: 28px;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+
+/* 주문리스트 - 날짜*/
+.kSZYgn {
+  display: inline-block;
+  width: 50%;
+  height: 28px;
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  color: rgb(17, 17, 17);
+}
+
+/* 주문리스트 - 상세보기*/
+.kThsCL {
+  text-align: right;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: -0.5px;
+  color: rgb(52, 106, 255);
+  display: inline-flex;
+  vertical-align: middle;
+  position: relative;
+  width: auto;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+}
+
+.gSIruC {
+  height: 16px;
+  line-height: 1;
+  margin: auto;
+  font-family: 나눔고딕, nanumgothic, 돋움, dotum, sans-serif;
+}
+
+.jOhOoP {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+/* 주문리스트 - 카드 */
+
+.hCVtNj {
+  border-radius: 8px;
+  border: 1px solid rgb(238, 238, 238);
+  background-color: rgb(255, 255, 255);
+  margin-top: 16px;
+}
+
+.gcWEbw {
+  margin-top: 10px;
+}
+
+.hUzAOG {
+  height: 100%;
+  padding: 20px;
+  vertical-align: top;
+}
+
+.bQVZKC {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.krPkOP {
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  line-height: 1.5;
+}
+
+
+
+.hullgd {
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgb(17, 17, 17);
+}
+
+.grCKyH {
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.bScTTg {
+  transform-origin: center center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 0px solid rgb(255, 255, 255);
+  padding: 0px;
+  background-color: transparent;
+  transform: rotate(90deg);
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  appearance: none;
+}
+
+.bScTTg div {
+  background-color: rgba(17, 17, 17, 0.4);
+}
+
+.JHhgQ {
+  margin-right: 3px;
+  border-radius: 50%;
+  width: 3px;
+  height: 3px;
+}
+
+/* 모달 삭제 */
+.cOIBfe {
+  position: fixed;
+  display: none;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  z-index: 30;
+}
+
+.epHmvE {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cNcuvY {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  opacity: 0.8;
+  overflow: hidden;
+}
+
+.foVCUd {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 76px);
+  max-width: 284px;
+  border-radius: 4px;
+  background-color: rgb(255, 255, 255);
+  z-index: 50;
+}
+
+.whbuD {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  margin: 0px;
+}
+
+.YtwcJ {
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  min-height: 3rem;
+  border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+.hurhRo {
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  min-height: 3rem;
+  color: rgb(17, 17, 17);
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+  font-size: 0.875rem;
+}
+
+.iyxgfw {
+  font-size: 14px;
+  color: rgb(231, 34, 61);
+}
+
+.gAMxLy {
+  width: 100%;
+  border: none;
+  min-height: 2.5rem;
+}
+
+.gUnqaK {
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  appearance: none;
+  min-height: 2.25rem;
+  border-radius: 4px;
+  color: rgb(17, 17, 17);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 221, 221);
+  -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+  font-size: 0.875rem;
+  border: none;
+}
+
+
+.heRzqv {
+  width: 100%;
+  padding: 4px 12px;
+}
+
+
+.SWzAJ {
+  position: relative;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 4px;
+  height: 1em;
+  vertical-align: middle;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.kMeFyN {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgb(17, 17, 17);
+  opacity: 0.2;
+}
+
+.dhoCVo {
+  font-size: 1.25rem;
+}
+
+.hmCrGF:empty {
+  display: none;
+}
+
+.gbTJl {
+  width: 200px;
+  height: 100%;
+  text-align: center;
+  border-left: 1px solid rgb(238, 238, 238);
+}
+
+.kCcQTc:first-child {
+  margin-top: 20px;
+}
+
+.oRzGt {
+  position: relative;
+  top: -16px;
+  display: flex;
+  align-items: flex-start;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.gLgexz {
+  overflow: hidden;
+}
+
+.cNiGzR {
+  display: flex;
+  flex-direction: row;
+}
+
+.eEDOvs {
+  display: flex;
+  width: 64px;
+  position: relative;
+  margin-right: 16px;
+}
+
+.gujsmv {
+  opacity: 1;
+}
+
+.kdlGbA {
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 4px;
+  display: inline-flex;
+}
+
+.bmwSdh {
+  user-select: none;
+  overflow: hidden;
+  flex: 1 1 0%;
+  display: flex;
+}
+
+.jBCCpd {
+  display: flex;
+  flex: 1 1 0%;
+  user-select: none;
+  min-width: 0px;
+  flex-direction: column;
+}
+
+.cvhEhM > :last-child {
+  margin-right: 0px;
+}
+
+.ifMZxv {
+  font-size: 1rem;
+}
+
+.yma-DD:empty {
+  display: none;
+}
+.yma-DD:not(:last-child) {
+  margin-bottom: 4px;
+}
+.igPkOG {
+  display: flex;
+  flex-direction: row;
+}
+
+/* 가격 */
+.jxRaeI {
+  width: 100%;
+  display: flex;
+  color: rgb(85, 85, 85);
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.kftgZM {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.kYtEGM {
+  position: relative;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 2px;
+  height: 1em;
+  vertical-align: middle;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.joIhoV {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: rgb(17, 17, 17);
+  opacity: 0.2;
+}
+
+.jtWNEg {
+  font-size: 1rem;
+}
+
+/* 장바구니 담기 버튼 */
+
+.bZaQeF {
+  min-height: 2.25rem;
+  padding: 0px 12px;
+}
+
+.iCTfhh {
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  appearance: none;
+  height: 2.25rem;
+  border-radius: 4px;
+  color: rgb(17, 17, 17);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 221, 221);
+  -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+  font-size: 0.875rem;
+}
+
+.hxalxw {
+  position: absolute;
+}
+
+.igPkOG {
+  display: flex;
+  flex-direction: row;
+}
+
+/* 3개 버튼 */
+
+.gbTJl {
+  width: 200px;
+  height: 100%;
+  text-align: center;
+  border-left: 1px solid rgb(238, 238, 238);
+}
+
+.bCQoer {
+  display: flex;
+  flex-flow: column wrap;
+  height: 100%;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.iiEWkt {
+  min-height: 2.25rem;
+  font-size: 0.875rem;
+  width: 160px;
+  margin: 5px 0px;
+}
+
+.fUUUKW {
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  appearance: none;
+  height: 2.25rem;
+  width: 100%;
+  border-radius: 4px;
+  color: rgb(52, 106, 255);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(52, 106, 255);
+  -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+  font-size: 0.875rem;
+}
+
+.kiiuoA {
+  min-height: 2.25rem;
+  font-size: 0.875rem;
+  width: 160px;
+  margin: 4px 0px;
+}
+
+.fTrGbC {
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  appearance: none;
+  height: 2.25rem;
+  width: 100%;
+  border-radius: 4px;
+  color: rgb(17, 17, 17);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 221, 221);
+  -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+  font-size: 0.875rem;
+}
+
+/* 다음 이전 버튼 */
+.jOhOoP {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.frxcub:disabled {
+  color: rgb(204, 204, 204);
+  background-color: rgb(238, 238, 238);
+  border-color: rgb(221, 221, 221);
+  cursor: default;
+}
+
+.dTwpud {
+  padding: 0px 8px;
+  width: 80px;
+  min-height: 2.375rem;
+}
+
+.jOhOoP > * {
+  margin: 20px 5px 0px;
+}
+
+.frxcub {
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  appearance: none;
+  height: 2.5rem;
+  border-radius: 4px;
+  color: rgb(17, 17, 17);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 221, 221);
+  -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+  font-size: 0.875rem;
+}
+
+/* 주의사항 */
+.eACeud {
+  border: 1px solid rgb(221, 221, 221);
+  background-color: rgb(255, 255, 255);
+}
+
+.hsTKMu {
+  padding-bottom: 25px;
+  overflow: hidden;
+}
+
+.jTQcSU {
+  padding: 20px 0px 10px;
+  display: table;
+  position: relative;
+  width: 100%;
+  table-layout: fixed;
+  font-size: 0.75rem;
+}
+
+.kXhaGH {
+  display: table-cell;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.kCXCvA {
+  font-weight: bold;
+  color: rgb(136, 136, 136);
+}
+
+.dkXmnJ {
+  display: table-cell;
+  padding-right: 20px;
+  text-align: right;
+}
+
+.fuqhZg {
+  color: rgb(61, 130, 247);
+}
+
+/*  */
+
+.dVjHYH {
+  padding: 0px 0px 0px 41px;
+}
+
+.edyIRv {
+  position: relative;
+  float: left;
+  width: 153px;
+  padding: 0px;
+}
+
+.fnQWVX {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0px 0px 8px 5px;
+  line-height: 1;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  background: url(//img1a.coupangcdn.com/image/my/desktop/order-status.png) 0px 0px no-repeat;
+}
+
+.gYDNlI {
+  width: 115px;
+  font-size: 0.6875rem;
+  text-align: center;
+  color: rgb(136, 136, 136);
+}
+
+.kNKHIh {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0px 0px 8px 5px;
+  line-height: 1;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  background: url(//img1a.coupangcdn.com/image/my/desktop/order-status.png) -153px 0px no-repeat;
+}
+
+.kNKvAf {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0px 0px 8px 5px;
+  line-height: 1;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  background: url(//img1a.coupangcdn.com/image/my/desktop/order-status.png) -306px 0px no-repeat;
+}
+
+.kNMjwi {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0px 0px 8px 5px;
+  line-height: 1;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  background: url(//img1a.coupangcdn.com/image/my/desktop/order-status.png) -459px 0px no-repeat;
+}
+
+.kNLvyn {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0px 0px 8px 5px;
+  line-height: 1;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  background: url(//img1a.coupangcdn.com/image/my/desktop/order-status.png) -612px 0px no-repeat;
+}
+
+/*  */
+
+.UxXQy {
+  padding: 20px 26px 16px;
+  overflow: hidden;
+  background-color: rgb(243, 243, 243);
+}
+
+.fQDbaW {
+  color: rgb(136, 136, 136);
+  margin-bottom: 20px;
+  font-size: 0.875rem;
+}
+
+.bQUraS {
+  width: 16px;
+  height: 16px;
+  margin: -2px 5px 0px 0px;
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  background: url(//img1a.coupangcdn.com/image/my/desktop/sprite.png) -222px 0px no-repeat;
+}
+
+.bboIjZ {
+  font-size: 0.6875rem;
+  color: rgb(136, 136, 136);
+}
+
+.fWZpfp {
+  display: block;
+  margin-top: 20px;
+  font-size: 12px;
+}
+
+.jOMCJw{
+  padding-top: 20px;
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -64,6 +64,7 @@
                     </div>
                 </div>
                 <a href="contact.html" class="nav-item nav-link">Contact</a>
+                <a href="mypage/mypage.html" th:onclick="|location.href='@{/mypage}'|" class="nav-item nav-link">Mypage</a>
                 <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>
                 <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
             </div>
