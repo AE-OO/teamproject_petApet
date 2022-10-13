@@ -17,87 +17,54 @@
             <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
             <h1 class="display-5 mb-5">Pet Food</h1>
         </div>
+        <div class="wow fadeInUp" data-wow-delay="0.4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
+            <hr class="my-4">
+        </div>
         <div class="row mb-5"></div>
         <div class="row g-4 portfolio-container " style="position: relative; height: auto;">
-            <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
+            <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp"
+                 data-wow-delay="0.1s" th:each="product : ${productList}">
                 <div class="portfolio rounded">
                     <img class="img-fluid" th:src="@{/img/petwalkingSupplies.jpg}" alt="">
                     <div class="portfolio-text" style="opacity: 1;">
                         <div class="h-50">
-                            <h1 class="text-center rounded p-2">
-                                <a style="text-decoration: none;" class="text-dark fs-5" href="#">테스트상품</a></h1>
-                            <h2 class="text-center fs-6"> 상품상세 </h2>
+                            <h1 class="text-start rounded ms-2">
+                                <a style="text-decoration: none;" class="text-dark fs-5" href="#"
+                                   th:text="${product.productName}"></a>
+                            </h1>
+                            <div class="d-flex flex-row">
+                                <div id="myform">
+                                    <fieldset class="p-1 col">
+                                        <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                                            for="rate1">★</label>
+                                        <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                                            for="rate2">★</label>
+                                        <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                                            for="rate3">★</label>
+                                        <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                                            for="rate4">★</label>
+                                        <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                                            for="rate5">★</label>
+                                    </fieldset>
+                                </div>
+                                <h6 class="align-self-center mt-2">(0)</h6>
+                            </div>
                         </div>
                         <div class="d-flex flex-column">
                             <div class="col">
-                                <h6 class=" fs-6 text-end">1000</h6>
+                                <h1 class="fs-6 text-end" th:text="${product.productPrice}">1000</h1>
                             </div>
-                            <div class="d-flex justify-content-sm-end btn-group-sm">
-                                <button type="button" class="btn bg-secondary me-1">cart</button>
-                                <button type="button" class="btn bg-secondary me-1">buy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
-                <div class="portfolio rounded">
-                    <img class="img-fluid" th:src="@{/img/petwalkingSupplies.jpg}" alt="">
-                    <div class="portfolio-text" style="opacity: 1;">
-                        <div class="h-50">
-                            <h1 class="text-center rounded p-2">
-                                <a style="text-decoration: none;" class="text-dark fs-5" href="#">테스트상품</a></h1>
-                            <h2 class="text-center fs-6"> 상품상세 </h2>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <div class="col">
-                                <h6 class=" fs-6 text-end">1000</h6>
-                            </div>
-                            <div class="d-flex justify-content-sm-end btn-group-sm">
-                                <button type="button" class="btn bg-secondary me-1">cart</button>
-                                <button type="button" class="btn bg-secondary me-1">buy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
-                <div class="portfolio rounded">
-                    <img class="img-fluid" th:src="@{/img/petwalkingSupplies.jpg}" alt="">
-                    <div class="portfolio-text" style="opacity: 1;">
-                        <div class="h-50">
-                            <h1 class="text-center rounded p-2">
-                                <a style="text-decoration: none;" class="text-dark fs-5" href="#">테스트상품</a></h1>
-                            <h2 class="text-center fs-6"> 상품상세 </h2>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <div class="col">
-                                <h6 class=" fs-6 text-end">1000</h6>
-                            </div>
-                            <div class="d-flex justify-content-sm-end btn-group-sm">
-                                <button type="button" class="btn bg-secondary me-1">cart</button>
-                                <button type="button" class="btn bg-secondary me-1">buy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
-                <div class="portfolio rounded">
-                    <img class="img-fluid" th:src="@{/img/petwalkingSupplies.jpg}" alt="">
-                    <div class="portfolio-text" style="opacity: 1;">
-                        <div class="h-50">
-                            <h1 class="text-center rounded p-2">
-                                <a style="text-decoration: none;" class="text-dark fs-5" href="#">테스트상품</a></h1>
-                            <h2 class="text-center fs-6"> 상품상세 </h2>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <div class="col">
-                                <h6 class=" fs-6 text-end">1000</h6>
-                            </div>
-                            <div class="d-flex justify-content-sm-end btn-group-sm">
-                                <button type="button" class="btn bg-secondary me-1">cart</button>
-                                <button type="button" class="btn bg-secondary me-1">buy</button>
+                            <div class="d-flex flex-row">
+                                <div id="dib" class="justify-content-start">
+                                    <fieldset>
+                                        <input type="radio" value="1" class="btn bg-secondary me-1" id="product_dib">
+                                        <label for="product_dib" class="fs-4">♥</label>
+                                    </fieldset>
+                                </div>
+                                <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
+                                    <button type="button" class="btn bg-secondary me-1">장바구니</button>
+                                    <button type="button" class="btn bg-secondary me-1">바로구매</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,8 +73,9 @@
         </div>
     </div>
 </div>
-<div class="container-fluid bg-dark text-light text-center footer mt-5 py-3">
-    <div class="container py-5">
+<hr class="my-4">
+<div class="container-fluid text-light text-center footer mt-2 py-0" style="background-color: #78c2ad">
+    <div class="container pt-4">
         <div class="row g-5">
             <div class="col-lg-6 col-md-6 mx-auto">
                 <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
@@ -142,7 +110,7 @@
 
 
 <!-- Copyright Start -->
-<div class="container-fluid text-center copyright py-4">
+<div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
     <div class="container ">
         <div class="row ">
             <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">

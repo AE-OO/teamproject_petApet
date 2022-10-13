@@ -1,4 +1,4 @@
-package com.teamproject.petapet.domain.product.fileupload;
+package com.teamproject.petapet.web.product.fileupload;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
