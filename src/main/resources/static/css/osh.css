@@ -62,3 +62,31 @@
     text-shadow: 0 0 0 rgba(250, 0, 0, 0.99);
 }
 
+input:invalid + span::after {
+    content: "✖";
+    color: #cb0909;
+    padding-left: 0.5rem;
+}
+
+input:valid + span::after {
+    content: "✓";
+    color: #166408;
+    padding-left: 0.5rem;
+}
+
+select:invalid + span:after {
+    content: "✖";
+    color: #cb0909;
+    padding-left: 0.5rem;
+}
+
+select:valid + span::after {
+    content: "✓";
+    color: #166408;
+    padding-left: 0.5rem;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}

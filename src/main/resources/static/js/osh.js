@@ -37,3 +37,7 @@ $(document).ready(function () {
         }
     });
 });
+
+const putValue = (target) => {
+    let value = $('#inputGroupSelect01').val();
+}

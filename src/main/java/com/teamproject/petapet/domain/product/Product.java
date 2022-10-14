@@ -59,10 +59,11 @@ public class Product {
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE)
     private Cart cart;
 
-    public Product(String productName, Long productPrice, Long productStock, String productStatus, ProductType productDiv, String productContent) {
+    public Product(String productName, Long productPrice, Long productStock, List<UploadFile> productImg, String productStatus, ProductType productDiv, String productContent) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;
+        this.productImg = productImg;
         this.productStatus = productStatus;
         this.productDiv = productDiv;
         this.productContent = productContent;
