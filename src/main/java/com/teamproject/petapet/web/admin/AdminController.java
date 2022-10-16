@@ -1,11 +1,11 @@
 package com.teamproject.petapet.web.admin;
 
-import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.web.Inquired.InquiredFAQDTO;
 import com.teamproject.petapet.web.Inquired.InquiredService;
 import com.teamproject.petapet.web.community.CommunityService;
 import com.teamproject.petapet.web.member.MemberService;
 import com.teamproject.petapet.web.product.ProductService;
+import com.teamproject.petapet.web.report.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +26,15 @@ public class AdminController {
     private final ProductService productService;
     private final CommunityService communityService;
     private final MemberService memberService;
+    private final ReportService reportService;
 
     @GetMapping("/adminPage")
     public String adminPage(Model model){
 
         model.addAttribute("FAQ", inquiredService.getFAQ());
         model.addAttribute("otherInquiry", inquiredService.getOtherInquiries());
+        model.addAttribute("communityReport", reportService.getReportCommunityList());
+        model.addAttribute("memberReport", reportService.getReportMemberList());
         model.addAttribute("product", productService.getProductList());
         model.addAttribute("community", communityService.getProductList());
         model.addAttribute("member", memberService.getMemberList());
@@ -83,8 +86,27 @@ public class AdminController {
         productService.updateProductStatus((String)map.get("status"), productId);
     }
 
+    @GetMapping("/deleteCommunity/{communityId}")
+    public void deleteCommunity(@PathVariable("communityId") Long communityId){
+        communityService.deleteCommunity(communityId);
+    }
+
     @GetMapping("/deleteMember/{memberId}")
     public void deleteMember(@PathVariable("memberId") String memberId){
         memberService.deleteMember(memberId);
+    }
+
+    @ResponseBody
+    @GetMapping("/acceptCommunityReport/{reportId}")
+    public void acceptCommunityReport(@PathVariable("reportId") Long reportId, @RequestParam("communityId") Long communityId){
+        communityService.addCommunityReport(communityId);
+        reportService.setResponseStatusCommunity(reportId);
+    }
+
+    @ResponseBody
+    @GetMapping("/acceptMemberReport/{reportId}")
+    public void acceptMemberReport(@PathVariable("reportId") Long reportId, @RequestParam("memberId") String memberId){
+        memberService.addMemberReport(memberId);
+        reportService.setResponseStatusCommunity(reportId);
     }
 }

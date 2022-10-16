@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public interface CommunityService {
-
     List<Community> getProductList();
+    void deleteCommunity(Long communityId);
+    void addCommunityReport(Long communityId);
 }

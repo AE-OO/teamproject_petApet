@@ -13,8 +13,8 @@ import java.util.List;
 
 /**
  * 박채원 22.10.01 작성
- * 
  * 박채원 22.10.09 수정 - 카테고리 컬럼 추가
+ * 박채원 22.10.16 수정 - report 테이블과의 연관관계 삭제
  */
 
 @Entity
@@ -58,6 +58,4 @@ public class Community {
     @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
     private List<Comment> comment;
 
-    @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
-    private List<Report> report;
 }

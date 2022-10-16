@@ -195,6 +195,66 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-6 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <p class="card-title mb-0" style="float: left;">커뮤니티 신고관리</p>
+                                </div>
+                                <div class="table-responsive" style="height: 400px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">신고번호</th>
+                                            <th class="border-bottom pb-2">게시글번호</th>
+                                            <th class="border-bottom pb-2">신고사유</th>
+                                            <th class="border-bottom pb-2">승인</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="communityReport : ${communityReport}">
+                                            <td class="pl-0" id="communityReportId">[[${communityReport.reportId}]]</td>
+                                            <td id="communityId">[[${communityReport.community.communityId}]]</td>
+                                            <td>[[${communityReport.reportReason}]]</td>
+                                            <td><button class="btn btn-danger btn-sm acceptCommunityReportBtn" type="button">승인</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <p class="card-title mb-0" style="float: left;">회원 신고관리</p>
+                                </div>
+                                <div class="table-responsive" style="height: 400px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">신고번호</th>
+                                            <th class="border-bottom pb-2">회원ID</th>
+                                            <th class="border-bottom pb-2">신고사유</th>
+                                            <th class="border-bottom pb-2">승인</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="memberReport : ${memberReport}">
+                                            <td class="pl-0" id="memberReportId">[[${memberReport.reportId}]]</td>
+                                            <td id="memberId">[[${memberReport.member.memberId}]]</td>
+                                            <td>[[${memberReport.reportReason}]]</td>
+                                            <td><button class="btn btn-danger btn-sm acceptMemberReportBtn" type="button">승인</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12 stretch-card grid-margin">
                         <div class="card">
                             <div class="card-body">
@@ -262,15 +322,21 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="community : ${community}">
-                                            <td>[[${community.communityId}]]</td>
-                                            <td><a href="#">[[${community.communityTitle}]]</a></td>
-                                            <td>[[${community.member.memberId}]]</td>
-                                            <td>[[${community.communityCategory}]]</td>
-                                            <td>[[${#temporals.format(community.communityDate,'yyyy/MM/dd')}]]</td>
-                                            <td class="text-success">[[${community.communityReport}]]</td>
-                                            <td><label class="btn btn-danger btn-sm">게시글 삭제</label></td>
-                                        </tr>
+                                        <div th:each="community : ${community}">
+                                            <tr th:id="${community.communityId}">
+                                                <td>[[${community.communityId}]]</td>
+                                                <td><a href="#">[[${community.communityTitle}]]</a></td>
+                                                <td>[[${community.member.memberId}]]</td>
+                                                <td>[[${community.communityCategory}]]</td>
+                                                <td>[[${#temporals.format(community.communityDate,'yyyy/MM/dd')}]]</td>
+                                                <td class="text-success" id="report">[[${community.communityReport}]]</td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm communityModal" type="button"
+                                                            th:id="${community.communityId}">게시글 삭제
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </div>
                                         </tbody>
                                     </table>
                                 </div>
@@ -303,7 +369,7 @@
                                             <td>[[${member.memberName}]]</td>
                                             <td>[[${member.memberGender}]]</td>
                                             <td>[[${#temporals.format(member.memberJoinDate,'yyyy/MM/dd')}]]</td>
-                                            <td class="text-danger">[[${member.memberReport}]]</td>
+                                            <td class="text-success" id="report">[[${member.memberReport}]]</td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm memberModal" type="button" th:id="${member.memberId}">회원탈퇴/정지
                                                 </button>
@@ -317,8 +383,25 @@
                     </div>
                 </div>
             </div>
-            <!-- 삭제 확인 모달 -->
-            <div class="modal fade" id="confirmDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            <!-- 게시글 삭제 확인 모달 -->
+            <div class="modal fade" id="confirmCommunityDeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">커뮤니티 글 삭제</h1>
+                        </div>
+                        <div class="modal-body communityDelete" style="text-align: center">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            <button type="button" class="btn btn-primary confirmCommunityDelete" data-bs-dismiss="modal">강제삭제</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 회원 삭제 확인 모달 -->
+            <div class="modal fade" id="confirmMemberDeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                  aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">

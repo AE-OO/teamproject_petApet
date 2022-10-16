@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.community.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,15 @@ public class CommunityServiceImpl implements CommunityService{
 
     @Override
     public List<Community> getProductList() {
-        return communityRepository.findAll();
+        return communityRepository.findAll(Sort.by(Sort.Direction.DESC,"communityReport"));
+    }
+
+    @Override
+    public void deleteCommunity(Long communityId) {
+        communityRepository.deleteById(communityId);    }
+
+    @Override
+    public void addCommunityReport(Long communityId) {
+        communityRepository.addCommunityReport(communityId);
     }
 }

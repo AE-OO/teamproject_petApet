@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +22,16 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public List<Member> getMemberList() {
-        return memberRepository.findAll();
+        return memberRepository.findAll(Sort.by(Sort.Direction.DESC, "memberReport"));
     }
 
     @Override
     public void deleteMember(String memberId) {
         memberRepository.deleteById(memberId);
+    }
+
+    @Override
+    public void addMemberReport(String memberId) {
+        memberRepository.addMemberReport(memberId);
     }
 }

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    reportColor();
+
     $(".deleteFAQ").click(function () {
         var id = $(this).attr("id");
 
@@ -14,6 +16,37 @@ $(document).ready(function () {
         }
     });
 
+    $(".communityModal").click(function(){
+        var communityId = $(this).attr("id");
+
+        $(".communityDelete").empty();
+
+        var modalBody = '';
+        modalBody += '게시글<br/>';
+        modalBody += '<div style="color: red">' + communityId + '</div> 번';
+        modalBody += '을(를) 삭제하시겠습니까?<br/>삭제 버튼을 누르면 삭제됩니다.<br/>';
+        $(".communityDelete").append(modalBody);
+        $(".confirmCommunityDelete").attr("id", communityId);
+        $("#confirmCommunityDeleteModal").modal('show');
+    });
+
+    $(".confirmCommunityDelete").click(function(){
+       var communityId = $(this).attr("id");
+       console.log(communityId);
+
+       $.ajax({
+           url: "/admin/deleteCommunity/" + communityId,
+           type: "get",
+           success(){
+                $("#" + communityId).empty();
+               // location.href="/admin/adminPage";
+           }, error(){
+               $("#" + communityId).empty();
+               // location.href="/admin/adminPage";
+           }
+       })
+    });
+
     $(".memberModal").click(function(){
         var memberId = $(this).attr("id");
 
@@ -25,7 +58,7 @@ $(document).ready(function () {
         modalBody += '을(를) 삭제하겠습니까?<br/>확인을 누르면 삭제됩니다.<br/>';
         $(".memberDelete").append(modalBody);
         $(".confirmMemberDelete").attr("id",memberId);
-        $("#confirmDelete").modal('show');
+        $("#confirmMemberDeleteModal").modal('show');
     });
 
     $(".confirmMemberDelete").click(function(){
@@ -35,8 +68,10 @@ $(document).ready(function () {
        $.ajax({
            url: "/admin/deleteMember/" + memberId,
            type: "get",
-           success(){
-               location.href="/admin/adminPage";
+           success() {
+               location.reload();
+           }, error(){
+               location.reload();
            }
        })
     });
@@ -44,8 +79,6 @@ $(document).ready(function () {
     $(".setProductStatus").click(function(){
         var productId = $(this).attr("value");
         var selectedStatus = $(this).parent().parent().find("select[name=productStatus]").val();
-        console.log(productId);
-        console.log(selectedStatus);
 
         $.ajax({
             url: "/admin/updateProductStatus/" + productId,
@@ -55,5 +88,41 @@ $(document).ready(function () {
                 location.href="/admin/adminPage";
             }
         })
-    })
+    });
+
+    $(".acceptCommunityReportBtn").click(function(){
+        var reportId = $(this).parent().parent().find("td[id=communityReportId]").text();
+        var communityId = $(this).parent().parent().find("td[id=communityId]").text();
+
+        $.ajax({
+            url: "/admin/acceptCommunityReport/" + reportId,
+            data: {communityId : communityId},
+            type: "get",
+            success(){
+                location.reload();
+            }
+        })
+    });
+
+    $(".acceptMemberReportBtn").click(function(){
+       var reportId = $(this).parent().parent().find("td[id=memberReportId]").text();
+       var memberId = $(this).parent().parent().find("td[id=memberId]").text();
+
+       $.ajax({
+           url: "/admin/acceptMemberReport/" + reportId,
+           data: {memberId : memberId},
+           type: "get",
+           success(){
+               location.reload();
+           }
+       })
+    });
+
+
 })
+
+//실행안됨
+function reportColor(){
+    if($("#report").text() >= 3)
+        $("#report").attr("class", "text-danger");
+}

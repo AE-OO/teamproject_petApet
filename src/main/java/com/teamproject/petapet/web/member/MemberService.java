@@ -11,4 +11,5 @@ import java.util.List;
 public interface MemberService {
     List<Member> getMemberList();
     void deleteMember(String memberId);
+    void addMemberReport(String memberId);
 }
