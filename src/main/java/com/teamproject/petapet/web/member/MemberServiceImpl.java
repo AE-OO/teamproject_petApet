@@ -34,4 +34,9 @@ public class MemberServiceImpl implements MemberService{
     public void addMemberReport(String memberId) {
         memberRepository.addMemberReport(memberId);
     }
+
+    @Override
+    public void updateMemberStopDate(String memberId) {
+        memberRepository.updateMemberStopDate(memberId);
+    }
 }

@@ -10,4 +10,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Transactional
     @Query("update Member m set m.memberReport = m.memberReport + 1 where m.memberId =:memberId")
     void addMemberReport(String memberId);
+
+    @Modifying
+    @Transactional
+    @Query("update Member m set m.memberStopDate = current_date where m.memberId =:memberId")
+    void updateMemberStopDate(String memberId);
 }

@@ -57,8 +57,22 @@ $(document).ready(function () {
         modalBody += '<div style="color: red">' + memberId + '</div>';
         modalBody += '을(를) 삭제하겠습니까?<br/>확인을 누르면 삭제됩니다.<br/>';
         $(".memberDelete").append(modalBody);
-        $(".confirmMemberDelete").attr("id",memberId);
+        $(".confirmDisabledMember").attr("id", memberId);
+        $(".confirmMemberDelete").attr("id", memberId);
         $("#confirmMemberDeleteModal").modal('show');
+    });
+
+    $(".confirmDisabledMember").click(function(){
+       var memberId = $(this).attr("id");
+       console.log(memberId);
+
+       $.ajax({
+           url: "/admin/disabledMember/" + memberId,
+           type: "get",
+           success() {
+               location.reload();
+           }
+       })
     });
 
     $(".confirmMemberDelete").click(function(){
@@ -121,7 +135,6 @@ $(document).ready(function () {
 
 })
 
-//실행안됨
 function reportColor(){
     if($("#report").text() >= 3)
         $("#report").attr("class", "text-danger");

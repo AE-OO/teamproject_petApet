@@ -91,6 +91,12 @@ public class AdminController {
         communityService.deleteCommunity(communityId);
     }
 
+    @ResponseBody
+    @GetMapping("/disabledMember/{memberId}")
+    public void disabledMember(@PathVariable("memberId") String memberId){
+        memberService.updateMemberStopDate(memberId);
+    }
+
     @GetMapping("/deleteMember/{memberId}")
     public void deleteMember(@PathVariable("memberId") String memberId){
         memberService.deleteMember(memberId);

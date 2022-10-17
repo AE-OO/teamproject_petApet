@@ -12,4 +12,5 @@ public interface MemberService {
     List<Member> getMemberList();
     void deleteMember(String memberId);
     void addMemberReport(String memberId);
+    void updateMemberStopDate(String memberId);
 }
