@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/heade :: head(product)}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:object="${findProduct}">
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<hr class="mt-0">
+<div class="container-xxl py-5 px-5">
+    <div class="d-flex flex-row m-lg-2">
+        <div class="d-flex col-6 justify-content-center">
+            <div class="portfolio-container">
+                <div class="portfolio-item">
+                    <div class="portfolio">
+                        <div class="slick">
+                            <img th:each="imgNum : *{productImg}"
+                                 th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${imgNum.storeFileName})}|">
+                        </div>
+                        <style>
+
+                            .slick {
+                                height: 10rem;
+                                width: 10rem;
+                                display: flex;
+                            }
+                            .slick-slide li{
+                                display: flex;
+                            }
+                            .slick li{
+                                display: flex;
+                            }
+                            .slick-slide img {
+                                object-fit: cover;
+                                height: 20rem;
+                                width: 20rem;
+                            }
+                        </style>
+                        <!--                        <img class="img-fluid" th:src="@{/img/petSnack.jpg}" style="width: 27rem;">-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="d-flex m-lg-3">
+                <div class="col-11">
+                    <h2 th:text="*{productName}">상품명</h2>
+                </div>
+                <div class="col-1 text-center mt-1">
+                    <p style="font-size: 1.5rem"><a role="button" style="color: red">♡</a></p>
+                </div>
+            </div>
+            <hr class="mb-4 mt-4">
+            <div class="d-flex m-lg-4">
+                <div class="col-4 m-lg-1">
+                    <h5>할인율</h5>
+                    <h6 class="text-secondary">0%</h6>
+                </div>
+                <div class="col-8 m-lg-1 text-end">
+                    <h4 class="me-3" th:text="*{productPrice}">price</h4>
+                </div>
+            </div>
+            <hr class="mb-4 mt-4">
+            <div class="d-flex flex-row pt-3">
+                <div class="row m-lg-3 col-6">
+                    <h6>판매자</h6>
+                    <h6>재고</h6>
+                </div>
+                <div class="row m-lg-3 col-6">
+                    <h6>판매자</h6>
+                    <h6 th:text="*{productStock}">재고</h6>
+                </div>
+            </div>
+            <hr class="mb-4 mt-4">
+            <div class="d-flex flex-row m-lg-3">
+                <div class="col-4">
+                    <div class="m-lg-2 d-flex">
+                        <div class="col-9">
+                            <input type="text" style="height: 100%" class="col-12" value="1" maxlength="6"
+                                   autocomplete="off">
+                        </div>
+                        <div style="display:table-cell;vertical-align:top;" class="col-3">
+                            <button class="btn-sm-square" style="height: 1rem" type="button">△</button>
+                            <button class="btn-sm-square" style="height: 1rem" type="button">▽</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="m-lg-2 d-flex flex-row">
+                        <div class="col-6 d-grid">
+                            <button class="btn-info ms-3" style="height:2rem"> 장바구니 담기</button>
+                        </div>
+                        <div class="col-6 d-grid">
+                            <button class="btn-info ms-3" style="height:2rem">바로구매</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="mt-4">
+
+    <div class="flex-row p-3">
+        <div class="d-flex flex-fill px-5 ms-5 mb-5">
+            <table class="col-12">
+                <tbody>
+                <tr>
+                    <th>종류</th>
+                    <td>상품 상세페이지 참조</td>
+                    <th>소재</th>
+                    <td>상품 상세페이지 참조</td>
+                </tr>
+                <tr>
+                    <th>치수</th>
+                    <td>상품 상세페이지 참조</td>
+                    <th>제조자(수입자)</th>
+                    <td>상품 상세페이지 참조</td>
+                </tr>
+                <tr>
+                    <th>제조국</th>
+                    <td>상품 상세페이지 참조</td>
+                    <th>취급시 주의사항</th>
+                    <td>상품 상세페이지 참조</td>
+                </tr>
+                <tr>
+                    <th>품질보증기준</th>
+                    <td>상품 상세페이지 참조</td>
+                    <th>A/S 책임자와 전화번호</th>
+                    <td>상품 상세페이지 참조</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr class="">
+        <div class="d-flex flex-row my-3" style="position: sticky; top: 5rem;">
+            <div class="btn-group col-12">
+                <a role="button" class="btn text-dark col-3" style="background-color: white"> 상품상세</a>
+                <button class="btn text-dark col-3" style="background-color: white"> 상품평()</button>
+                <button class="btn text-dark col-3" style="background-color: white"> 상품문의</button>
+                <button class="btn text-dark col-3" style="background-color: white"> 배송/교환/반품</button>
+            </div>
+        </div>
+        <hr class="mb-5">
+        <div class="d-flex flex-row">
+            <div class="row mb-4">
+                <h4>상품상세</h4>
+            </div>
+        </div>
+        <div class="d-flex flex-row pt-3" id="findContent">
+            <div class="d-flex flex-row pt-3 ms-4">
+                <script th:inline="javascript">
+                    findContent = [[${findProduct.productContent}]];
+                    createTag = document.createElement('div');
+                    createTag.innerHTML = findContent;
+                    document.querySelector('#findContent').append(createTag);
+                </script>
+            </div>
+        </div>
+    </div>
+    <hr class="mb-4 mt-4">
+    <div class="d-flex flex-row">
+        <div class="btn-group col-12">
+            <button class="btn text-dark col-3"> 상품상세</button>
+            <button class="btn text-dark col-3"> 상품평()</button>
+            <button class="btn text-dark col-3"> 상품문의</button>
+            <button class="btn text-dark col-3"> 배송/교환/반품</button>
+        </div>
+    </div>
+    <hr class="mb-4 mt-4">
+    <div>
+        <div>
+            <div class="d-flex flex-row p-3">
+                <div class="d-flex flex-column flex-fill">
+                    <div class="row mb-4">
+                        <h4>상품평</h4>
+                    </div>
+                    <article class="row justify-content-start">
+                        <div class="col-1">
+                            <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
+                        </div>
+                        <div class="col-1 mt-2">
+                            <h5>작성자</h5>
+                            <h6 style="font-size: 0.5rem" class="text-secondary mt-1">2000.00.00</h6>
+                        </div>
+                        <div id="myform" class="col-9">
+                            <fieldset class="p-1 col">
+                                <input type="radio" name="reviewStar" value="5"><label
+                                    for="rate1">★</label>
+                                <input type="radio" name="reviewStar" value="4"><label
+                                    for="rate2">★</label>
+                                <input type="radio" name="reviewStar" value="3"><label
+                                    for="rate3">★</label>
+                                <input type="radio" name="reviewStar" value="2"><label
+                                    for="rate4">★</label>
+                                <input type="radio" name="reviewStar" value="1"><label
+                                    for="rate5">★</label>
+                            </fieldset>
+                        </div>
+                        <div class="col-1 text-end">
+                            <a role="button" class="btn btn-sm btn-secondary" href="#">작성</a>
+                        </div>
+                        <div class="d-flex my-2">
+                            <label for="productName"><h6 class="mt-1">상품명</h6></label>
+                            <input class="ms-2" type="text" name="" id="productName">
+                        </div>
+                        <div class="">
+                            <div class="d-flex">
+                                <textarea class="d-flex flex-fill"
+                                          style="resize: none; min-height: 10rem"></textarea>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="d-flex flex-row pb-3 px-3">
+                <div class="d-flex flex-column flex-fill">
+                    <article class="row justify-content-start">
+                        <div class="col-1">
+                            <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
+                        </div>
+                        <div class="col-1 mt-2">
+                            <h5>작성자</h5>
+                            <h6 style="font-size: 0.5rem" class="text-secondary mt-1">2000.00.00</h6>
+                        </div>
+                        <div id="myform" class="col-9">
+                            <fieldset class="p-1 col">
+                                <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                                    for="rate1">★</label>
+                                <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                                    for="rate2">★</label>
+                                <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                                    for="rate3">★</label>
+                                <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                                    for="rate4">★</label>
+                                <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                                    for="rate5">★</label>
+                            </fieldset>
+                        </div>
+                        <div class="col-1 text-end">
+                            <a href="#">신고</a>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <h6>상품명</h6>
+                        </div>
+                        <div class="review_comment">
+                            <div class="review_content">
+                                <div class="contentStr">오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
+                                    오늘은 조은날 고고싱동해물과
+                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
+                                    오늘은 조은날 고고싱동해물과
+                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
+                                    오늘은 조은날 고고싱동해물과
+                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
+                                    오늘은 조은날 고고싱동해물과
+                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
+                                    오늘은 조은날 고고싱동해물과
+                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
+                                    오늘은 조은날 고고싱동해물과백두산이 마르고 닳도록오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row p-3">
+        <div>
+            <div class="d-flex flex-fill">
+                <div class="d-flex mb-4 col">
+                    <div class="col-11">
+                        <h4>상품문의</h4>
+                    </div>
+                    <div class="col-1 text-end">
+                        <a href="#">문의하기</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="">
+                    <li>구매한 상품의 <em>취소/반품은 마이페이지 구매내역에서 신청</em> 가능합니다.</li>
+                    <li>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
+                    <li><em>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는 고객센터 내 1:1 문의하기</em>를 이용해주세요.</li>
+                    <li><em>"해당 상품 자체"와 관계없는 글, 양도, 광고성, 욕설, 비방, 도배 등의 글은 예고 없이 이동, 노출제한, 삭제 등의 조치가 취해질 수
+                        있습니다.</em>
+                    </li>
+                    <li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 소중한 개인정보는 절대 남기지 말아주세요.</li>
+                </div>
+                <hr class="my-2">
+                <div class="prod-inquiry-list__container">
+
+                    <div class="prod-inquiry-items">
+
+                        <div class="prod-inquiry-item">
+                            <em class="prod-inquiry-item__label">질문</em>
+                            <div class="prod-inquiry-item__wrap">
+                                <strong class="prod-inquiry-item__author">ake***@na</strong>
+                                <div class="prod-inquiry-item__selected-option">거꾸로 장우산 | 블랙&nbsp;&nbsp;누림무역
+                                </div>
+                                <div class="prod-inquiry-item__content">9월 14일에 우산을 구매해서 한동안 비가 안오길래 집에 내비두고 사용
+                                    안하고있었는데
+                                    10월4일 오늘 우산을 처음 사용했는데 우산손잡이가 달랑달랑 거리다가 나중가서는 손잡이가 빠지고 다시 제대로 안끼워지네요 .. 손잡이잡고
+                                    들고다니면
+                                    손잡이랑
+                                    우산이랑 계속 분해되는데 환불가능한가요 ?
+                                </div>
+
+                                <div class="prod-inquiry-item__time">2022/10/04 21:58:38</div>
+                            </div>
+
+                            <div class="prod-inquiry-item__reply">
+                                <i class="prod_inquiry-item__reply__icon"></i>
+                                <em class="prod-inquiry-item__reply__label">답변</em>
+                                <div class="prod-inquiry-item__reply__wrap">
+                                    <strong class="prod-inquiry-item__reply__author">누림무역</strong>
+                                    <div class="prod-inquiry-item__reply__content">고객님 교환은 가능하지만 환불은 7일이 경과 되어서
+                                        불가합니다.
+                                        그리고
+                                        9월14일에 구매하신 제품을 이제와서 처음 사용하셨다고 했는데 불량이라고 하시면 저희도 난감합니다. 입장을 바꿔놓고 생각해보시면
+                                        좋겠습니다.
+                                        저희가
+                                        제품 출고전에 전수 검수를 하고 출고합니다. 010-5450-4651 번으로 내일 전화주세요
+                                    </div>
+                                    <div class="prod-inquiry-item__reply__time">2022/10/04 22:20:11</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="d-flex flex-row border mt-3">
+                            <div class="d-flex flex-row col m-2 mx-2">
+                                <div class="col-11">
+                                    <p class="m-0">판매 부적격 상품 또는 허위과장광고 및 지식재산권을 침해하는 상품의 경우 신고하여 주시기 바랍니다.</p>
+                                </div>
+                                <div class="col-1 text-end">
+                                    <a href="javascript:;" class="" id="" title="신고하기">신고하기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr class="my-4">
+    <div class="d-flex flex-row p-3">
+        <div>
+            <div class="d-flex flex-fill">
+                <h4>배송/교환/반품</h4>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row p-3">
+        <li class="product-etc">
+            <h5 class="prod-delivery-return-policy-title">배송정보</h5>
+
+
+            <table class="prod-delivery-return-policy-table return-policy-3p">
+                <colgroup>
+                    <col width="150px">
+                    <col width="340px">
+                    <col width="150px">
+                    <col width="*">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th>배송방법</th>
+                    <td class="return-policy-delivery-method">순차배송</td>
+                    <th rowspan="2">배송비</th>
+                    <td rowspan="2">
+                        - 기본 배송비 : 3,000원<br>- 도서산간 추가 배송비<br>- 제주 지역 : 5,000원<br>- 도서산간 지역 : 5,000원
+                    </td>
+                </tr>
+                <tr>
+                    <th>배송사</th>
+                    <td>한진택배</td>
+                </tr>
+                <tr>
+                    <th>묶음배송 여부</th>
+                    <td colspan="3">가능</td>
+                </tr>
+                <tr class="return-policy-optional-info" style="">
+                    <th>배송기간</th>
+                    <td colspan="3">ㆍ도서산간 지역 등은 배송에 3-5일이 더 소요될 수 있습니다.<br> &nbsp;&nbsp;- 천재지변, 물량 수급 변동 등 예외적인
+                        사유
+                        발생 시,
+                        다소 지연될 수 있는 점 양해 부탁드립니다.
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <h5 class="prod-delivery-return-policy-title mt-3">교환/반품 안내</h5>
+            <ul class="prod-delivery-return-policy-legal-notice">
+                <li>
+                    ㆍ교환/반품에 관한 일반적인 사항은 판매자가 제시사항보다 관계법령이 우선합니다.
+                    <br>다만, 판매자의 제시사항이 관계법령보다 소비자에게 유리한 경우에는 판매자 제시사항이 적용됩니다.
+                </li>
+            </ul>
+            <table class="prod-delivery-return-policy-table">
+                <colgroup>
+                    <col width="160px">
+                    <col width="*">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th>교환/반품 비용<br>(왕복비용)</th>
+                    <td>
+                        7,000원<br>- 단, 고객 변심의 경우에만 발생<br>- 도서산간 및 일부 지역 추가비용 발생<br>
+                    </td>
+                </tr>
+                <tr>
+                    <th>교환/반품 신청 기준일</th>
+                    <td>
+                        <p>ㆍ단순변심에 의한 교환/반품은 제품 수령 후 7일 이내까지, 교환/반품 제한사항에 해당하지 않는 경우에만 가능 (배송비용과 교환/반품 비용 왕복배송비
+                            고객부담)</p>
+                        <p>ㆍ상품의 내용이 표시·광고의 내용과 다른 경우에는 상품을 수령한 날부터 3개월 이내, 그 사실을 안 날 또는 알 수 있었던 날부터<br>
+                            <span class="prod-delivery-return-policy__limit-list__indent">30일 이내에 청약철회 가능</span>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <h5 class="prod-delivery-return-policy-title mt-2">교환/반품 제한사항</h5>
+            <ul class="prod-delivery-return-policy__limit-list">
+                <li>ㆍ주문/제작 상품의 경우, 상품의 제작이 이미 진행된 경우</li>
+                <li>ㆍ상품 포장을 개봉하여 사용 또는 설치 완료되어 상품의 가치가 훼손된 경우 (단, 내용 확인을 위한 포장 개봉의 경우는 예외)</li>
+                <li>ㆍ고객의 사용, 시간경과, 일부 소비에 의하여 상품의 가치가 현저히 감소한 경우</li>
+                <li>ㆍ세트상품 일부 사용, 구성품을 분실하였거나 취급 부주의로 인한 파손/고장/오염으로 재판매 불가한 경우</li>
+                <li>ㆍ모니터 해상도의 차이로 인해 색상이나 이미지가 실제와 달라, 고객이 단순 변심으로 교환/반품을 무료로 요청하는 경우</li>
+                <li>ㆍ제조사의 사정 (신모델 출시 등) 및 부품 가격 변동 등에 의해 무료 교환/반품으로 요청하는 경우</li>
+            </ul>
+            <p class="prod-delivery-return-policy__limit-text">※ 각 상품별로 아래와 같은 사유로 취소/반품이 제한될 수 있습니다.</p>
+            <table class="prod-delivery-return-policy-table">
+                <colgroup>
+                    <col width="150px">
+                    <col width="*">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th>의류/잡화/수입명품</th>
+                    <td>
+                        <p>ㆍ상품의 택(TAG) 제거, 라벨 및 상품 훼손, 구성품 누락으로 상품의 가치가 현저히 감소된 경우</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>계절상품/식품/화장품</th>
+                    <td>
+                        <p>ㆍ신선/냉장/냉동 식품의 단순변심의 경우</p>
+                        <p>ㆍ뷰티 상품 이용 시 트러블(알러지, 붉은 반점, 가려움, 따가움)이 발생하는 경우,<br>
+                            <span class="prod-delivery-return-policy__limit-list__indent">진료 확인서 및 소견서 등을 증빙하면 환불이 가능 (제반비용 고객부담)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>전자/가전/설치상품</th>
+                    <td>
+
+                        <p>ㆍ설치 또는 사용하여 재판매가 어려운 경우, 액정이 있는 상품의 전원을 켠 경우</p>
+                        <p>ㆍ상품의 시리얼 넘버 유출로 내장된 소프트웨어의 가치가 감소한 경우 (내비게이션, OS시리얼이 적힌 PMP)</p>
+                        <p>ㆍ홀로그램 등을 분리, 분실, 훼손하여 상품의 가치가 현저히 감소하여 재판매가 불가할 경우 (노트북, 데스크탑 PC 등)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>자동차용품</th>
+                    <td>
+                        <p>ㆍ상품을 개봉하여 장착한 이후 단순변심인 경우</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>CD/DVD/GAME/<br>BOOK</th>
+                    <td>
+                        <span>ㆍ복제가 가능한 상품의 포장 등을 훼손한 경우</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="product-item__table product-seller mt-3">
+                <p class="prod-delivery-return-policy-title">판매자 정보</p>
+                <table class="prod-delivery-return-policy-table">
+                    <colgroup>
+                        <col width="150px">
+                        <col width="340px">
+                        <col width="150px">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>
+                            <div>상호/대표자</div>
+                        </th>
+                        <td>누림무역 / 최영제</td>
+                        <th>
+                            <div>사업장 소재지</div>
+                        </th>
+                        <td>대전광역시 서구 벌곡로 1074 747-7</td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <div>e-mail</div>
+                        </th>
+                        <td>yjc255@hanmail.net</td>
+                        <th>
+                            <div>연락처</div>
+                        </th>
+                        <td>010-5450-4651</td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <div>통신판매업 신고번호</div>
+                        </th>
+                        <td>2017-대전서구-0660</td>
+                        <th>
+                            <div>사업자번호</div>
+                        </th>
+                        <td>488-66-00133</td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <div>구매안전 서비스</div>
+                        </th>
+                        <td colspan="3">
+                            <p>02-006-00042 <a href="http://www.fcsc.kr/B/fu_b_06.jsp" class="service-join__btn"
+                                               target="_blank">서비스 가입사실 확인 &gt;</a></p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <p class="prod-minor-notice">
+                    미성년자가 체결한 계약은 법정대리인이 동의하지 않는 경우 본인 또는 법정대리인이 취소할 수 있습니다. PetAPet은 통신판매중개자로서 통신판매의 당사자가 아니며,
+                    광고,
+                    상품
+                    주문, 배송 및 환불의 의무와 책임은 각 판매자에 있습니다.
+                </p>
+            </div>
+        </li>
+    </div>
+</div>
+</div>
+<hr class="my-4">
+<div class="container-fluid text-light text-center footer mt-2 py-0" style="background-color: #78c2ad">
+    <div class="container pt-4">
+        <div class="row g-5">
+            <div class="col-lg-6 col-md-6 mx-auto">
+                <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
+                <ul class="text-white px-0">
+                    <li><a href="#">petApet</a></li>
+                    <li><a href="#">이용약관</a></li>
+                    <li><a href="#">개인정보처리방침</a></li>
+                    <li><a href="#">이용안내</a></li>
+                </ul>
+
+                <p>법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
+                <p>통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
+                <p>서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+
+<!-- Copyright Start -->
+<div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
+                &copy; petApet Project Team All Right Reserved.
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="lib/wow/wow.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="lib/counterup/counterup.min.js"></script>
+<script src="lib/parallax/parallax.min.js"></script>
+<script src="lib/isotope/isotope.pkgd.min.js"></script>
+<script src="lib/lightbox/js/lightbox.min.js"></script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script th:inline="javascript">
+    $('.slick').slick({
+        dots: true,
+        infinite: true,
+        arrows: true,
+        speed: 500,
+        prevArrow: "<button type='button' class='btn'>Previous</button>",
+        nextArrow: "<button type='button' class='btn'>Next</button>", //화살표 커스텀
+        fade: true,
+        dotsClass : "slick-dots",
+        cssEase: 'linear'
+    });
+</script>
+
+<script th:src="@{/js/osh.js}"></script>
+<!-- Template Javascript -->
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

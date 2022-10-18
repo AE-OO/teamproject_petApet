@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.jws.HandlerChain;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDateTime;

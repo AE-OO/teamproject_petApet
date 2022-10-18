@@ -3,7 +3,11 @@ package com.teamproject.petapet.web.product.service;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+
+import com.teamproject.petapet.domain.product.ProductType;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +16,8 @@ import java.util.List;
  * 박채원 22.10.09 작성
  */
 
+@Slf4j
 @Service
-@Log4j2
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
 
@@ -27,5 +31,17 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void updateProductStatus(String selectStatus, Long productId) {
         productRepository.updateProductStatus(selectStatus, productId);
+
+    public List<Product> findAllByProductDiv(ProductType productType){
+        return productRepository.findAllByProductDiv(productType);
+    }
+
+    public Product findOne(Long id){
+      return productRepository.findById(id).get();
+    }
+
+    public Product productSave(Product product){
+        return productRepository.save(product);
+
     }
 }
