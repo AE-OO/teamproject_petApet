@@ -6,6 +6,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import com.teamproject.petapet.jwt.JwtTokenProvider;
+import com.teamproject.petapet.web.member.dto.TokenInfo;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -19,6 +25,8 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public List<Member> getMemberList() {
@@ -54,8 +62,24 @@ public class MemberServiceImpl implements MemberService{
                 genderList[2] += 1;
             }
         }
-
-        System.out.println("==========================" + genderList[2]);
         return genderList;
+    }
+
+
+    @Transactional
+    public TokenInfo login(String memberId, String memberPw) {
+        System.out.println("2)"+memberId+", "+memberPw);
+        // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
+        // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, memberPw);
+
+        // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
+        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        // 3. 인증 정보를 기반으로 JWT 토큰 생성
+        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+
+        return tokenInfo;
     }
 }

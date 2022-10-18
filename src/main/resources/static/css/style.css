@@ -542,4 +542,15 @@ ul,li{
     background: #ffce67;
 }
 
+/*** login, join ***/
+.login, .join {
+    max-width: 540px;
+}
 
+.login a, .join a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+.login a:hover, .join a:hover {
+    color: var(--bs-gray-700);
+}
