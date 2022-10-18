@@ -1,17 +1,16 @@
 package com.teamproject.petapet.web.admin;
 
-import com.teamproject.petapet.web.Inquired.InquiredFAQDTO;
-import com.teamproject.petapet.web.Inquired.InquiredService;
-import com.teamproject.petapet.web.community.CommunityService;
-import com.teamproject.petapet.web.member.MemberService;
-import com.teamproject.petapet.web.product.ProductService;
-import com.teamproject.petapet.web.report.ReportService;
+import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
+import com.teamproject.petapet.web.Inquired.service.InquiredService;
+import com.teamproject.petapet.web.community.service.CommunityService;
+import com.teamproject.petapet.web.member.service.MemberService;
+import com.teamproject.petapet.web.product.service.ProductService;
+import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**

@@ -1,4 +1,4 @@
-package com.teamproject.petapet.web.member;
+package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
 

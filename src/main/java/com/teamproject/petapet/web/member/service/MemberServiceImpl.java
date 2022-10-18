@@ -1,4 +1,4 @@
-package com.teamproject.petapet.web.member;
+package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
@@ -7,7 +7,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.teamproject.petapet.web.Inquired;
+package com.teamproject.petapet.web.Inquired.dto;
 
 import lombok.*;
 

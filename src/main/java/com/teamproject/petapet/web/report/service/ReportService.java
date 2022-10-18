@@ -1,7 +1,8 @@
-package com.teamproject.petapet.web.report;
+package com.teamproject.petapet.web.report.service;
 
 import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.report.Report;
+import com.teamproject.petapet.web.report.dto.ReportCommunityDTO;
 
 import java.util.List;
 

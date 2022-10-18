@@ -1,4 +1,4 @@
-package com.teamproject.petapet.web.report;
+package com.teamproject.petapet.web.report.dto;
 
 import lombok.Builder;
 import lombok.Data;

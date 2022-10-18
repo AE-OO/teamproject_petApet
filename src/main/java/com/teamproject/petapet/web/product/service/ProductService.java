@@ -1,4 +1,4 @@
-package com.teamproject.petapet.web.product;
+package com.teamproject.petapet.web.product.service;
 
 import com.teamproject.petapet.domain.product.Product;
 

@@ -1,4 +1,4 @@
-package com.teamproject.petapet.web.admin;
+package com.teamproject.petapet.web.admin.service;
 
 import org.springframework.stereotype.Service;
 
