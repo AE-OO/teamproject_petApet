@@ -13,11 +13,15 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.*;
+
 
 /**
  * 박채원 22.10.01 작성
@@ -33,12 +37,12 @@ import java.util.List;
 @ToString(exclude = {"community", "comment"})
 @DynamicInsert   //컬럼들에 default값을 주기 위해 사용
 @EntityListeners(value = {AuditingEntityListener.class})
-public class Member {
+public class Member implements UserDetails {
 
     @Id
     private String memberId;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 100, nullable = false)
     private String memberPw;
 
     @Column
@@ -62,6 +66,10 @@ public class Member {
 
     @Column(columnDefinition = "bigint(3) default 0")
     private Long memberReport;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
     @Column
     private Date memberStopDate;
@@ -96,4 +104,29 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<DibsCommunity> dibsCommunity;
-}
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return memberPw;
+    }
+
+    @Override
+    public String getUsername() {
+        return memberId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }

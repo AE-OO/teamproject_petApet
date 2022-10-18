@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member, String> {
     @Modifying
     @Transactional
@@ -20,4 +22,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     @Query("select m.memberGender from Member m")
     List<String> getGenderList();
+
+    Optional<Member> findByMemberId(String memberId);
 }
