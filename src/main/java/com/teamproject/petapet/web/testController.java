@@ -11,6 +11,9 @@ public class testController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String loginForm(){return"login"; }
+
 //    @GetMapping("/admin")
 //    public String adminTest(){
 //        return "admin";

@@ -130,3 +130,14 @@ public class Member implements UserDetails {
     public boolean isAccountNonLocked() {
         return false;
     }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+}
