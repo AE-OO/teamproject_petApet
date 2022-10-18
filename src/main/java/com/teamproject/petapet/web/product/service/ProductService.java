@@ -11,7 +11,6 @@ import java.util.List;
 public interface ProductService {
     List<Product> getProductList();
     void updateProductStatus(String selectStatus, Long productId);
-
     List<Product> findAllByProductDiv(ProductType productType);
 
     Product findOne(Long id);

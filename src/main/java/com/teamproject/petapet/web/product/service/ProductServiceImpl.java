@@ -5,7 +5,6 @@ import com.teamproject.petapet.domain.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 
 import com.teamproject.petapet.domain.product.ProductType;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
@@ -31,17 +30,20 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void updateProductStatus(String selectStatus, Long productId) {
         productRepository.updateProductStatus(selectStatus, productId);
+    }
 
+    @Override
     public List<Product> findAllByProductDiv(ProductType productType){
         return productRepository.findAllByProductDiv(productType);
     }
 
+    @Override
     public Product findOne(Long id){
       return productRepository.findById(id).get();
     }
 
+    @Override
     public Product productSave(Product product){
         return productRepository.save(product);
-
     }
 }
