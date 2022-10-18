@@ -54,8 +54,6 @@ public class MemberServiceImpl implements MemberService{
                 genderList[2] += 1;
             }
         }
-
-        System.out.println("==========================" + genderList[2]);
         return genderList;
     }
 }

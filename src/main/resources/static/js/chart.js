@@ -81,8 +81,7 @@ $(function() {
   };
   var doughnutPieData = {
     datasets: [{
-      // data: getGenderList(),
-      data: [getGenderList()],
+      data: [getGenderList()[0].val,getGenderList()[1].val,getGenderList()[2].val],
       backgroundColor: [
         'rgba(54, 162, 235, 0.5)',
         'rgba(255, 99, 132, 0.5)',
@@ -94,7 +93,6 @@ $(function() {
         'rgba(255, 206, 86, 1)'
       ],
     }],
-
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: [
       '남자',
@@ -102,6 +100,7 @@ $(function() {
       '응답안함'
     ]
   };
+
   var doughnutPieOptions = {
     responsive: true,
     animation: {
@@ -348,7 +347,8 @@ $(function() {
 });
 
 function getGenderList(){
-  var genderList = {};
+  var genderJson = {};
+  var genderArray = [];
   $.ajax({
     url: "/admin/getGenderList",
     type: "get",
@@ -356,13 +356,14 @@ function getGenderList(){
     dataType: "json",
     success(data) {
         $.each(data, function(key, value){
-          console.log(key + ' ' + value);
-          genderList.add(key, value);
+          genderJson.id = key;
+          genderJson.val = value;
+          genderArray.push({...genderJson});
       });
-        console.log(genderList);
+        console.log(genderArray[0]);
     }
   })
-  console.log(genderList);
-  return genderList;
+  console.log(genderArray);
+  return genderArray;
 }
 
