@@ -56,8 +56,8 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> review;
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE)
-    private Cart cart;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    private List<Cart> cart;
 
     public Product(String productName, Long productPrice, Long productStock, List<UploadFile> productImg, String productStatus, ProductType productDiv, String productContent) {
         this.productName = productName;

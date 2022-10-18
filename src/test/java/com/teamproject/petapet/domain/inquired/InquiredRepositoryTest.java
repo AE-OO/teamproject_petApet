@@ -23,6 +23,7 @@ class InquiredRepositoryTest {
             Inquired inquired = Inquired.builder()
                     .inquiredTitle("Inquired " + i)
                     .inquiredContent("Inquired Content " + i)
+                    .inquiredCategory("환불문의")
                     .member(member)
                     .build();
 

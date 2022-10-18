@@ -10,14 +10,19 @@ import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.report.Report;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * 박채원 22.10.01 작성
+ * 박채원 22.10.09 수정 - 가입날짜 컬럼 추가
+ * 박채원 22.10.16 수정 - 정지날짜 컬럼 추가
  */
 
 @Entity
@@ -27,6 +32,7 @@ import java.util.List;
 @Getter
 @ToString(exclude = {"community", "comment"})
 @DynamicInsert   //컬럼들에 default값을 주기 위해 사용
+@EntityListeners(value = {AuditingEntityListener.class})
 public class Member {
 
     @Id
@@ -47,11 +53,18 @@ public class Member {
     @Column(length = 45, nullable = false)
     private String memberName;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime memberJoinDate;
+
     @Column(columnDefinition = "varchar(10) default '응답안함'")
     private String memberGender;
 
     @Column(columnDefinition = "bigint(3) default 0")
     private Long memberReport;
+
+    @Column
+    private Date memberStopDate;
 
     //멤버가 어떤 글을 썼는지도 알아야하기 때문에 양방향으로 작성함
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)

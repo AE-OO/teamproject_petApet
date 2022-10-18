@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>petApet 관리자용</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/vendors/feather/feather.css">
+    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="/js/select.dataTables.min.css">
+    <!-- End plugin css for this page -->
+    <!-- Customized Bootstrap Stylesheet 필-->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+    <!--  &lt;!&ndash; inject:css &ndash;&gt;-->
+    <link rel="stylesheet" href="/css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="/images/favicon.png"/>
+    <!-- JQUERY CDN -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <!-- AJAX CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container-scroller">
+    partial:partials/_navbar.html
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            petApet Admin Page
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="btn btn-light" type="button">
+                Logout
+            </button>
+        </div>
+    </nav>
+    <!--    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">-->
+    <!--      <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">-->
+    <!--        <img scr="#" alt="logo"> <h1 class="m-0">petApet</h1>-->
+    <!--      </a>-->
+    <!--      <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">-->
+    <!--        <span class="navbar-toggler-icon"></span>-->
+    <!--      </button>-->
+    <!--      <div class="collapse navbar-collapse" id="navbarCollapse">-->
+    <!--        <div class="navbar-nav ms-auto p-4 p-lg-0">-->
+    <!--          <a href="about.html" class="nav-item nav-link">About</a>-->
+    <!--          <a href="service.html" class="nav-item nav-link">Services</a>-->
+    <!--          <a href="project.html" class="nav-item nav-link">Product</a>-->
+    <!--          <div class="nav-item dropdown">-->
+    <!--            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>-->
+    <!--            <div class="dropdown-menu bg-light m-0">-->
+    <!--              <a href="feature.html" class="dropdown-item">Test1</a>-->
+    <!--              <a href="quote.html" class="dropdown-item">Test2</a>-->
+    <!--              <a href="team.html" class="dropdown-item">Test3</a>-->
+    <!--              <a href="testimonial.html" class="dropdown-item">Test5</a>-->
+    <!--              <a href="404.html" class="dropdown-item">404 Page</a>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--          <a href="contact.html" class="nav-item nav-link">Contact</a>-->
+    <!--          <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>-->
+    <!--          <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </nav>-->
+
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html">
+                        <i class="icon-grid menu-icon"></i>
+                        <span class="menu-title">Main</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/registerProduct}">
+                        <i class="icon-grid-2 menu-icon"></i>
+                        <span class="menu-title">상품 등록</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/registerFAQ}">
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">FAQ 등록</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                <h3 class="font-weight-bold">Welcome Admin</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">성별별 회원통계</h4>
+                                <canvas id="pieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">연령대별 회원통계</h4>
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <p class="card-title mb-0" style="float: left;">FAQ관리</p>
+                                    <a href="/admin/registerFAQ">
+                                        <button type="button" class="btn btn-primary btn-sm" style="float: right;">
+                                            FAQ등록
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="table-responsive" style="height: 400px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">FAQ번호</th>
+                                            <th class="border-bottom pb-2">제목</th>
+                                            <th class="border-bottom pb-2">수정</th>
+                                            <th class="border-bottom pb-2">삭제</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="FAQ : ${FAQ}">
+                                            <td class="pl-0">[[${FAQ.inquiredId}]]</td>
+                                            <td><a th:href="@{/admin/updateFAQForm/{FAQId}(FAQId = ${FAQ.inquiredId})}">[[${FAQ.inquiredTitle}]]</a></td>
+                                            <td>
+                                                <a th:href="@{/admin/updateFAQForm/{FAQId}(FAQId = ${FAQ.inquiredId})}"><button class="btn btn-success btn-sm updateFAQ" type="button">수정</button></a>
+                                            </td>
+                                            <td><button class="btn btn-danger btn-sm deleteFAQ" type="button" th:id="${FAQ.inquiredId}">삭제</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title mb-0">문의관리</p>
+                                <div class="table-responsive" style="height: 400px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">문의번호</th>
+                                            <th class="border-bottom pb-2">제목</th>
+                                            <th class="border-bottom pb-2">구분</th>
+                                            <th class="border-bottom pb-2">답변여부</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="Other : ${otherInquiry}">
+                                            <td class="pl-0">[[${Other.inquiredId}]]</td>
+                                            <td><a href="#">[[${Other.inquiredTitle}]]</a></td>
+                                            <td>[[${Other.inquiredCategory}]]</td>
+                                            <td><label class="badge badge-danger">미답</label></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <p class="card-title mb-0" style="float: left;">커뮤니티 신고관리</p>
+                                </div>
+                                <div class="table-responsive" style="height: 400px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">신고번호</th>
+                                            <th class="border-bottom pb-2">게시글번호</th>
+                                            <th class="border-bottom pb-2">신고사유</th>
+                                            <th class="border-bottom pb-2">승인</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="communityReport : ${communityReport}">
+                                            <td class="pl-0" id="communityReportId">[[${communityReport.reportId}]]</td>
+                                            <td id="communityId">[[${communityReport.community.communityId}]]</td>
+                                            <td>[[${communityReport.reportReason}]]</td>
+                                            <td><button class="btn btn-danger btn-sm acceptCommunityReportBtn" type="button">승인</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <p class="card-title mb-0" style="float: left;">회원 신고관리</p>
+                                </div>
+                                <div class="table-responsive" style="height: 400px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">신고번호</th>
+                                            <th class="border-bottom pb-2">회원ID</th>
+                                            <th class="border-bottom pb-2">신고사유</th>
+                                            <th class="border-bottom pb-2">승인</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="memberReport : ${memberReport}">
+                                            <td class="pl-0" id="memberReportId">[[${memberReport.reportId}]]</td>
+                                            <td id="memberId">[[${memberReport.member.memberId}]]</td>
+                                            <td>[[${memberReport.reportReason}]]</td>
+                                            <td><button class="btn btn-danger btn-sm acceptMemberReportBtn" type="button">승인</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <p class="card-title mb-0" style="float: left;">전체상품관리</p>
+                                    <a href="registerProduct.html">
+                                        <button type="button" class="btn btn-primary btn-sm" style="float: right;">
+                                            상품등록
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="table-responsive" style="height: 435px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">상품번호</th>
+                                            <th class="border-bottom pb-2">상품명</th>
+                                            <th class="border-bottom pb-2">가격</th>
+                                            <th class="border-bottom pb-2">수정</th>
+                                            <th class="border-bottom pb-2">삭제</th>
+                                            <th class="border-bottom pb-2">상태</th>
+                                            <th class="border-bottom pb-2">반영</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="product : ${product}">
+                                            <td class="pl-0" id="productId">[[${product.productId}]]</td>
+                                            <td><a href="#">[[${product.productName}]]</a></td>
+                                            <td>[[${product.productPrice}]]</td>
+                                            <td><a href="#"><label class="btn btn-success btn-sm">수정</label></a></td>
+                                            <td><a href="#"><label class="btn btn-danger btn-sm">삭제</label></a></td>
+                                            <td>
+                                                <select class="form-control form-control-sm"
+                                                        id="productStatus" name="productStatus">
+                                                    <option th:value="${product.productStatus}">[[${product.productStatus}]](기본정보)</option>
+                                                    <option value="판매중">판매중</option>
+                                                    <option value="재고없음">재고없음</option>
+                                                    <option value="단종">단종</option>
+                                                </select>
+                                            </td>
+                                            <td><button type="button" class="btn btn-primary btn-sm setProductStatus" id="setStatusBtn" th:value="${product.productId}">상태반영</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">전체 커뮤니티관리</h4>
+                                <div class="table-responsive" style="height: 435px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th>게시글번호</th>
+                                            <th>제목</th>
+                                            <th>작성자</th>
+                                            <th>구분</th>
+                                            <th>작성날짜</th>
+                                            <th>신고수</th>
+                                            <th>삭제</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <div th:each="community : ${community}">
+                                            <tr th:id="${community.communityId}">
+                                                <td>[[${community.communityId}]]</td>
+                                                <td><a href="#">[[${community.communityTitle}]]</a></td>
+                                                <td>[[${community.member.memberId}]]</td>
+                                                <td>[[${community.communityCategory}]]</td>
+                                                <td>[[${#temporals.format(community.communityDate,'yyyy/MM/dd')}]]</td>
+                                                <td class="text-success" id="report">[[${community.communityReport}]]</td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm communityModal" type="button"
+                                                            th:id="${community.communityId}">게시글 삭제
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">전체 회원관리</h4>
+                                <div class="table-responsive" style="height: 435px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>아이디</th>
+                                            <th>이름</th>
+                                            <th>성별</th>
+                                            <th>가입날짜</th>
+                                            <th>신고수</th>
+                                            <th>정지/탈퇴</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="member, i : ${member}">
+                                            <td th:scope="row">[[${i.count}]]</td>
+                                            <td>[[${member.memberId}]]</td>
+                                            <td>[[${member.memberName}]]</td>
+                                            <td>[[${member.memberGender}]]</td>
+                                            <td>[[${#temporals.format(member.memberJoinDate,'yyyy/MM/dd')}]]</td>
+                                            <td class="text-success" id="report">[[${member.memberReport}]]</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm memberModal" type="button" th:id="${member.memberId}">회원탈퇴/정지
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 게시글 삭제 확인 모달 -->
+            <div class="modal fade" id="confirmCommunityDeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">커뮤니티 글 삭제</h1>
+                        </div>
+                        <div class="modal-body communityDelete" style="text-align: center">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            <button type="button" class="btn btn-primary confirmCommunityDelete" data-bs-dismiss="modal">강제삭제</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 회원 삭제 확인 모달 -->
+            <div class="modal fade" id="confirmMemberDeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">회원 정지/탈퇴</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body memberDelete" style="text-align: center">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary confirmDisabledMember" data-bs-dismiss="modal">회원정지</button>
+                            <button type="button" class="btn btn-primary confirmMemberDelete" data-bs-dismiss="modal">강제탈퇴</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a
+                            href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
+                            class="ti-heart text-danger ml-1"></i></span>
+                </div>
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a
+                            href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- 부트스트랩 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+<!-- plugins:js -->
+<script src="/vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="/vendors/chart.js/Chart.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="/js/dataTables.select.min.js"></script>
+
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="/js/off-canvas.js"></script>
+<script src="/js/hoverable-collapse.js"></script>
+<script src="/js/template.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="/js/dashboard.js"></script>
+<script src="/js/Chart.roundedBarCharts.js"></script>
+
+<!-- Custom js for this page-->
+<script src="/js/chart.js"></script>
+<!-- End custom js for this page-->
+<script type="text/javascript" src="/js/adminJS.js"></script>
+</body>
+
+</html>
+

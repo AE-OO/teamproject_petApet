@@ -10,4 +10,9 @@ public class testController {
     public String test(){
         return "index";
     }
+
+//    @GetMapping("/admin")
+//    public String adminTest(){
+//        return "admin";
+//    }
 }
