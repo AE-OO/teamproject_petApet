@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,5 +39,24 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void updateMemberStopDate(String memberId) {
         memberRepository.updateMemberStopDate(memberId);
+    }
+
+    @Override
+    public int[] getGenderList() {
+//        ArrayList<Integer> genderList = new ArrayList<>();
+        int[] genderList = new int[3];
+
+        for(String gender : memberRepository.getGenderList()){
+            if(gender.equals("남자")){
+                genderList[0] += 1;
+            } else if(gender.equals("여자")){
+                genderList[1] += 1;
+            }else{
+                genderList[2] += 1;
+            }
+        }
+
+        System.out.println("==========================" + genderList[2]);
+        return genderList;
     }
 }

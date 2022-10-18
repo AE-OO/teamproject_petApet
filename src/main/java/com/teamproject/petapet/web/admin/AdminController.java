@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -114,5 +115,11 @@ public class AdminController {
     public void acceptMemberReport(@PathVariable("reportId") Long reportId, @RequestParam("memberId") String memberId){
         memberService.addMemberReport(memberId);
         reportService.setResponseStatusCommunity(reportId);
+    }
+
+    @ResponseBody
+    @GetMapping("/getGenderList")
+    public int[] getGenderList(){
+        return memberService.getGenderList();
     }
 }

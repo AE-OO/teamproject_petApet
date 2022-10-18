@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.member;
 
 import com.teamproject.petapet.domain.member.Member;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,4 +14,5 @@ public interface MemberService {
     void deleteMember(String memberId);
     void addMemberReport(String memberId);
     void updateMemberStopDate(String memberId);
+    int[] getGenderList();
 }

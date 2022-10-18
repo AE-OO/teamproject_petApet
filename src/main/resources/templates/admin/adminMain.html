@@ -289,9 +289,10 @@
                                             <td>
                                                 <select class="form-control form-control-sm"
                                                         id="productStatus" name="productStatus">
-                                                    <option value="판매중" th:if="${product.productStatus eq '판매중'} ? selected : ''">판매중</option>
-                                                    <option value="재고없음" th:if="${product.productStatus eq '재고없음'} ? selected : ''">재고없음</option>
-                                                    <option value="단종" th:if="${product.productStatus eq '단종'} ? selected : ''">단종</option>
+                                                    <option th:value="${product.productStatus}">[[${product.productStatus}]](기본정보)</option>
+                                                    <option value="판매중">판매중</option>
+                                                    <option value="재고없음">재고없음</option>
+                                                    <option value="단종">단종</option>
                                                 </select>
                                             </td>
                                             <td><button type="button" class="btn btn-primary btn-sm setProductStatus" id="setStatusBtn" th:value="${product.productId}">상태반영</button></td>

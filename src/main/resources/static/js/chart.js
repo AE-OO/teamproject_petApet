@@ -4,6 +4,7 @@ $(function() {
    * Data and config for chartjs
    */
   'use strict';
+
   var data = {
     labels: ["10대", "20대", "30대", "40대", "50대", "60대이상"],
     datasets: [{
@@ -80,29 +81,25 @@ $(function() {
   };
   var doughnutPieData = {
     datasets: [{
-      data: [60, 40],
+      // data: getGenderList(),
+      data: [getGenderList()],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.5)',
         'rgba(54, 162, 235, 0.5)',
-        'rgba(255, 206, 86, 0.5)',
-        'rgba(75, 192, 192, 0.5)',
-        'rgba(153, 102, 255, 0.5)',
-        'rgba(255, 159, 64, 0.5)'
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(255, 206, 86, 0.5)'
       ],
       borderColor: [
-        'rgba(255,99,132,1)',
         'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
+        'rgba(255,99,132,1)',
+        'rgba(255, 206, 86, 1)'
       ],
     }],
 
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: [
+      '남자',
       '여자',
-      '남자'
+      '응답안함'
     ]
   };
   var doughnutPieOptions = {
@@ -349,3 +346,23 @@ $(function() {
     });
   }
 });
+
+function getGenderList(){
+  var genderList = {};
+  $.ajax({
+    url: "/admin/getGenderList",
+    type: "get",
+    async: false,
+    dataType: "json",
+    success(data) {
+        $.each(data, function(key, value){
+          console.log(key + ' ' + value);
+          genderList.add(key, value);
+      });
+        console.log(genderList);
+    }
+  })
+  console.log(genderList);
+  return genderList;
+}
+
