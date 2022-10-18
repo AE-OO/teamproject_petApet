@@ -2,7 +2,7 @@ package com.teamproject.petapet.web.product;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
-import com.teamproject.petapet.domain.product.service.ProductService;
+import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
