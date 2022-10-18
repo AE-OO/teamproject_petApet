@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -40,8 +41,8 @@ class ProductRepositoryTest {
     void 상품등록(){
         LongStream.rangeClosed(1,10).forEach(i ->{
 //            Product product = new Product("name" + i, 1000L + i, 100L + i, "0", "Div", "content" + i,new Counter(i,0L,0L,productRepository.findById(i).get()));
-            Product product = new Product("name" + i, 1000L + i, 100L + i, "0", ProductType.TOY, "contentcontentcontentcontentcontentcontentcontentcontentcontent" + i);
-            productRepository.save(product);
+//            Product product = new Product("name" + i, 1000L + i, 100L + i, "0", ProductType.TOY, "contentcontentcontentcontentcontentcontentcontentcontentcontent" + i);
+//            productRepository.save(product);
         });
 //        ProductType productType = ProductType.valueOf("FOOD");
 //        System.out.println("productType = " + productType);

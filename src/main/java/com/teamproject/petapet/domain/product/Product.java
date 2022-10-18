@@ -38,7 +38,7 @@ public class Product {
     @CollectionTable(name = "ProductImg", joinColumns = @JoinColumn(name = "productImgId", referencedColumnName = "productId"))
     private List<UploadFile> productImg;
 
-    @Column(length = 45)
+    @Column(length = 45,columnDefinition = "varchar(45) default '판매중'")
     private String productStatus;
 
     //상품분류

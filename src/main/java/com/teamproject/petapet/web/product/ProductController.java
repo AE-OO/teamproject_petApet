@@ -1,7 +1,6 @@
 package com.teamproject.petapet.web.product;
 
 import com.teamproject.petapet.domain.product.Product;
-import com.teamproject.petapet.domain.product.ProductRepository;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
@@ -16,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,12 +51,20 @@ public class ProductController {
     }
 
     @GetMapping("/insert")
-    public String productInsertForm() {
+    public String productInsertForm(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) {
         return "/product/productInsertForm";
     }
 
     @PostMapping("/insert")
-    public String productInsert(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) throws IOException {
+    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult) throws IOException {
+
+        if (productInsertDTO.getProductImg().get(0).isEmpty()) {
+            bindingResult.addError(new FieldError("productInsertDTO", "productImg", "1장 이상의 사진을 올려주세요"));
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "/product/productInsertForm";
+        }
 
         List<MultipartFile> productImg = productInsertDTO.getProductImg();
         List<UploadFile> uploadFiles = fileService.storeFiles(productImg);
@@ -65,10 +75,9 @@ public class ProductController {
                 , productInsertDTO.getProductPrice()
                 , productInsertDTO.getProductStock()
                 , uploadFiles
-                , productInsertDTO.getProductStatus()
+                ,"판매중"
                 , productDiv
                 , productInsertDTO.getProductContent());
-
         productService.productSave(product);
 
         String redirectURL = "/product/" +
@@ -87,21 +96,21 @@ public class ProductController {
 
     @GetMapping(value = "/images/{filename}")
     public ResponseEntity<Resource> downloadImageV2(@PathVariable String filename) throws IOException {
-        log.info("path={}", filename);
         String fullPath = fileService.getFullPath(filename);
         MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(fullPath)));
         UrlResource resource = new UrlResource("file:" + fullPath);
         ResponseEntity<Resource> body = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
                 .body(resource);
-        log.info("body={}", body);
         return body;
     }
 
     @GetMapping("/{productType}/{productId}/details")
     public String detailViewForm(@PathVariable("productType") String productType
-            , @PathVariable("productId") Long productId) {
-
+            , @PathVariable("productId") Long productId, Model model) {
+        Product findProduct = productService.findOne(productId);
+        model.addAttribute("findProduct",findProduct);
+//        model.addAttribute("content",findProduct.getProductContent());
         return "/product/productDetails";
     }
 }

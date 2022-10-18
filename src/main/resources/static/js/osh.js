@@ -40,4 +40,7 @@ $(document).ready(function () {
 
 const putValue = (target) => {
     let value = $('#inputGroupSelect01').val();
+    $('input[name=productDiv]').attr('value',value);
+
 }
+

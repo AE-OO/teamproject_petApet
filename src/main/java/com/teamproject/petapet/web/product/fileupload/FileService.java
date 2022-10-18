@@ -44,7 +44,7 @@ public class FileService implements WebMvcConfigurer {
         return new UploadFile(originalFilename, storeFileName);
     }
 
-    private String createStoreFileName(String originalFilename) {
+    public String createStoreFileName(String originalFilename) {
         String ext = extractExt(originalFilename);
         String uuid = UUID.randomUUID().toString();
         return uuid + "." + ext;

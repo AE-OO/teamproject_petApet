@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<body th:object="${findProduct}">
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <hr class="mt-0">
 <div class="container-xxl py-5 px-5">
@@ -13,7 +13,30 @@
             <div class="portfolio-container">
                 <div class="portfolio-item">
                     <div class="portfolio">
-                        <img class="img-fluid" th:src="@{/img/petSnack.jpg}" style="height: 27rem;">
+                        <div class="slick">
+                            <img th:each="imgNum : *{productImg}"
+                                 th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${imgNum.storeFileName})}|">
+                        </div>
+                        <style>
+
+                            .slick {
+                                height: 10rem;
+                                width: 10rem;
+                                display: flex;
+                            }
+                            .slick-slide li{
+                                display: flex;
+                            }
+                            .slick li{
+                                display: flex;
+                            }
+                            .slick-slide img {
+                                object-fit: cover;
+                                height: 20rem;
+                                width: 20rem;
+                            }
+                        </style>
+                        <!--                        <img class="img-fluid" th:src="@{/img/petSnack.jpg}" style="width: 27rem;">-->
                     </div>
                 </div>
             </div>
@@ -21,26 +44,31 @@
         <div class="col-6">
             <div class="d-flex m-lg-3">
                 <div class="col-11">
-                    <h2>상품명</h2>
+                    <h2 th:text="*{productName}">상품명</h2>
                 </div>
                 <div class="col-1 text-center mt-1">
-                    <button class="btn-info">찜</button>
+                    <p style="font-size: 1.5rem"><a role="button" style="color: red">♡</a></p>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
             <div class="d-flex m-lg-4">
                 <div class="col-4 m-lg-1">
-                    <h4>45%</h4>
+                    <h5>할인율</h5>
+                    <h6 class="text-secondary">0%</h6>
                 </div>
                 <div class="col-8 m-lg-1 text-end">
-                    <h4 class="me-3">price</h4>
+                    <h4 class="me-3" th:text="*{productPrice}">price</h4>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
             <div class="d-flex flex-row pt-3">
-                <div class="row m-lg-3">
-                    <p>판매자</p>
-                    <p>재고</p>
+                <div class="row m-lg-3 col-6">
+                    <h6>판매자</h6>
+                    <h6>재고</h6>
+                </div>
+                <div class="row m-lg-3 col-6">
+                    <h6>판매자</h6>
+                    <h6 th:text="*{productStock}">재고</h6>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
@@ -70,10 +98,10 @@
             </div>
         </div>
     </div>
-    <hr class="mb-4 mt-4">
+    <hr class="mt-4">
 
-    <div class="flex-row p-3" style="background-color: #5fc8af; min-height: 1000px">
-        <div class="d-flex flex-fill px-5 ms-5">
+    <div class="flex-row p-3">
+        <div class="d-flex flex-fill px-5 ms-5 mb-5">
             <table class="col-12">
                 <tbody>
                 <tr>
@@ -103,19 +131,31 @@
                 </tbody>
             </table>
         </div>
-        <div class="d-flex flex-row py-3" style="position: sticky; top: 4rem;">
+        <hr class="">
+        <div class="d-flex flex-row my-3" style="position: sticky; top: 5rem;">
             <div class="btn-group col-12">
-                <button class="btn col-3"> 상품상세</button>
-                <button class="btn col-3"> 상품평()</button>
-                <button class="btn col-3"> 상품문의</button>
-                <button class="btn col-3"> 배송/교환/반품</button>
+                <a role="button" class="btn text-dark col-3" style="background-color: white"> 상품상세</a>
+                <button class="btn text-dark col-3" style="background-color: white"> 상품평()</button>
+                <button class="btn text-dark col-3" style="background-color: white"> 상품문의</button>
+                <button class="btn text-dark col-3" style="background-color: white"> 배송/교환/반품</button>
             </div>
         </div>
-
-        <div class="d-flex flex-row pt-3" style="background-color: #007bff; min-height: 200rem">
-
+        <hr class="mb-5">
+        <div class="d-flex flex-row">
+            <div class="row mb-4">
+                <h4>상품상세</h4>
+            </div>
         </div>
-
+        <div class="d-flex flex-row pt-3" id="findContent">
+            <div class="d-flex flex-row pt-3 ms-4">
+                <script th:inline="javascript">
+                    findContent = [[${findProduct.productContent}]];
+                    createTag = document.createElement('div');
+                    createTag.innerHTML = findContent;
+                    document.querySelector('#findContent').append(createTag);
+                </script>
+            </div>
+        </div>
     </div>
     <hr class="mb-4 mt-4">
     <div class="d-flex flex-row">
@@ -165,9 +205,8 @@
                         </div>
                         <div class="">
                             <div class="d-flex">
-                                <textarea class="d-flex flex-fill" style="resize: none; min-height: 10rem">
-
-                                </textarea>
+                                <textarea class="d-flex flex-fill"
+                                          style="resize: none; min-height: 10rem"></textarea>
                             </div>
                         </div>
                         <hr class="my-4">
@@ -336,7 +375,7 @@
                     <td class="return-policy-delivery-method">순차배송</td>
                     <th rowspan="2">배송비</th>
                     <td rowspan="2">
-                        3,000원<br>· 도서산간 추가 배송비<br>- 제주 지역: 5,000원<br>- 도서산간 지역: 5,000원
+                        - 기본 배송비 : 3,000원<br>- 도서산간 추가 배송비<br>- 제주 지역 : 5,000원<br>- 도서산간 지역 : 5,000원
                     </td>
                 </tr>
                 <tr>
@@ -559,9 +598,23 @@
 <script src="lib/isotope/isotope.pkgd.min.js"></script>
 <script src="lib/lightbox/js/lightbox.min.js"></script>
 
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script th:inline="javascript">
+    $('.slick').slick({
+        dots: true,
+        infinite: true,
+        arrows: true,
+        speed: 500,
+        prevArrow: "<button type='button' class='btn'>Previous</button>",
+        nextArrow: "<button type='button' class='btn'>Next</button>", //화살표 커스텀
+        fade: true,
+        dotsClass : "slick-dots",
+        cssEase: 'linear'
+    });
+</script>
+
 <script th:src="@{/js/osh.js}"></script>
 <!-- Template Javascript -->
 <script th:src="@{/js/main.js}"></script>
-</html>
 </body>
 </html>
