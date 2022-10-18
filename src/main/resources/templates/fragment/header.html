@@ -7,7 +7,7 @@
 <body>
 <th:block th:fragment="header">
     <header class="header header-expand-lg bg-white header-light sticky-top p-0">
-        <a href="index.html" class="header-brand d-flex align-items-center px-4 px-lg-5">
+        <a th:href="@{/}" class="header-brand d-flex align-items-center px-4 px-lg-5">
             <img scr="#" alt="logo"> <h1 class="m-0">petApet</h1>
         </a>
         <button type="button" class="header-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -17,7 +17,7 @@
             <div class="header-nav ms-auto p-4 p-lg-0">
                 <a href="#l" class="nav-item nav-link">About</a>
                 <a href="#" class="nav-item nav-link">Services</a>
-                <a href="#" class="nav-item nav-link">Product</a>
+                <a th:href="@{/product}" class="nav-item nav-link">Product</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
                     <div class="dropdown-menu bg-light m-0">
