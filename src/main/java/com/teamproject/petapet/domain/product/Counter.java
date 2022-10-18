@@ -27,7 +27,7 @@ public class Counter {
     @Column(columnDefinition = "bigint(3) default 0")
     private Long counterSell;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "productId")
     private Product product;
 

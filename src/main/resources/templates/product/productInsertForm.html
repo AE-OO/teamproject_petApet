@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="~{fragment/heade :: head(productInsert)}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<hr class="mt-0">
+<form th:action="@{/product/insert}" method="post" enctype="multipart/form-data" th:object="${ProductInsertDTO}">
+    <div th:if="${#fields.hasGlobalErrors()}">
+        <p class="field-error" th:text="오류입니다">글로벌 오류 메시지</p>
+    </div>
+    <div class="container-xxl pt-5 px-5">
+        <div class="d-flex flex-row m-lg-2">
+            <div class="d-flex col-6 justify-content-center">
+                <div class="portfolio-container">
+                    <div class="portfolio-item">
+                        <div class="portfolio">
+                            <img class="img-fluid" th:src="@{/img/petSnack.jpg}" style="height: 27rem;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex mx-3 mb-3">
+                    <div class="col-12 m-lg-1">
+                        <h6>상품명
+                            <div class="field-error text-secondary fs-6" th:errors="*{productName}"/>
+                        </h6>
+                        <input type="text" name="productName" placeholder="상품명을 입력하세요."
+                               th:field="*{productName}" style="width: 84%" required>
+                        <span class="validity"></span>
+
+                    </div>
+                </div>
+                <hr class="mb-4 mt-4">
+                <div class="d-flex m-lg-3 col">
+                    <div class="col-6 m-lg-1">
+                        <h6>할인율</h6>
+                        <input type="number" name="" min="0" placeholder="할인율" required>
+                        <span class="validity"></span>
+                    </div>
+                    <div class="col-6 m-lg-1">
+                        <h6 class="">price
+                            <div class="field-error text-secondary fs-6" th:errors="*{productPrice}"/>
+                        </h6>
+                        <input type="number" th:field="*{productPrice}" name="productPrice"
+                               min="0" placeholder="가격" required>
+                        <span class="validity"></span>
+
+                    </div>
+                </div>
+                <hr class="mb-4 mt-4">
+                <div class="d-flex m-lg-3 col">
+                    <div class="d-flex flex-row col">
+                        <div class="col-6 m-lg-1">
+                            <h6>판매자</h6>
+                        </div>
+                        <div class="col-6 m-lg-1">
+                            <h6>테스트판매</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex m-lg-3 col">
+                    <div class="d-flex flex-row col">
+                        <div class="col-6 m-lg-1">
+                            <h6>재고
+                                <div class="field-error text-secondary fs-6" th:errors="*{productStock}"/>
+                            </h6>
+                        </div>
+                        <div class="col-6 m-lg-1">
+                            <input type="number" th:field="*{productStock}" min="0"
+                                   name="productStock" placeholder="재고" required>
+                            <span class="validity"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mb-4 mt-4">
+                <div class="d-flex m-lg-3 col">
+                    <div class="d-flex flex-row col-6 m-lg-1">
+                        <h6>사진첨부
+                            <div class="field-error text-secondary fs-6" th:errors="*{productImg}"/>
+                        </h6>
+                    </div>
+                    <div class="d-flex flex-row col-6 m-lg-1">
+                        <input type="file" th:field="*{productImg}" multiple="multiple"
+                               name="productImg">
+                    </div>
+                </div>
+                <div class="d-flex m-lg-3 col">
+                    <div class="d-flex flex-row col-6 m-lg-1">
+                        <h6>상품카테고리
+                            <div th:errors="*{productDiv}" class="field-error text-secondary">
+                            </div>
+                        </h6>
+
+                    </div>
+                    <div class="d-flex flex-row col-5 m-lg-1 pe-4">
+                        <div class="input-group d-flex flex-row mb-3">
+                            <input class="d-flex flex-row" type="hidden" th:field="*{productDiv}" id="osh" value=""
+                                   name="productDiv" required>
+                            <select type="input" onchange="putValue(this)" class="form-select form-select-sm"
+                                    id="inputGroupSelect01" required>
+                                <option selected disabled></option>
+                                <option value="FOOD">사료</option>
+                                <option value="SNACK">간식</option>
+                                <option value="WALKING">산책용품</option>
+                                <option value="TOY">장난감</option>
+                                <option value="FASHION">패션/잡화</option>
+                                <option value="STROLLER">유모차</option>
+                            </select>
+                            <span class="validity"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <hr class="mb-4 mt-4">
+
+        <div class="flex-row p-3 mx-3" style="min-height: 10rem">
+            <h4>상품내용
+                <div class="field-error text-secondary fs-6" th:errors="*{productContent}"/>
+            </h4>
+            <div class="pt-3 flex-fill" style="min-height: 10rem;">
+                <textarea th:field="*{productContent}" id="productContent"
+                          name="productContent" class=""
+                          style="resize: none;"></textarea>
+
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row justify-content-center">
+        <button type="submit" class="btn btn-info col-3 me-3">상품등록</button>
+        <a th:href="@{/product}" class="btn btn-info col-3 ms-3">취소</a>
+    </div>
+</form>
+
+<hr class="p-3">
+<div class="container-xxl pb-3 px-5">
+    <div class="d-flex flex-row m-lg-2">
+        <hr class="my-4">
+
+        <div class="d-flex flex-row p-3">
+            <li class="product-etc">
+                <h5 class="prod-delivery-return-policy-title">배송정보</h5>
+                <table class="prod-delivery-return-policy-table return-policy-3p">
+                    <colgroup>
+                        <col width="150px">
+                        <col width="340px">
+                        <col width="150px">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>배송방법</th>
+                        <td class="return-policy-delivery-method">순차배송</td>
+                        <th rowspan="2">배송비</th>
+                        <td rowspan="2">
+                            3,000원<br>· 도서산간 추가 배송비<br>- 제주 지역: 5,000원<br>- 도서산간 지역: 5,000원
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>배송사</th>
+                        <td>한진택배</td>
+                    </tr>
+                    <tr>
+                        <th>묶음배송 여부</th>
+                        <td colspan="3">가능</td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+        </li>
+    </div>
+</div>
+<hr class="my-4">
+<div class="container-fluid text-light text-center footer mt-2 py-0" style="background-color: #78c2ad">
+    <div class="container pt-4">
+        <div class="row g-5">
+            <div class="col-lg-6 col-md-6 mx-auto">
+                <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
+                <ul class="text-white px-0">
+                    <li><a href="#">petApet</a></li>
+                    <li><a href="#">이용약관</a></li>
+                    <li><a href="#">개인정보처리방침</a></li>
+                    <li><a href="#">이용안내</a></li>
+                </ul>
+                <p>법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
+                <p>통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
+                <p>서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+
+<!-- Copyright Start -->
+<div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
+                &copy; petApet Project Team All Right Reserved.
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--<script src="lib/wow/wow.min.js"></script>-->
+<!--<script src="lib/easing/easing.min.js"></script>-->
+<!--<script src="lib/waypoints/waypoints.min.js"></script>-->
+<!--<script src="lib/owlcarousel/owl.carousel.min.js"></script>-->
+<!--<script src="lib/counterup/counterup.min.js"></script>-->
+<!--<script src="lib/parallax/parallax.min.js"></script>-->
+<!--<script src="lib/isotope/isotope.pkgd.min.js"></script>-->
+<!--<script src="lib/lightbox/js/lightbox.min.js"></script>-->
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#productContent').summernote({
+            placeholder: '내용을 작성하세요',
+            minHeight: 500,
+            maxHeight: null,
+            focus: true,
+            callbacks :{
+                onImageUpload : function(files, editor, welEditable) {
+                    //             // 파일 업로드(다중업로드를 위해 반복문 사용)
+                                for (var i = files.length - 1; i >= 0; i--) {
+                                    uploadSummernoteImageFile(files[i],
+                                        this);
+            }
+        }}})
+
+    });
+
+    function uploadSummernoteImageFile(file, el) {
+        data = new FormData();
+        data.append("file", file);
+        $.ajax({
+            data : data,
+            type : "POST",
+            url : "/product/image",
+            contentType : false,
+            enctype : 'multipart/form-data',
+            processData : false,
+            success : function(data) {
+                console.log(data)
+                $(el).summernote('editor.insertImage',data.url);
+            }
+        });
+    }
+
+</script>
+
+<script th:src="@{/js/osh.js}"></script>
+<!-- Template Javascript -->
+<script th:src="@{/js/main.js}"></script>
+</html>
+</body>
+</html>
