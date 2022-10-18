@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.community.CommunityRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Date;
 import java.util.stream.IntStream;
@@ -14,6 +15,8 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
     CommunityRepository communityRepository;
+
+    PasswordEncoder passwordEncoder;
 
     @Test
     public void insertMemberDummies(){
@@ -47,4 +50,7 @@ class MemberRepositoryTest {
     public void selectMember(){
         System.out.println(memberRepository.findById("memberId3"));
     }
+
+
+
 }
