@@ -35,7 +35,7 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @ToString(exclude = {"community", "comment"})
-@DynamicInsert   //컬럼들에 default값을 주기 위해 사용
+@DynamicInsert   // 컬럼들에 default값을 주기 위해 사용
 @EntityListeners(value = {AuditingEntityListener.class})
 public class Member implements UserDetails {
 
