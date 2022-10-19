@@ -50,7 +50,6 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public int[] getGenderList() {
-//        ArrayList<Integer> genderList = new ArrayList<>();
         int[] genderList = new int[3];
 
         for(String gender : memberRepository.getGenderList()){
@@ -63,6 +62,11 @@ public class MemberServiceImpl implements MemberService{
             }
         }
         return genderList;
+    }
+
+    @Override
+    public List<Integer> getAgeList() {
+        return memberRepository.getAgeList();
     }
 
 

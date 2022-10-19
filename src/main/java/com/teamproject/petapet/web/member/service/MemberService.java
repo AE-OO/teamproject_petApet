@@ -15,4 +15,5 @@ public interface MemberService {
     void addMemberReport(String memberId);
     void updateMemberStopDate(String memberId);
     int[] getGenderList();
+    List<Integer> getAgeList();
 }

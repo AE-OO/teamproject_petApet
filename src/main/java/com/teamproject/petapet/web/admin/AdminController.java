@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -120,5 +121,11 @@ public class AdminController {
     @GetMapping("/getGenderList")
     public int[] getGenderList(){
         return memberService.getGenderList();
+    }
+
+    @ResponseBody
+    @GetMapping("/getAgeList")
+    public List<Integer> getAgeList(){
+        return memberService.getAgeList();
     }
 }
