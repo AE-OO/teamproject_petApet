@@ -50,8 +50,8 @@ public class Product {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String productContent;
 
-//    @Column
-//    private Long productRating;
+    @Column(length = 1,columnDefinition = "int(1) default 0")
+    private Long productRating;
 
     //foreign 키는 Counter 테이블에서 갖지만 Product 테이블에서도 연관관계를 작성해 준 이유는 oneToOne 연관관계는 단방향 관계를 지원하지 않기 때문
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

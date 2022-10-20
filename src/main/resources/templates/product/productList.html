@@ -24,7 +24,7 @@
         <div class="row mb-5"></div>
         <div class="row g-4 portfolio-container " style="position: relative; height: auto;">
             <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp"
-                 data-wow-delay="0.1s" th:each="product : ${productList}">
+                 data-wow-delay="0.1s" th:each="product, i : ${productList}">
                 <div class="portfolio rounded">
                     <img class=""
                          th:src="|@{/product/images/{filename}(filename=${product.productImg.get(0).storeFileName})}|"
@@ -39,18 +39,17 @@
                             <div>
                                 <fieldset class="p-1 col">
                                     <div class="d-flex flex-row" style="max-height: 1rem; margin-top: 0.1rem">
-                                        <p class="star">
-                                            <a value="1">★</a>
-                                            <a value="2">★</a>
-                                            <a value="3">★</a>
-                                            <a value="4">★</a>
-                                            <a value="5">★</a>
+                                        <p th:class="star" th:value="${product.productRating}">
+                                            <a class="my_star" value="1">★</a>
+                                            <a class="my_star" value="2">★</a>
+                                            <a class="my_star" value="3">★</a>
+                                            <a class="my_star" value="4">★</a>
+                                            <a class="my_star" value="5">★</a>
                                         <p>
                                     </div>
-
                                 </fieldset>
                             </div>
-                            <h6 class="align-self-center mt-2">(0)</h6>
+                            <h6 class="align-self-center mt-2" th:text="|(${product.review.size()})|">(0)</h6>
                         </div>
                         <div class="d-flex flex-column">
                             <div class="col">
@@ -109,27 +108,21 @@
         </div>
     </div>
 </div>
+
 </body>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/wow/wow.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="lib/counterup/counterup.min.js"></script>
-<script src="lib/parallax/parallax.min.js"></script>
-<script src="lib/isotope/isotope.pkgd.min.js"></script>
-<script src="lib/lightbox/js/lightbox.min.js"></script>
 <script th:inline="javascript">
-    $(".star").find("a").filter(function (k, v) {
-        return $(v).attr("value") <= [[${star}]] ? $(v).addClass("on") : $(v).removeClass("on");
-    });
-    $.each(배열, function(index, el){
-        // index 에는 배열의 인덱스 (0 부터 시작)
-        // el 에는 각각의 배열 요소를 말한다 ex) 첫번째 실행되는 콜백의 el 은 배열[0] 이 된다
-    });
+    var size = $('p[class = star]').length;
+    for (var i = 0; i < size; i++) {
+        $('p[class = star]').eq(i).attr('id', "star" + i);
+
+        $("#star" + i).find(".my_star").filter(function (k, v) {
+            return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+        });
+    }
 </script>
 <!-- Template Javascript -->
-<script src="js/main.js"></script>
+<script th:src="@{/js/main.js}"></script>
 </html>

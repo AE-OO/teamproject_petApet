@@ -43,8 +43,8 @@ class ReviewRepositoryTest {
 
     @Test
     public void insertReviewDummiesV2() {
-        IntStream.rangeClosed(1, 6).forEach(i -> {
-            Product product = productRepository.findById(103L).get();
+        IntStream.rangeClosed(1, 1).forEach(i -> {
+            Product product = productRepository.findById(104L).get();
             Member member = memberRepository.findById("memberId"+i).get();
 
             Review review = Review.builder()

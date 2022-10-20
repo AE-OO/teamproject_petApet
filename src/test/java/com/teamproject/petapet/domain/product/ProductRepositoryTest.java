@@ -54,7 +54,9 @@ class ProductRepositoryTest {
     }
     @Test
     void 카운트테스트(){
-        Long aLong = reviewRepository.countReviewByProduct(productRepository.findById(103L).get());
-        System.out.println("aLong = " + aLong);
+//        Long aLong = reviewRepository.countReviewByProduct(productRepository.findById(103L).get());
+//        System.out.println("aLong = " + aLong);
+        Long avg = reviewRepository.avg(104L);
+        System.out.println("avg = " + avg);
     }
 }
