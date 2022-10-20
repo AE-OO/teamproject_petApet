@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * 박채원 22.10.01 작성
+ * 오성훈 22.10.20 productRating 칼럼 추가
  */
 
 @Entity
@@ -48,6 +49,9 @@ public class Product {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String productContent;
+
+//    @Column
+//    private Long productRating;
 
     //foreign 키는 Counter 테이블에서 갖지만 Product 테이블에서도 연관관계를 작성해 준 이유는 oneToOne 연관관계는 단방향 관계를 지원하지 않기 때문
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

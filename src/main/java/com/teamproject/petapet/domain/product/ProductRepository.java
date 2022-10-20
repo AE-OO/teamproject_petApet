@@ -14,4 +14,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     void updateProductStatus(String selectStatus, Long productId);
 
     List<Product> findAllByProductDiv(ProductType productType);
+
 }

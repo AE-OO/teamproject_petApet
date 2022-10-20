@@ -17,6 +17,8 @@ class ProductRepositoryTest {
 
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    ReviewRepository reviewRepository;
 
     @Test
     public void insertProductDummies(){
@@ -49,5 +51,10 @@ class ProductRepositoryTest {
 //        List<Product> food = productRepository.findAllByProductDiv(ProductType.COMPANION_GOODS);
 //        int size = food.size();
 //        System.out.println("size = " + size);
+    }
+    @Test
+    void 카운트테스트(){
+        Long aLong = reviewRepository.countReviewByProduct(productRepository.findById(103L).get());
+        System.out.println("aLong = " + aLong);
     }
 }

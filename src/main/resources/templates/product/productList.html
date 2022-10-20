@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragment/heade :: head(product])}">
+<head th:replace="~{fragment/heade :: head(product)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -12,10 +12,10 @@
 <hr class="mt-0">
 <div class="container-xxl py-5">
     <div class="container">
-        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s"
-             style="max-width: 500px; visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+        <div class="text-center mx-auto"
+             style="max-width: 500px;">
             <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
-            <h1 class="display-5 mb-5"th:text="${productDiv}">Pet Food</h1>
+            <h1 class="display-5 mb-5" th:text="${productDiv}">Pet Food</h1>
         </div>
         <div class="wow fadeInUp" data-wow-delay="0.4s"
              style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
@@ -26,33 +26,31 @@
             <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp"
                  data-wow-delay="0.1s" th:each="product : ${productList}">
                 <div class="portfolio rounded">
-                        <img class=""
-                             th:src="|@{/product/images/{filename}(filename=${product.productImg.get(0).storeFileName})}|"
-                             width="300" height="300" alt=""/>
+                    <img class=""
+                         th:src="|@{/product/images/{filename}(filename=${product.productImg.get(0).storeFileName})}|"
+                         width="300" height="300" alt=""/>
                     <div class="portfolio-text" style="opacity: 1;">
-                        <div class="h-50">
-                            <h1 class="text-start rounded ms-2">
-                                <a style="text-decoration: none;" class="text-dark fs-5"
-                                   th:href="|@{/product/{productType}/{productId}/details(productType=${product.productDiv.name().toLowerCase()},productId=${product.productId})}|"
-                                   th:text="${product.productName}"></a>
-                            </h1>
-                            <div class="d-flex flex-row">
-                                <div id="myform">
-                                    <fieldset class="p-1 col">
-                                        <input type="radio" name="reviewStar" value="5" id="rate1"><label
-                                            for="rate1">★</label>
-                                        <input type="radio" name="reviewStar" value="4" id="rate2"><label
-                                            for="rate2">★</label>
-                                        <input type="radio" name="reviewStar" value="3" id="rate3"><label
-                                            for="rate3">★</label>
-                                        <input type="radio" name="reviewStar" value="2" id="rate4"><label
-                                            for="rate4">★</label>
-                                        <input type="radio" name="reviewStar" value="1" id="rate5"><label
-                                            for="rate5">★</label>
-                                    </fieldset>
-                                </div>
-                                <h6 class="align-self-center mt-2">(0)</h6>
+                        <h1 class="text-start rounded ms-2">
+                            <a style="text-decoration: none;" class="text-dark fs-5"
+                               th:href="|@{/product/{productType}/{productId}/details(productType=${product.productDiv.name().toLowerCase()},productId=${product.productId})}|"
+                               th:text="${product.productName}"></a>
+                        </h1>
+                        <div class="d-flex flex-row">
+                            <div>
+                                <fieldset class="p-1 col">
+                                    <div class="d-flex flex-row" style="max-height: 1rem; margin-top: 0.1rem">
+                                        <p class="star">
+                                            <a value="1">★</a>
+                                            <a value="2">★</a>
+                                            <a value="3">★</a>
+                                            <a value="4">★</a>
+                                            <a value="5">★</a>
+                                        <p>
+                                    </div>
+
+                                </fieldset>
                             </div>
+                            <h6 class="align-self-center mt-2">(0)</h6>
                         </div>
                         <div class="d-flex flex-column">
                             <div class="col">
@@ -95,18 +93,6 @@
                 <p>서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
 
             </div>
-            <!-- <div class="col-lg-6 mx-auto col-md-6">
-                <h4 class="text-white mb-4">Our Office</h4>
-                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                <div class="d-flex pt-2">
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-instagram"></i></a>
-                </div>
-            </div> -->
         </div>
     </div>
 </div>
@@ -135,7 +121,15 @@
 <script src="lib/parallax/parallax.min.js"></script>
 <script src="lib/isotope/isotope.pkgd.min.js"></script>
 <script src="lib/lightbox/js/lightbox.min.js"></script>
-
+<script th:inline="javascript">
+    $(".star").find("a").filter(function (k, v) {
+        return $(v).attr("value") <= [[${star}]] ? $(v).addClass("on") : $(v).removeClass("on");
+    });
+    $.each(배열, function(index, el){
+        // index 에는 배열의 인덱스 (0 부터 시작)
+        // el 에는 각각의 배열 요소를 말한다 ex) 첫번째 실행되는 콜백의 el 은 배열[0] 이 된다
+    });
+</script>
 <!-- Template Javascript -->
 <script src="js/main.js"></script>
 </html>
