@@ -17,7 +17,8 @@
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                             <div class="carousel-indicators">
                                 <button type="button" th:each="idx, i : *{productImg}"
-                                        data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${i.index}" class="active"
+                                        data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${i.index}"
+                                        class="active"
                                         aria-current="true" th:aria-label="|@{Slide+${i.index}}|"></button>
                             </div>
                             <div class="carousel-inner">
@@ -178,91 +179,103 @@
                     <div class="row mb-4">
                         <h4>상품평</h4>
                     </div>
-                    <article class="row justify-content-start">
-                        <div class="col-1">
-                            <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
-                        </div>
-                        <div class="col-1 mt-2">
-                            <h5>작성자</h5>
-                            <h6 style="font-size: 0.5rem" class="text-secondary mt-1">2000.00.00</h6>
-                        </div>
-                        <div id="myform" class="col-9">
-                            <fieldset class="p-1 col">
-                                <input type="radio" name="reviewStar" value="5"><label
-                                    for="rate1">★</label>
-                                <input type="radio" name="reviewStar" value="4"><label
-                                    for="rate2">★</label>
-                                <input type="radio" name="reviewStar" value="3"><label
-                                    for="rate3">★</label>
-                                <input type="radio" name="reviewStar" value="2"><label
-                                    for="rate4">★</label>
-                                <input type="radio" name="reviewStar" value="1"><label
-                                    for="rate5">★</label>
-                            </fieldset>
-                        </div>
-                        <div class="col-1 text-end">
-                            <a role="button" class="btn btn-sm btn-secondary" href="#">작성</a>
-                        </div>
-                        <div class="d-flex my-2">
-                            <label for="productName"><h6 class="mt-1">상품명</h6></label>
-                            <input class="ms-2" type="text" name="" id="productName">
-                        </div>
-                        <div class="">
-                            <div class="d-flex">
-                                <textarea class="d-flex flex-fill"
-                                          style="resize: none; min-height: 10rem"></textarea>
+                    <form enctype="multipart/form-data" method="post"
+                          th:action="@{/product/{productId}/reviewInsert(productId=${productId},requestURI = ${#request.requestURI})}">
+                        <!--                          th:action="|@{/product/{productId}/reviewInsert(productId=${productId})}|">-->
+                        <article class="row justify-content-start">
+                            <div class="col-1">
+                                <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                             </div>
-                        </div>
-                        <hr class="my-4">
-                    </article>
+                            <div class="col-1 mt-2">
+                                <h5>작성자</h5>
+                                <h6 style="font-size: 0.5rem" class="text-secondary mt-1">2000.00.00</h6>
+                            </div>
+                            <div id="myform" class="col-9">
+                                <fieldset class="p-1 col">
+                                    <input type="radio" name="reviewRating" id="rate1" value="5"><label
+                                        for="rate1">★</label>
+                                    <input type="radio" name="reviewRating" id="rate2" value="4"><label
+                                        for="rate2">★</label>
+                                    <input type="radio" name="reviewRating" id="rate3" value="3"><label
+                                        for="rate3">★</label>
+                                    <input type="radio" name="reviewRating" id="rate4" value="2"><label
+                                        for="rate4">★</label>
+                                    <input type="radio" name="reviewRating" id="rate5" value="1"><label
+                                        for="rate5">★</label>
+                                </fieldset>
+                            </div>
+                            <div class="col-1 text-end">
+                                <button role="button" type="submit"
+                                        class="btn btn-sm btn-secondary" href="#">작성
+                                </button>
+                            </div>
+                            <div class="d-flex flex-row my-2">
+                                <div class="col d-flex">
+                                    <h6 class="mt-1 me-5">제목</h6>
+                                    <input class="ms-2 flex-fill" type="text" name="reviewTitle" id="productName">
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <label for="image"><h6 class="mt-1 me-2">이미지 첨부</h6></label>
+                                <input class="flex-fill mb-2" type="file"
+                                       id="image" accept="image/*"
+                                       onchange="setThumbnail(event);"
+                                       multiple name="reviewImg">
+                            </div>
+                            <div class="">
+                                <div class="d-flex">
+                                <textarea name="reviewContent" class="d-flex flex-fill"
+                                          style="resize: none; min-height: 10rem"></textarea>
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                        </article>
+                    </form>
                 </div>
             </div>
         </div>
         <div>
             <div class="d-flex flex-row pb-3 px-3">
                 <div class="d-flex flex-column flex-fill">
-                    <article class="row justify-content-start">
+                    <article class="row justify-content-start" th:each="review : *{review}">
                         <div class="col-1">
                             <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                         </div>
-                        <div class="col-1 mt-2">
-                            <h5>작성자</h5>
-                            <h6 style="font-size: 0.5rem" class="text-secondary mt-1">2000.00.00</h6>
+                        <div class="col-1 me-2">
+                            <h6 th:text="${review.member.memberId}">작성자</h6>
+                            <h6 style="font-size: 0.5rem" class="text-secondary mt-1"
+                                th:text="${#temporals.format(review.reviewDate,'yyyy-MM-dd')}">2000.00.00</h6>
                         </div>
-                        <div id="myform" class="col-9">
-                            <fieldset class="p-1 col">
-                                <input type="radio" name="reviewStar" value="5" id="rate1"><label
-                                    for="rate1">★</label>
-                                <input type="radio" name="reviewStar" value="4" id="rate2"><label
-                                    for="rate2">★</label>
-                                <input type="radio" name="reviewStar" value="3" id="rate3"><label
-                                    for="rate3">★</label>
-                                <input type="radio" name="reviewStar" value="2" id="rate4"><label
-                                    for="rate4">★</label>
-                                <input type="radio" name="reviewStar" value="1" id="rate5"><label
-                                    for="rate5">★</label>
-                            </fieldset>
+                        <div class="col-2" style="position: center">
+                            <p th:class="star" th:value="${review.reviewRating}">
+                                <a class="my_star" value="1">★</a>
+                                <a class="my_star" value="2">★</a>
+                                <a class="my_star" value="3">★</a>
+                                <a class="my_star" value="4">★</a>
+                                <a class="my_star" value="5">★</a>
+                            <p>
                         </div>
-                        <div class="col-1 text-end">
+                        <div class="col-7" id="lorem-ipsum">
+                            <img th:each="reviewImage : ${review.reviewImg}"
+                                 th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${reviewImage.storeFileName})}|"
+                                 width="100" height="100" role="button" onclick="javascript:modall()"
+                            class="modal-body">
+                        </div>
+                        <div class="col text-end">
                             <a href="#">신고</a>
                         </div>
+
                         <div class="d-flex mt-2">
-                            <h6>상품명</h6>
+                            <div class="me-2">
+                                <h6>상품명</h6>
+                            </div>
+                            <div class="col-3">
+                                <h6 th:text="*{productName}" class="opacity-75"></h6>
+                            </div>
                         </div>
                         <div class="review_comment">
                             <div class="review_content">
-                                <div class="contentStr">오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
-                                    오늘은 조은날 고고싱동해물과
-                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
-                                    오늘은 조은날 고고싱동해물과
-                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
-                                    오늘은 조은날 고고싱동해물과
-                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
-                                    오늘은 조은날 고고싱동해물과
-                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
-                                    오늘은 조은날 고고싱동해물과
-                                    오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
-                                    오늘은 조은날 고고싱동해물과백두산이 마르고 닳도록오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록오늘은 조은날 고고싱동해물과 백두산이 마르고 닳도록
+                                <div class="contentStr" th:text="${review.reviewContent}">
                                 </div>
                             </div>
                         </div>
@@ -605,6 +618,40 @@
 <script th:inline="javascript">
     $('.carousel-inner > div:nth-child(1)').addClass('active');
     $('.carousel-indicators > button:nth-child(1)').addClass('active');
+
+    function setThumbnail(event) {
+        for (var image of event.target.files) {
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                var img = document.createElement("img");
+                img.setAttribute("src", event.target.result);
+                img.width = 100;
+                img.height = 100;
+                document.querySelector("div #myform").appendChild(img);
+            };
+
+            console.log(image);
+            reader.readAsDataURL(image);
+        }
+    }
+
+    var size = $('p[class = star]').length;
+    for (var i = 0; i < size; i++) {
+        $('p[class = star]').eq(i).attr('id', "star" + i);
+
+        $("#star" + i).find(".my_star").filter(function (k, v) {
+            return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+        });
+    }
+
+    function modall() {
+
+        var modalBody = $('.modal-body');
+
+        $(modalBody).show();
+
+    }
 </script>
 
 <script th:src="@{/js/osh.js}"></script>

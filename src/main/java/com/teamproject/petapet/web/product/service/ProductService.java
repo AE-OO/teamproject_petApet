@@ -16,5 +16,7 @@ public interface ProductService {
     Product findOne(Long id);
 
     Product productSave(Product product);
+
+    Product findProductWithReview(Long id);
 }
 

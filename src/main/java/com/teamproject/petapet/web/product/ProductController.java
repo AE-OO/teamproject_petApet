@@ -1,7 +1,12 @@
 package com.teamproject.petapet.web.product;
 
+import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
+import com.teamproject.petapet.domain.product.Review;
+import com.teamproject.petapet.domain.product.ReviewRepository;
+import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -14,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -24,8 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 @Slf4j
@@ -35,6 +41,8 @@ public class ProductController {
 
     private final ProductService productService;
     private final FileService fileService;
+    private final MemberRepository memberRepository;
+    private final ReviewRepository reviewRepository;
 
     @GetMapping
     public String productMainPage() {
@@ -49,7 +57,7 @@ public class ProductController {
         model.addAttribute("productList", productList);
         model.addAttribute("productDiv", productType.getProductCategory());
         Long star = 4L;
-        model.addAttribute("star",star);
+        model.addAttribute("star", star);
         return "product/productList";
     }
 
@@ -78,7 +86,7 @@ public class ProductController {
                 , productInsertDTO.getProductPrice()
                 , productInsertDTO.getProductStock()
                 , uploadFiles
-                ,"판매중"
+                , "판매중"
                 , productDiv
                 , productInsertDTO.getProductContent());
         productService.productSave(product);
@@ -111,10 +119,34 @@ public class ProductController {
     @GetMapping("/{productType}/{productId}/details")
     public String detailViewForm(@PathVariable("productType") String productType
             , @PathVariable("productId") Long productId, Model model) {
-        Product findProduct = productService.findOne(productId);
-        model.addAttribute("findProduct",findProduct);
-        model.addAttribute("imgIdx",findProduct.getProductImg().size());
+        Product findProduct = productService.findProductWithReview(productId);
+        model.addAttribute("findProduct", findProduct);
+        model.addAttribute("imgIdx", findProduct.getProductImg().size());
 //        model.addAttribute("content",findProduct.getProductContent());
         return "/product/productDetails";
+    }
+
+
+    @PostMapping("/{productId}/reviewInsert")
+    public String reviewInsert(@ModelAttribute ReviewInsertDTO reviewInsertDTO,
+                               @RequestParam String requestURI,
+                               @PathVariable("productId") Long productId) throws IOException {
+        List<MultipartFile> reviewImg = reviewInsertDTO.getReviewImg();
+        List<UploadFile> uploadFiles = fileService.storeFiles(reviewImg);
+
+        //테스트 유저
+        Member member = memberRepository.findByMemberId("memberId1").get();
+
+        Review review = Review.builder().reviewTitle(reviewInsertDTO.getReviewTitle())
+                .reviewRating(reviewInsertDTO.getReviewRating())
+                .reviewContent(reviewInsertDTO.getReviewContent())
+                .reviewImg(uploadFiles)
+                .reviewDate(LocalDateTime.now())
+                .member(member)
+                .product(productService.findOne(productId)).build();
+
+        reviewRepository.save(review);
+
+        return "redirect:" + requestURI;
     }
 }

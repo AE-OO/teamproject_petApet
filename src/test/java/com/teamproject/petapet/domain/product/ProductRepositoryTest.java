@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,5 +59,12 @@ class ProductRepositoryTest {
 //        System.out.println("aLong = " + aLong);
         Long avg = reviewRepository.avg(104L);
         System.out.println("avg = " + avg);
+    }
+    @Test
+    @Transactional
+    void 상품찾기테스트(){
+        Product ex = productRepository.findProductWithReview(104L);
+
+        ex.getReview().forEach(i-> System.out.println("i = " + i));
     }
 }

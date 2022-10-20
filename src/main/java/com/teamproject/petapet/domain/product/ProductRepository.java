@@ -3,6 +3,7 @@ package com.teamproject.petapet.domain.product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,5 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     void updateProductStatus(String selectStatus, Long productId);
 
     List<Product> findAllByProductDiv(ProductType productType);
+    @Query("select a from Product a,Review b where a.productId=:id and b.product.productId=:id")
+    Product findProductWithReview(@Param("id") Long id);
 
 }
