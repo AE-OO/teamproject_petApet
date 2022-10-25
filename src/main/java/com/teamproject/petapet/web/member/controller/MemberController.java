@@ -26,7 +26,8 @@ public class MemberController {
 
     @PostMapping("/join")
     public String join(@Valid MemberDto memberDto) {
-        ResponseEntity.ok(memberService.join(memberDto));
+        System.out.println(memberDto.getMemberId());
+        memberService.join(memberDto);
         return "redirect:/";
     }
 
