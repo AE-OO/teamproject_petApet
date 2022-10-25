@@ -111,6 +111,7 @@ public class ProductController {
         Product findProduct = productService.
                 findOne(productId);
         model.addAttribute("findProduct",findProduct);
+        model.addAttribute("imgIdx",findProduct.getProductImg().size());
 //        model.addAttribute("content",findProduct.getProductContent());
         return "/product/productDetails";
     }

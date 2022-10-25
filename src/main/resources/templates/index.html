@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -13,8 +14,8 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">  
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -33,12 +34,6 @@
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" authority="status" style="width: 3rem; height: 3rem;"></div>
-    </div> -->
-    <!-- Spinner End -->
-
 
     <!-- header Start -->
     <header class="header header-expand-lg bg-white header-light sticky-top p-0">
@@ -63,7 +58,19 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>
+
                 <a href="#" class="nav-item nav-link">Contact</a>
+                <a href="/login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="isAnonymous()">Login</a>
+                <a href="/admin/admininfo" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="hasRole('MEMBER')">MyInfo</a>
+                <a href="/admin/adminPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="hasRole('ADMIN')">adminPage</a>
+                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="isAuthenticated()">Logout</a>
+                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   ><strong th:text="${#authentication.name}"/></a>
+
                 <a href="login.html" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>
                 <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
             </div>

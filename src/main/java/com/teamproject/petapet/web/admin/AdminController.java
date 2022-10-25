@@ -7,6 +7,7 @@ import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+//@PreAuthorize("hasAnyRole('ADMIN')")
 public class AdminController {
 
     private final InquiredService inquiredService;
@@ -30,7 +32,6 @@ public class AdminController {
 
     @GetMapping("/adminPage")
     public String adminPage(Model model){
-
         model.addAttribute("FAQ", inquiredService.getFAQ());
         model.addAttribute("otherInquiry", inquiredService.getOtherInquiries());
         model.addAttribute("communityReport", reportService.getReportCommunityList());
