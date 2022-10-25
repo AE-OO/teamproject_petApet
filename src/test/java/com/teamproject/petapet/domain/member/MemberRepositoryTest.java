@@ -15,7 +15,6 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
     CommunityRepository communityRepository;
-
     PasswordEncoder passwordEncoder;
 
     @Test

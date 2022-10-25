@@ -1,10 +1,29 @@
 package com.teamproject.petapet.domain.member;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, String> {
+    @Modifying
+    @Transactional
+    @Query("update Member m set m.memberReport = m.memberReport + 1 where m.memberId =:memberId")
+    void addMemberReport(String memberId);
 
-    Optional<Member> findByMemberId(String memberId);
+    @Modifying
+    @Transactional
+    @Query("update Member m set m.memberStopDate = current_date where m.memberId =:memberId")
+    void updateMemberStopDate(String memberId);
+
+    @Query("select m.memberGender from Member m")
+    List<String> getGenderList();
+
+    @EntityGraph(attributePaths = "authorities")
+    Optional<Member> findOneWithAuthoritiesByMemberId(String memberId);
 }

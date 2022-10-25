@@ -1976,7 +1976,7 @@ progress {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #888;
+  color:--gr;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
@@ -1998,7 +1998,7 @@ progress {
   cursor: pointer;
 }
 .form-control:focus {
-  color: #888;
+  color: var(--bs-gray-900);
   background-color: #fff;
   border-color: #bce1d6;
   outline: 0;
@@ -2186,6 +2186,11 @@ textarea.form-control-lg {
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(120, 194, 173, 0.25);
 }
+.form-select option:checked{
+  color:#151515;
+}
+
+
 .form-select[multiple], .form-select[size]:not([size="1"]) {
   padding-right: 0.75rem;
   background-image: none;
@@ -2496,11 +2501,11 @@ textarea.form-control-lg {
 }
 .form-floating > .form-control:focus ~ label,
 .form-floating > .form-control:not(:placeholder-shown) ~ label,
-.form-floating > .form-control-plaintext ~ label,
-.form-floating > .form-select ~ label {
+.form-floating > .form-control-plaintext ~ label{
   opacity: 0.65;
   transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
+
 .form-floating > .form-control:-webkit-autofill ~ label {
   opacity: 0.65;
   transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
