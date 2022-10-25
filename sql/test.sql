@@ -1,0 +1,1 @@
+insert into member (memberId,memberPw) values ("memberA","bb");

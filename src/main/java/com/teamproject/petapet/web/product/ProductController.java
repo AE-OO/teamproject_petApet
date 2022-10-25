@@ -108,7 +108,8 @@ public class ProductController {
     @GetMapping("/{productType}/{productId}/details")
     public String detailViewForm(@PathVariable("productType") String productType
             , @PathVariable("productId") Long productId, Model model) {
-        Product findProduct = productService.findOne(productId);
+        Product findProduct = productService.
+                findOne(productId);
         model.addAttribute("findProduct",findProduct);
 //        model.addAttribute("content",findProduct.getProductContent());
         return "/product/productDetails";

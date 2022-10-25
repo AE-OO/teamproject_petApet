@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class InquiredController {
+public class InquiryController {
 
     public InquiredService inquiredService;
 

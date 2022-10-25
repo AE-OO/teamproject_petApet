@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 박채원 22.10.09 작성
@@ -63,6 +64,11 @@ public class MemberServiceImpl implements MemberService{
             }
         }
         return genderList;
+    }
+
+    @Override
+    public Optional<Member> findOne(String memberId) {
+        return memberRepository.findByMemberId(memberId);
     }
 
 

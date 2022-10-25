@@ -11,5 +11,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BuyServiceImpl implements Buyservice{
 
-    public BuyRepository repository;
+    private final BuyRepository BuyRepository;
+
+    // 구매 목록
+
+    // 선택 삭제
+
+    // 전체 삭제
 }

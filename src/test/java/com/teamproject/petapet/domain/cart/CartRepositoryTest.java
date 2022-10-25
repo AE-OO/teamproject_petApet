@@ -6,11 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+
 class CartRepositoryTest {
 
     @Autowired
@@ -29,6 +31,20 @@ class CartRepositoryTest {
 
             cartRepository.save(cart);
         });
+    }
+
+    @Test
+    void test1(){
+        String dd = "memberA";
+        List<Cart> cartByMember1 = cartRepository.findCartByMember1(dd);
+        cartByMember1.forEach(i->{
+            System.out.println("i.getCartId() = " + i.getCartId());
+            
+        });
+    }
+
+    void test2(){
+//        cartRepository.findCartByMember2()
     }
 
 }
