@@ -43,7 +43,7 @@ public class Member{
     @Id
     private String memberId;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 45, nullable = false)
     private String memberPw;
 
     @Column

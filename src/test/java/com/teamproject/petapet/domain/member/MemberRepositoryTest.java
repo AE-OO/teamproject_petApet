@@ -17,6 +17,8 @@ class MemberRepositoryTest {
     CommunityRepository communityRepository;
     PasswordEncoder passwordEncoder;
 
+    PasswordEncoder passwordEncoder;
+
     @Test
     public void insertMemberDummies(){
         IntStream.rangeClosed(1, 30).forEach(i -> {
