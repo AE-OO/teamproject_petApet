@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.*;
@@ -138,6 +139,7 @@ public class Member implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+//        this.memberStopDate  >= LocalDate.now();
         return false;
     }
 }
