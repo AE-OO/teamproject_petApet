@@ -6,6 +6,7 @@ import com.teamproject.petapet.web.member.dto.MemberDto;
 import com.teamproject.petapet.web.member.dto.MemberResponse;
 import com.teamproject.petapet.web.member.dto.TokenDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,11 +20,10 @@ public interface MemberService {
     void addMemberReport(String memberId);
     void updateMemberStopDate(String memberId);
     int[] getGenderList();
+    List<Integer> getAgeList();
 
     TokenDto login(LoginDto loginDto);
     MemberResponse join(MemberDto memberDto);
 
     boolean duplicateCheckMemberId(String memberId);
-
-
 }
