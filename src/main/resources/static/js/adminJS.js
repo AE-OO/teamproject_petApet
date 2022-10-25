@@ -1,5 +1,7 @@
 $(document).ready(function () {
     reportColor();
+    moveSideBar();
+    movePage();
 
     $(".deleteFAQ").click(function () {
         var id = $(this).attr("id");
@@ -131,11 +133,50 @@ $(document).ready(function () {
            }
        })
     });
-
-
 })
 
 function reportColor(){
     if($("#report").text() >= 3)
         $("#report").attr("class", "text-danger");
+}
+
+//스크롤 위치를 따라 이동하는 사이드바 구현
+function moveSideBar(){
+    $('.float_sidebar').css('position', 'relative').css('z-index', '1');
+
+    $(window).scroll(function(){
+        yPosition = $(window).scrollTop();  //스크롤의 현재 위치
+        if (yPosition < 0) {
+            yPosition = 0;
+        }
+        $('.float_sidebar').animate({"top":yPosition }, {duration: 700, easing: 'linear', queue:false});
+    });
+}
+
+//페이지 내 이동 구현
+function movePage(){
+    $('#goInquiryManage').click(function(){
+        var offset = $('#inquiryManage').offset();
+        $('html').animate({scrollTop : offset.top}, 400);
+    });
+
+    $('#goReportManage').click(function(){
+        var offset = $('#reportManage').offset();
+        $('html').animate({scrollTop : offset.top}, 400);
+    });
+
+    $('#goProductManage').click(function(){
+        var offset = $('#productManage').offset();
+        $('html').animate({scrollTop : offset.top}, 400);
+    });
+
+    $('#goCommunityManage').click(function(){
+        var offset = $('#communityManage').offset();
+        $('html').animate({scrollTop : offset.top}, 400);
+    });
+
+    $('#goMemberManage').click(function(){
+        var offset = $('#memberManage').offset();
+        $('html').animate({scrollTop : offset.top}, 400);
+    });
 }
