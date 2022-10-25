@@ -15,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -119,10 +119,14 @@ public class ProductController {
     @GetMapping("/{productType}/{productId}/details")
     public String detailViewForm(@PathVariable("productType") String productType
             , @PathVariable("productId") Long productId, Model model) {
-        Product findProduct = productService.findProductWithReview(productId);
+        Product findProduct = productService.findOne(productId);
+        Sort sort = Sort.by("reviewId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Slice<Review> reviews = reviewRepository.test(productId, pageable);
+        Long countReview = reviewRepository.countReviewByProduct(findProduct);
+        model.addAttribute("countReview", countReview);
         model.addAttribute("findProduct", findProduct);
-        model.addAttribute("imgIdx", findProduct.getProductImg().size());
-//        model.addAttribute("content",findProduct.getProductContent());
+        model.addAttribute("reviews", reviews);
         return "/product/productDetails";
     }
 
