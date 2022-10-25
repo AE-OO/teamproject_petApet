@@ -13,29 +13,33 @@
             <div class="portfolio-container">
                 <div class="portfolio-item">
                     <div class="portfolio">
-                        <div class="slick">
-                            <img th:each="imgNum : *{productImg}"
-                                 th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${imgNum.storeFileName})}|">
-                        </div>
-                        <style>
 
-                            .slick {
-                                height: 10rem;
-                                width: 10rem;
-                                display: flex;
-                            }
-                            .slick-slide li{
-                                display: flex;
-                            }
-                            .slick li{
-                                display: flex;
-                            }
-                            .slick-slide img {
-                                object-fit: cover;
-                                height: 20rem;
-                                width: 20rem;
-                            }
-                        </style>
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                            <div class="carousel-indicators">
+                                <button type="button" th:each="idx, i : *{productImg}"
+                                        data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${i.index}" class="active"
+                                        aria-current="true" th:aria-label="|@{Slide+${i.index}}|"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item" th:each="img : *{productImg}">
+                                    <img th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${img.storeFileName})}|"
+                                         width="400" height="400"
+                                         style="min-height: 400px; min-width: 400px"
+                                         class="d-block w-auto" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
                         <!--                        <img class="img-fluid" th:src="@{/img/petSnack.jpg}" style="width: 27rem;">-->
                     </div>
                 </div>
@@ -598,19 +602,9 @@
 <script src="lib/isotope/isotope.pkgd.min.js"></script>
 <script src="lib/lightbox/js/lightbox.min.js"></script>
 
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script th:inline="javascript">
-    $('.slick').slick({
-        dots: true,
-        infinite: true,
-        arrows: true,
-        speed: 500,
-        prevArrow: "<button type='button' class='btn'>Previous</button>",
-        nextArrow: "<button type='button' class='btn'>Next</button>", //화살표 커스텀
-        fade: true,
-        dotsClass : "slick-dots",
-        cssEase: 'linear'
-    });
+    $('.carousel-inner > div:nth-child(1)').addClass('active');
+    $('.carousel-indicators > button:nth-child(1)').addClass('active');
 </script>
 
 <script th:src="@{/js/osh.js}"></script>

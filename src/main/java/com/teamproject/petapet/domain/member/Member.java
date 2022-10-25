@@ -13,8 +13,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -22,6 +20,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.*;
+
+import static javax.persistence.CascadeType.ALL;
 
 
 /**
@@ -38,7 +38,7 @@ import java.util.*;
 @ToString(exclude = {"community", "comment"})
 @DynamicInsert   //컬럼들에 default값을 주기 위해 사용
 @EntityListeners(value = {AuditingEntityListener.class})
-public class Member implements UserDetails {
+public class Member{
 
     @Id
     private String memberId;
@@ -68,9 +68,13 @@ public class Member implements UserDetails {
     @Column(columnDefinition = "bigint(3) default 0")
     private Long memberReport;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    //회원 활성화 컬럼
+    @Column(nullable = false)
+    private boolean activated;
+
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    private Set<Authority> authorities = new HashSet<>();
 
     @Column
     private Date memberStopDate;
@@ -106,40 +110,7 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<DibsCommunity> dibsCommunity;
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return memberPw;
-    }
-
-    @Override
-    public String getUsername() {
-        return memberId;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-//        this.memberStopDate  >= LocalDate.now();
-        return false;
+    public void addAuthority(Authority authority) {
+        authorities.add(authority);
     }
 }

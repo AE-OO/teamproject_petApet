@@ -23,6 +23,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query("select m.memberGender from Member m")
     List<String> getGenderList();
 
+    @EntityGraph(attributePaths = "authorities")
+    Optional<Member> findOneWithAuthoritiesByMemberId(String memberId);
+
     @Query(value = "select ifnull(b.cnt, 0) " +
             "from agetable age left outer join (select age , count(age) as cnt " +
             "From (select round((date_format(current_date(), '%Y') - date_format(memberBirthday, '%Y'))/10) as age " +
@@ -31,5 +34,4 @@ public interface MemberRepository extends JpaRepository<Member, String> {
             "on b.age = age.age", nativeQuery = true)
     List<Integer> getAgeList();
 
-    Optional<Member> findByMemberId(String memberId);
 }

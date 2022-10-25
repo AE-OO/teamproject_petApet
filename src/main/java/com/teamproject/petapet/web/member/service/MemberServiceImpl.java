@@ -2,21 +2,28 @@ package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
+import com.teamproject.petapet.jwt.JwtTokenProvider;
+
+import com.teamproject.petapet.web.member.dto.LoginDto;
+import com.teamproject.petapet.web.member.dto.MemberDto;
+
+import com.teamproject.petapet.web.member.dto.MemberResponse;
+import com.teamproject.petapet.web.member.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import com.teamproject.petapet.jwt.JwtTokenProvider;
-import com.teamproject.petapet.web.member.dto.TokenInfo;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * 박채원 22.10.09 작성
+ * 장사론 22.19.19 추가
  */
 
 @Service
@@ -25,8 +32,11 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+
+
 
     @Override
     public List<Member> getMemberList() {
@@ -50,6 +60,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public int[] getGenderList() {
+//        ArrayList<Integer> genderList = new ArrayList<>();
         int[] genderList = new int[3];
 
         for(String gender : memberRepository.getGenderList()){
@@ -64,26 +75,32 @@ public class MemberServiceImpl implements MemberService{
         return genderList;
     }
 
-    @Override
-    public List<Integer> getAgeList() {
-        return memberRepository.getAgeList();
-    }
-
-
     @Transactional
-    public TokenInfo login(String memberId, String memberPw) {
-        System.out.println("2)"+memberId+", "+memberPw);
-        // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
-        // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, memberPw);
+    @Override
+    public TokenDto login(LoginDto loginDto) {
+        // 1. memberId, memberPw 를 기반으로 AuthenticationToken 생성
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDto.getMemberId(), loginDto.getMemberPw());
 
-        // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
-        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
+        // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
+        //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-
-        return tokenInfo;
+        // 3. 인증 정보를 기반으로 JWT 토큰 생성 후 발급
+        return jwtTokenProvider.createToken(authentication);
     }
+
+    @Transactional
+    @Override
+    public MemberResponse join(MemberDto memberDto) {
+        Member member = MemberDto.toEntity(memberDto,passwordEncoder);
+        return MemberResponse.of(memberRepository.save(member));
+    }
+
+    @Override
+    public boolean duplicateCheckMemberId(String memberId) {
+        return memberRepository.existsById(memberId);
+    }
+
+
 }
