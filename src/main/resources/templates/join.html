@@ -174,7 +174,7 @@
                 <h1 class="display-5 mb-5"><a class="" href="index.html"><img src="aa" alt="logo">petApet</a></h1>
                 <!-- <h1 class="display-5 mb-5">Join</h1> -->
                 <p class="mb-4 text-end"><span class="text-danger">*</span>필수입력사항</p>
-                <form name="form" method="post">
+                <form name="form" action="/join" method="post">
                     <div class="row g-3">
 
                         <!-- 아이디 입력-->
@@ -237,20 +237,20 @@
                                     <!--                                <select id="select-year" name="memberBirthday" class="form-select" onchange="javascript:lastday();">-->
                                     <!--                                    <option selected disabled hidden>생년월일(4자)</option>-->
                                     <!--                                </select>-->
-                                    <input id="select-year" type="text" class="form-control" name="memberBirthday"
+                                    <input id="select-year" type="text" class="form-control"
                                            maxlength="4"
                                            placeholder="년" onchange="javascript:lastday();">
                                     <label class="w-75">년(4자)<span class="text-danger">*</span></label>
                                 </div>
                                 <div id="month" class="form-floating px-1 col-4">
-                                    <select id="select-month" name="memberBirthday" class="form-select"
+                                    <select id="select-month" class="form-select"
                                             onchange="chn_select_month()">
                                         <option val="" selected disabled hidden></option>
                                     </select>
                                     <label id="label-month">월<span class="text-danger">*</span></label>
                                 </div>
                                 <div class="form-floating px-0 ps-1 col-4">
-                                    <input type="text" class="form-control" name="memberBirthday" maxlength="2"
+                                    <input type="text" class="form-control" maxlength="2"
                                            placeholder="일">
                                     <label class="w-75">일<span class="text-danger">*</span></label>
                                 </div>
@@ -267,14 +267,14 @@
                                     <label class="w-75">우편번호<span class="text-danger">*</span></label>
                                 </div>
                                 <div class="form-floating px-0 ps-1 col-6">
-                                    <button type="button" class="btn btn-secondary w-100 h-100" name="memberAddress"
+                                    <button type="button" class="btn btn-secondary w-100 h-100"
                                             onclick="sample6_execDaumPostcode()">우편번호 찾기
                                     </button>
                                 </div>
                             </div>
                             <div class="mb-2">
                                 <div class="form-floating">
-                                    <input type="text" id="sample6_address" class="form-control" name="memberAddress"
+                                    <input type="text" id="sample6_address" class="form-control"
                                            placeholder="주소">
                                     <label>주소<span class="text-danger">*</span></label>
                                 </div>
@@ -319,7 +319,7 @@
 
                         <!--회원가입 버튼-->
                         <div class="col-12">
-                            <button type="button" id="joinBtn" class="btn btn-primary mb-2 col-12 py-3">회원가입</button>
+                            <button type="submit" id="joinBtn" class="btn btn-primary mb-2 col-12 py-3">회원가입</button>
                         </div>
                     </div>
                 </form>
