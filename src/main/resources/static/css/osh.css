@@ -1,0 +1,113 @@
+#myform fieldset {
+    display: inline-block;
+    direction: rtl;
+    border: 0;
+}
+
+#myform fieldset legend {
+    text-align: right;
+}
+
+#myform input[type=radio] {
+    display: none;
+}
+
+#myform label {
+    font-size: 1.2em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+
+#myform label:hover {
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+
+#myform label:hover ~ label {
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+
+#myform input[type=radio]:checked ~ label {
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+
+#dib fieldset {
+    display: inline-block;
+    direction: rtl;
+    border: 0;
+}
+
+#dib fieldset legend {
+    text-align: right;
+}
+
+#dib input[type=radio] {
+    display: none;
+}
+
+#dib label {
+    font-size: 1.2em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+
+#dib label:hover {
+    text-shadow: 0 0 0 rgba(250, 0, 0, 0.99);
+}
+
+#dib label:hover ~ label {
+    text-shadow: 0 0 0 rgba(250, 0, 0, 0.99);
+}
+
+#dib input[type=radio]:checked ~ label {
+    text-shadow: 0 0 0 rgba(250, 0, 0, 0.99);
+}
+
+input:invalid + span::after {
+    content: "✖";
+    color: #cb0909;
+    padding-left: 0.5rem;
+}
+
+input:valid + span::after {
+    content: "✓";
+    color: #166408;
+    padding-left: 0.5rem;
+}
+
+select:invalid + span:after {
+    content: "✖";
+    color: #cb0909;
+    padding-left: 0.5rem;
+}
+
+select:valid + span::after {
+    content: "✓";
+    color: #166408;
+    padding-left: 0.5rem;
+}
+
+textarea:invalid + span:after {
+    content: "✖";
+    color: #cb0909;
+    padding-left: 0.5rem;
+}
+
+textarea:valid + span::after {
+    content: "✓";
+    color: #166408;
+    padding-left: 0.5rem;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+.field-error {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+/*
+
+
+*/

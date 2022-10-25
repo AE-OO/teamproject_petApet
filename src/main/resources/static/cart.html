@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+    <!-- Favicon -->
+    <link href="/img/icon/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        @media screen and (max-width: 1280px){
+            #pap-left-menu{display: none;}
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+    <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h1 class="m-0">petApet</h1>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="about.html" class="nav-item nav-link">About</a>
+            <a href="service.html" class="nav-item nav-link">Services</a>
+            <a href="project.html" class="nav-item nav-link">Product</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
+                <div class="dropdown-menu bg-light m-0">
+                    <a href="feature.html" class="dropdown-item">Test1</a>
+                    <a href="quote.html" class="dropdown-item">Test2</a>
+                    <a href="team.html" class="dropdown-item">Test3</a>
+                    <a href="testimonial.html" class="dropdown-item">Test5</a>
+                    <a href="404.html" class="dropdown-item">404 Page</a>
+                </div>
+            </div>
+            <a href="contact.html" class="nav-item nav-link">Contact</a>
+            <a href="mypage/mypage.html" th:onclick="|location.href='@{/mypage}'|" class="nav-item nav-link">Mypage</a>
+            <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>
+            <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
+        </div>
+
+    </div>
+</nav>
+<!-- Navbar End -->
+<div id="pap-left-menu">
+    <div class="mypage-text">
+        <div class="mytext">
+                <span class="tspan">
+                    <span class="wspan">
+                        MY PAP
+                    </span>
+                </span>
+        </div>
+    </div>
+    <div id="myMenu" class="myMenu">
+        <h2 class="sc-1flepkn-0 gvaWmd">petApet</h2>
+        <nav>
+            <div class="sc-1liba5b-5 jzNnfi">
+                <div class="sc-1liba5b-6 OvTJQ">MY 쇼핑</div>
+                <div class="sc-1liba5b-7 gvMCBX">
+                    <ul class="sc-1liba5b-8 McnCE">
+                        <li id="mc-order-carts-page" class="sc-1liba5b-9 bgmWPR selected"><a href="cart.html"
+                                                                                             title="장바구니" target="_self" class="sc-1liba5b-10 eLReSz">장바구니<span
+                                class="sc-1liba5b-11 fBiFRr"></span></a>
+                        </li>
+                        <li id="mc-order-list-page" class="sc-1liba5b-9 bgmWPR selected"><a
+                                href="order-list.html" title="주문목록/배송조회" target="_self"
+                                class="sc-1liba5b-10 eLReSz">주문목록/배송조회<span class="sc-1liba5b-11 fBiFRr"></span></a>
+                        </li>
+                        <li id="mc-cancel-return-page" class="sc-1liba5b-9 bgmWPR"><a
+                                href="" title="취소/반품/교환/환불내역" target="_self"
+                                class="sc-1liba5b-10 eLReSz">취소/반품/교환/환불내역<span
+                                class="sc-1liba5b-11 fBiFRr"></span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sc-1liba5b-5 jzNnfi">
+                <div class="sc-1liba5b-6 OvTJQ">MY 활동</div>
+                <div class="sc-1liba5b-7 gvMCBX">
+                    <ul class="sc-1liba5b-8 McnCE">
+                        <li id="mc-cs-main-page" class="sc-1liba5b-9 bgmWPR"><a href="inquiry.html"
+                                                                                title="문의하기" target="_self" class="sc-1liba5b-10 eLReSz">문의하기<span
+                                class="sc-1liba5b-11 fBiFRr"></span></a></li>
+                        <li id="mc-product-inquiry-list-page" class="sc-1liba5b-9 bgmWPR"><a
+                                href="inquiry.html" title="문의내역 확인" target="_self"
+                                class="sc-1liba5b-10 eLReSz">문의내역 확인<span class="sc-1liba5b-11 fBiFRr"></span></a>
+                        </li>
+                        <li id="mc-product-review-page" class="sc-1liba5b-9 bgmWPR"><a
+                                href="" title="리뷰관리" target="_self"
+                                class="sc-1liba5b-10 eLReSz">리뷰관리<span id="productReviewLnbMenuBadge"
+                                                                       class="sc-1liba5b-11 fBiFRr" style="display: inline-block;"></span></a></li>
+                        <li id="mc-product-wish-page" class="sc-1liba5b-9 bgmWPR"><a
+                                href="" title="찜 리스트" target="_self"
+                                class="sc-1liba5b-10 eLReSz">찜 리스트<span class="sc-1liba5b-11 fBiFRr"></span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sc-1liba5b-5 jzNnfi">
+                <div class="sc-1liba5b-6 OvTJQ">MY 커뮤니티 활동</div>
+                <div class="sc-1liba5b-7 gvMCBX">
+                    <ul class="sc-1liba5b-8 McnCE">
+                        <li id="" class="sc-1liba5b-9 bgmWPR"><a href=""
+                                                                 title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz">글 작성<span
+                                class="sc-1liba5b-11 fBiFRr"></span></a></li>
+                        <li id="" class="sc-1liba5b-9 bgmWPR"><a
+                                href="" title="글 목록" target="_self"
+                                class="sc-1liba5b-10 eLReSz">글 목록<span class="sc-1liba5b-11 fBiFRr"></span></a></li>
+                        <li id="mc-product-review-page" class="sc-1liba5b-9 bgmWPR"><a
+                                href="" title="쪽지함" target="_self"
+                                class="sc-1liba5b-10 eLReSz">쪽지함<span id="productReviewLnbMenuBadge"
+                                                                      class="sc-1liba5b-11 fBiFRr" style="display: inline-block;"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sc-1liba5b-5 fRuGsa">
+                <div class="sc-1liba5b-6 OvTJQ">MY 정보</div>
+                <div class="sc-1liba5b-7 gvMCBX">
+                    <ul class="sc-1liba5b-8 McnCE">
+                        <li id="mc-user-modify-page" class="sc-1liba5b-9 bgmWPR"><a
+                                href="" title="개인정보확인/수정"
+                                target="_self" class="sc-1liba5b-10 eLReSz">개인정보확인/수정<span
+                                class="sc-1liba5b-11 fBiFRr"></span></a>
+                        </li>
+                        <li id="mc-address-book-page" class="sc-1liba5b-9 bgmWPR"><a
+                                href=""
+                                title="배송지 변경" target="_self" class="sc-1liba5b-10 eLReSz">배송지 변경<span
+                                class="sc-1liba5b-11 fBiFRr"></span></a></li>
+                        <li id="mc-coupay-page" class="sc-1liba5b-9 bgmWPR">
+                            <a href="" title="회원탈퇴" target="_self"
+                               class="sc-1liba5b-10 eLReSz">
+                                회원 탈퇴<span class="sc-1liba5b-11 fBiFRr"></span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<div id="container">
+    <div id="app">
+        <div class="cart--3ESq5SxCdE m_type">
+            <div class="gnb--3I_SV3sFZi">
+                <div class="inner---6aFRYlaf9">
+                    <h1 class="title--1r0ibGcdKC"><a href="https://shopping.naver.com"
+                            class="link_shopping--3QPbKbvQxv">쇼핑</a><a class="link_cart--3pmIi7AT5e" href="#">장바구니</a>
+                    </h1><a href="#" class="link_prev--2xHgTtNMaj"><svg width="20" height="18" viewBox="0 0 20 18"
+                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.20455 17.25L1.25 9M1.25 9L9.20455 0.75M1.25 9L18.75 9" stroke="black"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg><span class="blind">뒤로가기</span></a>
+                    <div class="link_area--1HXD5FKVTK"><a
+                            href="order-list.html"
+                            class="link_order--1UnFl2TC-_">결제내역</a><a href="https://m.shopping.naver.com/menu"
+                            class="link_menu--4uiMCHsgl5"><svg width="20" height="16" viewBox="0 0 20 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.33301 1.5H18.6663" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round"></path>
+                                <path d="M1.33301 8H18.6663" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round"></path>
+                                <path d="M1.33301 14.5H18.6663" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round"></path>
+                            </svg><span class="blind">메뉴</span></a></div>
+                </div>
+            </div>
+            <div class="lnb--qzqatGHj7D">
+                <div class="inner--9AWyBGGS3k">
+                    <ol class="status--2Vl8oROKh3">
+                        <li class="now--3JOiYDgRis">장바구니<span class="blind">현재 단계</span></li>
+                        <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="ico_status--2cyINN3I2q">
+                                <path
+                                    d="M5.834 14.572a.5.5 0 1 0 .707.707l-.707-.707zM11.813 9.3l.353.354a.5.5 0 0 0 0-.708l-.354.354zM6.54 3.321a.5.5 0 1 0-.707.708l.707-.708zm0 11.958l5.625-5.625-.707-.708-5.625 5.626.707.707zm5.625-6.333L6.541 3.321l-.707.708 5.625 5.625.707-.708z"
+                                    fill="#000" fill-opacity="0.1"></path>
+                            </svg>주문/결제</li>
+                        <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="ico_status--2cyINN3I2q">
+                                <path
+                                    d="M5.834 14.572a.5.5 0 1 0 .707.707l-.707-.707zM11.813 9.3l.353.354a.5.5 0 0 0 0-.708l-.354.354zM6.54 3.321a.5.5 0 1 0-.707.708l.707-.708zm0 11.958l5.625-5.625-.707-.708-5.625 5.626.707.707zm5.625-6.333L6.541 3.321l-.707.708 5.625 5.625.707-.708z"
+                                    fill="#000" fill-opacity="0.1"></path>
+                            </svg>완료</li>
+                    </ol>
+                    <div class="tab_menu--39NnuUqXAb" role="tablist"><button type="button"
+                            class="tab--1F4rDUV9ME active--1geBm-WtI3" role="tab" aria-selected="true">일반배송 <span
+                                class="num--OwtHz3-iGa">1</span><span class="blind">선택됨</span></button><button
+                            type="button" class="tab--1F4rDUV9ME" role="tab" aria-selected="false">지정배송 <span
+                                class="num--OwtHz3-iGa">0</span></button></div>
+                </div>
+            </div>
+            <div class="check_all--mLXOEtPdIW">
+                <div class="fixed_area--3onkZminap">
+                    <div class="inner--3_4mSHtQSw">
+                        <div class="check_box--1f8iu11KzL">
+                            <button type="button"
+                                class="btn_check--31ufZfaM8S checked--2A5fgfRoYJ" id="check-all" role="checkbox"
+                                aria-checked="true">
+                                <span class="check--2GKphErdbj">
+                                    <svg width="16" height="16"
+                                        viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        class="ico_check--3-_9ZRQGKX">
+                                        <path
+                                            d="M12.945 4L14.1 5.154 6.387 12.8 2 8.4l1.155-1.153 3.232 3.246L12.945 4z"
+                                            fill="#C7CACD"></path>
+                                    </svg></span>전체 선택<span class="blind">선택됨</span></button></div><button type="button"
+                            class="btn_delete--3P5eHI2eDa"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="ico_delete--2NfiVYXLHf">
+                                <path
+                                    d="M13 2.5l.707.707-4.646 4.647 4.646 4.646-.707.707-4.646-4.646-4.647 4.646L3 12.5l4.647-4.646L3 3.207l.707-.707 4.647 4.647L13 2.5z"
+                                    fill="#BDC0C6"></path>
+                            </svg><span class="none_280--1hzCgfasqV">전체</span> 삭제</button>
+                    </div>
+                </div>
+            </div>
+            <div class="contents--2E6XJtdAJn">
+                <div id="cards" class="store_container--382-BRTlye dd">
+                    <div class="store_container--382-BRTlye">
+                        <div class="store_card--EAQK-9jWb0 expand">
+                             <div class="store_content--1atEHLZlpd">
+                                <div>
+                                    <div class="products--zxkj6UbISb">
+                                        <div class="products_info--HVXp_hAnl0">
+                                            <div class="info--2I2hfPeviI">
+                                                <div>
+                                                    <div class="product--BPAxWCQbvE">
+                                                        <div class="product_info--TaUyJVEOf0">
+                                                            <div class="cell--HIdeeyUnFa">
+                                                                <div class="product_description--Lh-hSnnkFf">
+                                                                    <div class="check--2EZEnyir5V">
+                                                                        <button type="button"
+                                                                                class="btn_check--31ufZfaM8S checked--2A5fgfRoYJ"
+                                                                                role="checkbox" aria-checked="true">
+                                                                            <span class="check--2GKphErdbj">
+                                                                                <svg width="16"
+                                                                                     height="16" viewBox="0 0 16 16"
+                                                                                     fill="none"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     class="ico_check--3-_9ZRQGKX">
+                                                                                <path d="M12.945 4L14.1 5.154 6.387 12.8 2 8.4l1.155-1.153 3.232 3.246L12.945 4z"
+                                                                                      fill="#C7CACD"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                            <span class="blind">상품</span>
+                                                                            <span class="blind">선택됨</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="inner--1emXN2Ic_f">
+                                                                        <div class="thumb--1o26vhj68U"><img
+                                                                                src="https://shop-phinf.pstatic.net/20211229_49/1640758299346tVfUn_JPEG/41894188037456000_765986329.jpg?type=f500_500"
+                                                                                alt=""></div>
+                                                                        <div class="info_area--2AT8d3T9eq">
+                                                                            <div class="title--2r7IrJqWav">
+                                                                                <span class="ico_npay_plus--37zciz9t8T">
+                                                                                    1(광동
+                                                                                직영) 삼다수 2.0L 24개입(유/무라벨 랜덤발송)
+                                                                                </span>
+                                                                            </div>
+                                                                            <span class="price--2Uv-07hf78">
+                                                                                20000</span><em>원</em>
+                                                                        </div>
+                                                                        <button type="button"
+                                                                                class="btn_zzim--2cWUAaC_Y6"
+                                                                                aria-pressed="false"><svg width="25" height="24"
+                                                                                                          viewBox="0 0 25 24" fill="none"
+                                                                                                          xmlns="http://www.w3.org/2000/svg">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M12.3254 24C18.9529 24 24.3254 18.6274 24.3254 12C24.3254 5.37258 18.9529 0 12.3254 0C5.69802 0 0.325439 5.37258 0.325439 12C0.325439 18.6274 5.69802 24 12.3254 24Z"
+                                                                                  fill="black" fill-opacity="0.15"></path>
+                                                                            <path
+                                                                                    d="M11.3072 8.67807C10.7551 8.14078 10.0217 7.84619 9.24447 7.84619C8.46578 7.84619 7.73383 8.14078 7.18354 8.67778C6.03946 9.78922 6.03946 11.6001 7.18324 12.7133L12.3149 17.6345L17.6113 12.5573C18.6119 11.4527 18.5583 9.73932 17.4675 8.67807C16.9166 8.14078 16.1844 7.84619 15.4063 7.84619C14.6267 7.84619 13.8939 8.14078 13.3427 8.67778L11.0767 10.8587C10.7962 11.1232 10.6418 11.4748 10.6418 11.8471C10.6418 12.2196 10.7962 12.5712 11.0764 12.836C11.656 13.383 12.601 13.383 13.1817 12.836L15.3909 10.7195"
+                                                                                    stroke="white"></path>
+                                                                        </svg><span class="blind">찜하기</span></button>
+                                                                        <div class="product-removal">
+                                                                            <button type="button" class="remove-product">
+                                                                                <!--                                                                            <a href="">삭제</a>-->삭제
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="number">
+                                                                            <button type="button" class="minus_btn"><span class="minus">-</span></button>
+                                                                            <input type="text" value="1"/>
+                                                                            <button type="button" class="plus_btn"><span class="plus">+</span></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="button"
+                                                                        class="btn_delete--1OJG6GLwYt"><svg width="16"
+                                                                                                            height="16" viewBox="0 0 16 16" fill="none"
+                                                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                                                            class="ico_delete--3ASzyXvISn">
+                                                                    <path
+                                                                            d="M14.278 1.12l.722.72-6.278 6.28L15 14.397l-.722.722L8 8.841 1.722 15.12 1 14.397l6.278-6.278L1 1.841l.722-.722L8 7.397l6.278-6.278z"
+                                                                            fill="#BDC0C6"></path>
+                                                                </svg><span class="blind">삭제</span></button>
+                                                            </div>
+                                                            <div class="cell--HIdeeyUnFa">
+                                                                <div class="list_price--1DcaXbXz9W">
+                                                                    <div class="price_area--1eytys13Os total--2lIL693L7i">
+                                                                        <span class="title--1MQ9l0MwlN">상품금액</span>
+                                                                        <div class = "product-price">
+                                                                            <span class="num--1hENWZ6Uv8 product-price">20000</span>
+                                                                            원
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="price_area--1eytys13Os"><span
+                                                                            class="title--1MQ9l0MwlN">배송비</span><span
+                                                                            class="layer_area--2qluaooNFx m_only"></span><em><span
+                                                                            class="num--1hENWZ6Uv8">무료</span></em></div>
+                                                                </div>
+                                                                <div class="m_only--3xDkIw7vDP"></div>
+                                                                <div class="order_buttons--2Fb79h6uWq"><button
+                                                                        type="button">찜하기</button><button type="button"><span
+                                                                        class="none_280--1-kFXWiEW1">주문</span>수정</button><button
+                                                                        type="button" class="btn_order--4bpIwtdOmc">주문<span
+                                                                        class="none_280--1-kFXWiEW1">하기</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="price--38egva9GaS">
+                                                <div class="price_area--3Gj1SZEf9T"><span
+                                                        class="title--1eMhZQR6b8">배송비</span><em><span
+                                                        class="num--1rDSy6v0kt">무료</span></em>
+                                                    <div class="desc--xy8RI3Ogkn"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="store_price--1ITT00wh3a">
+                                    <div class="list_price--2q5Q85MYD-">
+                                        <div class="sub_area--K_qcAIhSzX">
+                                            <div class="price_area--jjAq5tYP9m"><span
+                                                    class="title--3G_o4_rhfc">선택상품금액</span><em><span
+                                                    class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                            <div class="price_area--jjAq5tYP9m discount--2RJZlYQP1m">
+                                                <span class="title--3G_o4_rhfc">수량</span>
+                                                <em class="quan"><span class="num--37aOyGmdW1">1</span>&nbsp;개</em>
+                                            </div>
+                                            <div class="price_area--jjAq5tYP9m"><span class="title--3G_o4_rhfc">총 배송비<span
+                                                    class="delivery_layer_area--24GraQM4cv"></span></span><em><span
+                                                    class="num--37aOyGmdW1">0</span>원</em></div>
+                                        </div>
+                                        <div class="total_area--a6Q91DyB5T">
+                                            <div class="inner--2z0IE5sNLy">
+                                                <div class="price_area--jjAq5tYP9m total--2a5HJtyfeD"><span
+                                                        class="title--3G_o4_rhfc">주문금액</span><em class="totalFn"><span
+                                                        class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="store_price_empty_area--1jjMvE5SXu"></div>
+                                    <div class="link_area--14aJI6oflh"><a href="#" class="link_buy--KOU5pZhUVG"><em>광동제약
+                                        직영스토어</em>&nbsp;1건 주문하기</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="store_container--382-BRTlye">
+                        <div class="store_card--EAQK-9jWb0 expand">
+                            <div class="store_content--1atEHLZlpd">
+                                <div>
+                                    <div class="products--zxkj6UbISb">
+                                        <div class="products_info--HVXp_hAnl0">
+                                            <div class="info--2I2hfPeviI">
+                                                <div>
+                                                    <div class="product--BPAxWCQbvE">
+                                                        <div class="product_info--TaUyJVEOf0">
+                                                            <div class="cell--HIdeeyUnFa">
+                                                                <div class="product_description--Lh-hSnnkFf">
+                                                                    <div class="check--2EZEnyir5V">
+                                                                        <button type="button"
+                                                                                class="btn_check--31ufZfaM8S checked--2A5fgfRoYJ"
+                                                                                role="checkbox" aria-checked="true">
+                                                                            <span class="check--2GKphErdbj">
+                                                                                <svg width="16"
+                                                                                     height="16" viewBox="0 0 16 16"
+                                                                                     fill="none"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     class="ico_check--3-_9ZRQGKX">
+                                                                                <path d="M12.945 4L14.1 5.154 6.387 12.8 2 8.4l1.155-1.153 3.232 3.246L12.945 4z"
+                                                                                      fill="#C7CACD"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                            <span class="blind">상품</span>
+                                                                            <span class="blind">선택됨</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="inner--1emXN2Ic_f">
+                                                                        <div class="thumb--1o26vhj68U"><img
+                                                                                src="https://shop-phinf.pstatic.net/20211229_49/1640758299346tVfUn_JPEG/41894188037456000_765986329.jpg?type=f500_500"
+                                                                                alt=""></div>
+                                                                        <div class="info_area--2AT8d3T9eq">
+                                                                            <div class="title--2r7IrJqWav">
+                                                                                <span class="ico_npay_plus--37zciz9t8T">
+                                                                                    1(광동
+                                                                                직영) 삼다수 2.0L 24개입(유/무라벨 랜덤발송)
+                                                                                </span>
+                                                                            </div>
+                                                                            <span class="price--2Uv-07hf78">
+                                                                                20000</span><em>원</em>
+                                                                        </div>
+                                                                        <button type="button"
+                                                                                class="btn_zzim--2cWUAaC_Y6"
+                                                                                aria-pressed="false"><svg width="25" height="24"
+                                                                                                          viewBox="0 0 25 24" fill="none"
+                                                                                                          xmlns="http://www.w3.org/2000/svg">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M12.3254 24C18.9529 24 24.3254 18.6274 24.3254 12C24.3254 5.37258 18.9529 0 12.3254 0C5.69802 0 0.325439 5.37258 0.325439 12C0.325439 18.6274 5.69802 24 12.3254 24Z"
+                                                                                  fill="black" fill-opacity="0.15"></path>
+                                                                            <path
+                                                                                    d="M11.3072 8.67807C10.7551 8.14078 10.0217 7.84619 9.24447 7.84619C8.46578 7.84619 7.73383 8.14078 7.18354 8.67778C6.03946 9.78922 6.03946 11.6001 7.18324 12.7133L12.3149 17.6345L17.6113 12.5573C18.6119 11.4527 18.5583 9.73932 17.4675 8.67807C16.9166 8.14078 16.1844 7.84619 15.4063 7.84619C14.6267 7.84619 13.8939 8.14078 13.3427 8.67778L11.0767 10.8587C10.7962 11.1232 10.6418 11.4748 10.6418 11.8471C10.6418 12.2196 10.7962 12.5712 11.0764 12.836C11.656 13.383 12.601 13.383 13.1817 12.836L15.3909 10.7195"
+                                                                                    stroke="white"></path>
+                                                                        </svg><span class="blind">찜하기</span></button>
+                                                                        <div class="product-removal">
+                                                                            <button type="button" class="remove-product">
+                                                                                <!--                                                                            <a href="">삭제</a>-->삭제
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="number">
+                                                                            <button type="button" class="minus_btn"><span class="minus">-</span></button>
+                                                                            <input type="text" value="1"/>
+                                                                            <button type="button" class="plus_btn"><span class="plus">+</span></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="button"
+                                                                        class="btn_delete--1OJG6GLwYt"><svg width="16"
+                                                                                                            height="16" viewBox="0 0 16 16" fill="none"
+                                                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                                                            class="ico_delete--3ASzyXvISn">
+                                                                    <path
+                                                                            d="M14.278 1.12l.722.72-6.278 6.28L15 14.397l-.722.722L8 8.841 1.722 15.12 1 14.397l6.278-6.278L1 1.841l.722-.722L8 7.397l6.278-6.278z"
+                                                                            fill="#BDC0C6"></path>
+                                                                </svg><span class="blind">삭제</span></button>
+                                                            </div>
+                                                            <div class="cell--HIdeeyUnFa">
+                                                                <div class="list_price--1DcaXbXz9W">
+                                                                    <div class="price_area--1eytys13Os total--2lIL693L7i">
+                                                                        <span class="title--1MQ9l0MwlN">상품금액</span>
+                                                                        <div class = "product-price">
+                                                                            <span class="num--1hENWZ6Uv8 product-price">20000</span>
+                                                                            원
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="price_area--1eytys13Os"><span
+                                                                            class="title--1MQ9l0MwlN">배송비</span><span
+                                                                            class="layer_area--2qluaooNFx m_only"></span><em><span
+                                                                            class="num--1hENWZ6Uv8">무료</span></em></div>
+                                                                </div>
+                                                                <div class="m_only--3xDkIw7vDP"></div>
+                                                                <div class="order_buttons--2Fb79h6uWq"><button
+                                                                        type="button">찜하기</button><button type="button"><span
+                                                                        class="none_280--1-kFXWiEW1">주문</span>수정</button><button
+                                                                        type="button" class="btn_order--4bpIwtdOmc">주문<span
+                                                                        class="none_280--1-kFXWiEW1">하기</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="price--38egva9GaS">
+                                                <div class="price_area--3Gj1SZEf9T"><span
+                                                        class="title--1eMhZQR6b8">배송비</span><em><span
+                                                        class="num--1rDSy6v0kt">무료</span></em>
+                                                    <div class="desc--xy8RI3Ogkn"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="store_price--1ITT00wh3a">
+                                    <div class="list_price--2q5Q85MYD-">
+                                        <div class="sub_area--K_qcAIhSzX">
+                                            <div class="price_area--jjAq5tYP9m"><span
+                                                    class="title--3G_o4_rhfc">선택상품금액</span><em><span
+                                                    class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                            <div class="price_area--jjAq5tYP9m discount--2RJZlYQP1m">
+                                                <span class="title--3G_o4_rhfc">수량</span>
+                                                <em class="quan"><span class="num--37aOyGmdW1">1</span>&nbsp;개</em>
+                                            </div>
+                                            <div class="price_area--jjAq5tYP9m"><span class="title--3G_o4_rhfc">총 배송비<span
+                                                    class="delivery_layer_area--24GraQM4cv"></span></span><em><span
+                                                    class="num--37aOyGmdW1">0</span>원</em></div>
+                                        </div>
+                                        <div class="total_area--a6Q91DyB5T">
+                                            <div class="inner--2z0IE5sNLy">
+                                                <div class="price_area--jjAq5tYP9m total--2a5HJtyfeD"><span
+                                                        class="title--3G_o4_rhfc">주문금액</span><em class="totalFn"><span
+                                                        class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="store_price_empty_area--1jjMvE5SXu"></div>
+                                    <div class="link_area--14aJI6oflh"><a href="#" class="link_buy--KOU5pZhUVG"><em>광동제약
+                                        직영스토어</em>&nbsp;1건 주문하기</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="store_container--382-BRTlye">
+                        <div class="store_card--EAQK-9jWb0 expand">
+                            <div class="store_content--1atEHLZlpd">
+                                <div>
+                                    <div class="products--zxkj6UbISb">
+                                        <div class="products_info--HVXp_hAnl0">
+                                            <div class="info--2I2hfPeviI">
+                                                <div>
+                                                    <div class="product--BPAxWCQbvE">
+                                                        <div class="product_info--TaUyJVEOf0">
+                                                            <div class="cell--HIdeeyUnFa">
+                                                                <div class="product_description--Lh-hSnnkFf">
+                                                                    <div class="check--2EZEnyir5V">
+                                                                        <button type="button"
+                                                                                class="btn_check--31ufZfaM8S checked--2A5fgfRoYJ"
+                                                                                role="checkbox" aria-checked="true">
+                                                                            <span class="check--2GKphErdbj">
+                                                                                <svg width="16"
+                                                                                     height="16" viewBox="0 0 16 16"
+                                                                                     fill="none"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     class="ico_check--3-_9ZRQGKX">
+                                                                                <path d="M12.945 4L14.1 5.154 6.387 12.8 2 8.4l1.155-1.153 3.232 3.246L12.945 4z"
+                                                                                      fill="#C7CACD"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                            <span class="blind">상품</span>
+                                                                            <span class="blind">선택됨</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="inner--1emXN2Ic_f">
+                                                                        <div class="thumb--1o26vhj68U"><img
+                                                                                src="https://shop-phinf.pstatic.net/20211229_49/1640758299346tVfUn_JPEG/41894188037456000_765986329.jpg?type=f500_500"
+                                                                                alt=""></div>
+                                                                        <div class="info_area--2AT8d3T9eq">
+                                                                            <div class="title--2r7IrJqWav">
+                                                                                <span class="ico_npay_plus--37zciz9t8T">
+                                                                                    1(광동
+                                                                                직영) 삼다수 2.0L 24개입(유/무라벨 랜덤발송)
+                                                                                </span>
+                                                                            </div>
+                                                                            <span class="price--2Uv-07hf78">
+                                                                                20000</span><em>원</em>
+                                                                        </div>
+                                                                        <button type="button"
+                                                                                class="btn_zzim--2cWUAaC_Y6"
+                                                                                aria-pressed="false"><svg width="25" height="24"
+                                                                                                          viewBox="0 0 25 24" fill="none"
+                                                                                                          xmlns="http://www.w3.org/2000/svg">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M12.3254 24C18.9529 24 24.3254 18.6274 24.3254 12C24.3254 5.37258 18.9529 0 12.3254 0C5.69802 0 0.325439 5.37258 0.325439 12C0.325439 18.6274 5.69802 24 12.3254 24Z"
+                                                                                  fill="black" fill-opacity="0.15"></path>
+                                                                            <path
+                                                                                    d="M11.3072 8.67807C10.7551 8.14078 10.0217 7.84619 9.24447 7.84619C8.46578 7.84619 7.73383 8.14078 7.18354 8.67778C6.03946 9.78922 6.03946 11.6001 7.18324 12.7133L12.3149 17.6345L17.6113 12.5573C18.6119 11.4527 18.5583 9.73932 17.4675 8.67807C16.9166 8.14078 16.1844 7.84619 15.4063 7.84619C14.6267 7.84619 13.8939 8.14078 13.3427 8.67778L11.0767 10.8587C10.7962 11.1232 10.6418 11.4748 10.6418 11.8471C10.6418 12.2196 10.7962 12.5712 11.0764 12.836C11.656 13.383 12.601 13.383 13.1817 12.836L15.3909 10.7195"
+                                                                                    stroke="white"></path>
+                                                                        </svg><span class="blind">찜하기</span></button>
+                                                                        <div class="product-removal">
+                                                                            <button type="button" class="remove-product">
+                                                                                <!--                                                                            <a href="">삭제</a>-->삭제
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="number">
+                                                                            <button type="button" class="minus_btn"><span class="minus">-</span></button>
+                                                                            <input type="text" value="1"/>
+                                                                            <button type="button" class="plus_btn"><span class="plus">+</span></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="button"
+                                                                        class="btn_delete--1OJG6GLwYt"><svg width="16"
+                                                                                                            height="16" viewBox="0 0 16 16" fill="none"
+                                                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                                                            class="ico_delete--3ASzyXvISn">
+                                                                    <path
+                                                                            d="M14.278 1.12l.722.72-6.278 6.28L15 14.397l-.722.722L8 8.841 1.722 15.12 1 14.397l6.278-6.278L1 1.841l.722-.722L8 7.397l6.278-6.278z"
+                                                                            fill="#BDC0C6"></path>
+                                                                </svg><span class="blind">삭제</span></button>
+                                                            </div>
+                                                            <div class="cell--HIdeeyUnFa">
+                                                                <div class="list_price--1DcaXbXz9W">
+                                                                    <div class="price_area--1eytys13Os total--2lIL693L7i">
+                                                                        <span class="title--1MQ9l0MwlN">상품금액</span>
+                                                                        <div class = "product-price">
+                                                                            <span class="num--1hENWZ6Uv8 product-price">20000</span>
+                                                                            원
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="price_area--1eytys13Os"><span
+                                                                            class="title--1MQ9l0MwlN">배송비</span><span
+                                                                            class="layer_area--2qluaooNFx m_only"></span><em><span
+                                                                            class="num--1hENWZ6Uv8">무료</span></em></div>
+                                                                </div>
+                                                                <div class="m_only--3xDkIw7vDP"></div>
+                                                                <div class="order_buttons--2Fb79h6uWq"><button
+                                                                        type="button">찜하기</button><button type="button"><span
+                                                                        class="none_280--1-kFXWiEW1">주문</span>수정</button><button
+                                                                        type="button" class="btn_order--4bpIwtdOmc">주문<span
+                                                                        class="none_280--1-kFXWiEW1">하기</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="price--38egva9GaS">
+                                                <div class="price_area--3Gj1SZEf9T"><span
+                                                        class="title--1eMhZQR6b8">배송비</span><em><span
+                                                        class="num--1rDSy6v0kt">무료</span></em>
+                                                    <div class="desc--xy8RI3Ogkn"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="store_price--1ITT00wh3a">
+                                    <div class="list_price--2q5Q85MYD-">
+                                        <div class="sub_area--K_qcAIhSzX">
+                                            <div class="price_area--jjAq5tYP9m"><span
+                                                    class="title--3G_o4_rhfc">선택상품금액</span><em><span
+                                                    class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                            <div class="price_area--jjAq5tYP9m discount--2RJZlYQP1m">
+                                                <span class="title--3G_o4_rhfc">수량</span>
+                                                <em class="quan"><span class="num--37aOyGmdW1">1</span>&nbsp;개</em>
+                                            </div>
+                                            <div class="price_area--jjAq5tYP9m"><span class="title--3G_o4_rhfc">총 배송비<span
+                                                    class="delivery_layer_area--24GraQM4cv"></span></span><em><span
+                                                    class="num--37aOyGmdW1">0</span>원</em></div>
+                                        </div>
+                                        <div class="total_area--a6Q91DyB5T">
+                                            <div class="inner--2z0IE5sNLy">
+                                                <div class="price_area--jjAq5tYP9m total--2a5HJtyfeD"><span
+                                                        class="title--3G_o4_rhfc">주문금액</span><em class="totalFn"><span
+                                                        class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="store_price_empty_area--1jjMvE5SXu"></div>
+                                    <div class="link_area--14aJI6oflh"><a href="#" class="link_buy--KOU5pZhUVG"><em>광동제약
+                                        직영스토어</em>&nbsp;1건 주문하기</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="store_container--382-BRTlye">
+                        <div class="store_card--EAQK-9jWb0 expand">
+                            <div class="store_content--1atEHLZlpd">
+                                <div>
+                                    <div class="products--zxkj6UbISb">
+                                        <div class="products_info--HVXp_hAnl0">
+                                            <div class="info--2I2hfPeviI">
+                                                <div>
+                                                    <div class="product--BPAxWCQbvE">
+                                                        <div class="product_info--TaUyJVEOf0">
+                                                            <div class="cell--HIdeeyUnFa">
+                                                                <div class="product_description--Lh-hSnnkFf">
+                                                                    <div class="check--2EZEnyir5V">
+                                                                        <button type="button"
+                                                                                class="btn_check--31ufZfaM8S checked--2A5fgfRoYJ"
+                                                                                role="checkbox" aria-checked="true">
+                                                                            <span class="check--2GKphErdbj">
+                                                                                <svg width="16"
+                                                                                     height="16" viewBox="0 0 16 16"
+                                                                                     fill="none"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     class="ico_check--3-_9ZRQGKX">
+                                                                                <path d="M12.945 4L14.1 5.154 6.387 12.8 2 8.4l1.155-1.153 3.232 3.246L12.945 4z"
+                                                                                      fill="#C7CACD"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                            <span class="blind">상품</span>
+                                                                            <span class="blind">선택됨</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="inner--1emXN2Ic_f">
+                                                                        <div class="thumb--1o26vhj68U"><img
+                                                                                src="https://shop-phinf.pstatic.net/20211229_49/1640758299346tVfUn_JPEG/41894188037456000_765986329.jpg?type=f500_500"
+                                                                                alt=""></div>
+                                                                        <div class="info_area--2AT8d3T9eq">
+                                                                            <div class="title--2r7IrJqWav">
+                                                                                <span class="ico_npay_plus--37zciz9t8T">
+                                                                                    1(광동
+                                                                                직영) 삼다수 2.0L 24개입(유/무라벨 랜덤발송)
+                                                                                </span>
+                                                                            </div>
+                                                                            <span class="price--2Uv-07hf78">
+                                                                                20000</span><em>원</em>
+                                                                        </div>
+                                                                        <button type="button"
+                                                                                class="btn_zzim--2cWUAaC_Y6"
+                                                                                aria-pressed="false"><svg width="25" height="24"
+                                                                                                          viewBox="0 0 25 24" fill="none"
+                                                                                                          xmlns="http://www.w3.org/2000/svg">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M12.3254 24C18.9529 24 24.3254 18.6274 24.3254 12C24.3254 5.37258 18.9529 0 12.3254 0C5.69802 0 0.325439 5.37258 0.325439 12C0.325439 18.6274 5.69802 24 12.3254 24Z"
+                                                                                  fill="black" fill-opacity="0.15"></path>
+                                                                            <path
+                                                                                    d="M11.3072 8.67807C10.7551 8.14078 10.0217 7.84619 9.24447 7.84619C8.46578 7.84619 7.73383 8.14078 7.18354 8.67778C6.03946 9.78922 6.03946 11.6001 7.18324 12.7133L12.3149 17.6345L17.6113 12.5573C18.6119 11.4527 18.5583 9.73932 17.4675 8.67807C16.9166 8.14078 16.1844 7.84619 15.4063 7.84619C14.6267 7.84619 13.8939 8.14078 13.3427 8.67778L11.0767 10.8587C10.7962 11.1232 10.6418 11.4748 10.6418 11.8471C10.6418 12.2196 10.7962 12.5712 11.0764 12.836C11.656 13.383 12.601 13.383 13.1817 12.836L15.3909 10.7195"
+                                                                                    stroke="white"></path>
+                                                                        </svg><span class="blind">찜하기</span></button>
+                                                                        <div class="product-removal">
+                                                                            <button type="button" class="remove-product">
+                                                                                <!--                                                                            <a href="">삭제</a>-->삭제
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="number">
+                                                                            <button type="button" class="minus_btn"><span class="minus">-</span></button>
+                                                                            <input type="text" value="1"/>
+                                                                            <button type="button" class="plus_btn"><span class="plus">+</span></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="button"
+                                                                        class="btn_delete--1OJG6GLwYt"><svg width="16"
+                                                                                                            height="16" viewBox="0 0 16 16" fill="none"
+                                                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                                                            class="ico_delete--3ASzyXvISn">
+                                                                    <path
+                                                                            d="M14.278 1.12l.722.72-6.278 6.28L15 14.397l-.722.722L8 8.841 1.722 15.12 1 14.397l6.278-6.278L1 1.841l.722-.722L8 7.397l6.278-6.278z"
+                                                                            fill="#BDC0C6"></path>
+                                                                </svg><span class="blind">삭제</span></button>
+                                                            </div>
+                                                            <div class="cell--HIdeeyUnFa">
+                                                                <div class="list_price--1DcaXbXz9W">
+                                                                    <div class="price_area--1eytys13Os total--2lIL693L7i">
+                                                                        <span class="title--1MQ9l0MwlN">상품금액</span>
+                                                                        <div class = "product-price">
+                                                                            <span class="num--1hENWZ6Uv8 product-price">20000</span>
+                                                                            원
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="price_area--1eytys13Os"><span
+                                                                            class="title--1MQ9l0MwlN">배송비</span><span
+                                                                            class="layer_area--2qluaooNFx m_only"></span><em><span
+                                                                            class="num--1hENWZ6Uv8">무료</span></em></div>
+                                                                </div>
+                                                                <div class="m_only--3xDkIw7vDP"></div>
+                                                                <div class="order_buttons--2Fb79h6uWq"><button
+                                                                        type="button">찜하기</button><button type="button"><span
+                                                                        class="none_280--1-kFXWiEW1">주문</span>수정</button><button
+                                                                        type="button" class="btn_order--4bpIwtdOmc">주문<span
+                                                                        class="none_280--1-kFXWiEW1">하기</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="price--38egva9GaS">
+                                                <div class="price_area--3Gj1SZEf9T"><span
+                                                        class="title--1eMhZQR6b8">배송비</span><em><span
+                                                        class="num--1rDSy6v0kt">무료</span></em>
+                                                    <div class="desc--xy8RI3Ogkn"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="store_price--1ITT00wh3a">
+                                    <div class="list_price--2q5Q85MYD-">
+                                        <div class="sub_area--K_qcAIhSzX">
+                                            <div class="price_area--jjAq5tYP9m"><span
+                                                    class="title--3G_o4_rhfc">선택상품금액</span><em><span
+                                                    class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                            <div class="price_area--jjAq5tYP9m discount--2RJZlYQP1m">
+                                                <span class="title--3G_o4_rhfc">수량</span>
+                                                <em class="quan"><span class="num--37aOyGmdW1">1</span>&nbsp;개</em>
+                                            </div>
+                                            <div class="price_area--jjAq5tYP9m"><span class="title--3G_o4_rhfc">총 배송비<span
+                                                    class="delivery_layer_area--24GraQM4cv"></span></span><em><span
+                                                    class="num--37aOyGmdW1">0</span>원</em></div>
+                                        </div>
+                                        <div class="total_area--a6Q91DyB5T">
+                                            <div class="inner--2z0IE5sNLy">
+                                                <div class="price_area--jjAq5tYP9m total--2a5HJtyfeD"><span
+                                                        class="title--3G_o4_rhfc">주문금액</span><em class="totalFn"><span
+                                                        class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="store_price_empty_area--1jjMvE5SXu"></div>
+                                    <div class="link_area--14aJI6oflh"><a href="#" class="link_buy--KOU5pZhUVG"><em>광동제약
+                                        직영스토어</em>&nbsp;1건 주문하기</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div></div>
+            <ul class="notice--WcNb-89c6_">
+                <li>장바구니 상품은 <em>최대 30일간 저장</em>됩니다.</li>
+                <li>가격, 옵션 등 정보가 변경된 경우 주문이 불가할 수 있습니다.</li>
+                <li>오늘출발 상품은 판매자 설정 시점에 따라 오늘출발 여부가 변경될 수 있으니 주문 시 꼭 다시 확인해 주시기 바랍니다.</li>
+            </ul>
+            <div class="floating_area--3yEuORHlfZ">
+                <div class="inner--2zhHC3FZRa">
+                    <div class="list_price--2FzMcbJy3j">
+                        <div class="pc_title--2b81eyMgJ3 pc_only">주문금액 상세내역<button type="button"
+                                class="btn_close--23XzFzG0JN"><svg width="16" height="16" viewBox="0 0 16 16"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg" class="ico--103Gt-5Uu0">
+                                    <path
+                                        d="M1.60355 0.896447C1.40829 0.701184 1.09171 0.701184 0.896447 0.896447C0.701184 1.09171 0.701184 1.40829 0.896447 1.60355L1.60355 0.896447ZM14.8964 15.6036C15.0917 15.7988 15.4083 15.7988 15.6036 15.6036C15.7988 15.4083 15.7988 15.0917 15.6036 14.8964L14.8964 15.6036ZM15.6036 1.60355C15.7988 1.40829 15.7988 1.09171 15.6036 0.896447C15.4083 0.701184 15.0917 0.701184 14.8964 0.896447L15.6036 1.60355ZM0.896447 14.8964C0.701184 15.0917 0.701184 15.4083 0.896447 15.6036C1.09171 15.7988 1.40829 15.7988 1.60355 15.6036L0.896447 14.8964ZM0.896447 1.60355L14.8964 15.6036L15.6036 14.8964L1.60355 0.896447L0.896447 1.60355ZM14.8964 0.896447L0.896447 14.8964L1.60355 15.6036L15.6036 1.60355L14.8964 0.896447Z"
+                                        fill="black"></path>
+                                </svg><span class="blind">닫기</span></button></div><button type="button"
+                            class="btn_top--3B9LQmKFq8 m_only"><svg width="23" height="8" viewBox="0 0 23 8" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="ico--103Gt-5Uu0">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M11.4998 7.99987C11.2897 8.0004 11.0831 7.94666 10.8998 7.84387L0.547836 1.97687C0.00883639 1.66987 -0.162164 1.01287 0.168836 0.509866C0.498836 0.00786638 1.20684 -0.152134 1.74884 0.155866L11.4988 5.68187L21.2498 0.156866C21.7918 -0.150134 22.4998 0.00886637 22.8308 0.510866C23.1618 1.01287 22.9908 1.66987 22.4508 1.97687L12.0998 7.84387C11.9158 7.94687 11.7098 7.99987 11.4998 7.99987Z"
+                                    fill="#9B9B9B"></path>
+                            </svg><span class="blind">상세내역 닫기</span></button>
+                        <div class="sub_area--hf6eGsIyiS">
+                            <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 선택상품금액</span><em><span
+                                        class="num--s28sqtGizJ">33,100</span>원</em></div>
+                            <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 배송비</span><em><span
+                                        class="num--s28sqtGizJ">+0</span>원</em></div>
+                            <div class="price_area--mS4cPOr5t2 discount--1CgoO7hQt4"><span
+                                    class="title---U2sFnkh4X">할인예상금액</span><em><span
+                                        class="num--s28sqtGizJ">-3,680</span>원</em></div>
+                        </div>
+                        <div class="total_area--1Gh9HH8mfy">
+                            <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 주문금액</span><em><span
+                                        class="num--s28sqtGizJ">29,420</span>원</em></div>
+                        </div>
+                    </div>
+                    <div class="buy_area--1s7Qe73yzk"><button type="button" class="btn_expand--2d-FsCrHVi"><span
+                                class="title--cW4o5HCufH">총 주문금액</span><em><span
+                                    class="num--2CYvhIm-m6" id="card-total">29,420</span>원<svg width="16" height="17"
+                                    viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="ico--3qz69NgEHC">
+                                    <path opacity="0.9"
+                                        d="M5.02414 10.3285L4.57129 9.84852L7.99986 6.21426L11.4284 9.84852L10.9756 10.3285L7.99986 7.1743L5.02414 10.3285Z"
+                                        fill="white" stroke="white" stroke-width="0.5"></path>
+                                    <rect x="0.5" y="1" width="15" height="15" rx="7.5" stroke="white"
+                                        stroke-opacity="0.6"></rect>
+                                </svg></em><span class="blind">펼치기</span></button><button type="button"
+                            class="link_buy--jXvxZ8Agr-">총 주문하기<span class="badge--ltxr8Ih722">1</span></button></div>
+                </div>
+            </div>
+            <div class="footer_wrap--1aAGSZPMzs type_floating--3kq4kVTZ9j">
+                <div class="a">
+                        </div>
+                        <div class="_footer_info_footer_1QV_F">
+                            <div class="_footer_top_area_2hFwy _footer_btns_area_2JOr5"><a href="javascript:void(0)"
+                                    class="_footer_btn_3JsxB btn_top N=a:fot.top"><span
+                                        class="_footer_txt_2I9UX">TOP</span></a></div>
+                            <div class="_footer_btns_area_2JOr5"><a href="javascript:void(0)"
+                                    class="_footer_btn_3JsxB N=a:fot.logout"><span
+                                        class="_footer_txt_2I9UX">로그아웃</span></a><a
+                                    href="http://m.naver.com/services.html?f=svc.shopping"
+                                    class="_footer_btn_3JsxB N=a:fot.sitemap"><span
+                                        class="_footer_txt_2I9UX">전체서비스</span></a></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/cart.js"></script>
+</body>
+
+</html>
