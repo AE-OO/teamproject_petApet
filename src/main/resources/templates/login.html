@@ -1,130 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>petApet</title>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="" name="keywords">
-        <meta content="" name="description">
+<head>
+    <meta charset="utf-8">
+    <title>petApet</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
-        <!-- Favicon -->
-        <link th:href="@{/img/icon/favicon.ico}" rel="icon">
+    <!-- Favicon -->
+    <link th:href="@{/img/icon/favicon.ico}" rel="shortcut icon" sizes="16x16">
 
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
+          rel="stylesheet">
 
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Template Stylesheet -->
-        <link href="css/style.css" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.6.1.js"
-                integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-                crossorigin="anonymous">
-        </script>
-        <script>
-            $(document).ready(function (){
-                $("#loginBtn").click(function (){
-                    alert("클릭완...");
-                    let memberId = $("#memberId").val();
-                    let memberPw = $("#memberPw").val();
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#loginBtn").click(function () {
+                let memberId = $("#memberId").val();
+                let memberPw = $("#memberPw").val();
 
-                    if (memberId == "") {  //ID란이 비어있다면
-                        $("#mIdLoginErrorMsg").text("아이디를 입력해주세요.");  // 해당alert를 띄워주세요
-                        $("#memberId").focus();
-                        return;
-                    } else {
-                        $("#mIdLoginErrorMsg").text("")
+                if (memberId == "") {  //ID란이 비어있다면
+                    $("#mIdErrorMsg").text("아이디를 입력해주세요.");  // 해당alert를 띄워주세요
+                    $("#memberId").focus();
+                    return;
+                } else {
+                    $("#mIdErrorMsg").text("")
+                }
+
+                if (memberPw == "") { //PW란이 비어있다면
+                    $("#mPwErrorMsg").text("비밀번호를 입력해주세요.");// 해당alert를 띄워주세요
+                    $("#memberPw").focus();
+                    return;
+                } else {
+                    $("#mPwErrorMsg").text("")
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/login",
+                    data: JSON.stringify({
+                        memberId: memberId,
+                        memberPw: memberPw
+                    }),
+                    dataType: "json",
+                    contentType: 'application/json',
+                    success: function (response) {//검증을 통과하면 서버는 토큰을 발행시켜줌
+                        alert(response['token']); //토큰 발행 확인용
+                        window.location = "/";
+                    },
+                    error: function () {
+                        alert("실패..ㅠ");
                     }
-
-                    if (memberPw == "") {//PW란이 비어있다면
-                        $("#mPwLoginErrorMsg").text("비밀번호를 입력해주세요.");// 해당alert를 띄워주세요
-                        $("#memberPw").focus();
-                        return;
-                    } else {
-                        $("#mPwLoginErrorMsg").text("")
-                    }
-                    $.ajax({
-                        type: "POST",
-                        url: "/members/login",
-                        data: {
-                            memberId: $("#memberId").val(),
-                            memberPw: $("#memberPw").val()
-                        },
-                        dataType: "json",
-                        success: function (response) {//검증을 통과하면 서버는 토큰을 발행시켜줌
-                            alert(response['grantType']+'////'+response['accessToken']+'////'+response['refreshToken']);
-                            $.cookie('mytoken', response['token'], {path: '/'}); //mytoken이라는 키가, 서버가 실제로 발행한 token을 저장하고 있음
-                            window.location.replace("/")
-                        },
-                        error: function (xhr, status, error) {
-                            alert("실패..ㅠ");
-                        }
-
-                    });
                 });
             });
+        });
 
-        </script>
+    </script>
 
-    </head>
+</head>
 
-    <body>
+<body>
 
-    <!-- Login Start -->
-    <div class="container-xxl text-center py-6 my-6">
-        <div class="container login">
-            <div class="row g-5">
-                <div class="mx-auto">
-                    <h1 class="display-5 mb-5"><a class="" href="/"><img src="aa" alt="logo">petApet</a></h1>
-                    <p class="mb-4 ">아이디와 비밀번호를 입력하세요.</p>
-<!--                    <form >-->
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="memberId"   placeholder="login"/>
-                                    <label for="subject">아이디</label>
-                                </div>
-                                <p id="mIdLoginErrorMsg" class="text-start text-danger ps-2 my-1" />
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="password" class="form-control" id="memberPw" autocomplete="off" placeholder="password"/>
-                                    <label for="subject">비밀번호</label>
-                                </div>
-                                <p id="mPwLoginErrorMsg" class="text-start text-danger ps-2 my-1"/>
-                            </div>
-                            <div class="col-12">
-                                <button id="loginBtn" class="btn btn-primary mb-2 col-12 py-3">로그인</button>
-                                <hr/>
-                                <span class="mx-3"><a href="#">비밀번호 찾기</a></span>|
-                                <span class="mx-3"> <a href="#">아이디 찾기</a></span>|
-                                <span class="mx-3"><a href="/join">회원가입</a></span>
-                            </div>
-
+<!-- Login Start -->
+<div class="container-xxl text-center py-6 my-6">
+    <div class="container login">
+        <div class="row g-5">
+            <div class="mx-auto">
+                <h1 class="display-5 mb-5"><a class="" href="/"><img alt="logo">petApet</a></h1>
+                <p class="invalid-feedback">아이디와 비밀번호를 입력하세요.</p>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="memberId" placeholder="login"/>
+                            <label for="memberId">아이디</label>
                         </div>
-<!--                    </form>-->
+                        <p id="mIdErrorMsg" class="text-start text-danger ps-2 my-1"/>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="memberPw" autocomplete="off"
+                                   placeholder="password"/>
+                            <label for="memberPw">비밀번호</label>
+                        </div>
+                        <p id="mPwErrorMsg" class="text-start text-danger ps-2 my-1"/>
+                    </div>
+                    <div class="col-12">
+                        <button id="loginBtn" class="btn btn-primary mb-2 col-12 py-3">로그인</button>
+                        <hr/>
+                        <span class="mx-3"><a href="#">비밀번호 찾기</a></span>|
+                        <span class="mx-3"> <a href="#">아이디 찾기</a></span>|
+                        <span class="mx-3"><a href="/join">회원가입</a></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Login End -->
+</div>
+<!-- Login End -->
 
 
-
-    <!-- Copyright Start -->
-    <div class="container-fluid text-center copyright py-4">
-        <div class="container ">
-            <div class="row ">
-                <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
-                    &copy; petApet Project Team All Right Reserved.
-                </div>
+<!-- Copyright Start -->
+<div class="container-fluid text-center copyright py-4">
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
+                &copy; petApet Project Team All Right Reserved.
             </div>
         </div>
     </div>
-    <!-- Copyright End -->
+</div>
+<!-- Copyright End -->
 
-    </body>
+</body>
 </html>

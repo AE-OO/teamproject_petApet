@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.member;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +24,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query("select m.memberGender from Member m")
     List<String> getGenderList();
 
-    Optional<Member> findByMemberId(String memberId);
+    @EntityGraph(attributePaths = "authorities")
+    Optional<Member> findOneWithAuthoritiesByMemberId(String memberId);
 }
