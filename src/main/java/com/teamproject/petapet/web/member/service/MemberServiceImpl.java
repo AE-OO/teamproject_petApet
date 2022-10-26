@@ -82,6 +82,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
 
+    @Override
+    public List<Integer> getAgeList() {
+        return memberRepository.getAgeList();
+    }
+
     @Transactional
     @Override
     public TokenDto login(LoginDto loginDto) {

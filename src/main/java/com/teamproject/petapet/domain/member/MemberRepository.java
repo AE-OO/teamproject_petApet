@@ -26,4 +26,13 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     @EntityGraph(attributePaths = "authorities")
     Optional<Member> findOneWithAuthoritiesByMemberId(String memberId);
+
+    @Query(value = "select ifnull(b.cnt, 0) " +
+            "from agetable age left outer join (select age , count(age) as cnt " +
+            "From (select round((date_format(current_date(), '%Y') - date_format(memberBirthday, '%Y'))/10) as age " +
+            "FROM petapet.member " +
+            "where memberName not in('admin')) a group by a.age order by a.age) b " +
+            "on b.age = age.age", nativeQuery = true)
+    List<Integer> getAgeList();
+
 }

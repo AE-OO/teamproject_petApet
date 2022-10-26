@@ -78,7 +78,7 @@
         <!-- partial -->
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="nav">
+            <ul class="nav float_sidebar">
                 <li class="nav-item">
                     <a class="nav-link" href="../index.html">
                         <i class="icon-grid menu-icon"></i>
@@ -95,6 +95,36 @@
                     <a class="nav-link" th:href="@{/admin/registerFAQ}">
                         <i class="icon-paper menu-icon"></i>
                         <span class="menu-title">FAQ 등록</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="goInquiryManage">
+                    <a class="nav-link">
+                    <i class="icon-paper menu-icon"></i>
+                    <span class="menu-title">문의 관리</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="goReportManage">
+                    <a class="nav-link">
+                    <i class="icon-paper menu-icon"></i>
+                    <span class="menu-title">신고 관리</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="goProductManage">
+                    <a class="nav-link">
+                    <i class="icon-paper menu-icon"></i>
+                    <span class="menu-title">상품 관리</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="goCommunityManage">
+                    <a class="nav-link">
+                    <i class="icon-paper menu-icon"></i>
+                    <span class="menu-title">커뮤니티 관리</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="goMemberManage">
+                    <a class="nav-link">
+                    <i class="icon-paper menu-icon"></i>
+                    <span class="menu-title">회원 관리</span>
                     </a>
                 </li>
             </ul>
@@ -130,7 +160,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 stretch-card grid-margin">
+                    <div class="col-md-6 stretch-card grid-margin" id="inquiryManage">
                         <div class="card">
                             <div class="card-body">
                                 <div>
@@ -154,11 +184,19 @@
                                         <tbody>
                                         <tr th:each="FAQ : ${FAQ}">
                                             <td class="pl-0">[[${FAQ.inquiredId}]]</td>
-                                            <td><a th:href="@{/admin/updateFAQForm/{FAQId}(FAQId = ${FAQ.inquiredId})}">[[${FAQ.inquiredTitle}]]</a></td>
-                                            <td>
-                                                <a th:href="@{/admin/updateFAQForm/{FAQId}(FAQId = ${FAQ.inquiredId})}"><button class="btn btn-success btn-sm updateFAQ" type="button">수정</button></a>
+                                            <td><a th:href="@{/admin/updateFAQForm/{FAQId}(FAQId = ${FAQ.inquiredId})}">[[${FAQ.inquiredTitle}]]</a>
                                             </td>
-                                            <td><button class="btn btn-danger btn-sm deleteFAQ" type="button" th:id="${FAQ.inquiredId}">삭제</button></td>
+                                            <td>
+                                                <a th:href="@{/admin/updateFAQForm/{FAQId}(FAQId = ${FAQ.inquiredId})}">
+                                                    <button class="btn btn-success btn-sm updateFAQ" type="button">수정
+                                                    </button>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm deleteFAQ" type="button"
+                                                        th:id="${FAQ.inquiredId}">삭제
+                                                </button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -195,7 +233,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 stretch-card grid-margin">
+                    <div class="col-md-6 stretch-card grid-margin" id="reportManage">
                         <div class="card">
                             <div class="card-body">
                                 <div>
@@ -216,7 +254,11 @@
                                             <td class="pl-0" id="communityReportId">[[${communityReport.reportId}]]</td>
                                             <td id="communityId">[[${communityReport.community.communityId}]]</td>
                                             <td>[[${communityReport.reportReason}]]</td>
-                                            <td><button class="btn btn-danger btn-sm acceptCommunityReportBtn" type="button">승인</button></td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm acceptCommunityReportBtn"
+                                                        type="button">승인
+                                                </button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -245,7 +287,11 @@
                                             <td class="pl-0" id="memberReportId">[[${memberReport.reportId}]]</td>
                                             <td id="memberId">[[${memberReport.member.memberId}]]</td>
                                             <td>[[${memberReport.reportReason}]]</td>
-                                            <td><button class="btn btn-danger btn-sm acceptMemberReportBtn" type="button">승인</button></td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm acceptMemberReportBtn"
+                                                        type="button">승인
+                                                </button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -255,7 +301,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 stretch-card grid-margin">
+                    <div class="col-md-12 stretch-card grid-margin" id="productManage">
                         <div class="card">
                             <div class="card-body">
                                 <div>
@@ -289,13 +335,19 @@
                                             <td>
                                                 <select class="form-control form-control-sm"
                                                         id="productStatus" name="productStatus">
-                                                    <option th:value="${product.productStatus}">[[${product.productStatus}]](기본정보)</option>
+                                                    <option th:value="${product.productStatus}">
+                                                        [[${product.productStatus}]](현재상태)
+                                                    </option>
                                                     <option value="판매중">판매중</option>
                                                     <option value="재고없음">재고없음</option>
                                                     <option value="단종">단종</option>
                                                 </select>
                                             </td>
-                                            <td><button type="button" class="btn btn-primary btn-sm setProductStatus" id="setStatusBtn" th:value="${product.productId}">상태반영</button></td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-sm setProductStatus"
+                                                        id="setStatusBtn" th:value="${product.productId}">상태반영
+                                                </button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -305,7 +357,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="col-lg-12 grid-margin stretch-card" id="communityManage">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">전체 커뮤니티관리</h4>
@@ -330,7 +382,8 @@
                                                 <td>[[${community.member.memberId}]]</td>
                                                 <td>[[${community.communityCategory}]]</td>
                                                 <td>[[${#temporals.format(community.communityDate,'yyyy/MM/dd')}]]</td>
-                                                <td class="text-success" id="report">[[${community.communityReport}]]</td>
+                                                <td class="text-success" id="report">[[${community.communityReport}]]
+                                                </td>
                                                 <td>
                                                     <button class="btn btn-danger btn-sm communityModal" type="button"
                                                             th:id="${community.communityId}">게시글 삭제
@@ -346,7 +399,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="col-lg-12 grid-margin stretch-card" id="memberManage">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">전체 회원관리</h4>
@@ -372,7 +425,8 @@
                                             <td>[[${#temporals.format(member.memberJoinDate,'yyyy/MM/dd')}]]</td>
                                             <td class="text-success" id="report">[[${member.memberReport}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm memberModal" type="button" th:id="${member.memberId}">회원탈퇴/정지
+                                                <button class="btn btn-danger btn-sm memberModal" type="button"
+                                                        th:id="${member.memberId}">회원탈퇴/정지
                                                 </button>
                                             </td>
                                         </tr>
@@ -385,7 +439,8 @@
                 </div>
             </div>
             <!-- 게시글 삭제 확인 모달 -->
-            <div class="modal fade" id="confirmCommunityDeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            <div class="modal fade" id="confirmCommunityDeleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                 tabindex="-1"
                  aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -396,13 +451,16 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                            <button type="button" class="btn btn-primary confirmCommunityDelete" data-bs-dismiss="modal">강제삭제</button>
+                            <button type="button" class="btn btn-primary confirmCommunityDelete"
+                                    data-bs-dismiss="modal">강제삭제
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- 회원 삭제 확인 모달 -->
-            <div class="modal fade" id="confirmMemberDeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            <div class="modal fade" id="confirmMemberDeleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                 tabindex="-1"
                  aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -413,8 +471,12 @@
                         <div class="modal-body memberDelete" style="text-align: center">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary confirmDisabledMember" data-bs-dismiss="modal">회원정지</button>
-                            <button type="button" class="btn btn-primary confirmMemberDelete" data-bs-dismiss="modal">강제탈퇴</button>
+                            <button type="button" class="btn btn-secondary confirmDisabledMember"
+                                    data-bs-dismiss="modal">회원정지
+                            </button>
+                            <button type="button" class="btn btn-primary confirmMemberDelete" data-bs-dismiss="modal">
+                                강제탈퇴
+                            </button>
                         </div>
                     </div>
                 </div>
