@@ -22,6 +22,11 @@ public class CartServiceImpl implements CartService{
     private final ProductRepository productRepository;
 
     @Override
+    public List<Cart> findAll(String memberId) {
+        return cartRepository.findCartByMember(memberId);
+    }
+
+    @Override
     public Cart save(Cart cart) {
         return null;
     }
@@ -29,11 +34,6 @@ public class CartServiceImpl implements CartService{
     @Override
     public Cart findOne(Long id) {
         return null;
-    }
-
-    @Override
-    public List<Cart> findAll(String memberId) {
-        return cartRepository.findCartByMember1(memberId);
     }
 
     @Override

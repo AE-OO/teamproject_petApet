@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.cart.CartRepository;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.cart.dto.CartDTO;
+import com.teamproject.petapet.web.cart.dto.CartMemberDTO;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -28,14 +29,17 @@ public class CartController {
     private final MemberService memberService;
 
     @GetMapping()
-    public String mycart(String memberId, Model model, HttpSession httpSession, HttpServletRequest request){
-//        httpSession.setAttribute("loginMember", memberService.findOne("memberA").get());
+    public String mycart(@ModelAttribute("memberParam") CartMemberDTO memberParam ,
+                         HttpSession httpSession,
+                         HttpServletRequest request,
+                         Model model){
+//        httpSession.setAttribute("loginMember", memberService.findOne(memberParam.).get());
 //        HttpSession session = request.getSession(false);
 //        Member loginMemberSession = (Member) session.getAttribute("loginMember");
 //        String loginMember = loginMemberSession.getMemberId();
         String dd = "memberA";
 //        log.info("loginMember={}",loginMember);
-
+//        memberParam
         List<Cart> carts = cartService.findAll(dd);
         log.info("carts >> ={}" , carts);
         model.addAttribute("carts",carts);

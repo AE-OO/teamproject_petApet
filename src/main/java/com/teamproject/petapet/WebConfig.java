@@ -10,10 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private String connectPath = "/Users/oh/IdeaProjects/teamproject_petApet/src/main/resources/static/img/osh/**";
-    private String connectPath2 = "/Users/oh/Desktop/test/file/**";
-    private String resourcePath = "file:///Users/oh/IdeaProjects/teamproject_petApet/src/main/resources/static/img/osh/";
-    private String resourcePath2 = "file:///Users/oh/Desktop/test/file/";
+    private String connectPath = "/Users/seonghyeon/Desktop/test/**";
+    private String connectPath2 = "/Users/seonghyeon/Desktop/test/**";
+    private String resourcePath = "file:////Users/seonghyeon/Desktop/test/";
+    private String resourcePath2 = "file:////Users/seonghyeon/Desktop/test/";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

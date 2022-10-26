@@ -8,11 +8,12 @@ import java.util.List;
 
 public interface CartService {
 
+    List<Cart> findAll(String member);
+
     Cart save(Cart cart);
 
     Cart findOne(Long id);
 
-    List<Cart> findAll(String member);
 
     Long addCart(Long memberId, Long productId, Long quantity);
 

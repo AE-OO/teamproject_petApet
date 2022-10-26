@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
 
-    MemberService memberService;
+    private final MemberService memberService;
 
     @GetMapping("/join")
     public String joinForm() {
