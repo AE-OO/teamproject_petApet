@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:javascript="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -278,7 +278,6 @@
                                                                     </div>
                                                                     <div class="inner--1emXN2Ic_f">
                                                                         <div class="thumb--1o26vhj68U"><img
-                                                                                th:src="|@{/product/images/{filename}(filename=${cart.product.productImg.get(0).storeFileName})}|"
                                                                                 alt="상품이미지"></div>
                                                                         <div class="info_area--2AT8d3T9eq">
                                                                             <div class="title--2r7IrJqWav">
@@ -332,7 +331,7 @@
                                                                         <span class="title--1MQ9l0MwlN">상품금액</span>
                                                                         <div class = "product-price">
                                                                             <span class="num--1hENWZ6Uv8 product-price"
-                                                                                  th:text="${cart.product.getProductPrice()}">상품금액</span>
+                                                                                  th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}">상품금액</span>
                                                                             원
                                                                         </div>
                                                                     </div>
@@ -363,12 +362,14 @@
                                         </div>
                                     </div>
                                 </div>
+<!--                                 th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}"-->
                                 <div class="store_price--1ITT00wh3a">
                                     <div class="list_price--2q5Q85MYD-">
                                         <div class="sub_area--K_qcAIhSzX">
                                             <div class="price_area--jjAq5tYP9m"><span
                                                     class="title--3G_o4_rhfc">선택상품금액</span><em><span
-                                                    class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                                    class="num--37aOyGmdW1 dd"
+                                                    th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}">20,000</span>원</em></div>
                                             <div class="price_area--jjAq5tYP9m discount--2RJZlYQP1m">
                                                 <span class="title--3G_o4_rhfc">수량</span>
                                                 <em class="quan"><span class="num--37aOyGmdW1"
@@ -382,7 +383,8 @@
                                             <div class="inner--2z0IE5sNLy">
                                                 <div class="price_area--jjAq5tYP9m total--2a5HJtyfeD"><span
                                                         class="title--3G_o4_rhfc">주문금액</span><em class="totalFn"><span
-                                                        class="num--37aOyGmdW1">20,000</span>원</em></div>
+                                                        class="num--37aOyGmdW1"
+                                                        th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}">20,000</span>원</em></div>
                                             </div>
                                         </div>
                                     </div>
