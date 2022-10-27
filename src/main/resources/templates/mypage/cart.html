@@ -175,25 +175,15 @@
         <div class="cart--3ESq5SxCdE m_type">
             <div class="gnb--3I_SV3sFZi">
                 <div class="inner---6aFRYlaf9">
-                    <h1 class="title--1r0ibGcdKC"><a href="https://shopping.naver.com"
-                            class="link_shopping--3QPbKbvQxv">쇼핑</a><a class="link_cart--3pmIi7AT5e" href="#">장바구니</a>
-                    </h1><a href="#" class="link_prev--2xHgTtNMaj"><svg width="20" height="18" viewBox="0 0 20 18"
+                    <h1 class="title--1r0ibGcdKC"><a class="link_cart--3pmIi7AT5e" href="#">장바구니</a>
+                    </h1><a th:href="@{/}" class="link_prev--2xHgTtNMaj"><svg width="20" height="18" viewBox="0 0 20 18"
                             fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9.20455 17.25L1.25 9M1.25 9L9.20455 0.75M1.25 9L18.75 9" stroke="black"
                                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg><span class="blind">뒤로가기</span></a>
-                    <div class="link_area--1HXD5FKVTK"><a
-                            href="buy.html"
-                            class="link_order--1UnFl2TC-_">결제내역</a><a href="https://m.shopping.naver.com/menu"
-                            class="link_menu--4uiMCHsgl5"><svg width="20" height="16" viewBox="0 0 20 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.33301 1.5H18.6663" stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
-                                <path d="M1.33301 8H18.6663" stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
-                                <path d="M1.33301 14.5H18.6663" stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
-                            </svg><span class="blind">메뉴</span></a></div>
+                    <div class="link_area--1HXD5FKVTK"><a th:href="@{/buy}"
+                            class="link_order--1UnFl2TC-_">결제내역</a><a
+                            class="link_menu--4uiMCHsgl5"><span class="blind">메뉴</span></a></div>
                 </div>
             </div>
             <div class="lnb--qzqatGHj7D">
@@ -277,11 +267,9 @@
                                                                         </button>
                                                                     </div>
                                                                     <div class="inner--1emXN2Ic_f">
-                                                                        <div class="thumb--1o26vhj68U"><img
-
-                                                                                th:src="|@{/product/images/{filename}(filename=${cart.product.getProductImg().get(0).getStoreFileName()})}|"
-
-                                                                                alt="상품이미지"></div>
+                                                                        <div class="thumb--1o26vhj68U">
+                                                                            <img th:src="|@{/product/images/{filename}(filename=${cart.product.getProductImg().get(0).getStoreFileName()})}|" alt="상품이미지">
+                                                                        </div>
                                                                         <div class="info_area--2AT8d3T9eq">
                                                                             <div class="title--2r7IrJqWav">
                                                                                 <span class="ico_npay_plus--37zciz9t8T"
@@ -456,7 +444,7 @@
                             <div class="_footer_top_area_2hFwy _footer_btns_area_2JOr5"><a href="javascript:void(0)"
                                     class="_footer_btn_3JsxB btn_top N=a:fot.top"><span
                                         class="_footer_txt_2I9UX">TOP</span></a></div>
-                            <div class="_footer_btns_area_2JOr5"><a href="javascript:void(0)"
+                            <div class="_footer_btns_area_2JOr5"><a href="" th:href="@{/logout}"
                                     class="_footer_btn_3JsxB N=a:fot.logout"><span
                                         class="_footer_txt_2I9UX">로그아웃</span></a><a
                                     href="http://m.naver.com/services.html?f=svc.shopping"

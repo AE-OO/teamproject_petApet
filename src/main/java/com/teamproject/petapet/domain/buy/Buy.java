@@ -43,4 +43,5 @@ public class Buy {
     // 추가함
     @Column
     private Long quantity;
+
 }

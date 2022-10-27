@@ -217,7 +217,7 @@
                                 <div class="sc-qxzqk9-0 iQgKJk">
                                     <div class="sc-fimazj-0 gKYVxm" th:each="buy : ${buyList}">
                                         <div class="sc-abukv2-0 kcHmyx">
-                                            <div class="sc-abukv2-1 kSZYgn" th:text="${buy.buyDate}">2022. 9. 13
+                                            <div class="sc-abukv2-1 kSZYgn" th:text="${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}">2022. 9. 13
                                                 <!-- -->
                                                 <!-- -->주문
                                             </div>
