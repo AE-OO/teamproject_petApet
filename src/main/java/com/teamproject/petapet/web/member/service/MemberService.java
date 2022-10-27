@@ -26,9 +26,7 @@ public interface MemberService {
     TokenDto login(LoginDto loginDto);
     MemberResponse join(MemberDto memberDto);
 
-    boolean duplicateCheckMemberId(String memberId);
-
-
-
     Optional<Member> findOne(String memberId);
+
+    boolean duplicateCheckMemberId(String memberId);
 }

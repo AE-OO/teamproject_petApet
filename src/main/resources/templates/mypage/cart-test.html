@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+    카트
     <div th:each="cart : ${carts}">
         <div th:text="${cart.product.getProductName()}">상품명</div>
         <div th:text="${cart.product.getProductPrice()}">상품가격</div>

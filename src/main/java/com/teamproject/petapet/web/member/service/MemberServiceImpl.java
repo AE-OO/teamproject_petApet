@@ -77,15 +77,15 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public List<Integer> getAgeList() {
+        return null;
+    }
+
+    @Override
     public Optional<Member> findOne(String memberId) {
         return memberRepository.findById(memberId);
     }
 
-
-    @Override
-    public List<Integer> getAgeList() {
-        return memberRepository.getAgeList();
-    }
 
     @Transactional
     @Override
