@@ -43,13 +43,11 @@ public class SmsService {
     private String accessKey;
     @Value("${sms.secretKey}")
     private String secretKey;
-
     @Value("${sms.adminPhoneNum}")
     private String adminPhoneNum;
 
     //인증번호
     private final String smsConfirmNum = randomNumber();
-
 
     public SmsResponseDto sendSms(String to) throws JsonProcessingException, RestClientException,
             URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -88,6 +86,7 @@ public class SmsService {
         response.setSmsConfirmNum(smsConfirmNum);
         return response;
     }
+
     public String makeSignature(Long time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
         String space = " ";
         String newLine = "\n";

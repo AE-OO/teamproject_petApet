@@ -4,11 +4,8 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.jwt.JwtTokenProvider;
 
-import com.teamproject.petapet.web.member.dto.LoginDto;
-import com.teamproject.petapet.web.member.dto.MemberDto;
+import com.teamproject.petapet.web.member.dto.*;
 
-import com.teamproject.petapet.web.member.dto.MemberResponse;
-import com.teamproject.petapet.web.member.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
@@ -18,12 +15,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 박채원 22.10.09 작성
- * 장사론 22.19.19 추가
+ * 장사론 22.10.19 추가 - 로그인, 회원가입
+ * 장사론 22.10.27 추가 - 유효성 검사
  */
 
 @Service
@@ -57,7 +60,6 @@ public class MemberServiceImpl implements MemberService{
     public void updateMemberStopDate(String memberId) {
         memberRepository.updateMemberStopDate(memberId);
     }
-
     @Override
     public int[] getGenderList() {
 //        ArrayList<Integer> genderList = new ArrayList<>();
@@ -95,17 +97,26 @@ public class MemberServiceImpl implements MemberService{
         return jwtTokenProvider.createToken(authentication);
     }
 
-    @Transactional
     @Override
-    public MemberResponse join(MemberDto memberDto) {
-        Member member = MemberDto.toEntity(memberDto,passwordEncoder);
-        return MemberResponse.of(memberRepository.save(member));
+    @Transactional
+    public MemberResponseDto join(JoinDto joinDto) {
+        Member member = JoinDto.toEntity(joinDto,passwordEncoder);
+        return MemberResponseDto.of(memberRepository.save(member));
     }
-
+    @Transactional(readOnly = true)
     @Override
     public boolean duplicateCheckMemberId(String memberId) {
         return memberRepository.existsById(memberId);
     }
 
-
+    //유효성 검사
+    @Override
+    public Map<String, String> validateHandling(BindingResult bindingResult) {
+        Map<String, String> validatorResult = new HashMap<>();
+        for (FieldError error : bindingResult.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
+    }
 }

@@ -40,6 +40,8 @@ public class AdminController {
         model.addAttribute("product", productService.getProductList());
         model.addAttribute("community", communityService.getProductList());
         model.addAttribute("member", memberService.getMemberList());
+
+
         return "/admin/adminMain";
     }
 

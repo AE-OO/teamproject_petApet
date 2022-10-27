@@ -16,7 +16,8 @@ import java.io.IOException;
 
 
 /**
- * 장사론 22.10.19작성
+ * 장사론 22.10.19 작성
+ *
  */
 @Slf4j
 @RestController
@@ -41,7 +42,6 @@ public class MemberRestController {
 
     @PostMapping("/checkId")
     boolean duplicateCheckMemberId(@RequestParam String memberId){
-        System.out.println(memberId);
         return memberService.duplicateCheckMemberId(memberId);
     }
 

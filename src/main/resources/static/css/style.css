@@ -41,7 +41,6 @@ ul,li{
     list-style:none;
 }
 
-
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -497,6 +496,7 @@ ul,li{
 
 
 /*** Footer ***/
+
 .footer .btn.btn-link {
     display: block;
     margin-bottom: 5px;

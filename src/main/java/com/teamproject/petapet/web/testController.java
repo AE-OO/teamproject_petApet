@@ -12,11 +12,7 @@ import java.security.Principal;
 public class testController {
 
     @GetMapping("/")
-    public String test(Principal principal, Model model){
-        if(Principal.class.isInstance(principal)){
-            model.addAttribute("memberId", principal.getName());
-            return "index";
-        }
+    public String test(){
         return "index";}
 
 }

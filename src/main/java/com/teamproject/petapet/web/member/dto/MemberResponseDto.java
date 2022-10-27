@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberResponse {
+public class MemberResponseDto {
     private String memberId;
-    public static MemberResponse of(Member member) {
-        return new MemberResponse(member.getMemberId());
+    public static MemberResponseDto of(Member member) {
+        return new MemberResponseDto(member.getMemberId());
     }
 }
 
