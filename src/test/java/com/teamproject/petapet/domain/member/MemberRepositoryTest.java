@@ -15,16 +15,17 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
     CommunityRepository communityRepository;
+    PasswordEncoder passwordEncoder;
 
     PasswordEncoder passwordEncoder;
 
     @Test
     public void insertMemberDummies(){
-        IntStream.rangeClosed(1, 30).forEach(i -> {
+        IntStream.rangeClosed(119, 131).forEach(i -> {
            Member member = Member.builder()
                    .memberId("memberId" + i)
                    .memberPw("memberPw" + i)
-                   .memberBirthday(Date.valueOf("2022-10-01"))
+                   .memberBirthday(Date.valueOf("1950-10-01"))
                    .memberName("member" + i)
                    .memberPhoneNum("010-0000-0000")
                    .memberAddress("서울 강남구")

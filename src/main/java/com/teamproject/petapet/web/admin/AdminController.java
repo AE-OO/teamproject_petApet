@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.admin;
 
+import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.service.CommunityService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -120,5 +122,11 @@ public class AdminController {
     @GetMapping("/getGenderList")
     public int[] getGenderList(){
         return memberService.getGenderList();
+    }
+
+    @ResponseBody
+    @GetMapping("/getAgeList")
+    public List<Integer> getAgeList(){
+        return memberService.getAgeList();
     }
 }
