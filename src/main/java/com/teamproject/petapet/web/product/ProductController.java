@@ -139,7 +139,7 @@ public class ProductController {
         List<UploadFile> uploadFiles = fileService.storeFiles(reviewImg);
 
         //테스트 유저
-        Member member = memberRepository.findByMemberId("memberId1").get();
+        Member member = memberRepository.findOneWithAuthoritiesByMemberId("memberId1").get();
 
         Review review = Review.builder().reviewTitle(reviewInsertDTO.getReviewTitle())
                 .reviewRating(reviewInsertDTO.getReviewRating())
