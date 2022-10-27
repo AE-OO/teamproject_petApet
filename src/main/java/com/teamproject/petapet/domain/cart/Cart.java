@@ -33,6 +33,8 @@ public class Cart{
     @JoinColumn(name = "productId",nullable = false)
     private Product product;
 
+
+    // 추가함
     @Column
     private Long quantity;
 

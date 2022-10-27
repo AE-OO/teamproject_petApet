@@ -215,9 +215,9 @@
                                     </div>
                                 </div>
                                 <div class="sc-qxzqk9-0 iQgKJk">
-                                    <div class="sc-fimazj-0 gKYVxm">
+                                    <div class="sc-fimazj-0 gKYVxm" th:each="buy : ${buyList}">
                                         <div class="sc-abukv2-0 kcHmyx">
-                                            <div class="sc-abukv2-1 kSZYgn">2022. 9. 13
+                                            <div class="sc-abukv2-1 kSZYgn" th:text="${buy.buyDate}">2022. 9. 13
                                                 <!-- -->
                                                 <!-- -->주문
                                             </div>
@@ -247,7 +247,8 @@
                                                                             size="4"
                                                                             class="sc-13xhsmd-1 kMeFyN"></span></span><span
                                                                         font-weight="normal" color="#00891A"
-                                                                        class="sc-755zt3-0 sc-lcvccu-0 jAERXO dhoCVo">9/14(수)
+                                                                        class="sc-755zt3-0 sc-lcvccu-0 jAERXO dhoCVo"
+                                                                        th:text="${buy.buyDate}"> 주문 날짜
                                                                         도착</span>
                                                                     <div class="sc-yctqi4-0 cOIBfe">
                                                                         <div
@@ -283,29 +284,20 @@
                                                                         <div class="sc-9cwg9-2 cNiGzR">
                                                                             <div class="sc-9cwg9-3 eEDOvs"><a
                                                                                     class="sc-1uwk3m0-0 kdlGbA sc-9cwg9-0 gujsmv"
-                                                                                    href="/ssr/sdp/link?vendorItemId=3314421212&amp;sourceType=MyCoupang_my_orders_list_product_image"
-                                                                                    target="_blank"><img width="64"
+                                                                                    th:href="|@{/product/{productType}/{productId}/details(productType=${buy.product.productDiv.name().toLowerCase()},productId=${buy.product.productId})}|"
+                                                                                    ><img width="64"
                                                                                         height="64"
-                                                                                        src="https://thumbnail10.coupangcdn.com/thumbnails/remote/96x96ex/image/vendor_inventory/8f1f/f472dd24b5893571f688ea0f4bc9114064f744daee44682d01fc4e481e09.jpg"
-                                                                                        alt="자바 ORM 표준 JPA 프로그래밍:스프링 데이터 예제 프로젝트로 배우는 전자정부 표준 데이터베이스 프레임, 에이콘출판"
+                                                                                        alt="구매 상품 이미지"
+                                                                                        th:src="|@{/product/images/{filename}(filename=${buy.product.getProductImg().get(0).getStoreFileName()})}|"
                                                                                         class="sc-1uwk3m0-1 cpDxcj"></a>
                                                                             </div>
                                                                             <div class="sc-9cwg9-5 bmwSdh">
                                                                                 <div class="sc-9cwg9-6 jBCCpd"><a
                                                                                         class="sc-gnmni8-10 yma-DD"></a><a
-                                                                                        href="/ssr/sdp/link?vendorItemId=3314421212&amp;sourceType=MyCoupang_my_orders_list_product_title"
-                                                                                        target="_blank"
-                                                                                        class="sc-gnmni8-10 sc-8q24ha-0 yma-DD cvhEhM"><img
-                                                                                            style="top:-3px"
-                                                                                            src="https://image10.coupangcdn.com/image/my/common/badge/badge_3x/logo_Rocketwow_16@3x.png"
-                                                                                            alt="ROCKET_WOW" height="16"
-                                                                                            class="sc-hwnw7b-0 lcdxpx"><span
+                                                                                        th:href="|@{/product/{productType}/{productId}/details(productType=${buy.product.productDiv.name().toLowerCase()},productId=${buy.product.productId})}|"
+                                                                                        class="sc-gnmni8-10 sc-8q24ha-0 yma-DD cvhEhM"><span
                                                                                             color="#111111"
-                                                                                            class="sc-755zt3-1 sc-8q24ha-1 inmgHC ifMZxv">자바
-                                                                                            ORM 표준 JPA 프로그래밍:스프링 데이터 예제
-                                                                                            프로젝트로 배우는 전자정부 표준 데이터베이스
-                                                                                            프레임,
-                                                                                            에이콘출판</span></a><a
+                                                                                            class="sc-755zt3-1 sc-8q24ha-1 inmgHC ifMZxv" th:text="${buy.product.productName}">구매 상품명</span></a><a
                                                                                         class="sc-gnmni8-10 yma-DD"></a><a
                                                                                         class="sc-gnmni8-10 sc-8q24ha-5 yma-DD iDQVMP">
                                                                                         <div class="sc-8q24ha-3 gFbjJh">
@@ -313,11 +305,11 @@
                                                                                                 class="sc-uaa4l4-0 jxRaeI">
                                                                                                 <span
                                                                                                     font-weight="normal"
-                                                                                                    class="sc-755zt3-0 kftgZM">38,700
-                                                                                                    원</span><span
+                                                                                                    class="sc-755zt3-0 kftgZM" th:text="${buy.product.productPrice}+'원'">38,700
+                                                                                                    </span><span
                                                                                                     class="sc-13xhsmd-0 kYtEGM"><span
                                                                                                         class="sc-13xhsmd-1 joIhoV"></span></span><span
-                                                                                                    class="sc-755zt3-0 jtWNEg">1
+                                                                                                    class="sc-755zt3-0 jtWNEg" th:text="${buy.quantity}+'개'">1
                                                                                                     개</span></div>
                                                                                         </div>
                                                                                         <div class="sc-8q24ha-4 cUFnye">
@@ -352,272 +344,7 @@
                                         </div>
                                         <div class="sc-h20x0n-0 gcWEbw"></div>
                                     </div>
-                                    <div class="sc-fimazj-0 gKYVxm">
-                                        <div class="sc-abukv2-0 kcHmyx">
-                                            <div class="sc-abukv2-1 kSZYgn">2022. 9. 5
-                                                <!-- -->
-                                                <!-- -->주문
-                                            </div>
-                                            <div class="sc-abukv2-2 kThsCL"><span class="sc-abukv2-3 gSIruC">주문
-                                                    상세보기</span><svg width="16" height="16" focusable="false"
-                                                    viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                    style="fill:#346aff;vertical-align:middle;height:100%">
-                                                    <path fill="#346aff" fill-rule="nonzero"
-                                                        d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                    </path>
-                                                </svg></div>
-                                        </div>
-                                        <div class="sc-gnmni8-0 hCVtNj">
-                                            <table class="sc-gnmni8-1 eSpcfO">
-                                                <colgroup>
-                                                    <col width="600">
-                                                    <col width="">
-                                                </colgroup>
-                                                <tbody class="sc-gnmni8-2 hryMPB">
-                                                    <tr class="sc-gnmni8-3 gmGnuU">
-                                                        <td class="sc-gnmni8-5 hUzAOG">
-                                                            <div class="sc-ki5ja7-0 bQVZKC">
-                                                                <div class="sc-ki5ja7-1 krPkOP"><span font-weight="bold"
-                                                                        color="#111111" style="font-size:1.25rem"
-                                                                        class="sc-755zt3-0 hullgd">배송완료</span><span
-                                                                        size="4" class="sc-13xhsmd-0 SWzAJ"><span
-                                                                            size="4"
-                                                                            class="sc-13xhsmd-1 kMeFyN"></span></span><span
-                                                                        font-weight="normal" color="#00891A"
-                                                                        class="sc-755zt3-0 sc-lcvccu-0 jAERXO dhoCVo">9/6(화)
-                                                                        도착</span></div>
-                                                                <div class="sc-yctqi4-0 cOIBfe">
-                                                                    <div
-                                                                        class="sc-16dovgh-0 sc-16dovgh-1 cNcuvY epHmvE">
-                                                                    </div>
-                                                                    <div class="sc-yctqi4-1 foVCUd">
-                                                                        <ul class="sc-yctqi4-2 whbuD">
-                                                                            <li class="sc-yctqi4-3 YtwcJ"><a
-                                                                                    class="sc-yctqi4-4 hurhRo"><span
-                                                                                        font-size="14px" color="#E7223D"
-                                                                                        class="delete-order">주문내역
-                                                                                        삭제</span></a></li>
-                                                                        </ul>
-                                                                        <div class="sc-yctqi4-5 heRzqv"><button
-                                                                                class="sc-1k9quwu-0 gUnqaK sc-yctqi4-6 gAMxLy">닫기</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="sc-ki5ja7-2 grCKyH"><button size="28"
-                                                                        class="sc-izcbvi-0 bScTTg">
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                    </button></div>
-                                                            </div>
-                                                            <div class="sc-fe2r96-0 hmCrGF"></div>
-                                                            <div class="sc-1jiyjbz-0 dGiGeF">
-                                                                <div class="sc-gnmni8-9 kCcQTc">
-                                                                    <div class="sc-g8964r-0 oRzGt"></div>
-                                                                    <div class="sc-9cwg9-1 gLgexz">
-                                                                        <div class="sc-9cwg9-2 cNiGzR">
-                                                                            <div class="sc-9cwg9-3 eEDOvs"><a
-                                                                                    class="sc-1uwk3m0-0 kdlGbA sc-9cwg9-0 gujsmv"
-                                                                                    href="/ssr/sdp/link?vendorItemId=3000303311&amp;sourceType=MyCoupang_my_orders_list_product_image"
-                                                                                    target="_blank"><img width="64"
-                                                                                        height="64"
-                                                                                        src="https://thumbnail9.coupangcdn.com/thumbnails/remote/96x96ex/image/retail/images/167226977769253-0e64a1e1-26ce-4026-adef-b5a051fb6f25.jpg"
-                                                                                        alt="동아오츠카 포카리스웨트, 30개, 240ml"
-                                                                                        class="sc-1uwk3m0-1 cpDxcj"></a>
-                                                                            </div>
-                                                                            <div class="sc-9cwg9-5 bmwSdh">
-                                                                                <div class="sc-9cwg9-6 jBCCpd"><a
-                                                                                        class="sc-gnmni8-10 yma-DD"></a><a
-                                                                                        href="/ssr/sdp/link?vendorItemId=3000303311&amp;sourceType=MyCoupang_my_orders_list_product_title"
-                                                                                        target="_blank"
-                                                                                        class="sc-gnmni8-10 sc-8q24ha-0 yma-DD cvhEhM"><img
-                                                                                            style="top:-3px"
-                                                                                            src="https://image8.coupangcdn.com/image/my/common/badge/badge_3x/logo_Rocket_16@3x.png"
-                                                                                            alt="ROCKET" height="16"
-                                                                                            class="sc-hwnw7b-0 lcdxpx"><span
-                                                                                            color="#111111"
-                                                                                            class="sc-755zt3-1 sc-8q24ha-1 inmgHC ifMZxv">동아오츠카
-                                                                                            포카리스웨트, 30개,
-                                                                                            240ml</span></a><a
-                                                                                        class="sc-gnmni8-10 yma-DD"></a><a
-                                                                                        class="sc-gnmni8-10 sc-8q24ha-5 yma-DD iDQVMP">
-                                                                                        <div class="sc-8q24ha-3 gFbjJh">
-                                                                                            <div
-                                                                                                class="sc-uaa4l4-0 jxRaeI">
-                                                                                                <span
-                                                                                                    font-weight="normal"
-                                                                                                    class="sc-755zt3-0 kftgZM">18,370
-                                                                                                    원</span><span
-                                                                                                    class="sc-13xhsmd-0 kYtEGM"><span
-                                                                                                        class="sc-13xhsmd-1 joIhoV"></span></span><span
-                                                                                                    class="sc-755zt3-0 jtWNEg">1
-                                                                                                    개</span></div>
-                                                                                        </div>
-                                                                                        <div class="sc-8q24ha-4 cUFnye">
-                                                                                            <button
-                                                                                                class="sc-1k9quwu-0 iCTfhh sc-xuyxga-0 bZaQeF">장바구니
-                                                                                                담기</button>
-                                                                                            <div
-                                                                                                class="sc-xuyxga-1 hxalxw">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <div class="sc-fxyxvg-0 igPkOG">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="sc-gnmni8-6 gbTJl">
-                                                            <div class="sc-gnmni8-7 bCQoer"><button
-                                                                    class="sc-1k9quwu-0 fUUUKW sc-4d0nwb-0 iiEWkt">배송조회</button><button
-                                                                    class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">교환,
-                                                                    반품 신청</button><button
-                                                                    class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">리뷰
-                                                                    작성하기</button></div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="sc-h20x0n-0 gcWEbw"></div>
-                                    </div>
-                                    <div class="sc-fimazj-0 gKYVxm">
-                                        <div class="sc-abukv2-0 kcHmyx">
-                                            <div class="sc-abukv2-1 kSZYgn">2022. 9. 5
-                                                <!-- -->
-                                                <!-- -->주문
-                                            </div>
-                                            <div class="sc-abukv2-2 kThsCL"><span class="sc-abukv2-3 gSIruC">주문
-                                                    상세보기</span><svg width="16" height="16" focusable="false"
-                                                    viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                    style="fill:#346aff;vertical-align:middle;height:100%">
-                                                    <path fill="#346aff" fill-rule="nonzero"
-                                                        d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                    </path>
-                                                </svg></div>
-                                        </div>
-                                        <div class="sc-gnmni8-0 hCVtNj">
-                                            <table class="sc-gnmni8-1 eSpcfO">
-                                                <colgroup>
-                                                    <col width="600">
-                                                    <col width="">
-                                                </colgroup>
-                                                <tbody class="sc-gnmni8-2 hryMPB">
-                                                    <tr class="sc-gnmni8-3 gmGnuU">
-                                                        <td class="sc-gnmni8-5 hUzAOG">
-                                                            <div class="sc-ki5ja7-0 bQVZKC">
-                                                                <div class="sc-ki5ja7-1 krPkOP"><span font-weight="bold"
-                                                                        color="#111111" style="font-size:1.25rem"
-                                                                        class="sc-755zt3-0 hullgd">배송완료</span><span
-                                                                        size="4" class="sc-13xhsmd-0 SWzAJ"><span
-                                                                            size="4"
-                                                                            class="sc-13xhsmd-1 kMeFyN"></span></span><span
-                                                                        font-weight="normal" color="#00891A"
-                                                                        class="sc-755zt3-0 sc-lcvccu-0 jAERXO dhoCVo">9/6(화)
-                                                                        도착</span></div>
-                                                                <div class="sc-yctqi4-0 cOIBfe">
-                                                                    <div
-                                                                        class="sc-16dovgh-0 sc-16dovgh-1 cNcuvY epHmvE">
-                                                                    </div>
-                                                                    <div class="sc-yctqi4-1 foVCUd">
-                                                                        <ul class="sc-yctqi4-2 whbuD">
-                                                                            <li class="sc-yctqi4-3 YtwcJ"><a
-                                                                                    class="sc-yctqi4-4 hurhRo"><span
-                                                                                        font-size="14px" color="#E7223D"
-                                                                                        class="delete-order">주문내역
-                                                                                        삭제</span></a></li>
-                                                                        </ul>
-                                                                        <div class="sc-yctqi4-5 heRzqv"><button
-                                                                                class="sc-1k9quwu-0 gUnqaK sc-yctqi4-6 gAMxLy">닫기</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="sc-ki5ja7-2 grCKyH"><button size="28"
-                                                                        class="sc-izcbvi-0 bScTTg">
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                    </button></div>
-                                                            </div>
-                                                            <div class="sc-fe2r96-0 hmCrGF"></div>
-                                                            <div class="sc-1jiyjbz-0 dGiGeF">
-                                                                <div class="sc-gnmni8-9 kCcQTc">
-                                                                    <div class="sc-g8964r-0 oRzGt"></div>
-                                                                    <div class="sc-9cwg9-1 gLgexz">
-                                                                        <div class="sc-9cwg9-2 cNiGzR">
-                                                                            <div class="sc-9cwg9-3 eEDOvs"><a
-                                                                                    class="sc-1uwk3m0-0 kdlGbA sc-9cwg9-0 gujsmv"
-                                                                                    href="/ssr/sdp/link?vendorItemId=71130533127&amp;sourceType=MyCoupang_my_orders_list_product_image"
-                                                                                    target="_blank"><img width="64"
-                                                                                        height="64"
-                                                                                        src="https://thumbnail6.coupangcdn.com/thumbnails/remote/96x96ex/image/retail/images/7785295089433009-a20ab685-a0f0-4d3a-a9d7-90eec6721136.jpg"
-                                                                                        alt="대구농산 더담은 우리쌀, 10kg(상등급), 1개"
-                                                                                        class="sc-1uwk3m0-1 cpDxcj"></a>
-                                                                            </div>
-                                                                            <div class="sc-9cwg9-5 bmwSdh">
-                                                                                <div class="sc-9cwg9-6 jBCCpd"><a
-                                                                                        class="sc-gnmni8-10 yma-DD"></a><a
-                                                                                        href="/ssr/sdp/link?vendorItemId=71130533127&amp;sourceType=MyCoupang_my_orders_list_product_title"
-                                                                                        target="_blank"
-                                                                                        class="sc-gnmni8-10 sc-8q24ha-0 yma-DD cvhEhM"><img
-                                                                                            style="top:-3px"
-                                                                                            src="https://image8.coupangcdn.com/image/my/common/badge/badge_3x/logo_Rocket_16@3x.png"
-                                                                                            alt="ROCKET" height="16"
-                                                                                            class="sc-hwnw7b-0 lcdxpx"><span
-                                                                                            color="#111111"
-                                                                                            class="sc-755zt3-1 sc-8q24ha-1 inmgHC ifMZxv">대구농산
-                                                                                            더담은 우리쌀,
-                                                                                            10kg(상등급), 1개</span></a><a
-                                                                                        class="sc-gnmni8-10 yma-DD"></a><a
-                                                                                        class="sc-gnmni8-10 sc-8q24ha-5 yma-DD iDQVMP">
-                                                                                        <div class="sc-8q24ha-3 gFbjJh">
-                                                                                            <div
-                                                                                                class="sc-uaa4l4-0 jxRaeI">
-                                                                                                <span
-                                                                                                    font-weight="normal"
-                                                                                                    class="sc-755zt3-0 kftgZM">19,900
-                                                                                                    원</span><span
-                                                                                                    class="sc-13xhsmd-0 kYtEGM"><span
-                                                                                                        class="sc-13xhsmd-1 joIhoV"></span></span><span
-                                                                                                    class="sc-755zt3-0 jtWNEg">1
-                                                                                                    개</span></div>
-                                                                                        </div>
-                                                                                        <div class="sc-8q24ha-4 cUFnye">
-                                                                                            <button
-                                                                                                class="sc-1k9quwu-0 iCTfhh sc-xuyxga-0 bZaQeF">장바구니
-                                                                                                담기</button>
-                                                                                            <div
-                                                                                                class="sc-xuyxga-1 hxalxw">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <div class="sc-fxyxvg-0 igPkOG">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="sc-gnmni8-6 gbTJl">
-                                                            <div class="sc-gnmni8-7 bCQoer"><button
-                                                                    class="sc-1k9quwu-0 fUUUKW sc-4d0nwb-0 iiEWkt">배송조회</button><button
-                                                                    class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">교환,
-                                                                    반품 신청</button><button
-                                                                    class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">리뷰
-                                                                    작성하기</button></div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="sc-h20x0n-0 gcWEbw"></div>
-                                    </div>
+
                                     <div class="sc-1o307be-0 jOhOoP"><button
                                             class="sc-1k9quwu-0 frxcub sc-1o307be-1 dTwpud" disabled=""><svg width="14"
                                                 height="14" focusable="false" viewBox="0 0 16 16" aria-hidden="true"
