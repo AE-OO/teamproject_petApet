@@ -75,6 +75,10 @@ const mPhoneumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
 //숫자 정규식 (길이 상관 없이 숫자만 입력)
 const numRegExp = /^[0-9]+$/;
 
+//생년월일 변수
+const start_year = "1922"; // 생년월일 시작 년도
+let today_year = new Date().getFullYear(); // 현재 년도
+
 //인증시간 변수
 let timer = null;
 let certificationNum = null ;
