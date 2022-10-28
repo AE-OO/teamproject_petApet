@@ -35,7 +35,7 @@
 </head>
 <body>
 <!-- Join Start -->
-<main class="container-xxl text-center py-5 my-5">
+<main class="container-xxl text-center py-7 my-auto">
     <div class="container join">
         <div class="row g-5">
             <div class="mx-auto">
@@ -52,8 +52,7 @@
                                        maxlength="20" th:value="${joinDto.memberId}" placeholder="loginId">
                                 <label for="input-memberId">아이디<span class="text-danger">*</span></label>
                             </div>
-                            <p id="feedback-memberId" class="text-start text-danger ps-2 my-1"/>
-                            <span th:text="${valid_memberId}"></span>
+                            <p id="feedback-memberId" class="text-start text-danger ps-2 my-1" th:text="${valid_memberId}"/>
                         </div>
                         <!-- memberId confirm end -->
 
@@ -64,8 +63,7 @@
                                        placeholder="password">
                                 <label for="input-memberPw">비밀번호<span class="text-danger">*</span></label>
                             </div>
-                            <p id="feedback-memberPw" class="text-start text-danger ps-2 my-1"/>
-                            <span th:text="${valid_memberPw}"></span>
+                            <p id="feedback-memberPw" class="text-start text-danger ps-2 my-1" th:text="${valid_memberPw}" />
                         </div>
                         <!-- memberPw end -->
 
@@ -74,9 +72,11 @@
                             <div class="form-floating">
                                 <input type="password" id="input-memberPw2" name="memberPw2" class="form-control"
                                        maxlength="18" placeholder="password2">
-                                <label for="input-memberPw2">비밀번호 확인<span class="text-danger">*</span></label>
+                                 <label for="input-memberPw2">비밀번호 확인<span class="text-danger">*</span></label>
                             </div>
-                            <p id="feedback-memberPw2" class="text-start text-danger ps-2 my-1"/>
+                            <p id="feedback-memberPw2" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_memberPw2}"/>
+
                         </div>
                         <!-- memberPw2 end -->
 
@@ -84,10 +84,10 @@
                         <div class="col-12">
                             <div class="form-floating">
                                 <input type="text" id="input-memberName" name="memberName" class="form-control"
-                                       maxlength="6" placeholder="name">
+                                       th:value="${joinDto.memberName}" maxlength="6" placeholder="name">
                                 <label for="input-memberName">이름<span class="text-danger">*</span></label>
                             </div>
-                            <p id="feedback-memberName" class="text-start text-danger ps-2 my-1"/>
+                            <p id="feedback-memberName" class="text-start text-danger ps-2 my-1" th:text="${valid_memberName}"/>
                         </div>
                         <!--memberName end-->
 
@@ -95,7 +95,7 @@
                         <div class="col-12">
                             <div id="genderForm" class="form-floating">
                                 <select id="select-gender" class="form-select" name="memberGender"
-                                        onchange="chnSelectGender()">
+                                        th:value="${joinDto.memberGender}" onchange="chnSelectGender()">
                                     <option selected disabled hidden></option>
                                     <option value="">성별(선택)</option>
                                     <option value="남자">남자</option>
@@ -128,7 +128,7 @@
                                     <label for="input-day" class="w-75">일<span class="text-danger">*</span></label>
                                 </div>
                             </div>
-                            <p id="feedback-memberBirthday" class="text-start text-danger ps-2 my-1"/>
+                            <p id="feedback-memberBirthday" class="text-start text-danger ps-2 my-1" th:text="${valid_memberBirthday}"/>
                         </div>
                         <!-- memberBirthday end -->
 
@@ -168,7 +168,7 @@
                                     <label class="w-75">참고항목</label>
                                 </div>
                             </div>
-                            <p id="feedback-memberAddress" class="text-start text-danger ps-2 my-1"/>
+                            <p id="feedback-memberAddress" class="text-start text-danger ps-2 my-1" th:text="${valid_memberAddress}"/>
                         </div>
                         <!-- memberAddress end -->
 
@@ -177,7 +177,7 @@
                             <div class="row g-2 mb-2 px-1">
                                 <div class="form-floating px-0 pe-1 col-8">
                                     <input type="text" id="input-memberPhoneNum" name="memberPhoneNum"
-                                           class="form-control" maxlength="11"
+                                           class="form-control" maxlength="11" th:value="${joinDto.memberPhoneNum}"
                                            placeholder="휴대전화">
                                     <label for="input-memberPhoneNum" class="w-75">휴대전화<span
                                             class="text-danger">*</span></label>
@@ -196,13 +196,14 @@
                                     <label>인증번호 입력<span class="text-danger">*</span></label>
                                 </div>
                             </div>
-                            <p id="feedback-memberPhoneNum" class="text-start text-danger ps-2 my-1"/>
+                            <p id="feedback-memberPhoneNum" class="text-start text-danger ps-2 my-1" th:text="${valid_memberPhoneNum}"/>
+                            <p id="feedback-smsConfirmPhoneNum" class="text-start text-danger ps-2 my-1" th:text="${valid_smsConfirmNum}"/>
                         </div>
                         <!-- memberPhoneNum end -->
 
                         <!-- join button-->
                         <div class="col-12">
-                            <button type="submit" id="joinBtn" class="btn btn-primary mb-2 col-12 py-3">
+                            <button type="button" id="joinBtn" class="btn btn-primary mb-2 col-12 py-3">
                                 회원가입
                             </button>
                         </div>
@@ -230,65 +231,7 @@
 <!-- Copyright End -->
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-    // 주소 찾기 - 카카오 우편번호 서비스 api 사용
-    function findAddress() {
-        new daum.Postcode({
-            oncomplete: function (data) {
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                var addr = ''; // 주소 변수
-                var extraAddr = ''; // 참고항목 변수
-
-                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                    addr = data.roadAddress;
-                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                    addr = data.jibunAddress;
-                }
-
-                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-                if (data.userSelectedType === 'R') {
-                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-                        extraAddr += data.bname;
-                    }
-                    // 건물명이 있고, 공동주택일 경우 추가한다.
-                    if (data.buildingName !== '' && data.apartment === 'Y') {
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                    if (extraAddr !== '') {
-                        extraAddr = ' (' + extraAddr + ')';
-                    }
-                    // 조합된 참고항목을 해당 필드에 넣는다.
-                    document.getElementById("sample6_extraAddress").value = extraAddr;
-
-                } else {
-                    document.getElementById("sample6_extraAddress").value = '';
-                }
-
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('sample6_postcode').value = data.zonecode;
-                document.getElementById("sample6_address").value = addr;
-
-                $("#sample6_extraAddress").attr("disabled", false);
-                $("#sample6_extraAddress").attr("readonly", true);
-                $("#sample6_postcode").attr("disabled", false);
-                $("#sample6_postcode").attr("readonly", true);
-                $("#sample6_address").attr("disabled", false);
-                $("#sample6_address").attr("readonly", true);
-
-                // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("sample6_detailAddress").focus();
-            }
-        }).open();
-    }
-</script>
-<!--<script src="/js/join.js"></script>-->
+<script src="/js/join.js"></script>
 </body>
 
 </html>

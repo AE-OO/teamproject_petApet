@@ -22,7 +22,6 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping("/api")
 public class MemberRestController {
     private final MemberService memberService;
 
@@ -30,6 +29,7 @@ public class MemberRestController {
     public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) {
         TokenDto tokenDto = memberService.login(loginDto);
 
+        //토큰 쿠키에 저장
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer"+tokenDto.getToken());
         cookie.setPath("/");
         cookie.setMaxAge((int)tokenDto.getAccessTokenExpiresIn());

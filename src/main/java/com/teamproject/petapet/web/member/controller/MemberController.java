@@ -1,15 +1,19 @@
 package com.teamproject.petapet.web.member.controller;
 
+import com.teamproject.petapet.validatiion.MemberIdDuplicateCheckValidator;
+import com.teamproject.petapet.validatiion.MemberPwEqualCheckValidator;
 import com.teamproject.petapet.web.member.dto.JoinDto;
 import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -22,6 +26,14 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberIdDuplicateCheckValidator memberIdDuplicateCheckValidator;
+    private final MemberPwEqualCheckValidator memberPwEqualCheckValidator;
+
+    @InitBinder
+    public void validatorBinder(WebDataBinder binder) {
+        binder.addValidators(memberIdDuplicateCheckValidator);
+        binder.addValidators(memberPwEqualCheckValidator);
+    }
 
     @GetMapping("/join")
     public String joinForm(JoinDto joinDto) {
@@ -30,8 +42,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(@Valid JoinDto joinDto, BindingResult bindingResult, Model model) {
-
+    public String join(@Valid JoinDto joinDto, BindingResult bindingResult, Model model, HttpSession session) {
         // 회원가입 요청시 member입력 값에서 Validation에 걸리는 경우
         if (bindingResult.hasErrors()) {
             //회원가입 실패시 입력 데이터 유지
@@ -43,7 +54,7 @@ public class MemberController {
             }
             return "join";
         }
-
+        session.removeAttribute("smsConfirmNum");
         memberService.join(joinDto);
         return "redirect:/";
     }
