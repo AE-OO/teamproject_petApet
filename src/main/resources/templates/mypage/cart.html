@@ -268,14 +268,19 @@
                                                                     </div>
                                                                     <div class="inner--1emXN2Ic_f">
                                                                         <div class="thumb--1o26vhj68U">
-                                                                            <img th:src="|@{/product/images/{filename}(filename=${cart.product.getProductImg().get(0).getStoreFileName()})}|" alt="상품이미지">
+                                                                            <a th:href="|@{/product/{productType}/{productId}/details(productType=${cart.product.productDiv.name().toLowerCase()},productId=${cart.product.productId})}|">
+
+                                                                            <img th:src="|@{/product/images/{filename}(filename=${cart.product.getProductImg().get(0).getStoreFileName()})}|" alt="상품이미지"></a>
                                                                         </div>
                                                                         <div class="info_area--2AT8d3T9eq">
                                                                             <div class="title--2r7IrJqWav">
+                                                                                <a th:href="|@{/product/{productType}/{productId}/details(productType=${cart.product.productDiv.name().toLowerCase()},productId=${cart.product.productId})}|">
+
                                                                                 <span class="ico_npay_plus--37zciz9t8T"
                                                                                       th:text="${cart.product.getProductName()}">
                                                                                     상품명
                                                                                 </span>
+                                                                                </a>
                                                                             </div>
                                                                             <span class="price--2Uv-07hf78"
                                                                                   th:text="${cart.product.getProductPrice()}">
