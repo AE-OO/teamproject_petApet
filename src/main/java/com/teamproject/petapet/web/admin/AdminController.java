@@ -1,6 +1,5 @@
 package com.teamproject.petapet.web.admin;
 
-import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.service.CommunityService;
@@ -131,4 +130,6 @@ public class AdminController {
     public List<Integer> getAgeList(){
         return memberService.getAgeList();
     }
+
+
 }

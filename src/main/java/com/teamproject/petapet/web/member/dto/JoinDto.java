@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.member.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamproject.petapet.domain.member.Authority;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.validatiion.MemberIdDuplicate;
 import com.teamproject.petapet.validatiion.SmsConfirmNum;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,7 @@ public class JoinDto {
 
     @Pattern(regexp = "^[a-z0-9_-]{5,20}$" , message = "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
     @NotBlank(message = "아이디는 필수 입력값입니다.")
+    @MemberIdDuplicate // 커스텀 어노테이션
     private String memberId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

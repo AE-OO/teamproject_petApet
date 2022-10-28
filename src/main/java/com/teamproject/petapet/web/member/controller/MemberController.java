@@ -1,6 +1,5 @@
 package com.teamproject.petapet.web.member.controller;
 
-import com.teamproject.petapet.validatiion.MemberIdDuplicateCheckValidator;
 import com.teamproject.petapet.validatiion.MemberPwEqualCheckValidator;
 import com.teamproject.petapet.web.member.dto.JoinDto;
 import com.teamproject.petapet.web.member.service.MemberService;
@@ -26,12 +25,10 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberIdDuplicateCheckValidator memberIdDuplicateCheckValidator;
     private final MemberPwEqualCheckValidator memberPwEqualCheckValidator;
 
     @InitBinder
     public void validatorBinder(WebDataBinder binder) {
-        binder.addValidators(memberIdDuplicateCheckValidator);
         binder.addValidators(memberPwEqualCheckValidator);
     }
 
@@ -63,6 +60,9 @@ public class MemberController {
     public String loginForm() {
         return "login";
     }
+
+    @GetMapping("/adminLogin")
+    public String adminLoginForm() {return "adminLogin";}
 
 
 }

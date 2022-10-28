@@ -16,7 +16,6 @@ import javax.validation.ConstraintValidatorContext;
  */
 @Slf4j
 public class SmsConfirmNumCheck implements ConstraintValidator<SmsConfirmNum, String> {
-
     @Override
     public boolean isValid(String smsConfirmNum, ConstraintValidatorContext context) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -24,7 +23,6 @@ public class SmsConfirmNumCheck implements ConstraintValidator<SmsConfirmNum, St
         if (session.getAttribute("smsConfirmNum") != null) {
 //            log.info(session.getAttribute("smsConfirmNum").toString() + "==================="); // 테스트용
             return session.getAttribute("smsConfirmNum").toString().equals(smsConfirmNum);
-
         }
         return false;
     }
