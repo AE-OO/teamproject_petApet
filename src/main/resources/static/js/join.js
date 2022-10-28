@@ -1,4 +1,4 @@
-//form input value 값
+//form input value 값 ,,, 전역으로 사용하기위해 function 선언함
 memberId = () => $("#input-memberId").val();
 memberPw = () => $("#input-memberPw").val();
 memberPw2 = () => $("#input-memberPw2").val();
@@ -11,8 +11,9 @@ memberPostCode = () => $("#sample6_postcode").val();
 memberExtraAddress = () => $("#sample6_extraAddress").val();
 memberAddress = () => $("#sample6_address").val();
 memberPhoneNum = () => $("#input-memberPhoneNum").val();
+smsConfirmNum = () => $("#input-smsConfirmNum");
 
-//error 메세지 (input 밑에 있는 p태그)
+//error 메세지 (input 밑에 있는 p태그) 전역으로 사용하기위해 function 선언함
 mIdFeedback = () => $("#feedback-memberId");
 mPwFeedback = () => $("#feedback-memberPw");
 mPwFeedback2 = () => $("#feedback-memberPw2");
@@ -20,7 +21,48 @@ mNameFeedback = () => $("#feedback-memberName");
 mBirthFeedback = () => $("#feedback-memberBirthday");
 mPhoneNumFeedback = () => $("#feedback-memberPhoneNum");
 mAddrFeedback = () => $("#feedback-memberAddress");
-smsConfirmNum = () => $("#input-smsConfirmNum");
+smsConfirmNumFeedback = () => $("#feedback-smsConfirmPhoneNum");
+
+//select option 선택에 따른 style 변경용
+function chnSelectGender() {
+    if ($("#select-gender option:checked").val() == "") {
+        $("#label-gender").hide();
+        $("#select-gender").css("padding", "1rem 0.75rem");
+        $("#select-gender").css("color", "#888");
+    } else {
+        $("#select-gender").css("color", "#212529");
+        $("#label-gender").show();
+        $("#select-gender").css("padding-top", "1.625rem");
+        $("#select-gender").css("padding-bottom", "0.625rem");
+        $("#label-gender").css("opacity", "0.65");
+        $("#label-gender").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
+    }
+}
+function chnSelectMonth() {
+    if ($("#select-month option:checked").val() != "") {
+        $("#select-month").css("color", "#212529");
+        $("#label-gender").show();
+        $("#select-month").css("padding-top", "1.625rem");
+        $("#select-month").css("padding-bottom", "0.625rem");
+        $("#label-month").css("opacity", "0.65");
+        $("#label-month").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
+    }
+}
+//error메세지 text 색상 변경용
+function textInfo(value) {
+    if ((value.hasClass("text-info"))) {
+        return;
+    } else {
+        value.removeClass("text-danger").addClass("text-info");
+    }
+}
+function textDanger(value) {
+    if (value.hasClass("text-danger")) {
+        return;
+    } else {
+        value.removeClass("text-info").addClass("text-danger");
+    }
+}
 
 //아이디 정규식(영문 소문자, 숫자, 특수문자(-,_)  5-20 글자만 가능)
 const mIdRegExp = /^[a-z0-9_-]{5,20}$/;
@@ -33,18 +75,15 @@ const mPhoneumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
 //숫자 정규식 (길이 상관 없이 숫자만 입력)
 const numRegExp = /^[0-9]+$/;
 
-//생년월일 변수
-const start_year = "1922"; // 생년월일 시작 년도
-let today_year = new Date().getFullYear(); // 현재 년도
-
 //인증시간 변수
 let timer = null;
-let certificationNum = null;
+let certificationNum = null ;
 const leftSec = 180; // 제한시간(초)
 //인증시간 타이머 함수
 function startTimer(count) {
     $("#smsBtn").attr("disabled", true);
     smsConfirmNum().attr("disabled", false);
+    $("#input-memberPhoneNum").attr("readonly",true);
     var minutes, seconds;
     timer = setInterval(function () {
         minutes = parseInt(count / 60, 10);
@@ -55,31 +94,30 @@ function startTimer(count) {
         textInfo(mPhoneNumFeedback());
         mPhoneNumFeedback().text(minutes + ":" + seconds + " 안에 인증번호를 입력해주세요.");
         // 인증번호 맞으면 종료
-        if (checkCertificationNum()) {
+        if(smsConfirmNum().val() == certificationNum) {
+            smsConfirmNumFeedback().val("");
             mPhoneNumFeedback().text("OK");
+            smsConfirmNum().attr("reaonly", true);
             return true;
         }
         // 타이머 끝
         if (--count < 0) {
             clearInterval(timer);
             alert("인증시간이 초과되었습니다. 인증번호를 다시 전송해주세요.");
+            $("#input-memberPhoneNum").attr("readonly",false);
             mPhoneNumFeedback().text("");
             $("#smsBtn").attr("disabled", false);
             smsConfirmNum().val("");
+            smsConfirmNumFeedback().text("");
             smsConfirmNum().attr("disabled", true);
             return false;
         }
     }, 1000);
 }
-//인증문자 번호 체크
-function checkCertificationNum() {
-    if (certificationNum === smsConfirmNum().val()) {
-        mPhoneNumFeedback().text("OK");
-        return true;
-    }
-    return false;
-}
 
+//생년월일 변수
+const start_year = "1922"; // 생년월일 시작 년도
+let today_year = new Date().getFullYear(); // 현재 년도
 //생년월일 체크
 function checkMemberBirthday() {
     let lastDay = new Date(new Date(memberYear(), memberMonth(), 1) - 86400000).getDate();
@@ -104,56 +142,13 @@ function checkMemberBirthday() {
     } else if (memberYear() < start_year || memberYear().length < 4) {
         mBirthFeedback().text("정말이세요? ༼;´༎ຶ ۝༎ຶ`༽");
         return false;
-    } else if (memberDay() > lastDay) {
+    } else if (memberDay() > lastDay || memberDay() < 1) {
         mBirthFeedback().text("존재하지 않는 날짜입니다. 생년월일을 다시 확인해주세요.");
         return false;
     } else {
         textInfo(mBirthFeedback());
         mBirthFeedback().text("OK");
         return true;
-    }
-}
-
-//select option 선택에 따른 style 변경용
-function chnSelectGender() {
-    if ($("#select-gender option:checked").val() == "") {
-        $("#label-gender").hide();
-        $("#select-gender").css("padding", "1rem 0.75rem");
-        $("#select-gender").css("color", "#888");
-    } else {
-        $("#select-gender").css("color", "#212529");
-        $("#label-gender").show();
-        $("#select-gender").css("padding-top", "1.625rem");
-        $("#select-gender").css("padding-bottom", "0.625rem");
-        $("#label-gender").css("opacity", "0.65");
-        $("#label-gender").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
-    }
-}
-
-function chnSelectMonth() {
-    if ($("#select-month option:checked").val() != "") {
-        $("#select-month").css("color", "#212529");
-        $("#label-gender").show();
-        $("#select-month").css("padding-top", "1.625rem");
-        $("#select-month").css("padding-bottom", "0.625rem");
-        $("#label-month").css("opacity", "0.65");
-        $("#label-month").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
-    }
-}
-
-//error메세지 text 색상 변경용
-function textInfo(value) {
-    if ((value.hasClass("text-info"))) {
-        return;
-    } else {
-        value.removeClass("text-danger").addClass("text-info");
-    }
-}
-function textDanger(value) {
-    if (value.hasClass("text-danger")) {
-        return;
-    } else {
-        value.removeClass("text-info").addClass("text-danger");
     }
 }
 
@@ -214,134 +209,6 @@ function findAddress() {
     }).open();
 }
 
-//나중에 지울자료....
-//input 값 검사
-// //아이디 체크
-// function checkMemberId() {
-//     textDanger(mIdFeedback());
-//     if (memberId() === null || memberId() === "") { //값이 없을 때
-//         mIdFeedback().text("필수 정보입니다.");
-//         return false;
-//     } else if (!(mIdRegExp.test(memberId()))) { //정규식에 맞지 않을 때
-//         mIdFeedback().text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
-//         return false;
-//     } else {
-//         //ajax 아이디 중복 확인
-//         $.ajax({
-//             type: "POST",
-//             url: "/checkId",
-//             data: {
-//                 memberId: memberId(),
-//             },
-//             dataType: "json",
-//             success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
-//                 if (check) { // 아이디 이미 존재
-//                     mIdFeedback().text("중복 아이디입니다.");
-//                 } else { //조건에 맞을 때
-//                     textInfo(mIdFeedback());
-//                     mIdFeedback().text("OK");
-//                     return checkIdResult = true;
-//                 }
-//             },
-//             error: function () {
-//                 console.log("통신 오류");
-//                 window.location = "/join";
-//             }
-//         });
-//     }
-//
-// }
-//비밀번호 체크
-// function checkMemberPw() {
-//     // alert(memberPw()); // 확인용
-//     textDanger(mPwFeedback());
-//     if (memberPw() === null || memberPw() === "") { //값이 없을 때
-//         mPwFeedback().text("필수 정보입니다.");
-//         return false;
-//     } else if (!(mPwRegExp.test(memberPw()))) { //정규식에 맞지 않을 때
-//         mPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
-//         return false;
-//     } else { // 조건에 맞을 때
-//         textInfo(mPwFeedback());
-//         mPwFeedback().text("OK");
-//         return true;
-//     }
-// }
-// //비밀번호 확인 체크
-// function checkMemberPw2() {
-//     textDanger(mPwFeedback2());
-//     if (memberPw2() == null || memberPw2() === "") { //값 없을 때
-//         mPwFeedback2().text("필수 정보입니다.");
-//         return false;
-//     } else if (!(memberPw2() === memberPw())) { //값이 같지 않을 때
-//         mPwFeedback2().text("비밀번호가 일치하지 않습니다.");
-//         return false;
-//     } else { //일치할 때
-//         textInfo(mPwFeedback2());
-//         mPwFeedback2().text("OK");
-//         return true;
-//     }
-// }
-// //이름 체크
-// function checkMemberName() {
-//     textDanger(mNameFeedback());
-//     if (memberName() === null || memberName() === "") { //값이 없을 때
-//         mNameFeedback().text("필수 정보입니다.");
-//         return false;
-//     } else if (!(mNameRegExp.test(memberName()))) { //정규식에 맞지 않을 때
-//         mNameFeedback().text("한글을 사용하세요. (특수기호, 공백 사용 불가)");
-//         return false;
-//     } else { // 조건에 맞을 때
-//         textInfo(mNameFeedback());
-//         mNameFeedback().text("OK");
-//         return true;
-//     }
-// }
-//주소 체크
-// function checkMemberAddress() {
-//     textDanger(mAddrFeedback());
-//     if (memberDetailAddress() === null || memberDetailAddress() === "") { //값이 없을 때
-//         mAddrFeedback().text("필수 정보입니다.");
-//         return false;
-//     } else {
-//         textInfo(mAddrFeedback());
-//         mAddrFeedback().text("OK");
-//         return true;
-//     }
-// }
-//인증문자 전송
-// function sendSmsConfirmNum() {
-//     textDanger(mPhoneNumFeedback());
-//     if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
-//         mPhoneNumFeedback().text("인증이 필요합니다.");
-//         return false;
-//     } else if (!(mPhoneumRegExp.test(memberPhoneNum()))) { //정규식에 맞지 않을 때
-//         mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
-//         return false;
-//     } else { // 조건에 맞을 때
-//          // $.ajax({
-//          //    type: "POST",
-//          //    url: "/sms/send",
-//          //    data: {
-//          //        to: memberPhoneNum(),
-//          //    },
-//          //    dataType: "json",
-//          //    success: function (response) {
-//                 alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
-//                 startTimer(leftSec); // 타이머 시작
-//             alert("123456");
-//                 // alert(response['smsConfirmNum']);
-//                 // certificationNum = response['smsConfirmNum'];
-//                 return checkPhoneNumResult = true;
-//         //     },
-//         //     error: function () {
-//         //         alert("인증번호 발송 실패");
-//         //     }
-//         // });
-//     }
-//
-// }
-
 $(document).ready(function () {
     let memberIdResult = false;
     let memberPwResult = false;
@@ -349,6 +216,7 @@ $(document).ready(function () {
     let memberNameResult = false;
     let memberAddressResult = false;
     let memberPhoneNumResult = false;
+    let smcConfirmNumResult = false;
 
     // 생년월일 - 월 select option 자동 추가
     for (var i = 1; i < 13; i++) {
@@ -388,9 +256,9 @@ $(document).ready(function () {
                     window.location = "/join";
                 }
             });
+            textInfo(mIdFeedback());
         }
     });
-
     // 비밀번호 체크
     $("#input-memberPw").blur(function () {
         // alert(memberPw()); // 확인용
@@ -406,7 +274,6 @@ $(document).ready(function () {
             mPwFeedback().text("OK");
             memberPwResult = true;
         }
-
         if (memberPwResult2) {
             if (!(memberPw() === memberPw2())) {
                 textDanger(mPwFeedback2());
@@ -416,7 +283,6 @@ $(document).ready(function () {
         }
 
     });
-
     // 비밀번호 확인 체크
     $("#input-memberPw2").blur(function () {
         textDanger(mPwFeedback2());
@@ -432,7 +298,6 @@ $(document).ready(function () {
             return memberPwResult2 = true;
         }
     });
-
     // 이름 체크
     $("#input-memberName").blur(function () {
         textDanger(mNameFeedback());
@@ -448,7 +313,6 @@ $(document).ready(function () {
             return memberNameResult = true;
         }
     });
-
     // 주소 체크
     $("#sample6_detailAddress").blur(function () {
         textDanger(mAddrFeedback());
@@ -465,18 +329,34 @@ $(document).ready(function () {
             return memberAddressResult = true;
         }
     });
+    // 인증번호 체크
+    $("#input-smsConfirmNum").blur(function (){
+        if(smsConfirmNum().val() === null || smsConfirmNum().val() === ""){
+            smsConfirmNumFeedback().text("인증번호를 입력해주세요.");
+            smcConfirmNumResult = false;
+        }else if(!(certificationNum == smsConfirmNum().val())){
+            smsConfirmNumFeedback().text("인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
+            smcConfirmNumResult = false;
+        } else {
+            smsConfirmNumFeedback().text("");
+            smcConfirmNumResult = true;
+        }
+    });
 
-    // 휴대전화 체크 (인증번호 문자포함) - 문자서비스 막아놓음 사용하려면 <<ajax 주석 살리기 + 테스트 주석처리>>하기
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // 휴대전화 체크 (인증번호 문자포함) - 문자서비스 막아놓음 사용하려면 /////////ajax 주석 살리기 + 테스트 주석처리//////
+    //////////////////////////////////////////////////////////////////////////////////////////////
     $("#smsBtn").click(function () {
         textDanger(mPhoneNumFeedback());
         if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
             mPhoneNumFeedback().text("인증이 필요합니다.");
-            memberPhoneNumResult = false;
+            return memberPhoneNumResult = false;
         } else if (!(mPhoneumRegExp.test(memberPhoneNum()))) { //정규식에 맞지 않을 때
             mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
-            memberPhoneNumResult = false;
-        } else { // 조건에 맞을 때
-
+            return memberPhoneNumResult = false;
+        } else {
+            // 조건에 맞을 때
             // $.ajax({
             //     type: "POST",
             //     url: "/sms/send",
@@ -485,27 +365,42 @@ $(document).ready(function () {
             //     },
             //     dataType: "json",
             //     success: function (response) {
-            alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
-            startTimer(leftSec); // 타이머 시작
-
-            ///////test///////
-            alert("123456");
-            certificationNum = "123456";
-            ///////test///////
-
-            //         alert(response['smsConfirmNum']);
-            //         certificationNum = response['smsConfirmNum'];
-            return memberPhoneNumResult = true;
+            //         alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
+            //         startTimer(leftSec); // 타이머 시작
+            //         alert(response);
+            //         return memberPhoneNumResult = true , certificationNum = response;
             //     },
             //     error: function () {
             //         alert("인증번호 발송 실패");
+            //         location.href="/join"
             //     }
             // });
+
+            //////////////////////////테스트용////////////////////////////
+            $.ajax({
+                type: "POST",
+                url: "/sms/test",
+                data: {
+                    to: memberPhoneNum(),
+                },
+                dataType: "json",
+                success: function (response) {
+                    alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
+                    startTimer(leftSec); // 타이머 시작
+                    alert(response);
+                    return memberPhoneNumResult = true , certificationNum = response;
+                },
+                error: function () {
+                    alert("인증번호 발송 실패");
+                    location.href="/join"
+                }
+            });
+            //////////////////////////테스트용////////////////////////////
 
         }
     });
 
-    //회원가입 버튼 - 모든 조건이 만족할 때 submit됨
+    // 회원가입 버튼 - 모든 조건이 만족할 때 submit됨
     $("#joinBtn").click(function () {
         if (memberId() === null || memberId() === "") {
             mIdFeedback().text("필수 정보입니다.");
@@ -534,10 +429,11 @@ $(document).ready(function () {
 
         alert(memberIdResult + "///" + memberPwResult + "///" + memberPwResult2 + "///" + memberNameResult
             + "///" + checkMemberBirthday() + "///" + memberAddressResult + "///" + memberPhoneNumResult
-            + "///" + checkCertificationNum());
+            + "///" + smcConfirmNumResult ); //확인용
 
         if (memberIdResult && memberPwResult && memberPwResult2 && memberNameResult &&
-            checkMemberBirthday() && memberAddressResult && memberPhoneNumResult && checkCertificationNum()) {
+            checkMemberBirthday() && memberAddressResult && memberPhoneNumResult && smcConfirmNumResult) {
+            certificationNum = null;
             $("#joinBtn").attr("type", "submit");
         }
     });

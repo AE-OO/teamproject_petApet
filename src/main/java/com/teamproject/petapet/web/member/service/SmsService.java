@@ -7,6 +7,7 @@ import com.teamproject.petapet.web.member.dto.sms.SmsRequestDto;
 import com.teamproject.petapet.web.member.dto.sms.SmsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,7 +51,7 @@ public class SmsService {
     //인증번호
     private final String smsConfirmNum = randomNumber();
 
-    public SmsResponseDto sendSms(String to) throws JsonProcessingException, RestClientException,
+    public String sendSms(String to) throws JsonProcessingException, RestClientException,
             URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         Long time = System.currentTimeMillis();
 
@@ -83,8 +85,9 @@ public class SmsService {
         SmsResponseDto response = restTemplate.postForObject(
                 new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"),
                 httpBody, SmsResponseDto.class);
-        response.setSmsConfirmNum(smsConfirmNum);
-        return response;
+
+//        response.setSmsConfirmNum(smsConfirmNum);
+        return smsConfirmNum;
     }
 
     public String makeSignature(Long time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {

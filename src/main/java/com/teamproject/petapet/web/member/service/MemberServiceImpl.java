@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
@@ -32,13 +31,12 @@ import java.util.Map;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
-
 
 
     @Override
@@ -60,17 +58,18 @@ public class MemberServiceImpl implements MemberService{
     public void updateMemberStopDate(String memberId) {
         memberRepository.updateMemberStopDate(memberId);
     }
+
     @Override
     public int[] getGenderList() {
 //        ArrayList<Integer> genderList = new ArrayList<>();
         int[] genderList = new int[3];
 
-        for(String gender : memberRepository.getGenderList()){
-            if(gender.equals("남자")){
+        for (String gender : memberRepository.getGenderList()) {
+            if (gender.equals("남자")) {
                 genderList[0] += 1;
-            } else if(gender.equals("여자")){
+            } else if (gender.equals("여자")) {
                 genderList[1] += 1;
-            }else{
+            } else {
                 genderList[2] += 1;
             }
         }
@@ -100,23 +99,34 @@ public class MemberServiceImpl implements MemberService{
     @Override
     @Transactional
     public MemberResponseDto join(JoinDto joinDto) {
-        Member member = JoinDto.toEntity(joinDto,passwordEncoder);
+        Member member = JoinDto.toEntity(joinDto, passwordEncoder);
         return MemberResponseDto.of(memberRepository.save(member));
     }
+
     @Transactional(readOnly = true)
     @Override
     public boolean duplicateCheckMemberId(String memberId) {
         return memberRepository.existsById(memberId);
     }
 
+
     //유효성 검사
     @Override
     public Map<String, String> validateHandling(BindingResult bindingResult) {
         Map<String, String> validatorResult = new HashMap<>();
+        //필드 에러
         for (FieldError error : bindingResult.getFieldErrors()) {
             String validKeyName = String.format("valid_%s", error.getField());
             validatorResult.put(validKeyName, error.getDefaultMessage());
         }
+//        //글로벌 에러
+//        for (ObjectError error : bindingResult.getGlobalErrors()) {
+//            if (error.getCode().equals(MemberPwEquals.class.getSimpleName())) {
+//                String validKeyName = String.format("valid_%s", error.getObjectName());
+//                validatorResult.put(validKeyName, error.getDefaultMessage());
+////                System.out.println(validatorResult.get("valid_joinDto")); //확인용
+//            }
+//        }
         return validatorResult;
     }
 }

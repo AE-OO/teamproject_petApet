@@ -9,13 +9,12 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({ElementType.TYPE})
+@Target({ElementType.FIELD})
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = {PasswordEqualChecker.class})
-public @interface PasswordEquals {
-
-    String message() default "비밀번호가 일치하지 않습니다.";
+@Constraint(validatedBy = {SmsConfirmNumCheck.class})
+public @interface SmsConfirmNum {
+    String message() default "입력하신 번호가 인증번호와 일치하지 않습니다. ";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
