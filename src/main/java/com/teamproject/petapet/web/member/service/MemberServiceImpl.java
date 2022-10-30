@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,7 +78,12 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public List<Integer> getAgeList() {
-        return memberRepository.getAgeList();
+        List<Integer> ageList = new ArrayList<Integer>();
+        for(int i = 0; i < 6; i++){
+            ageList.add(memberRepository.getAgeList().get(i));
+        }
+        ageList.add(memberRepository.getAgeList().get(6)+memberRepository.getAgeList().get(7)+memberRepository.getAgeList().get(8)+memberRepository.getAgeList().get(9));
+        return ageList;
     }
 
     @Transactional
