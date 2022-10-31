@@ -1,12 +1,18 @@
 package com.teamproject.petapet.domain.cart;
 
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.domain.product.Product;
+import com.teamproject.petapet.web.cart.dto.CartDTO;
+import com.teamproject.petapet.web.member.service.MemberService;
+import com.teamproject.petapet.web.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +23,12 @@ class CartRepositoryTest {
 
     @Autowired
     CartRepository cartRepository;
+
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    ProductService productService;
 
     @Test
     public void insertCartDummies(){
@@ -43,8 +55,15 @@ class CartRepositoryTest {
         });
     }
 
-    void test2(){
-//        cartRepository.findCartByMember2()
+    @Test
+    void 카트담기(){
+        String member = "memberA";
+        Member memberA = memberService.findOne(member);
+        Long product = 1L;
+        Product product1 = productService.findOne(product);
+        Cart cart = new Cart(1L,memberA,product1,1L);
+        cartRepository.save(cart);
+
     }
 
 }

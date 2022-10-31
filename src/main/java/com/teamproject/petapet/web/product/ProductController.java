@@ -56,7 +56,7 @@ public class ProductController {
     }
 
     @PostMapping("/insert")
-    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult) throws IOException {
+    public String  productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult) throws IOException {
 
         if (productInsertDTO.getProductImg().get(0).isEmpty()) {
             bindingResult.addError(new FieldError("productInsertDTO", "productImg", "1장 이상의 사진을 올려주세요"));

@@ -1,6 +1,7 @@
 package com.teamproject.petapet.domain.cart;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -13,4 +14,5 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findCartByMember(@Param("memberId") String memberId);
 
 
+//    Cart save(@Param("memberId") String memberId, @Param("productId") Long productId, @Param("quantity") Long quantity);
 }

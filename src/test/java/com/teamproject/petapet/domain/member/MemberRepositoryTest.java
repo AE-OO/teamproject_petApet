@@ -17,7 +17,7 @@ class MemberRepositoryTest {
     CommunityRepository communityRepository;
     PasswordEncoder passwordEncoder;
 
-    PasswordEncoder passwordEncoder;
+//    PasswordEncoder passwordEncoder;
 
     @Test
     public void insertMemberDummies(){

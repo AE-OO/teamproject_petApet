@@ -2,22 +2,20 @@ package com.teamproject.petapet.web.cart;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.cart.dto.CartDTO;
+import com.teamproject.petapet.web.cart.dto.CartVO;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
+import com.teamproject.petapet.web.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -27,6 +25,7 @@ public class CartController {
 
     private final CartService cartService;
     private final MemberService memberService;
+    private final ProductService productService;
 
     /**
      * 회원 장바구니
@@ -35,6 +34,7 @@ public class CartController {
      * @param httpSession
      * @param model
      * @return
+     * 추가할것 - 로그인한 회원 일치 검증 에러처리
      */
     @GetMapping()
     public String mycart(Principal principal,
@@ -43,12 +43,7 @@ public class CartController {
                          Model model){
 
         if(Principal.class.isInstance(principal)) {
-            String memberId = principal.getName();
-            httpSession.setAttribute("loginMember", memberService.findOne(memberId).get());
-//            model.addAttribute("memberId", memberId);
-            HttpSession session = request.getSession(false);
-            Member loginMemberSession = (Member) session.getAttribute("loginMember");
-            String loginMember = loginMemberSession.getMemberId();
+            String loginMember = checkMember(principal, request, httpSession);
 
             // 세션 유지되면 로그인으로 이동
             List<Cart> carts = cartService.findAll(loginMember);
@@ -57,14 +52,36 @@ public class CartController {
         }
 
         return "login";
+
     }
 
     // 상품 페이지 -> 장바구니 담기
-    @PostMapping("/add")
-    public String productToCart(@Validated @ModelAttribute("cartDTO") CartDTO cartDTO,
-                                BindingResult bindingResult){
+    @ResponseBody
+    @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
+    public void productToCart(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
 
-        return "mypage/cart";
+        String loginMember = checkMember(principal, request, httpSession);
+        Long product = vo.getProduct();
+        Long quantity = vo.getQuantity();
+        Cart cart = new Cart(
+                memberService.findOne(loginMember),
+                productService.findOne(vo.getProduct()),
+                vo.getQuantity());
+        log.info("cart1 ={}", cart);
+        log.info("cart2 ={}", cart.getProduct());
+        log.info("cart3 ={}", cart.getQuantity());
+
+        cartService.addCart(cart);
+
+//        cartService.save(loginMember,product,quantity);
+    }
+
+    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
+        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
+        HttpSession session = request.getSession(false);
+        Member loginMemberSession = (Member) session.getAttribute("loginMember");
+        String loginMember = loginMemberSession.getMemberId();
+        return loginMember;
     }
 
 

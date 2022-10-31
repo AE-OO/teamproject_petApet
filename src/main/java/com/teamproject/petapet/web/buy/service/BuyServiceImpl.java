@@ -21,6 +21,11 @@ public class BuyServiceImpl implements Buyservice{
         return buyRepository.findBuyByMember(member);
     }
 
+    @Override
+    public Buy saveBuy(Buy buy) {
+        return buyRepository.save(buy);
+    }
+
     // 구매 목록
 
 

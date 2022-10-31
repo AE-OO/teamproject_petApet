@@ -1,6 +1,7 @@
 package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.member.dto.LoginDto;
 import com.teamproject.petapet.web.member.dto.MemberDto;
 import com.teamproject.petapet.web.member.dto.MemberResponse;
@@ -26,7 +27,7 @@ public interface MemberService {
     TokenDto login(LoginDto loginDto);
     MemberResponse join(MemberDto memberDto);
 
-    Optional<Member> findOne(String memberId);
+    Member findOne(String memberId);
 
     boolean duplicateCheckMemberId(String memberId);
 }

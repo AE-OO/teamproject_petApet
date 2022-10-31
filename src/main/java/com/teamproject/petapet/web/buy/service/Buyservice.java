@@ -8,6 +8,8 @@ public interface Buyservice {
 
     // 구매 목록
     List<Buy> findAll(String member);
+
+    Buy saveBuy (Buy buy);
     // 선택 삭제
 
     // 전체 삭제

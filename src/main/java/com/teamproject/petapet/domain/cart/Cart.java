@@ -3,11 +3,8 @@ package com.teamproject.petapet.domain.cart;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 
 /**
  * 박채원 22.10.02 작성
@@ -22,7 +19,9 @@ import javax.validation.constraints.NotEmpty;
 public class Cart{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+
+    )
     private Long cartId;
 
     @ManyToOne
@@ -38,5 +37,10 @@ public class Cart{
     @Column
     private Long quantity;
 
+    public Cart(Member member, Product product, Long quantity) {
+        this.member = member;
+        this.product = product;
+        this.quantity = quantity;
+    }
 
 }

@@ -34,11 +34,7 @@ public class BuyController {
                          Model model){
 
         if(Principal.class.isInstance(principal)) {
-            String memberId = principal.getName();
-            httpSession.setAttribute("loginMember", memberService.findOne(memberId).get());
-            HttpSession session = request.getSession(false);
-            Member loginMemberSession = (Member) session.getAttribute("loginMember");
-            String loginMember = loginMemberSession.getMemberId();
+            String loginMember = checkMember(principal, request, httpSession);
 
             List<Buy> buyList = buyService.findAll(loginMember);
             model.addAttribute("buyList", buyList);
@@ -46,5 +42,14 @@ public class BuyController {
         }
 
         return "login";
+    }
+
+
+    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
+        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
+        HttpSession session = request.getSession(false);
+        Member loginMemberSession = (Member) session.getAttribute("loginMember");
+        String loginMember = loginMemberSession.getMemberId();
+        return loginMember;
     }
 }
