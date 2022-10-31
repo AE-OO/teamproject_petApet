@@ -2,6 +2,7 @@ package com.teamproject.petapet.domain.report;
 
 import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -32,7 +33,7 @@ public class Report {
     @Column(columnDefinition = "boolean default 0", nullable = false)
     private boolean responseStatus;
 
-    //둘 다 신고받는 대상
+    //셋 다 신고받는 대상
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;
@@ -40,4 +41,8 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "communityId")
     private Community community;
+
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    private Product product;
 }
