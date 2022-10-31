@@ -5,7 +5,10 @@ import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.buy.dto.BuyDTO;
+import com.teamproject.petapet.web.buy.dto.BuyVO;
 import com.teamproject.petapet.web.buy.service.Buyservice;
+import com.teamproject.petapet.web.cart.dto.CartVO;
+import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -26,6 +30,9 @@ public class BuyController {
 
     private final Buyservice buyService;
     private final MemberService memberService;
+
+    private final CartService cartService;
+
 
     @GetMapping()
     public String myBuy(Principal principal,
@@ -42,6 +49,40 @@ public class BuyController {
         }
 
         return "login";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
+    public void productToBuy(@RequestBody BuyVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
+
+        String loginMember = checkMember(principal, request, httpSession);
+        Date date = new Date();
+        Long product = vo.getProduct();
+        Long quantity = vo.getQuantity();
+        String memberAddress = memberService.findAddr(loginMember).getMemberAddress();
+
+
+        Buy buy = new Buy();
+
+        buyService.addCartToBuy(buy);
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
+    public void cartToBuy(@RequestBody BuyVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession) {
+
+        String loginMember = checkMember(principal, request, httpSession);
+        Date date = new Date();
+        Long product = vo.getProduct();
+        Long quantity = vo.getQuantity();
+        String memberAddress = memberService.findAddr(loginMember).getMemberAddress();
+
+
+        Buy buy = new Buy();
+
+        buyService.addCartToBuy(buy);
+
     }
 
 

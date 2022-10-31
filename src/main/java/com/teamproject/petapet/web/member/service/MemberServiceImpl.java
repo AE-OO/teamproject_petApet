@@ -86,6 +86,11 @@ public class MemberServiceImpl implements MemberService{
         return memberRepository.findById(memberId).get();
     }
 
+    @Override
+    public Member findAddr(String memberId) {
+        return memberRepository.findAddr(memberId);
+    }
+
 
     @Transactional
     @Override

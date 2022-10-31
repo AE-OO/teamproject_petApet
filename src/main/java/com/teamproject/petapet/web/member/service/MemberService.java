@@ -29,5 +29,7 @@ public interface MemberService {
 
     Member findOne(String memberId);
 
+    Member findAddr(String memberId);
+
     boolean duplicateCheckMemberId(String memberId);
 }

@@ -73,7 +73,6 @@ public class CartController {
 
         cartService.addCart(cart);
 
-//        cartService.save(loginMember,product,quantity);
     }
 
     private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {

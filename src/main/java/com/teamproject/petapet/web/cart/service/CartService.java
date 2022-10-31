@@ -11,7 +11,6 @@ public interface CartService {
 
     Cart addCart(Cart cart);
 
-//    Cart save(String memberId, Long productId, Long quantity);
-
+    Cart findOne(Long cartId);
 
 }

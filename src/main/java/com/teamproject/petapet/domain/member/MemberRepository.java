@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,5 +35,8 @@ public interface MemberRepository extends JpaRepository<Member, String> {
             "where memberName not in('admin')) a group by a.age order by a.age) b " +
             "on b.age = age.age", nativeQuery = true)
     List<Integer> getAgeList();
+
+    @Query("select m.memberAddress from Member m where m.memberId =: memberId")
+    Member findAddr(@Param("memberId") String memberId);
 
 }

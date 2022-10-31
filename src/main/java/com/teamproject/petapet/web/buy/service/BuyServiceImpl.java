@@ -16,20 +16,22 @@ public class BuyServiceImpl implements Buyservice{
 
     private final BuyRepository buyRepository;
 
+    // 구매 목록
     @Override
     public List<Buy> findAll(String member) {
         return buyRepository.findBuyByMember(member);
     }
 
+    // 장바구니 -> 구매
     @Override
-    public Buy saveBuy(Buy buy) {
+    public Buy addCartToBuy(Buy buy) {
         return buyRepository.save(buy);
     }
 
-    // 구매 목록
+    // 상품 -> 구매
+    @Override
+    public Buy addProductToBuy(Buy buy) {
+        return buyRepository.save(buy);
+    }
 
-
-    // 선택 삭제
-
-    // 전체 삭제
 }

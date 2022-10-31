@@ -9,7 +9,11 @@ public interface Buyservice {
     // 구매 목록
     List<Buy> findAll(String member);
 
-    Buy saveBuy (Buy buy);
+    // 장바구니 -> 구매
+    Buy addCartToBuy (Buy buy);
+
+    // 상품 -> 구매
+    Buy addProductToBuy(Buy buy);
     // 선택 삭제
 
     // 전체 삭제
