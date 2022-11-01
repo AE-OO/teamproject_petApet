@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 박채원 22.10.09 작성
@@ -61,6 +62,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public int[] getGenderList() {
+//        ArrayList<Integer> genderList = new ArrayList<>();
         int[] genderList = new int[3];
 
         for(String gender : memberRepository.getGenderList()){
@@ -84,6 +86,12 @@ public class MemberServiceImpl implements MemberService{
         ageList.add(memberRepository.getAgeList().get(6)+memberRepository.getAgeList().get(7)+memberRepository.getAgeList().get(8)+memberRepository.getAgeList().get(9));
         return ageList;
     }
+
+    @Override
+    public Member findOne(String memberId) {
+        return memberRepository.findById(memberId).get();
+    }
+
 
     @Transactional
     @Override

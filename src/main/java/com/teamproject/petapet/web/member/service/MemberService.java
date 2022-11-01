@@ -1,6 +1,7 @@
 package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.member.dto.LoginDto;
 import com.teamproject.petapet.web.member.dto.MemberDto;
 import com.teamproject.petapet.web.member.dto.MemberResponse;
@@ -8,6 +9,7 @@ import com.teamproject.petapet.web.member.dto.TokenDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 박채원 22.10.09 작성
@@ -24,6 +26,8 @@ public interface MemberService {
 
     TokenDto login(LoginDto loginDto);
     MemberResponse join(MemberDto memberDto);
+
+    Member findOne(String memberId);
 
     boolean duplicateCheckMemberId(String memberId);
 }

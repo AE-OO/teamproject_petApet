@@ -13,6 +13,8 @@ const offBuy = "link_buy--KOU5pZhUVG disabled--1wqXh5SEyX";
 const btnMinus = $('.number .minus_btn');
 const btnPlus = $('.number .plus_btn');
 const input = $('.number > input');
+
+const selectedPrice =$('.num--37aOyGmdW1.dd'); // <- 작업해야함
 const productPrice = $('.price--2Uv-07hf78'); // 상품 개별 단가
 const totalProductPrice = $('.product-price>span'); // 상품 개별 총금액
 const selectDeleteCards = $('.btn_delete--3P5eHI2eDa'); // 상품 삭제 선택
@@ -23,6 +25,16 @@ const fadeTime = 300;
 
 
 $(document).ready(function() {
+    // function cal_fn(){
+    //     const quantity = $(card).children().find(productQuntity).get().val();
+    //     const price = parseInt($(card).children().find(productPrice).get.text());
+    //     const totalFn = $(card).children().find(productTotalFn);
+    //     const number = quantity * price;
+    //     const dd = toString(number);
+    //     console.log("cal_fn >>>>>", dd);
+    //     return totalFn.text(dd);
+    // }
+
 
     // 전체 선택
     $(checkboxAll).click(function () {
@@ -80,6 +92,7 @@ $(document).ready(function() {
 
     });
 
+
     /* Update quantity */
     function updateQuantity(quantityInput)
     {
@@ -93,6 +106,19 @@ $(document).ready(function() {
         console.log('총가격', linePrice)
 
         // totalFnAll();
+
+        /* 선택상품금액 */
+       productRow.children().find(selectedPrice).each(function () {
+            // $(this).text(linePrice);
+            $(this).fadeOut(fadeTime, function() {
+                $(this).text(linePrice);
+                totalFnAll();
+                $(this).fadeIn(fadeTime);
+            });
+        });
+
+
+        /* 주문금액 */
         productRow.children().find(totalProductPrice).each(function () {
             // $(this).text(linePrice);
             $(this).fadeOut(fadeTime, function() {
@@ -102,6 +128,7 @@ $(document).ready(function() {
             });
         });
 
+        /* 수량 */
         productRow.children().find(productQuntity).each(function () {
             console.log('vv',this);
             // $(this).text(quantity);

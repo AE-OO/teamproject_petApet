@@ -22,7 +22,7 @@
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item" th:each="img : *{productImg}">
-                                    <img th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${img.storeFileName})}|"
+                                    <img th:src="|@{/Users/seonghyeon/Desktop/test/{path}(path=${img.storeFileName})}|"
                                          width="400" height="400"
                                          style="min-height: 400px; min-width: 400px"
                                          class="d-block w-auto" alt="...">
@@ -80,22 +80,24 @@
                 <div class="col-4">
                     <div class="m-lg-2 d-flex">
                         <div class="col-9">
-                            <input type="text" style="height: 100%" class="col-12" value="1" maxlength="6"
+                            <!-- 추가 -->
+                            <input id="productId" type="hidden" th:value="*{productId}"/>
+                            <input id="quantity" type="text" style="height: 100%" class="col-12" value="1" maxlength="6"
                                    autocomplete="off">
                         </div>
                         <div style="display:table-cell;vertical-align:top;" class="col-3">
-                            <button class="btn-sm-square" style="height: 1rem" type="button">△</button>
-                            <button class="btn-sm-square" style="height: 1rem" type="button">▽</button>
+                            <button id="plus" class="btn-sm-square" style="height: 1rem" type="button">△</button>
+                            <button id="minus" class="btn-sm-square" style="height: 1rem" type="button">▽</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-8">
                     <div class="m-lg-2 d-flex flex-row">
                         <div class="col-6 d-grid">
-                            <button class="btn-info ms-3" style="height:2rem"> 장바구니 담기</button>
+                            <button id="addCart" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
                         <div class="col-6 d-grid">
-                            <button class="btn-info ms-3" style="height:2rem">바로구매</button>
+                            <button id="addBuy" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:addBuy()'">바로구매</button>
                         </div>
                     </div>
                 </div>
@@ -605,6 +607,75 @@
 <script th:inline="javascript">
     $('.carousel-inner > div:nth-child(1)').addClass('active');
     $('.carousel-indicators > button:nth-child(1)').addClass('active');
+
+
+</script>
+<script th:inline="javascript">
+
+    const btnMinus = $('#minus');
+    const btnPlus = $('#plus');
+    const quantity2 =$('#quantity');
+
+    $(btnMinus).click(function () {
+        var $input = $(this).parents().eq(2).find(quantity2);
+        var count = parseInt($input.val()) - 1;
+        count = count < 1 ? 1 : count;
+        $input.val(count);
+        $input.change();
+        console.log("빼기 >>", $input.val());
+    });
+
+    $(btnPlus).click(function () {
+        var $input = $(this).parents().eq(2).find(quantity2);
+        $input.val(parseInt($input.val()) + 1);
+        $input.change();
+        console.log("더하기 >>", $input.val());
+    });
+
+    var urlCart = "/cart/add";
+    var urlBuy = "/buy/addByProduct";
+    var productId = $("#productId").val();
+    var quantity  = $("#quantity").val();
+    var param = {"product": productId, "quantity":quantity};
+    function addCart() {
+        alert("실행");
+        console.log("product : " + productId);
+        console.log("quantity : " + quantity);
+        $.ajax({
+            url: urlCart,
+            type: "POST",
+            data: JSON.stringify(param),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("장바구니에 상품이 추가 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+
+            }
+        });
+    }
+    function addBuy(){
+        alert("실행");
+        console.log("product : " + productId);
+        console.log("quantity : " + quantity);
+        $.ajax({
+            url: urlBuy,
+            type: "POST",
+            data: JSON.stringify(param),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("주문 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
+            }
+        });
+    }
+
 </script>
 
 <script th:src="@{/js/osh.js}"></script>
