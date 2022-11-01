@@ -160,19 +160,21 @@ function setOutOfStock(){
     var size = $("input[name=productStock]").length;
     var productIdList = [];
 
-    for(i = 0; i < size; i++){
-        if($("input[name=productStock]").eq(i).val() === '0'){
-            productIdList.push(i);
+    if(size > 0){
+        for(i = 0; i < size; i++){
+            if($("input[name=productStock]").eq(i).val() === '0'){
+                productIdList.push(i);
+            }
         }
+
+        $.ajax({
+            url: "/admin/setOutOfStock",
+            type: "get",
+            data: {productIdList : productIdList},
+            success: function () {
+            }
+        })
     }
-    
-    $.ajax({
-        url: "/admin/setOutOfStock",
-        type: "get",
-        data: {productIdList : productIdList},
-        success: function () {
-        }
-    })
 }
 
 //스크롤 위치를 따라 이동하는 사이드바 구현
