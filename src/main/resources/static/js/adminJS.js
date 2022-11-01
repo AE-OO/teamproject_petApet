@@ -2,6 +2,7 @@ $(document).ready(function () {
     reportColor();
     moveSideBar();
     movePage();
+    setOutOfStock()
 
     $(".deleteFAQ").click(function () {
         var id = $(this).attr("id");
@@ -95,11 +96,12 @@ $(document).ready(function () {
     $(".setProductStatus").click(function(){
         var productId = $(this).attr("value");
         var selectedStatus = $(this).parent().parent().find("select[name=productStatus]").val();
+        var productStock = $(this).parent().parent().find("input[name=productStock]").val();
 
         $.ajax({
             url: "/admin/updateProductStatus/" + productId,
             type: "get",
-            data: {status : selectedStatus},
+            data: {status : selectedStatus, stock : productStock},
             success(){
                 location.href="/admin/adminPage";
             }
@@ -133,11 +135,46 @@ $(document).ready(function () {
            }
        })
     });
+
+    $(".acceptProductReportBtn").click(function(){
+        var reportId = $(this).parent().parent().find("td[id=productReportId]").text();
+        var productId = $(this).parent().parent().find("td[id=productId]").text();
+
+        $.ajax({
+            url: "/admin/acceptProductReport/" + reportId,
+            data: {productId : productId},
+            type: "get",
+            success(){
+                location.reload();
+            }
+        })
+    });
 })
 
 function reportColor(){
     if($("#report").text() >= 3)
         $("#report").attr("class", "text-danger");
+}
+
+function setOutOfStock(){
+    var size = $("input[name=productStock]").length;
+    var productIdList = [];
+
+    if(size > 0){
+        for(i = 0; i < size; i++){
+            if($("input[name=productStock]").eq(i).val() === '0'){
+                productIdList.push(i);
+            }
+        }
+
+        $.ajax({
+            url: "/admin/setOutOfStock",
+            type: "get",
+            data: {productIdList : productIdList},
+            success: function () {
+            }
+        })
+    }
 }
 
 //스크롤 위치를 따라 이동하는 사이드바 구현

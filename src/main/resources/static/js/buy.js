@@ -6,7 +6,7 @@ $('.gAMxLy').click(function(){
 });
 
 $('.delete-order').click(function(){
-    $(this).parents().eq(11).remove();
+    $(this).parents().eq(12).remove();
 });
 
 // 날짜 버튼 

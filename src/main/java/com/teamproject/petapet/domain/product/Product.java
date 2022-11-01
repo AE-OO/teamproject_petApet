@@ -1,8 +1,7 @@
 package com.teamproject.petapet.domain.product;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.teamproject.petapet.domain.cart.Cart;
+import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -55,6 +54,9 @@ public class Product {
     @Column(length = 1,columnDefinition = "int(1) default 0")
     private Long productRating;
 
+    @Column(columnDefinition = "bigint(3) default 0")
+    private Long productReport;
+
     //foreign 키는 Counter 테이블에서 갖지만 Product 테이블에서도 연관관계를 작성해 준 이유는 oneToOne 연관관계는 단방향 관계를 지원하지 않기 때문
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Counter counter;
@@ -64,6 +66,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Cart> cart;
+
 
     public Product(String productName, Long productPrice, Long productStock, List<UploadFile> productImg, String productStatus, ProductType productDiv, String productContent) {
         this.productName = productName;

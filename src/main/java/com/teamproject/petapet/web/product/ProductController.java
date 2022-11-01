@@ -56,8 +56,6 @@ public class ProductController {
         List<Product> productList = productService.findAllByProductDiv(productType);
         model.addAttribute("productList", productList);
         model.addAttribute("productDiv", productType.getProductCategory());
-        Long star = 4L;
-        model.addAttribute("star", star);
         return "product/productList";
     }
 

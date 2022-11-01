@@ -10,13 +10,15 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> getProductList();
-    void updateProductStatus(String selectStatus, Long productId);
+    void updateProductStatus(String selectStatus, Long productStock, Long productId);
     List<Product> findAllByProductDiv(ProductType productType);
+    void updateProductStatusOutOfStock(List<String> productId);
 
     Product findOne(Long id);
 
     Product productSave(Product product);
 
     Product findProductWithReview(Long id);
+    void addProductReport(Long productId);
 }
 

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <title>petApet</title>
+
+    <!-- Favicon -->
+    <link href="/img/icon/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
+            rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script>
+        //form input value 값 ,,, 전역으로 사용하기위해 function 선언함
+        originalMemberPw = () => $("#input-originalMemberPw").val();
+        memberPw = () => $("#input-memberPw").val();
+        memberPw2 = () => $("#input-memberPw2").val();
+        memberYear = () => $("#input-year").val();
+        memberMonth = () => $("#input-month").val();
+        memberDay = () => $("#input-day").val();
+        memberDetailAddress = () => $("#sample6_detailAddress").val();
+        memberPostCode = () => $("#sample6_postcode").val();
+        memberExtraAddress = () => $("#sample6_extraAddress").val();
+        memberAddress = () => $("#sample6_address").val();
+        memberPhoneNum = () => $("#input-memberPhoneNum").val();
+        smsConfirmNum = () => $("#input-smsConfirmNum");
+
+        //error 메세지 (input 밑에 있는 p태그) 전역으로 사용하기위해 function 선언함
+        mPwFeedback = () => $("#feedback-memberPw");
+        mPwFeedback2 = () => $("#feedback-memberPw2");
+        mBirthFeedback = () => $("#feedback-memberBirthday");
+        mPhoneNumFeedback = () => $("#feedback-memberPhoneNum");
+        mAddrFeedback = () => $("#feedback-memberAddress");
+        smsConfirmNumFeedback = () => $("#feedback-smsConfirmPhoneNum");
+        oPwFeedbank = () => $("#feedback-originalMemberPw");
+
+        //비밀번호 정규식 (영어 대소문자,특수문자,숫자 필수입력, 8-16글자)
+        const mPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+        //휴대전화 정규식 (-빼고 입력 01로 시작, 총 10-11글자)
+        const mPhoneumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
+        //숫자 정규식 (길이 상관 없이 숫자만 입력)
+        const numRegExp = /^[0-9]+$/;
+
+        //인증시간 변수
+        let timer = null;
+        let certificationNum = null;
+        const leftSec = 180; // 제한시간(초)
+        //인증시간 타이머 함수
+        function startTimer(count) {
+            $("#smsBtn").attr("disabled", true);
+            $("#input-memberPhoneNum").attr("readonly", true);
+            var minutes, seconds;
+            timer = setInterval(function () {
+                minutes = parseInt(count / 60, 10);
+                seconds = parseInt(count % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                smsConfirmNumFeedback().text(minutes + ":" + seconds + " 안에 인증번호를 입력해주세요.");
+                // 인증번호 맞으면 종료
+                if (smsConfirmNum().val() == certificationNum) {
+                    smsConfirmNumFeedback().val("");
+                    mPhoneNumFeedback().text("OK");
+                    smsConfirmNum().attr("reaonly", true);
+                    return;
+                }
+                // 타이머 끝
+                if (--count < 0) {
+                    clearInterval(timer);
+                    alert("인증시간이 초과되었습니다. 인증번호를 다시 전송해주세요.");
+                    $("#input-memberPhoneNum").attr("readonly", false);
+                    mPhoneNumFeedback().text("");
+                    $("#smsBtn").attr("disabled", false);
+                    smsConfirmNum().val("");
+                    smsConfirmNumFeedback().text("");
+                    smsConfirmNum().attr("disabled", true);
+                    return;
+                }
+            }, 1000);
+        }
+
+        //생년월일 변수
+        const start_year = "1922"; // 생년월일 시작 년도
+        let today_year = new Date().getFullYear(); // 현재 년도
+        //생년월일 체크
+        function checkMemberBirthday() {
+            let lastDay = new Date(new Date(memberYear(), memberMonth(), 1) - 86400000).getDate();
+            if (memberYear() === null || memberYear() === "") {
+                mBirthFeedback().text("태어난 년도 4자리를 정확하게 입력하세요.");
+                return false;
+            } else if (memberMonth() === null || memberMonth() === "") {
+                mBirthFeedback().text("태어난 월을 선택하세요.");
+                return false;
+            } else if (memberDay() === null || memberDay() === "") {
+                mBirthFeedback().text("태어난 일(날짜) 2자리를 정확하게 입력하세요.");
+                return false;
+            } else if (!(numRegExp.test(memberYear()))
+                || !(numRegExp.test(memberMonth()))
+                || !(numRegExp.test(memberDay()))) {
+                mBirthFeedback().text("생년월일을 다시 확인해주세요.");
+                return false;
+            } else if (memberYear() > today_year) {
+                mBirthFeedback().text("미래에서 오셨군요.(૭ ᐕ)૭");
+                return false;
+            } else if (memberYear() < start_year || memberYear().length < 4) {
+                mBirthFeedback().text("정말이세요? ༼;´༎ຶ ۝༎ຶ`༽");
+                return false;
+            } else if (memberDay() > lastDay || memberDay() < 1) {
+                mBirthFeedback().text("존재하지 않는 날짜입니다. 생년월일을 다시 확인해주세요.");
+                return false;
+            } else {
+                mBirthFeedback().text("OK");
+                return true;
+            }
+        }
+
+        // 주소 찾기 - 카카오 우편번호 서비스 api 사용
+        function findAddress() {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if (data.userSelectedType === 'R') {
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if (extraAddr !== '') {
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("sample6_extraAddress").value = extraAddr;
+
+                    } else {
+                        document.getElementById("sample6_extraAddress").value = '';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample6_postcode').value = data.zonecode;
+                    document.getElementById("sample6_address").value = addr;
+
+                    $("#sample6_extraAddress").attr("disabled", false);
+                    $("#sample6_extraAddress").attr("readonly", true);
+                    $("#sample6_postcode").attr("disabled", false);
+                    $("#sample6_postcode").attr("readonly", true);
+                    $("#sample6_address").attr("disabled", false);
+                    $("#sample6_address").attr("readonly", true);
+
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("sample6_detailAddress").focus();
+                }
+            }).open();
+        }
+
+        $(document).ready(function () {
+            let originalMemberPwResult = false;
+            let memberPwResult = false;
+            let memberPwResult2 = false;
+            let memberAddressResult = false;
+            let memberPhoneNumResult = false;
+            let smcConfirmNumResult = false;
+
+            // 현재 비밀번호 체크
+            $("#input-originalMemberPw").blur(function () {
+                if (originalMemberPw() === null || originalMemberPw() === "") {
+                    oPwFeedbank().text("");
+                    originalMemberPwResult = false
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/checkPw",
+                        data: {
+                            memberPw: originalMemberPw()
+                        },
+                        dataType: "json",
+                        success: function (check) {
+                            if (check) {
+                                oPwFeedbank().text("");
+                                $("#input-memberPw").attr("disabled", false);
+                                $("#input-memberPw2").attr("disabled", false);
+                                originalMemberPwResult = true;
+                            } else {
+                                oPwFeedbank().text("현재 비밀번호를 확인해주세요.");
+                                originalMemberPwResult = false;
+                            }
+                        },
+                        error: function () {
+                            alert("통신 오류");
+                            window.location = "/member/info";
+                        }
+                    });
+                }
+            });
+            // 비밀번호 체크
+            $("#input-memberPw").blur(function () {
+                if (memberPw() === null || memberPw() === "") { //값이 없을 때
+                    mPwFeedback().text("");
+                    memberPwResult = false;
+                } else if (!(mPwRegExp.test(memberPw()))) { //정규식에 맞지 않을 때
+                    mPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+                    memberPwResult = false;
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/checkPw",
+                        data: {
+                            memberPw: memberPw()
+                        },
+                        dataType: "json",
+                        success: function (check) {
+                            if (check) {
+                                mPwFeedback().text("현재 비밀번호와 동일합니다.");
+                                memberPwResult = false;
+                            } else {
+                                mPwFeedback().text("");
+                                memberPwResult = true;
+                            }
+                        },
+                        error: function () {
+                            alert("통신 오류");
+                            window.location = "/member/info";
+                        }
+                    });
+                }
+
+                if (memberPwResult2) {
+                    if (!(memberPw() === memberPw2())) {
+                        mPwFeedback2().text("비밀번호가 일치하지 않습니다.");
+                        memberPwResult2 = false;
+                    }
+                }
+
+            });
+            // 비밀번호 확인 체크
+            $("#input-memberPw2").blur(function () {
+                if (memberPw2() == null || memberPw2() === "") { //값 없을 때
+                    mPwFeedback2().text("");
+                    return memberPwResult2 = false;
+                } else if (!(memberPw2() === memberPw())) { //값이 같지 않을 때
+                    mPwFeedback2().text("비밀번호가 일치하지 않습니다.");
+                    return memberPwResult2 = false;
+                } else {
+                    mPwFeedback2().text("");
+                    return memberPwResult2 = true;
+                }
+            });
+            // 주소 체크
+            $("#sample6_detailAddress").blur(function () {
+                if (memberPostCode() === null || memberPostCode() === "") { //값이 없을 때
+                    mAddrFeedback().text("필수 정보입니다.");
+                    memberAddressResult = false;
+                    return;
+                } else if (memberDetailAddress() === "") {
+                    mAddrFeedback().text("상세 주소를 입력해주세요.");
+                    return memberAddressResult = false;
+                } else {
+                    mAddrFeedback().text("");
+                    return memberAddressResult = true;
+                }
+            });
+            // 휴대전화 체크
+            $("#input-memberPhoneNum").keyup(function () {
+                if (memberPhoneNum() === null || memberPhoneNum() === "") {
+                    $("#smsBtn").attr("disabled", true);
+                    mPhoneNumFeedback().text("휴대폰 번호를 입력해주세요.");
+                    memberPhoneNumResult = false;
+                } else if (!(mPhoneumRegExp.test(memberPhoneNum()))) {
+                    mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
+                    $("#smsBtn").attr("disabled", true);
+                    memberPhoneNumResult = false;
+                } else {
+                    mPhoneNumFeedback().text("");
+                    $("#smsBtn").attr("disabled", false);
+                    memberPhoneNumResult = true;
+                }
+            });
+
+            // 인증번호 체크
+            // $("#input-smsConfirmNum").blur(function () {
+            //     if (smsConfirmNum().val() === null || smsConfirmNum().val() === "") {
+            //         smsConfirmNumFeedback().text("인증번호를 입력해주세요.");
+            //         smcConfirmNumResult = false;
+            //     } else if (!(certificationNum == smsConfirmNum().val())) {
+            //         smsConfirmNumFeedback().text("인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
+            //         smcConfirmNumResult = false;
+            //     } else {
+            //         smsConfirmNumFeedback().text("");
+            //         smcConfirmNumResult = true;
+            //     }
+            // });
+
+            $("#smsBtn").click(function () {
+                $("#smsBtn").text("인증번호 받기");
+                $("#smsBtn").attr("disabled", true);
+                // $("#smsBtn").attr("id", "sendBtn");
+                $("#input-memberPhoneNum").val("");
+                $("#input-memberPhoneNum").attr("readonly", false);
+
+                if ("#") {
+                    // 조건에 맞을 때
+
+                    //////////////////////////////////////////////////////////////////////////////////////////////
+                    // 휴대전화 체크 (인증번호 문자포함) - 문자서비스 막아놓음 사용하려면 /////////ajax 주석 살리기 + 테스트 주석처리//////
+                    //////////////////////////////////////////////////////////////////////////////////////////////
+
+                    // $.ajax({
+                    //     type: "POST",
+                    //     url: "/sms/send",
+                    //     data: {
+                    //         to: memberPhoneNum(),
+                    //     },
+                    //     dataType: "json",
+                    //     success: function (response) {
+                    //         $("#staticBackdrop").modal();
+                    //         alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
+                    //         startTimer(leftSec); // 타이머 시작
+                    //         alert(response);
+                    //         return certificationNum = response;
+                    //     },
+                    //     error: function () {
+                    //         alert("인증번호 발송 실패");
+                    //         location.href="/join"
+                    //     }
+                    // });
+
+                    //////////////////////////테스트용////////////////////////////
+                    $.ajax({
+                        type: "POST",
+                        url: "/sms/test",
+                        data: {
+                            to: memberPhoneNum(),
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            $("#staticBackdrop").modal();
+                            alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
+                            startTimer(leftSec); // 타이머 시작
+                            alert(response);
+                            return certificationNum = response;
+                        },
+                        error: function () {
+                            alert("인증번호 발송 실패");
+                            window.location = "member/info"
+                        }
+                    });
+                    //////////////////////////테스트용////////////////////////////
+                }
+            })
+
+            // 회원가입 버튼 - 모든 조건이 만족할 때 submit됨
+            $("#joinBtn").click(function () {
+
+                if (memberPw() === null || memberPw() === "") {
+                    mPwFeedback().text("필수 정보입니다.");
+                }
+                if (memberPw2() == null || memberPw2() === "") {
+                    mPwFeedback2().text("필수 정보입니다.");
+                }
+                if (memberPw2() == null || memberPw2() === "") {
+                    mPwFeedback2().text("필수 정보입니다.");
+                }
+                if (memberPostCode() === null || memberPostCode() === "") { //값이 없을 때
+                    mAddrFeedback().text("필수 정보입니다.");
+
+                } else if (memberDetailAddress() === "") {
+                    mAddrFeedback().text("상세 주소를 입력해주세요.");
+                }
+                if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
+                    mPhoneNumFeedback().text("인증이 필요합니다.");
+                }
+
+                alert(memberPwResult + "///" + memberPwResult2 + "///" + checkMemberBirthday() + "///"
+                    + memberAddressResult + "///" + memberPhoneNumResult + "///" + smcConfirmNumResult); //확인용
+
+                if (memberPwResult && memberPwResult2 && checkMemberBirthday() && memberAddressResult && memberPhoneNumResult && smcConfirmNumResult) {
+                    certificationNum = null;
+                    mPhoneNumFeedback().hide();
+                    $("#joinBtn").attr("type", "submit");
+                }
+            });
+
+            $("#withdrawalBtn").click(function () {
+                window.location = "/member/withdrawal"
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+<!-- header Start -->
+<header class="header header-expand-lg bg-white header-light sticky-top p-0">
+    <a href="index.html" class="header-brand d-flex align-items-center px-4 px-lg-5">
+        <img scr="#" alt="logo">
+        <h1 class="m-0">petApet</h1>
+    </a>
+    <button type="button" class="header-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="header-toggler-icon"></span>
+    </button>
+    <div class="collapse header-collapse" id="navbarCollapse">
+        <div class="header-nav ms-auto p-4 p-lg-0">
+            <a href="#l" class="nav-item nav-link">About</a>
+            <a href="#" class="nav-item nav-link">Services</a>
+            <a th:href="@{/product}" class="nav-item nav-link">Product</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
+                <div class="dropdown-menu bg-light m-0">
+                    <a href="#" class="dropdown-item">Test1</a>
+                    <a href="#" class="dropdown-item">Test2</a>
+                    <a href="#" class="dropdown-item">Test3</a>
+                    <a href="#" class="dropdown-item">Test5</a>
+                    <a href="errors/404.html" class="dropdown-item">404 Page</a>
+                </div>
+            </div>
+
+            <a href="#" class="nav-item nav-link">Contact</a>
+            <div class="nav-item dropdown">
+                <a href="/login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="isAnonymous()"><i class="fa fa-user"></i></a>
+                <div class="dropdown-menu bg-light m-0">
+                    <a href="#" class="dropdown-item">Test1</a>
+                    <a href="#" class="dropdown-item">Test2</a>
+                    <a href="#" class="dropdown-item">Test3</a>
+                    <a href="#" class="dropdown-item">Test5</a>
+                    <a href="errors/404.html" class="dropdown-item">404 Page</a>
+                </div>
+            </div>
+            <a href="/member/myPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+               sec:authorize="hasAnyRole('MEMBER','ADMIN')">MyInfo</a>
+            <a href="/admin/adminPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+               sec:authorize="hasRole('ADMIN')">adminPage</a>
+            <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+               sec:authorize="isAuthenticated()">Logout</a>
+            <!--                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"-->
+            <!--                   ><strong th:text="${#authentication.name}"/></a>-->
+            <a href="#" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">
+                <i class="fa fa-heart"></i> <span>1</span></a>
+            <a href="#" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">
+                <i class="fa fa-shopping-bag"></i> <span>3</span></a>
+
+
+        </div>
+
+    </div>
+</header>
+<!-- header End -->
+
+<!-- Myinfo Start -->
+<div class="container-xxl py-7">
+
+    <div class="container ">
+        <div class="row g-2">
+            <div class="col-lg-2 col-md-6">
+                <div class="bg-primary py-5">
+                    <h4 class="text-white text-center mb-0">My petApet</h4>
+                </div>
+                <div class="myinfo-item d-flex">
+                    <div class="myinfo-text w-100">
+                        <p class="py-0 mb-0">
+                            <button class="py-3 w-100 btn btn-link2">주문 내역<i class="fa fa-arrow-right"></i></button>
+                        </p>
+                        <p class="py-0 mb-0">
+                            <button class="py-3 w-100 btn btn-link2">찜한 상품 <i class="fa fa-arrow-right"></i></button>
+                        </p>
+                        <p class="py-0 mb-0">
+                            <button class="py-3 w-100 btn btn-link2">장바구니 <i class="fa fa-arrow-right"></i></button>
+                        </p>
+                        <p class="py-0 mb-0">
+                            <button class="py-3 w-100 btn btn-link2">상품 문의 <i class="fa fa-arrow-right"></i></button>
+                        </p>
+                        <p class="py-0 mb-0">
+                            <button class="py-3 w-100 btn btn-link2">1:1 문의 <i class="fa fa-arrow-right"></i></button>
+                        </p>
+                        <p class="py-0 mb-0 checked">
+                            <button class="py-3 w-100 btn btn-link">개인 정보 수정<i class="fa fa-arrow-right"></i></button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-10 col-md-6">
+                <div class="bg-primary py-5">
+                    <h4 class="text-white ps-5 mb-0">개인 정보 수정</h4>
+                </div>
+                <div class="myinfo-item  d-flex">
+
+                    <div class="myinfo-text w-100 p-5">
+                        <div class="container join">
+                            <div class="row g-5">
+                                <div class="mx-auto">
+                                    <form action="/join" method="post">
+                                        <div class="row">
+
+                                            <!-- memberId start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberId" class="myinfo-p col-3">아이디</label>
+                                                    <input type="text" id="input-memberId"
+                                                           class="form-control px-3 py-2 w-75" name="memberId"
+                                                           th:value="${memberDto.memberId}" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- memberId end-->
+
+                                            <!-- Original memberPw start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-originalMemberPw" class="myinfo-p col-3">현재
+                                                        비밀번호</label>
+                                                    <div class="col-9 px-0">
+                                                        <input type="password" id="input-originalMemberPw"
+                                                               name="originalMemberPw"
+                                                               class="form-control px-3 py-2" maxlength="18"
+                                                               placeholder="비밀번호를 입력해주세요">
+                                                        <p id="feedback-originalMemberPw" th:text="${valid_memberPw}"
+                                                           class="text-start small text-danger ps-2 my-1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Original memberPw end -->
+
+                                            <!-- New MemberPw start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberPw" class="myinfo-p col-3">새 비밀번호</label>
+                                                    <div class="col-9 px-0">
+                                                        <input type="password" id="input-memberPw" name="memberPw"
+                                                               class="form-control px-3 py-2" maxlength="18"
+                                                               placeholder="새 비밀번호를 입력해주세요" disabled>
+                                                        <p id="feedback-memberPw"
+                                                           class="text-start text-danger small ps-2 my-1"
+                                                           th:text="${valid_memberPw}"/>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!-- New MemberPw end -->
+
+                                            <!-- New MemberPw2 start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberPw2" class="myinfo-p col-3">새 비밀번호
+                                                        확인</label>
+                                                    <div class="col-9 px-0">
+                                                        <input type="password" id="input-memberPw2" name="memberPw2"
+                                                               class="form-control px-3 py-2" maxlength="18"
+                                                               placeholder="새 비밀번호를 다시 입력해주세요" disabled>
+                                                        <p id="feedback-memberPw2"
+                                                           class="text-start text-danger small ps-2 my-1"
+                                                           th:text="${valid_memberPw}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- New MemberPw2 end -->
+
+                                            <!-- memberName start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberName" class="myinfo-p col-3">이름</label>
+                                                    <input type="text" id="input-memberName" name="memberName"
+                                                           class="form-control px-3 py-2 w-75"
+                                                           th:value="${memberDto.memberName}" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- memberName end -->
+
+                                            <!-- memberPhoneNum start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberPhoneNum"
+                                                           class="myinfo-p col-3">휴대전화</label>
+                                                    <div class="px-0 col-9">
+                                                        <div class="row g-2 pe-1 mb-2">
+                                                            <div class="col-8">
+                                                                <input type="text" id="input-memberPhoneNum"
+                                                                       name="memberPhoneNum"
+                                                                       class="form-control px-3 py-2 "
+                                                                       maxlength="11"
+                                                                       th:value="${memberDto.memberPhoneNum}"
+                                                                       placeholder="숫자만 입력해주세요" readonly>
+                                                            </div>
+                                                            <button id="smsBtn" type="button"
+                                                                    class="btn btn-dark col-4 py-2">
+                                                                다른번호 인증
+                                                            </button>
+                                                        </div>
+                                                        <p id="feedback-memberPhoneNum"
+                                                           class="text-start text-danger small ps-2 my-1"
+                                                           th:text="${valid_memberPhoneNum}"/>
+                                                        <!--                                                        <p id="feedback-smsConfirmPhoneNum" class="text-start text-danger ps-2 my-1" th:text="${valid_smsConfirmNum}"/>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberPhoneNum end -->
+
+                                            <!-- memberGender start -->
+                                            <div class="col-12">
+                                                <div id="genderForm" class="row g-2 mb-4 px-1">
+                                                    <label class="myinfo-p col-3">성별(선택)</label>
+                                                    <div class="form-check col-3 mb-0 py-2">
+                                                        <input type="radio" id="check-male" class="form-check-input"
+                                                               name="memberGender" value="남자"
+                                                               th:checked="${memberDto.memberGender eq '남자'}">
+                                                        <label for="check-male" class="form-check-label">남자</label>
+                                                    </div>
+                                                    <div class="form-check col-3 mb-0 py-2">
+                                                        <label for="check-female">여자</label>
+                                                        <input type="radio" id="check-female" class="form-check-input"
+                                                               name="memberGender" value="여자"
+                                                               th:checked="${memberDto.memberGender eq '여자'}">
+                                                    </div>
+                                                    <div class="form-check col-3 mb-0 py-2">
+                                                        <input type="radio" id="check-test" class="form-check-input"
+                                                               name="memberGender" value="응답안함"
+                                                               th:checked="${memberDto.memberGender eq '응답안함'}">
+                                                        <label for="check-test">응답 안함</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberGender end -->
+
+                                            <!-- memberBirthday start -->
+                                            <div class="col-12 ">
+                                                <div id="div-memberBirthday" class="row g-2 mb-4 px-1">
+                                                    <label for="input-year" class="myinfo-p col-3">생년월일</label>
+                                                    <div class="col-9 px-0">
+                                                        <!--                                                        <div class="col-3">-->
+                                                        <input type="text" id="input-year" name="memberBirthday"
+                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               maxlength="4"
+                                                               th:value="${memberDto.memberBirthday.get(0)}"
+                                                               onblur="checkMemberBirthday()" placeholder="년(4자)">
+                                                        <!--                                                        </div>-->
+                                                        <!--                                                        <div class="col-3">-->
+                                                        <input type="text" id="input-month" name="memberBirthday"
+                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               maxlength="2"
+                                                               th:value="${memberDto.memberBirthday.get(1)}"
+                                                               onblur="checkMemberBirthday()" placeholder="월">
+                                                        <!--                                                        </div>-->
+                                                        <!--                                                        <div class="col-3 px-0">-->
+                                                        <input type="text" id="input-day"
+                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               maxlength="2" name="memberBirthday"
+                                                               th:value="${memberDto.memberBirthday.get(2)}"
+                                                               onblur="checkMemberBirthday()" placeholder="일">
+
+                                                        <!--                                                        </div>-->
+                                                        <p id="feedback-memberBirthday"
+                                                           class="text-start text-danger small ps-2 my-1"
+                                                           th:text="${valid_memberBirthday}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberBirthday end -->
+
+                                            <!-- memberAddress-->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-2 px-1">
+
+                                                    <label class="myinfo-p col-3">주소</label>
+                                                    <div class="px-0 col-9">
+                                                        <div class="row g-2 pe-1 mb-2">
+                                                            <div class="col-7">
+                                                                <input type="text" id="sample6_postcode"
+                                                                       th:value="${memberDto.memberAddress.get(0)}"
+                                                                       name="memberAddress"
+                                                                       class="form-control px-3 test"
+                                                                       placeholder="우편번호" onclick="findAddress()"
+                                                                       readonly>
+                                                            </div>
+                                                            <button type="button" id="addressBtn"
+                                                                    class="btn btn-dark col-5 h-100"
+                                                                    onclick="findAddress()" readonly>
+                                                                우편번호 찾기
+                                                            </button>
+                                                        </div>
+                                                        <input type="text" id="sample6_address" name="memberAddress"
+                                                               class="form-control mb-2 px-3 py-2" placeholder="주소"
+                                                               th:value="${memberDto.memberAddress.get(1)}"
+                                                               onclick="findAddress()" readonly>
+                                                        <input type="text" id="sample6_detailAddress"
+                                                               name="memberAddress"
+                                                               class="form-control mb-2 px-3 py-2"
+                                                               th:value="${memberDto.memberAddress.get(2)}"
+                                                               placeholder="상세주소">
+
+                                                        <input type="text" id="sample6_extraAddress"
+                                                               name="memberAddress" class="form-control px-3 py-2"
+                                                               th:value="${memberDto.memberAddress.size()== 4}?${memberDto.memberAddress.get(3)}:'' "
+                                                               placeholder="참고항목" onclick="findAddress()" readonly>
+                                                        <p id="feedback-memberAddress"
+                                                           class="text-start text-danger small ps-2 my-1"
+                                                           th:text="${valid_memberAddress}"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!-- memberAddress end -->
+                                        </div>
+
+                                        <hr class="my-4"/>
+                                        <!-- button-->
+                                        <div class="col-12">
+                                            <button type="button" id="withdrawalBtn"
+                                                    class="btn btn-outline-primary col-4 px-1 py-2">
+                                                회원탈퇴
+                                            </button>
+                                            <button type="button" id="modifyBtn"
+                                                    class="btn btn-primary col-4 px-1 py-2">
+                                                회원정보수정
+                                            </button>
+                                        </div>
+                                        <!-- button-->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Myinfo End -->
+
+<!-- Footer Start -->
+<footer>
+    <div class="container-fluid bg-dark text-light text-center footer mt-5 py-3">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-6 col-md-6 mx-auto">
+                    <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
+                    <ul class="text-white px-0">
+                        <li><a href="#">petApet</a></li>
+                        <li><a href="#">이용약관</a></li>
+                        <li><a href="#">개인정보처리방침</a></li>
+                        <li><a href="#">이용안내</a></li>
+                    </ul>
+
+                    <p class="small">법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
+                    <p class="small">통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
+                    <p class="small">서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer End -->
+
+<!-- Modal start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto " id="staticBackdropLabel">인증번호 확인</h5>
+            </div>
+            <div class="modal-body px-5 pt-2">
+                <div class="mb-0">
+                    <input id="input-smsConfirmNum" type="text" class="form-control"
+                           name="smsConfirmNum" maxlength="6" placeholder="인증번호 입력">
+                    <p id="feedback-smsConfirmPhoneNum" class="text-start text-danger ps-2 my-1"/>
+                </div>
+            </div>
+            <div class="modal-footer py-0">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal end-->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+        class="bi bi-arrow-up"></i></a>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</body>
+
+</html>

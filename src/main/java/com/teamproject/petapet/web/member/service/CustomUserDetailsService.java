@@ -32,7 +32,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserDetails createUser(String memberId, Member member) {
         if (!member.isActivated()) {
-            throw new RuntimeException(memberId + " -> 활성화되어 있지 않습니다.");
+            System.out.println("////정지회원 입니다./////"); //확인용
+            throw new RuntimeException(memberId + " -> 정지회원 입니다.");
         }
         List<GrantedAuthority> grantedAuthorities = member.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getRole()))

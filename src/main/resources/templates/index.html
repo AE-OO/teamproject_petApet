@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -70,6 +71,7 @@
                 <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
                    ><strong th:text="${#authentication.name}"/></a>
 
+                <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
             </div>
 
         </div>

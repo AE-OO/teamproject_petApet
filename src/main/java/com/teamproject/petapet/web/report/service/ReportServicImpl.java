@@ -26,6 +26,11 @@ public class ReportServicImpl implements ReportService{
     }
 
     @Override
+    public List<Report> getReportProductList() {
+        return reportRepository.getProductReportList();
+    }
+
+    @Override
     public void setResponseStatusCommunity(Long reportId) {
         reportRepository.setResponseStatusTrue(reportId);
     }

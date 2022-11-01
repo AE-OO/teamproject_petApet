@@ -2,6 +2,7 @@
   나이 통계낼 때 필요한 테이블
  */
 create table agetable(age bigint(2));
+insert into agetable value(0);
 insert into agetable value(1);
 insert into agetable value(2);
 insert into agetable value(3);

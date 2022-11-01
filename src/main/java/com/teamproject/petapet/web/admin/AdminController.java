@@ -37,9 +37,12 @@ public class AdminController {
         model.addAttribute("otherInquiry", inquiredService.getOtherInquiries());
         model.addAttribute("communityReport", reportService.getReportCommunityList());
         model.addAttribute("memberReport", reportService.getReportMemberList());
+        model.addAttribute("productReport", reportService.getReportProductList());
         model.addAttribute("product", productService.getProductList());
         model.addAttribute("community", communityService.getProductList());
         model.addAttribute("member", memberService.getMemberList());
+
+
         return "/admin/adminMain";
     }
 
@@ -85,7 +88,7 @@ public class AdminController {
     @ResponseBody
     @RequestMapping(value = "/updateProductStatus/{productId}", method = RequestMethod.GET)
     public void updateProductStatus(@RequestParam Map<String, Object> map, @PathVariable("productId") Long productId){
-        productService.updateProductStatus((String)map.get("status"), productId);
+        productService.updateProductStatus((String)map.get("status"), Long.valueOf((String) map.get("stock")), productId);
     }
 
     @GetMapping("/deleteCommunity/{communityId}")
@@ -119,6 +122,13 @@ public class AdminController {
     }
 
     @ResponseBody
+    @GetMapping("/acceptProductReport/{reportId}")
+    public void acceptProductReport(@PathVariable("reportId") Long reportId, @RequestParam("productId") Long productId){
+        productService.addProductReport(productId);
+        reportService.setResponseStatusCommunity(reportId);
+    }
+
+    @ResponseBody
     @GetMapping("/getGenderList")
     public int[] getGenderList(){
         return memberService.getGenderList();
@@ -128,5 +138,11 @@ public class AdminController {
     @GetMapping("/getAgeList")
     public List<Integer> getAgeList(){
         return memberService.getAgeList();
+    }
+
+    @ResponseBody
+    @GetMapping("/setOutOfStock")
+    public void setOutOfStock(@RequestParam(value="productIdList[]") List<String> productIdList){
+        productService.updateProductStatusOutOfStock(productIdList);
     }
 }
