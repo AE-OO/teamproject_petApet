@@ -38,6 +38,7 @@ function chnSelectGender() {
         $("#label-gender").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
     }
 }
+
 function chnSelectMonth() {
     if ($("#select-month option:checked").val() != "") {
         $("#select-month").css("color", "#212529");
@@ -48,19 +49,24 @@ function chnSelectMonth() {
         $("#label-month").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
     }
 }
+
 //error메세지 text 색상 변경용
 function textInfo(value) {
     if ((value.hasClass("text-info"))) {
         return;
     } else {
         value.removeClass("text-danger").addClass("text-info");
+        return;
     }
 }
+
+
 function textDanger(value) {
     if (value.hasClass("text-danger")) {
         return;
     } else {
         value.removeClass("text-info").addClass("text-danger");
+        return;
     }
 }
 
@@ -77,13 +83,13 @@ const numRegExp = /^[0-9]+$/;
 
 //인증시간 변수
 let timer = null;
-let certificationNum = null ;
+let certificationNum = null;
 const leftSec = 180; // 제한시간(초)
 //인증시간 타이머 함수
 function startTimer(count) {
     $("#smsBtn").attr("disabled", true);
     smsConfirmNum().attr("disabled", false);
-    $("#input-memberPhoneNum").attr("readonly",true);
+    $("#input-memberPhoneNum").attr("readonly", true);
     var minutes, seconds;
     timer = setInterval(function () {
         minutes = parseInt(count / 60, 10);
@@ -94,23 +100,23 @@ function startTimer(count) {
         textInfo(mPhoneNumFeedback());
         mPhoneNumFeedback().text(minutes + ":" + seconds + " 안에 인증번호를 입력해주세요.");
         // 인증번호 맞으면 종료
-        if(smsConfirmNum().val() == certificationNum) {
+        if (smsConfirmNum().val() == certificationNum) {
             smsConfirmNumFeedback().val("");
             mPhoneNumFeedback().text("OK");
             smsConfirmNum().attr("reaonly", true);
-            return true;
+            return;
         }
         // 타이머 끝
         if (--count < 0) {
             clearInterval(timer);
             alert("인증시간이 초과되었습니다. 인증번호를 다시 전송해주세요.");
-            $("#input-memberPhoneNum").attr("readonly",false);
+            $("#input-memberPhoneNum").attr("readonly", false);
             mPhoneNumFeedback().text("");
             $("#smsBtn").attr("disabled", false);
             smsConfirmNum().val("");
             smsConfirmNumFeedback().text("");
             smsConfirmNum().attr("disabled", true);
-            return false;
+            return;
         }
     }, 1000);
 }
@@ -225,11 +231,12 @@ $(document).ready(function () {
 
     // 아이디 체크
     $("#input-memberId").blur(function () {
-        textDanger(mIdFeedback());
         if (memberId() === null || memberId() === "") { //값이 없을 때
+            textDanger(mIdFeedback());
             mIdFeedback().text("필수 정보입니다.");
             return memberIdResult = false;
         } else if (!(mIdRegExp.test(memberId()))) { //정규식에 맞지 않을 때
+            textDanger(mIdFeedback());
             mIdFeedback().text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
             return memberIdResult = false;
         } else {
@@ -243,6 +250,7 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
                     if (check) { // 아이디 이미 존재
+                        textDanger(mIdFeedback());
                         mIdFeedback().text("중복 아이디입니다.");
                         return memberIdResult = false;
                     } else {//조건에 맞을 때
@@ -255,8 +263,9 @@ $(document).ready(function () {
                     console.log("통신 오류");
                     window.location = "/join";
                 }
+
             });
-            textInfo(mIdFeedback());
+
         }
     });
     // 비밀번호 체크
@@ -329,12 +338,25 @@ $(document).ready(function () {
             return memberAddressResult = true;
         }
     });
+
+    //휴대전화 체크
+    $("#input-memberPhoneNum").blur(function () {
+        textDanger(mAddrFeedback());
+        if (memberPhoneNum() === null || memberPhoneNum() === "") {
+            mPhoneNumFeedback().text("인증번호를 입력해주세요.");
+        } else if (!(mPhoneumRegExp.test(memberPhoneNum()))) {
+            mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
+        } else {
+            mPhoneNumFeedback().text("");
+        }
+    });
+
     // 인증번호 체크
-    $("#input-smsConfirmNum").blur(function (){
-        if(smsConfirmNum().val() === null || smsConfirmNum().val() === ""){
+    $("#input-smsConfirmNum").blur(function () {
+        if (smsConfirmNum().val() === null || smsConfirmNum().val() === "") {
             smsConfirmNumFeedback().text("인증번호를 입력해주세요.");
             smcConfirmNumResult = false;
-        }else if(!(certificationNum == smsConfirmNum().val())){
+        } else if (!(certificationNum == smsConfirmNum().val())) {
             smsConfirmNumFeedback().text("인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
             smcConfirmNumResult = false;
         } else {
@@ -392,10 +414,12 @@ $(document).ready(function () {
                 },
                 error: function () {
                     alert("인증번호 발송 실패");
-                    window.location="/join"
+                    window.location = "/join"
                 }
             });
             //////////////////////////테스트용////////////////////////////
+
+
         }
     });
 
@@ -406,9 +430,6 @@ $(document).ready(function () {
         }
         if (memberPw() === null || memberPw() === "") {
             mPwFeedback().text("필수 정보입니다.");
-        }
-        if (memberPw2() == null || memberPw2() === "") {
-            mPwFeedback2().text("필수 정보입니다.");
         }
         if (memberPw2() == null || memberPw2() === "") {
             mPwFeedback2().text("필수 정보입니다.");
@@ -428,13 +449,15 @@ $(document).ready(function () {
 
         alert(memberIdResult + "///" + memberPwResult + "///" + memberPwResult2 + "///" + memberNameResult
             + "///" + checkMemberBirthday() + "///" + memberAddressResult + "///" + memberPhoneNumResult
-            + "///" + smcConfirmNumResult ); //확인용
+            + "///" + smcConfirmNumResult); //확인용
 
         if (memberIdResult && memberPwResult && memberPwResult2 && memberNameResult &&
             checkMemberBirthday() && memberAddressResult && memberPhoneNumResult && smcConfirmNumResult) {
             certificationNum = null;
+            mPhoneNumFeedback().hide();
             $("#joinBtn").attr("type", "submit");
         }
     });
+
 
 });

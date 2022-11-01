@@ -20,110 +20,6 @@
             integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
             crossorigin="anonymous">
     </script>
-    <script>
-        memberId = () => $("#input-memberId");
-        memberPw = () => $("#input-memberPw");
-        mIdFeedback = () => $("#feedback-memberId");
-        mPwFeedback = () => $("#feedback-memberPw");
-
-        //비밀번호 정규식 (영어 대소문자,특수문자,숫자 필수입력, 8-16글자)
-        const mPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
-        const secret = window.atob("YWRtaW4=");
-
-        $(document).ready(function () {
-            // alert(window.atob(secret) +" 복호화222");
-            let memberIdResult = false;
-            let memberPwResult = false;
-
-            memberId().blur(function () {
-                if (memberId().val() == "") {  //ID란이 비어있다면
-                    mIdFeedback().text("아이디를 입력해주세요.");
-                    return memberIdResult = false;
-                } else {
-                    $.ajax({
-                        type: "POST",
-                        url: "/checkId",
-                        data: {
-                            memberId: memberId().val(),
-                        },
-                        dataType: "json",
-                        success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
-                            if (check) { // 아이디 이미 존재
-                                if (memberId().val().includes(secret)) { //관리자 아이디인걸 확인 못하게 에러메세지 띄움
-                                    mIdFeedback().text("존재하지 않는 아이디입니다.(사실 관리자 아이디임)");
-                                } else {
-                                    mIdFeedback().text("")
-                                }
-                                return memberIdResult = true;
-                            } else {
-                                mIdFeedback().text("존재하지 않는 아이디입니다.");
-                                return memberIdResult = false;
-                            }
-                        },
-                        error: function () {
-                            console.log("통신 오류");
-                            window.location = "/login";
-                        }
-                    });
-                }
-            });
-
-            memberPw().blur(function () {
-                if (memberPw().val() == "") { //PW란이 비어있다면
-                    mPwFeedback().text("비밀번호를 입력해주세요.");
-                    return memberPwResult = false;
-                } else if (!(mPwRegExp.test(memberPw().val()))) {
-                    mPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
-                    return memberPwResult = false;
-                } else {
-                    mPwFeedback().text("");
-                    return memberPwResult = true;
-                }
-            });
-
-            $("#loginBtn").click(function () {
-
-                if (memberId().val() == "") {
-                    mIdFeedback().text("아이디를 입력해주세요.");
-                    memberId().focus();
-                    return;
-                } else {
-                    mIdFeedback().text("");
-                }
-
-                if (memberPw().val() == "") {
-                    mPwFeedback().text("비밀번호를 입력해주세요.");
-                    memberPw().focus();
-                    return;
-                } else {
-                    mPwFeedback().text("")
-                }
-
-                if (memberIdResult && memberPwResult) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/login",
-                        data: JSON.stringify({
-                            memberId: memberId().val(),
-                            memberPw: memberPw().val()
-                        }),
-                        dataType: "json",
-                        contentType: 'application/json',
-                        success: function (response) {//검증을 통과하면 서버는 토큰을 발행시켜줌
-                            alert(response['token']); //토큰 발행 확인용
-                            window.location = "/";
-                        },
-                        error: function () {
-                            alert("로그인 실패..ㅠ");
-                            window.location = "/login";
-                        }
-                    });
-                }
-            });
-        });
-
-    </script>
-
 </head>
 
 <body>
@@ -135,30 +31,45 @@
             <div class="mx-auto">
                 <h1 class="display-5 mb-5"><a class="" href="/"><img alt="logo">petApet</a></h1>
                 <p class="invalid-feedback">아이디와 비밀번호를 입력하세요.</p>
-                <div class="row g-3">
-                    <div class="col-12">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="input-memberId" placeholder="login"/>
-                            <label for="input-memberId">아이디</label>
+                <form method="post" action="/login">
+                    <div class="row g-3">
+
+                        <!-- memberId Start-->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="input-memberId" name="memberId"
+                                       th:value="${loginDto.memberId}" placeholder="login"/>
+                                <label for="input-memberId">아이디</label>
+                            </div>
+                            <p id="feedback-memberId" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_memberId}"/>
                         </div>
-                        <p id="feedback-memberId" class="text-start text-danger ps-2 my-1"/>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-floating">
-                            <input type="password" class="form-control" id="input-memberPw" autocomplete="off"
-                                   placeholder="password"/>
-                            <label for="input-memberPw">비밀번호</label>
+                        <!-- memberId End -->
+
+                        <!-- memberPw Start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="input-memberPw" name="memberPw"
+                                       autocomplete="off"
+                                       placeholder="password"/>
+                                <label for="input-memberPw">비밀번호</label>
+                            </div>
+                            <p id="feedback-memberPw" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_memberPw}"/>
                         </div>
-                        <p id="feedback-memberPw" class="text-start text-danger ps-2 my-1"/>
+                        <!-- memberPw End -->
+
+                        <!-- button , url Start -->
+                        <div class="col-12">
+                            <button type="button" id="loginBtn" class="btn btn-primary mb-2 col-12 py-3">로그인</button>
+                            <hr/>
+                            <span class="mx-3"><a href="#">비밀번호 찾기</a></span>|
+                            <span class="mx-3"> <a href="#">아이디 찾기</a></span>|
+                            <span class="mx-3"><a href="/join">회원가입</a></span>
+                        </div>
+                        <!-- button, url End -->
                     </div>
-                    <div class="col-12">
-                        <button id="loginBtn" class="btn btn-primary mb-2 col-12 py-3">로그인</button>
-                        <hr/>
-                        <span class="mx-3"><a href="#">비밀번호 찾기</a></span>|
-                        <span class="mx-3"> <a href="#">아이디 찾기</a></span>|
-                        <span class="mx-3"><a href="/join">회원가입</a></span>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -177,6 +88,10 @@
     </div>
 </footer>
 <!-- Copyright End -->
+
+<!-- Login Script Start -->
+<script src="/js/login.js"></script>
+<!-- Login Script End -->
 
 </body>
 </html>

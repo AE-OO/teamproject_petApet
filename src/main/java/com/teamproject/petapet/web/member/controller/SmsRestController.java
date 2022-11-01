@@ -28,15 +28,13 @@ import java.security.NoSuchAlgorithmException;
 public class SmsRestController {
     private final SmsService smsService;
 
-    //테스트용임// - 실제로 문자서비스 안됨
+
+    ////테스트용임// - 실제로 문자서비스 안됨
     @PostMapping("/test")
     public String sendTest(@RequestParam String to, HttpSession session){
-        session.setAttribute("smsConfirmNum","123456");
-        session.setMaxInactiveInterval(60*10);
-        log.info(to + "핸드폰 값 담겼는지 확인");
-        log.info(session.getAttribute("smsConfirmNum") + "저장된 세션 값 확인,"+
-                session.getMaxInactiveInterval()+"저장된 값");
-        return "123456";
+        session.setAttribute("smsConfirmNum",smsService.randomNumber());
+        session.setMaxInactiveInterval(60*5);
+        return session.getAttribute("smsConfirmNum").toString();
     }
 
     @PostMapping("/send")
@@ -44,7 +42,7 @@ public class SmsRestController {
             URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         String smsConfirmNum= smsService.sendSms(to);
 
-        //인증번호 세션에 저장 (/join) controller에서 비교함
+        //인증번호 세션에 저장 - JoinDto에서 유효성 검사할 때 사용
         session.setAttribute("smsConfirmNum",smsConfirmNum);
         session.setMaxInactiveInterval(60*10);
         System.out.println(session.getAttribute("smsConfirmNum"));

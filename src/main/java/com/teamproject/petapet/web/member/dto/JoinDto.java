@@ -3,7 +3,9 @@ package com.teamproject.petapet.web.member.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamproject.petapet.domain.member.Authority;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.validatiion.MemberIdDuplicate;
+import com.teamproject.petapet.validatiion.DuplicateMemberId;
+import com.teamproject.petapet.validatiion.MemberPwEquals;
+import com.teamproject.petapet.validatiion.NotDuplicateMemberId;
 import com.teamproject.petapet.validatiion.SmsConfirmNum;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,12 +22,12 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@MemberPwEquals //커스텀 어노테이션
+@MemberPwEquals //custom validation
 public class JoinDto {
 
     @Pattern(regexp = "^[a-z0-9_-]{5,20}$" , message = "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
     @NotBlank(message = "아이디는 필수 입력값입니다.")
-    @MemberIdDuplicate // 커스텀 어노테이션
+    @NotDuplicateMemberId //custom validation
     private String memberId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -54,7 +56,7 @@ public class JoinDto {
 
     private String memberGender;
 
-    @SmsConfirmNum //커스텀 어노테이션
+    @SmsConfirmNum //custom validation
     @NotBlank(message="")
     private String smsConfirmNum; //문자 인증번호 확인용
 

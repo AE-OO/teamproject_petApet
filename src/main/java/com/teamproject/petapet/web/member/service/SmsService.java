@@ -120,7 +120,7 @@ public class SmsService {
     }
 
     // 인증번호 생성(6자리 난수)
-    public static String randomNumber() {
+    public String randomNumber() {
         Random random = new Random();
         int number = 0; // 1자리 난수
         String stringNumber = ""; //1자리 난수를 String 으로 형변환

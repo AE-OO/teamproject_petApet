@@ -5,6 +5,7 @@ import com.teamproject.petapet.web.member.dto.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,15 @@ public interface MemberService {
     List<Integer> getAgeList();
 
     TokenDto login(LoginDto loginDto);
-    MemberResponseDto join(JoinDto joinDto);
+    void join(JoinDto joinDto);
     boolean duplicateCheckMemberId(String memberId);
     Map<String, String> validateHandling(BindingResult bindingResult);
+    MemberDto memberInfo(String memberId);
+
+    boolean checkMemberPw(String memberId, String memberPw);
+
+
+
+
+
 }

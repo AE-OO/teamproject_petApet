@@ -2,7 +2,7 @@
 :root {
     --primary: #5fc8af;
     --secondary: #525368;
-    --light: #E8F5E9;
+    --light: #e8f5e9;
     --dark: #4ca08b;
 }
 
@@ -284,7 +284,7 @@ ul,li{
 }
 
 .service-item:hover .service-text {
-    background: rgba(255, 206, 103, .6);
+    background: var(--bs-gray-200);
 }
 
 .service-item .service-text h4,
@@ -327,6 +327,39 @@ ul,li{
     width: 88px;
 }
 
+
+/*** myinfo ***/
+.myinfo-item {
+    position: relative;
+    text-align: center;
+}
+
+.myinfo-item .myinfo-text {
+    background: #FFFFFF;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .08);
+    transition: .3s;
+}
+
+.myinfo-item .myinfo-text > p:hover {
+    background: var(--bs-gray-200);
+    color : var(--dark)
+}
+
+.myinfo-item .myinfo-text > p {
+    border-bottom: 1px solid var(--bs-gray-300);
+}
+
+.myinfo-item .myinfo-text .checked {
+    background: var(--bs-gray-200);
+    color : var(--dark)
+}
+
+.myinfo-item .myinfo-text .btn-square {
+    width: 100px;
+    height: 100px;
+    background: transparent;
+    transition: .5s;
+}
 
 /*** Project Portfolio ***/
 #portfolio-flters {
@@ -426,10 +459,12 @@ ul,li{
     transition: .5s;
 }
 
-.team-item:hover .team-text {
-    left: 0;
-    opacity: 1;
+.myinfo-p {
+    color: var(--bs-gray-700);
+    padding : 0.5em 0;
+    text-align: start;
 }
+
 
 .team-item .team-social .btn {
     background: var(--light);
@@ -459,6 +494,7 @@ ul,li{
     transition-delay: .3s;
     opacity: 1;
 }
+
 
 
 /*** Testimonial ***/

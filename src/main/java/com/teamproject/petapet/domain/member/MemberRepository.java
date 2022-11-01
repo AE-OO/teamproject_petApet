@@ -36,4 +36,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     List<Integer> getAgeList();
 
+    @Query("select m.memberPw from Member m where m.memberId = :memberId")
+    String findMemberPw(String memberId);
+
+
+
 }

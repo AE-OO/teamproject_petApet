@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.jwt.JwtTokenProvider;
 
+import com.teamproject.petapet.validatiion.MemberPwEquals;
 import com.teamproject.petapet.web.member.dto.*;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 import java.util.HashMap;
 import java.util.List;
@@ -98,10 +100,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public MemberResponseDto join(JoinDto joinDto) {
-        Member member = JoinDto.toEntity(joinDto, passwordEncoder);
-        return MemberResponseDto.of(memberRepository.save(member));
-    }
+    public void join(JoinDto joinDto) {memberRepository.save(JoinDto.toEntity(joinDto, passwordEncoder));}
 
     @Transactional(readOnly = true)
     @Override
@@ -119,14 +118,27 @@ public class MemberServiceImpl implements MemberService {
             String validKeyName = String.format("valid_%s", error.getField());
             validatorResult.put(validKeyName, error.getDefaultMessage());
         }
-//        //글로벌 에러
-//        for (ObjectError error : bindingResult.getGlobalErrors()) {
-//            if (error.getCode().equals(MemberPwEquals.class.getSimpleName())) {
-//                String validKeyName = String.format("valid_%s", error.getObjectName());
-//                validatorResult.put(validKeyName, error.getDefaultMessage());
-////                System.out.println(validatorResult.get("valid_joinDto")); //확인용
-//            }
-//        }
+        //글로벌 에러
+        for (ObjectError error : bindingResult.getGlobalErrors()) {
+            if (error.getCode().equals(MemberPwEquals.class.getSimpleName())) {
+                String validKeyName = String.format("valid_%s", error.getObjectName());
+                validatorResult.put(validKeyName, error.getDefaultMessage());
+            }
+        }
         return validatorResult;
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public MemberDto memberInfo(String memberId) {return MemberDto.fromEntity(memberRepository.findById(memberId).get());}
+
+    @Override
+    public boolean checkMemberPw(String memberId, String memberPw) {
+        String dbMemberPw = memberRepository.findMemberPw(memberId);
+        if(dbMemberPw == null || !passwordEncoder.matches(memberPw,dbMemberPw)){
+            return false;
+        }
+        return true;
+    }
+
 }
