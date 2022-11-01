@@ -3,7 +3,12 @@ package com.teamproject.petapet.domain.product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +22,8 @@ class ProductRepositoryTest {
 
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    ReviewRepository reviewRepository;
 
     @Test
     public void insertProductDummies(){
@@ -49,5 +56,21 @@ class ProductRepositoryTest {
 //        List<Product> food = productRepository.findAllByProductDiv(ProductType.COMPANION_GOODS);
 //        int size = food.size();
 //        System.out.println("size = " + size);
+    }
+    @Test
+    void 카운트테스트(){
+//        Long aLong = reviewRepository.countReviewByProduct(productRepository.findById(103L).get());
+//        System.out.println("aLong = " + aLong);
+        Long avg = reviewRepository.avg(104L);
+        System.out.println("avg = " + avg);
+    }
+    @Test
+    @Transactional
+    void 상품찾기테스트(){
+        Sort sort = Sort.by("reviewId").descending();
+        Pageable pageable = PageRequest.of(1, 10, sort);
+        Slice<Review> test = reviewRepository.test(103L, pageable);
+        List<Review> content = test.getContent();
+        System.out.println("test = " + test.getContent().size());
     }
 }
