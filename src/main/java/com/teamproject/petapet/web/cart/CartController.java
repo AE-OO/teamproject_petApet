@@ -72,6 +72,22 @@ public class CartController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/buyToCart", method = { RequestMethod.POST }, produces = "application/json")
+    public void buyToCart(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
+
+        String loginMember = checkMember(principal, request, httpSession);
+        Long product = vo.getProduct();
+        Long quantity = vo.getQuantity();
+        Cart cart = new Cart(
+                memberService.findOne(loginMember),
+                productService.findOne(product),
+                quantity);
+
+        cartService.addCart(cart);
+
+    }
+
 
     private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
         httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
