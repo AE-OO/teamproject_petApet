@@ -15,12 +15,6 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
     // 전체 삭제
 
     /**
-     * 추가 구현 기능
-     * 구매 후 배송중, 배송완료 배치 프로그램
-     * 스케쥴러 update
-     */
-
-    /**
      * 회원 구매 목록
      * @param memberId
      * @return

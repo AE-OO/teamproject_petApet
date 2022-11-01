@@ -92,6 +92,7 @@ $(document).ready(function() {
 
     });
 
+
     /* Update quantity */
     function updateQuantity(quantityInput)
     {

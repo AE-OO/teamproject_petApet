@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragment/heade :: head(product])}">
+<head th:replace="~{fragment/heade :: head(product)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -56,6 +56,8 @@
                         </div>
                         <div class="d-flex flex-column">
                             <div class="col">
+                                <input id="productId" type="hidden" th:value="*{product.productId}"/> <!-- -->
+                                <input id="quantity" type="hidden" value="1"/>
                                 <h1 class="fs-6 text-end" th:text="${product.productPrice}">1000</h1>
                             </div>
                             <div class="d-flex flex-row">
@@ -66,7 +68,7 @@
                                     </fieldset>
                                 </div>
                                 <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
-                                    <button type="button" class="btn bg-secondary me-1">장바구니</button>
+                                    <button type="button" class="btn bg-secondary me-1" th:onclick="'javascript:addCart()'">장바구니</button>
                                     <button type="button" class="btn bg-secondary me-1">바로구매</button>
                                 </div>
                             </div>
@@ -135,6 +137,32 @@
 <script src="lib/parallax/parallax.min.js"></script>
 <script src="lib/isotope/isotope.pkgd.min.js"></script>
 <script src="lib/lightbox/js/lightbox.min.js"></script>
+
+<script th:inline="javascript">
+    var url = "/cart/add";
+    var productId = $("#productId").val();
+    var quantity  = $("#quantity").val();
+    var param = {"product": productId, "quantity":quantity};
+    function addCart() {
+        alert("실행");
+        console.log("product : " + productId);
+        console.log("quantity : " + quantity);
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: JSON.stringify(param),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("장바구니에 상품이 추가 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+
+            }
+        });
+    }
+</script>
 
 <!-- Template Javascript -->
 <script src="js/main.js"></script>

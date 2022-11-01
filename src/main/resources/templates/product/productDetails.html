@@ -86,18 +86,18 @@
                                    autocomplete="off">
                         </div>
                         <div style="display:table-cell;vertical-align:top;" class="col-3">
-                            <button class="btn-sm-square" style="height: 1rem" type="button">△</button>
-                            <button class="btn-sm-square" style="height: 1rem" type="button">▽</button>
+                            <button id="plus" class="btn-sm-square" style="height: 1rem" type="button">△</button>
+                            <button id="minus" class="btn-sm-square" style="height: 1rem" type="button">▽</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-8">
                     <div class="m-lg-2 d-flex flex-row">
                         <div class="col-6 d-grid">
-                            <button id="addCart" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:addCart()'"> 장바구니 담기</button>
+                            <button id="addCart" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
                         <div class="col-6 d-grid">
-                            <button id="addBuy" class="btn-info ms-3" style="height:2rem">바로구매</button>
+                            <button id="addBuy" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:addBuy()'">바로구매</button>
                         </div>
                     </div>
                 </div>
@@ -607,10 +607,33 @@
 <script th:inline="javascript">
     $('.carousel-inner > div:nth-child(1)').addClass('active');
     $('.carousel-indicators > button:nth-child(1)').addClass('active');
+
+
 </script>
 <script th:inline="javascript">
 
-    var url = "/cart/add";
+    const btnMinus = $('#minus');
+    const btnPlus = $('#plus');
+    const quantity2 =$('#quantity');
+
+    $(btnMinus).click(function () {
+        var $input = $(this).parents().eq(2).find(quantity2);
+        var count = parseInt($input.val()) - 1;
+        count = count < 1 ? 1 : count;
+        $input.val(count);
+        $input.change();
+        console.log("빼기 >>", $input.val());
+    });
+
+    $(btnPlus).click(function () {
+        var $input = $(this).parents().eq(2).find(quantity2);
+        $input.val(parseInt($input.val()) + 1);
+        $input.change();
+        console.log("더하기 >>", $input.val());
+    });
+
+    var urlCart = "/cart/add";
+    var urlBuy = "/buy/addByProduct";
     var productId = $("#productId").val();
     var quantity  = $("#quantity").val();
     var param = {"product": productId, "quantity":quantity};
@@ -619,7 +642,7 @@
         console.log("product : " + productId);
         console.log("quantity : " + quantity);
         $.ajax({
-            url: url,
+            url: urlCart,
             type: "POST",
             data: JSON.stringify(param),
             dataType: "text",
@@ -630,6 +653,25 @@
             },
             error: function (jqXHR, status, errorThrown) {
 
+            }
+        });
+    }
+    function addBuy(){
+        alert("실행");
+        console.log("product : " + productId);
+        console.log("quantity : " + quantity);
+        $.ajax({
+            url: urlBuy,
+            type: "POST",
+            data: JSON.stringify(param),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("주문 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
             }
         });
     }

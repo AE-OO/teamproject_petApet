@@ -65,15 +65,13 @@ public class CartController {
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
                 memberService.findOne(loginMember),
-                productService.findOne(vo.getProduct()),
-                vo.getQuantity());
-        log.info("cart1 ={}", cart);
-        log.info("cart2 ={}", cart.getProduct());
-        log.info("cart3 ={}", cart.getQuantity());
+                productService.findOne(product),
+                quantity);
 
         cartService.addCart(cart);
 
     }
+
 
     private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
         httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));

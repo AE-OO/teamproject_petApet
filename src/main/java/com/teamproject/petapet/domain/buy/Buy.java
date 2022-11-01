@@ -44,4 +44,10 @@ public class Buy {
     @Column
     private Long quantity;
 
+    public Buy(String buyAddress, Member member, Product product, Long quantity) {
+        this.buyAddress = buyAddress;
+        this.member = member;
+        this.product = product;
+        this.quantity = quantity;
+    }
 }

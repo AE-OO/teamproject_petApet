@@ -36,7 +36,4 @@ public interface MemberRepository extends JpaRepository<Member, String> {
             "on b.age = age.age", nativeQuery = true)
     List<Integer> getAgeList();
 
-    @Query("select m.memberAddress from Member m where m.memberId =: memberId")
-    Member findAddr(@Param("memberId") String memberId);
-
 }

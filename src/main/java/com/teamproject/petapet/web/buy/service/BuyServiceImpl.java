@@ -6,11 +6,13 @@ import com.teamproject.petapet.domain.buy.BuyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class BuyServiceImpl implements Buyservice{
 
@@ -24,13 +26,7 @@ public class BuyServiceImpl implements Buyservice{
 
     // 장바구니 -> 구매
     @Override
-    public Buy addCartToBuy(Buy buy) {
-        return buyRepository.save(buy);
-    }
-
-    // 상품 -> 구매
-    @Override
-    public Buy addProductToBuy(Buy buy) {
+    public Buy addBuy(Buy buy) {
         return buyRepository.save(buy);
     }
 
