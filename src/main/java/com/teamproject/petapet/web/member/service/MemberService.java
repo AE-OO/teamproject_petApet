@@ -1,6 +1,7 @@
 package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.web.member.dto.JoinDto;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import com.teamproject.petapet.domain.product.Product;
@@ -27,8 +28,6 @@ public interface MemberService {
 
     TokenDto login(LoginDto loginDto);
     void join(JoinDto joinDto);
-    MemberResponse join(MemberDto memberDto);
-
     Member findOne(String memberId);
 
     boolean duplicateCheckMemberId(String memberId);
