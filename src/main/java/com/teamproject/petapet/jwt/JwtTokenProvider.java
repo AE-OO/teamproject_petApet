@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,7 +26,8 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
- * 장사론 22.10.19 수정
+ * 장사론 22.10.19 작성
+ * 장사론 22.10.27 수정 - 쿠키 만료시간 수정
  */
 
 @Component
@@ -34,7 +36,7 @@ public class JwtTokenProvider implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
     private static final String AUTHORITIES_KEY = "ROLE";
     private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final long tokenValidityInMilliseconds ;
 
     private Key key;
 
@@ -103,10 +105,12 @@ public class JwtTokenProvider implements InitializingBean {
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             logger.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
-            Cookie myCookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, null);
-            myCookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
-            myCookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
-            response.addCookie(myCookie);
+
+            Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, null);
+            cookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
+            cookie.setPath("/"); // 모든 경로에서 삭제 됐음을 알린다.
+            response.addCookie(cookie);
+
             logger.info("만료된 Jwt 토큰입니다.");
             return true;
         } catch (UnsupportedJwtException e) {

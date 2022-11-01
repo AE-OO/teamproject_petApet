@@ -34,6 +34,12 @@ public interface MemberRepository extends JpaRepository<Member, String> {
             "FROM Member " +
             "where memberName not in('admin')) a group by a.age order by a.age) b " +
             "on b.age = age.age", nativeQuery = true)
+
     List<Integer> getAgeList();
+
+    @Query("select m.memberPw from Member m where m.memberId = :memberId")
+    String findMemberPw(String memberId);
+
+
 
 }

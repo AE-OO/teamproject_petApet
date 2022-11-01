@@ -51,8 +51,9 @@ public class SecurityConfig {
                 //인증 없이 접근 가능
                 //해당 url은 관리자만 접근 가능
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/login","/api/login").permitAll()
-                .antMatchers("/api/join","/join","/sms/send").permitAll()
+                .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")
+                .antMatchers("/login","/login","/adminLogin").permitAll()
+                .antMatchers("/join","/sms/send").permitAll()
                 .antMatchers("/").permitAll()
                 //나머지 경로는 인증 없이 접근 불가
 //                .anyRequest().authenticated()

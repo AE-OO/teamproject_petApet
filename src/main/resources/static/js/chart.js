@@ -1,4 +1,3 @@
-
 $(function() {
     /* ChartJS
      * -------
