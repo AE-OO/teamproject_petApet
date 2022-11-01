@@ -4,13 +4,13 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * 박채원 22.10.16 작성
+ * 박채원 22.10.31 작성
  */
 
 @Data
 @Builder
-public class ReportCommunityDTO {
+public class ReportProductDTO {
     private Long reportId;
     private String reportReason;
-    private Long communityId;
+    private Long productId;
 }

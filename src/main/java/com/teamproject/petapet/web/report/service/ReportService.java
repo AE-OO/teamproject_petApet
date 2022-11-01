@@ -9,6 +9,7 @@ import java.util.List;
 public interface ReportService {
     List<Report> getReportCommunityList();
     List<Report> getReportMemberList();
+    List<Report> getReportProductList();
     void setResponseStatusCommunity(Long reportId);
 
     default ReportCommunityDTO entityToDTOCommunity(Report report){

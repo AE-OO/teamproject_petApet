@@ -1,3 +1,4 @@
+
 $(function() {
     /* ChartJS
      * -------
@@ -15,7 +16,7 @@ $(function() {
                 getAgeList()[3].val,
                 getAgeList()[4].val,
                 getAgeList()[5].val,
-                getAgeList()[6].val+getAgeList()[7].val+getAgeList()[8].val+getAgeList()[9].val],
+                getAgeList()[6].val],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
