@@ -15,12 +15,12 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Modifying
     @Transactional
     @Query("update Member m set m.memberReport = m.memberReport + 1 where m.memberId =:memberId")
-    void addMemberReport(String memberId);
+    void addMemberReport(@Param("memberId") String memberId);
 
     @Modifying
     @Transactional
     @Query("update Member m set m.memberStopDate = current_date + 3, m.activated = false where m.memberId =:memberId")
-    void updateMemberStopDate(String memberId);
+    void updateMemberStopDate(@Param("memberId") String memberId);
 
     @Query("select m.memberGender from Member m")
     List<String> getGenderList();
@@ -31,7 +31,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query(value = "select ifnull(b.cnt, 0) " +
             "from agetable age left outer join (select age , count(age) as cnt " +
             "From (select round((date_format(current_date(), '%Y') - date_format(memberBirthday, '%Y'))/10) as age " +
-            "FROM member " +
+            "FROM Member " +
             "where memberName not in('admin')) a group by a.age order by a.age) b " +
             "on b.age = age.age", nativeQuery = true)
     List<Integer> getAgeList();

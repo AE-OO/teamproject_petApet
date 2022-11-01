@@ -16,7 +16,7 @@ $(function() {
                 getAgeList()[3].val,
                 getAgeList()[4].val,
                 getAgeList()[5].val,
-                getAgeList()[6].val
+                getAgeList()[6].val+getAgeList()[7].val+getAgeList()[8].val+getAgeList()[9].val
             ],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
