@@ -15,6 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     void updateProductStatus(@Param("selectStatus") String selectStatus, @Param("productStock") Long productStock, @Param("productId") Long productId);
 
     List<Product> findAllByProductDiv(ProductType productType);
+    @Query("select a from Product a,Review b where a.productId=:id and b.product.productId=:id")
+    Product findProductWithReview(@Param("id") Long id);
+
 
     @Modifying
     @Transactional

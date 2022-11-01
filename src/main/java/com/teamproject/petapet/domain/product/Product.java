@@ -11,14 +11,15 @@ import java.util.List;
 
 /**
  * 박채원 22.10.01 작성
+ * 오성훈 22.10.20 productRating 칼럼 추가
  */
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @ToString
+@Getter
 @DynamicInsert
 public class Product {
 
@@ -49,6 +50,9 @@ public class Product {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String productContent;
+
+    @Column(length = 1,columnDefinition = "int(1) default 0")
+    private Long productRating;
 
     @Column(columnDefinition = "bigint(3) default 0")
     private Long productReport;

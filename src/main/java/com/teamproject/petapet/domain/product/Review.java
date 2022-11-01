@@ -1,5 +1,7 @@
 package com.teamproject.petapet.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
@@ -19,8 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude = {"member", "product"})
+@ToString(exclude = {"member", "product","reviewImg"})
 @EntityListeners(value = {AuditingEntityListener.class})
+
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
