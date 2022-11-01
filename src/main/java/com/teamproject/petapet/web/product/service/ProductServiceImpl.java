@@ -8,6 +8,7 @@ import com.teamproject.petapet.domain.product.ProductType;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
@@ -33,7 +34,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> findAllByProductDiv(ProductType productType){
+    public List<Product> findAllByProductDiv(ProductType productType) {
         return productRepository.findAllByProductDiv(productType);
     }
 
@@ -45,13 +46,19 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product findOne(Long id){
-      return productRepository.findById(id).get();
+    public Product findOne(Long id) {
+        return productRepository.findById(id).get();
     }
 
     @Override
-    public Product productSave(Product product){
+    public Product productSave(Product product) {
         return productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public Product findProductWithReview(Long id) {
+        return productRepository.findProductWithReview(id);
     }
 
     @Override
