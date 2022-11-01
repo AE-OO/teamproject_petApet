@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,7 +8,7 @@
 <body>
 <th:block th:fragment="header">
     <header class="header header-expand-lg bg-white header-light sticky-top p-0">
-        <a th:href="@{/}" class="header-brand d-flex align-items-center px-4 px-lg-5">
+        <a href="index.html" class="header-brand d-flex align-items-center px-4 px-lg-5">
             <img scr="#" alt="logo"> <h1 class="m-0">petApet</h1>
         </a>
         <button type="button" class="header-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -28,9 +29,20 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>
+
                 <a href="#" class="nav-item nav-link">Contact</a>
-                <a href="login.html" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>
-                <a href="cart.html" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
+                <a href="/login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="isAnonymous()">Login</a>
+                <a href="/admin/admininfo" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="hasRole('MEMBER')">MyInfo</a>
+                <a href="/admin/adminPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="hasRole('ADMIN')">adminPage</a>
+                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="isAuthenticated()">Logout</a>
+                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                ><strong th:text="${#authentication.name}"/></a>
+
+                <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
             </div>
 
         </div>

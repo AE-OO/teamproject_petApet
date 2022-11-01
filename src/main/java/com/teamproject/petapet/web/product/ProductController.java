@@ -56,7 +56,7 @@ public class ProductController {
     }
 
     @PostMapping("/insert")
-    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult) throws IOException {
+    public String  productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult) throws IOException {
 
         if (productInsertDTO.getProductImg().get(0).isEmpty()) {
             bindingResult.addError(new FieldError("productInsertDTO", "productImg", "1장 이상의 사진을 올려주세요"));
@@ -108,7 +108,8 @@ public class ProductController {
     @GetMapping("/{productType}/{productId}/details")
     public String detailViewForm(@PathVariable("productType") String productType
             , @PathVariable("productId") Long productId, Model model) {
-        Product findProduct = productService.findOne(productId);
+        Product findProduct = productService.
+                findOne(productId);
         model.addAttribute("findProduct",findProduct);
         model.addAttribute("imgIdx",findProduct.getProductImg().size());
 //        model.addAttribute("content",findProduct.getProductContent());

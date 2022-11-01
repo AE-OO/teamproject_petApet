@@ -1362,6 +1362,8 @@ div{
   width: 100%;
   padding: 30px;
   text-align: center;
+  /*display: none;*/
+  border-bottom :1px solid rgb(238,238,238);
 }
 
 .cvpLIN {
@@ -1678,7 +1680,7 @@ label {
   color: #5a5861;
 }
 .active {
-  border: 0.2em dashed color: #5fc8af;;
+  border: 0.2em dashed #5fc8af;;
 }
 #error {
   text-align: center;
@@ -1693,4 +1695,18 @@ label {
 .form-control.custom-area{
   resize: none;
   height: 6.25em;
+}
+
+.myInquiry{
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid rgb(238, 238, 238);
+}
+
+.myInquiry-title{
+  font-size: 0.9375rem;
+  font-weight: bold;
+  line-height: 1.13;
+  letter-spacing: normal;
+  color: rgb(17, 17, 17);
 }

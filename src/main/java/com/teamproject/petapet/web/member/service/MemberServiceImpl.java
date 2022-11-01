@@ -66,12 +66,12 @@ public class MemberServiceImpl implements MemberService {
 //        ArrayList<Integer> genderList = new ArrayList<>();
         int[] genderList = new int[3];
 
-        for (String gender : memberRepository.getGenderList()) {
-            if (gender.equals("남자")) {
+        for(String gender : memberRepository.getGenderList()){
+            if(gender.equals("남자")){
                 genderList[0] += 1;
-            } else if (gender.equals("여자")) {
+            } else if(gender.equals("여자")){
                 genderList[1] += 1;
-            } else {
+            }else{
                 genderList[2] += 1;
             }
         }
@@ -80,8 +80,19 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<Integer> getAgeList() {
-        return memberRepository.getAgeList();
+        List<Integer> ageList = new ArrayList<Integer>();
+        for(int i = 0; i < 6; i++){
+            ageList.add(memberRepository.getAgeList().get(i));
+        }
+        ageList.add(memberRepository.getAgeList().get(6)+memberRepository.getAgeList().get(7)+memberRepository.getAgeList().get(8)+memberRepository.getAgeList().get(9));
+        return ageList;
     }
+
+    @Override
+    public Member findOne(String memberId) {
+        return memberRepository.findById(memberId).get();
+    }
+
 
     @Transactional
     @Override

@@ -28,13 +28,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void updateProductStatus(String selectStatus, Long productId) {
-        productRepository.updateProductStatus(selectStatus, productId);
+    public void updateProductStatus(String selectStatus, Long productStock, Long productId) {
+        productRepository.updateProductStatus(selectStatus, productStock, productId);
     }
 
     @Override
     public List<Product> findAllByProductDiv(ProductType productType){
         return productRepository.findAllByProductDiv(productType);
+    }
+
+    @Override
+    public void updateProductStatusOutOfStock(List<String> productId) {
+        for(String id : productId){
+            productRepository.updateProductStatus("재고없음", 0L, Long.valueOf(id));
+        }
     }
 
     @Override
@@ -45,5 +52,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product productSave(Product product){
         return productRepository.save(product);
+    }
+
+    @Override
+    public void addProductReport(Long productId) {
+        productRepository.addProductReport(productId);
     }
 }
