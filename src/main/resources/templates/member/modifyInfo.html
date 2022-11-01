@@ -74,7 +74,7 @@
 
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 10 ? "0" + seconds : seconds;
-                mPhoneNumFeedback().text(minutes + ":" + seconds + " 안에 인증번호를 입력해주세요.");
+                smsConfirmNumFeedback().text(minutes + ":" + seconds + " 안에 인증번호를 입력해주세요.");
                 // 인증번호 맞으면 종료
                 if (smsConfirmNum().val() == certificationNum) {
                     smsConfirmNumFeedback().val("");
@@ -327,13 +327,13 @@
             // });
 
             $("#smsBtn").click(function () {
-                    $("#smsBtn").text("인증번호 받기");
-                    $("#smsBtn").attr("disabled", true);
-                    // $("#smsBtn").attr("id", "sendBtn");
-                    $("#input-memberPhoneNum").val("");
-                    $("#input-memberPhoneNum").attr("readonly", false);
+                $("#smsBtn").text("인증번호 받기");
+                $("#smsBtn").attr("disabled", true);
+                // $("#smsBtn").attr("id", "sendBtn");
+                $("#input-memberPhoneNum").val("");
+                $("#input-memberPhoneNum").attr("readonly", false);
 
-                    if("#"){
+                if ("#") {
                     // 조건에 맞을 때
 
                     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -793,31 +793,29 @@
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header py-5">
-                <h5 class="modal-title mx-auto " id="staticBackdropLabel"></h5>
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto " id="staticBackdropLabel">인증번호 확인</h5>
             </div>
-            <div class="modal-body">
+            <div class="modal-body my-3">
                 <div class="mb-2">
                     <input id="input-smsConfirmNum" type="text" class="form-control"
-                           name="smsConfirmNum" maxlength="6" onclick=""
-                           placeholder="휴대전화" disabled>
-                    <label>인증번호 입력<span class="text-danger">*</span></label>
+                           name="smsConfirmNum" maxlength="6" placeholder="인증번호 입력">
                     <p id="feedback-smsConfirmPhoneNum" class="text-start text-danger ps-2 my-1"/>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="mx-auto col-4 btn btn-link" data-dismiss="modal">확인</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-dismiss="modal">확인</button>
             </div>
         </div>
     </div>
 </div>
-    <!--Modal end-->
+<!--Modal end-->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
-            class="bi bi-arrow-up"></i></a>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+        class="bi bi-arrow-up"></i></a>
 
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </body>
 
