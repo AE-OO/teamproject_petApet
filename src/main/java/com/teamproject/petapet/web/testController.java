@@ -15,13 +15,8 @@ import java.security.Principal;
 public class testController {
 
     @GetMapping("/")
-    public String test(Principal principal, Model model){
+    public String test(Principal principal){
         if(Principal.class.isInstance(principal)){
-            String memberId  = principal.getName();
-            log.info("MemberId={}",memberId );
-            log.info("MemberId={}",memberId );
-            log.info("MemberId={}",memberId );
-            model.addAttribute("memberId", memberId);
             return "index";
         }
         return "index";}
