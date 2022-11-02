@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,15 +19,19 @@ class CommunityRepositoryTest {
 
     @Test
     public void insertCommunityDummies(){
-        IntStream.rangeClosed(1,100).forEach(i -> {
+        IntStream.rangeClosed(1,200).forEach(i -> {
             Member member = Member.builder()
-                    .memberId("memberId" + (i % 30 + 1))
+                    .memberId("memberId" + i)
+                    .memberPw("memberPw" + i)
+                    .memberName("memberName" + i)
+                    .memberPhoneNum("memberPhoneNum" + i)
                     .build();
 
             Community community = Community.builder()
                     .communityTitle("communityTitle " + i)
                     .member(member)
                     .communityContent("communityContent " + i)
+                    .communityCreatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd")))
                     .build();
 
             communityRepository.save(community);

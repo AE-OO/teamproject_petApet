@@ -1,0 +1,1065 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta http-equiv="imagetoolbar" content="no">
+    <meta http-equiv="X-UA-Compatible" content="IE=10,chrome=1">
+    <title>커뮤니티</title>
+    <link rel="stylesheet" href="hak/style.css"/>
+
+    <!-- Favicon -->
+    <link href="/img/icon/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
+          rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!--[if lte IE 8]>
+    <script src="http://feelz.net/js/html5.js"></script>
+    <![endif]-->
+    <script>
+        // 자바스크립트에서 사용하는 전역변수 선언
+        var g5_url = "http://feelz.net";
+        var g5_bbs_url = "http://feelz.net/bbs";
+        var g5_is_member = "";
+        var g5_is_admin = "";
+        var g5_is_mobile = "";
+        var g5_bo_table = "test1";
+        var g5_sca = "";
+        var g5_editor = "smarteditor2";
+        var g5_cookie_domain = "";
+    </script>
+    <script src="http://feelz.net/theme/new/js/jquery-1.11.3.min.js"></script>
+    <script src="http://feelz.net/theme/new/js/bootstrap.min.js"></script>
+    <script src="http://feelz.net/theme/new/js/jquery.mmenu.min.all.js"></script>
+    <script src="http://feelz.net/theme/new/js/default.js"></script>
+    <script src="http://feelz.net/js/common.js"></script>
+    <script src="http://feelz.net/js/wrest.js"></script>
+    <script src="http://feelz.net/js/jquery.shop.menu.js"></script>
+    <!--[if lt IE 9]>
+    <script type='text/javascript' src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="http://feelz.net/plugin/select_box/js/select_box.min.js"></script>
+    <script type="text/javascript" src="http://feelz.net/plugin/check_box/js/check_box.min.js"></script>
+    <script type="text/javascript" src="http://feelz.net/theme/new/skin/board/default/js/default.js"></script>
+</head>
+
+<body>
+<!-- #page-wrapper -->
+<div id="page-wrapper">
+
+    <!-- header Start -->
+    <header class="header header-expand-lg bg-white header-light sticky-top p-0">
+        <a href="index.html" class="header-brand d-flex align-items-center px-4 px-lg-5">
+            <img scr="#" alt="logo">
+            <h1 class="m-0">petApet</h1>
+        </a>
+        <button type="button" class="header-toggler me-4" data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse">
+            <span class="header-toggler-icon"></span>
+        </button>
+        <div class="collapse header-collapse" id="navbarCollapse">
+            <div class="header-nav ms-auto p-4 p-lg-0">
+                <a href="#l" class="nav-item nav-link">About</a>
+                <a href="#" class="nav-item nav-link">Services</a>
+                <a href="#" class="nav-item nav-link">Product</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="#" class="dropdown-item">Test1</a>
+                        <a href="#" class="dropdown-item">Test2</a>
+                        <a href="#" class="dropdown-item">Test3</a>
+                        <a href="#" class="dropdown-item">Test5</a>
+                        <a href="404.html" class="dropdown-item">404 Page</a>
+                    </div>
+                </div>
+                <a href="#" class="nav-item nav-link">Contact</a>
+                <a href="login.html" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>
+                <a href="cart.html" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
+            </div>
+
+        </div>
+    </header>
+    <!-- header End -->
+
+    <!-- #page-container -->
+    <div id="page-container">
+        <!-- .container -->
+        <div class="container">
+            <!-- #sub-cotainer -->
+            <div id="sub-container">
+                <!-- .row -->
+                <div class="row">
+                    <!-- #contents-container -->
+                    <div id="contents-container" class="col-md-9 col-sm-12 mx-auto">
+                        <div class="content-header">
+                            <div class="page-position">
+                                <a href="http://feelz.net"><i class="fa fa-home"></i> Home</a> <i
+                                    class="fa fa-angle-right"></i>
+                                <a href=''>샘플데이터</a> <i class='fa fa-angle-right'></i> <a
+                                    href='http://feelz.net/bbs/board.php?bo_table=test1'><strong>일반 게시판</strong></a>
+                            </div>
+                        </div>
+                        <script src="http://feelz.net/js/viewimageresize.js"></script>
+                        <!-- 게시물 읽기 시작 { -->
+                        <article id="bo_v" style="width:100%" class="fz_wrap">
+                            <!-- 게시물 상단 버튼 시작 { -->
+                            <div id="bo_v_top">
+
+                                <ul class="bo_v_com">
+                                    <li><a href="./password.php?w=u&amp;bo_table=test1&amp;wr_id=19&amp;page="
+                                           class="list_btn btn_edit"><i class="fa fa-rotate-right"></i> 수정</a></li>
+                                    <li><a href="./password.php?w=d&amp;bo_table=test1&amp;wr_id=19&amp;page="
+                                           class="list_btn btn_del" onclick="del(this.href); return false;"><i
+                                            class="fa fa-remove"></i> 삭제</a></li>
+                                    <li><a href="./board.php?bo_table=test1&amp;page=" class="list_btn btn_list"><i
+                                            class="fa fa-list"></i> 목록</a></li>
+                                    <li><a href="./write.php?w=r&amp;bo_table=test1&amp;wr_id=19"
+                                           class="list_btn btn_reply">답변</a></li>
+                                </ul>
+                            </div>
+                            <!-- } 게시물 상단 버튼 끝 -->
+
+                            <header>
+                                <h1 id="bo_v_title" th:text="${view.getCommunityTitle()}">
+                                    제목</h1>
+                            </header>
+                            <input type="hidden" id="cId" th:value="${view.getCommunityId()}">
+                            <section id="bo_v_info">
+                                <div class="fl">
+			<span class="bo_v_user"><i class="fa fa-user"><span class="sound_only">작성자</span></i> <strong><span
+                    class="sv_wrap">
+<a class="sv_guest" onclick="return false;" th:text="${view.getMember().getMemberId()}">작성자</a>
+<span class="sv">
+</span>
+
+</span></strong></span>
+                                </div>
+                                <div class="fr">
+                                    <span class="bo_v_date"><i class="fa fa-calendar-check-o"><span class="sound_only">작성일</span></i> <strong
+                                            th:text="${view.getCommunityCreatedDate()}">작성일</strong></span>
+                                    <span class="bar">|</span>
+                                    <span class="bo_v_hit"><i class="fa fa-eye"></i> <span
+                                            class="hidden-xs">조회</span> <strong
+                                            th:text="${view.getCommunityHit()}">조회</strong></span> <span
+                                        class="bar">|</span>
+                                    <span class="bo_v_comment"><i class="fa fa-comments"></i> <span
+                                            class="hidden-xs">댓글</span> <strong>0</strong></span>
+                                </div>
+                            </section>
+
+
+                            <section id="bo_v_atc">
+                                <h2 id="bo_v_atc_title">본문</h2>
+                                <div id="bo_v_img">
+                                    <div class='editor_img_wrap'><a
+                                            href="http://feelz.net/bbs/view_image.php?bo_table=test1&amp;fn=2038927385_F0JDbMGK_a63259a34c1acbdec96efd098a6d2df3cc1a6f6d.jpg"
+                                            target="_blank" class="view_image"><img
+                                            src="http://feelz.net/data/file/test1/2038927385_F0JDbMGK_a63259a34c1acbdec96efd098a6d2df3cc1a6f6d.jpg"
+                                            alt="" width="570" height="356"></a></div>
+                                </div>
+
+                                <!-- 본문 내용 시작 { -->
+                                <div id="bo_v_con" th:text="${view.getCommunityContent()}">내용</div>
+                                <!-- } 본문 내용 끝 -->
+
+                                <div class="article_score limit_score">
+                                    <a class="btn_nogood" href="#no_member" id="nogood_button" title="비추천"></a>
+                                    <em id="txt_nogood" class="txt_nogood">0</em>
+                                </div>
+                                <!-- //추천영역 !-->
+
+
+                            </section>
+
+
+                            <script>
+                                // 글자수 제한
+                                var char_min = parseInt(0); // 최소
+                                var char_max = parseInt(0); // 최대
+                            </script>
+
+                            <!-- 댓글 시작 { -->
+                            <script th:src="@{hak/js/comment.js}"></script>
+                            <section id="bo_vc">
+                                <div class="bo_vc_top">
+                                    <h2>댓글목록 <em>[[${totalComment}]]</em></h2>
+                                </div>
+
+                                <article th:each="comment : ${commentListDto}">
+                                    <header style="z-index:3">
+                                        <div class="f_wrap">
+                                            <div class="fl">
+                                                <span class="sv_wrap">
+                                                    <b>[[${comment.memberId}]]</b>
+                                                </span>
+                                                <span class="bo_vc_hdinfo">
+                                                    [[${comment.commentCreatedDate}]]
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </header>
+
+                                    <!-- 댓글 출력 -->
+                                    <div class="bo_vc_content">
+                                        [[${comment.commentContent}]]
+                                    </div>
+
+                                    <footer>
+                                        <ul class="bo_vc_act">
+                                            <a href="" class="list_btn btn_reply">수정</a>
+                                            <a href="" class="list_btn btn_reply">삭제</a>
+                                        </ul>
+                                    </footer>
+                                </article>
+
+                                <p th:if="${totalComment == 0}" id="bo_vc_empty">등록된 댓글이 없습니다.</p>
+                            </section>
+                            <!-- } 댓글 끝 -->
+
+                            <!-- 댓글 쓰기 시작 { -->
+                            <aside id="bo_vc_w">
+                                <!--<form name="fviewcomment" action="./write_comment_update.php"
+                                      onsubmit="return fviewcomment_submit(this);" method="post" autocomplete="off">-->
+                                <!--<form name="fviewcomment" method="post" autocomplete="off">-->
+                                <input type="hidden" name="w" value="c" id="w">
+                                <input type="hidden" name="bo_table" value="test1">
+                                <input type="hidden" name="wr_id" value="19">
+                                <input type="hidden" name="comment_id" value="" id="comment_id">
+                                <input type="hidden" name="sca" value="">
+                                <input type="hidden" name="sfl" value="">
+                                <input type="hidden" name="stx" value="">
+                                <input type="hidden" name="spt" value="">
+                                <input type="hidden" name="page" value="">
+                                <input type="hidden" name="is_good" value="">
+
+                                <input type="hidden" id="communityId" th:value="${cId}"/>
+
+                                <div id="comment_form" class="comment_form">
+                                    <div class="write_body">
+                                        <div class="f_wrap bo_vc_form">
+                                            <div class='fl'>
+                                                <div class="bo_vc_write_notice hidden-xs"><i class="fa fa-cube"></i>
+                                                    이름과 비밀번호, 우측의 자동입력방지 문구를 입력해 주세요.
+                                                </div>
+                                                <input type="text" name="wr_name" value="" id="wr_name" required
+                                                       class="i_text required" maxLength="20" placeholder="이름 입력">
+                                                <input type="password" name="wr_password" id="wr_password" required
+                                                       class="i_text required" maxLength="20" placeholder="비밀번호 입력">
+                                            </div>
+
+                                        </div>
+                                        <div class="no_editor">
+                                                <textarea name="wr_content" id="wr_content" class="bo_vc_wr_content"
+                                                          placeholder="주제에 맞지 않는 댓글, 비방, 악성댓글은 모니터링 후  삭제될 수 있습니다."></textarea>
+                                        </div>
+                                        <div class="f_wrap">
+                                            <div class="fl">
+                                                    <span class="checkbox2"><input type='checkbox' id='wr_secret'
+                                                                                   name='wr_secret'
+                                                                                   value='secret'/> <label
+                                                            for='wr_secret' class='wr_secret_label'>비밀글</label></span>
+                                            </div>
+                                            <div class="fr">
+                                                <input type="image"
+                                                       src="hak/img/btn_submit_comment.gif"
+                                                       id="wr_save"
+                                                       th:onclick="commentSave()"
+                                                       alt="댓글등록" title="댓글등록"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--</form>-->
+                            </aside>
+
+                            <script>
+                                /*var save_before = '';
+                                var save_html = document.getElementById('bo_vc_w').innerHTML;
+
+                                function good_and_write() {
+                                    var f = document.fviewcomment;
+                                    if (fviewcomment_submit(f)) {
+                                        f.is_good.value = 1;
+                                        f.submit();
+                                    } else {
+                                        f.is_good.value = 0;
+                                    }
+                                }
+
+                                function fviewcomment_submit(f) {
+                                    var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+
+                                    f.is_good.value = 0;
+
+                                    var subject = "";
+                                    var content = "";
+                                    $.ajax({
+                                        url: g5_bbs_url + "/ajax.filter.php",
+                                        type: "POST",
+                                        data: {
+                                            "subject": "",
+                                            "content": f.wr_content.value
+                                        },
+                                        dataType: "json",
+                                        async: false,
+                                        cache: false,
+                                        success: function (data, textStatus) {
+                                            subject = data.subject;
+                                            content = data.content;
+                                        }
+                                    });
+
+                                    if (content) {
+                                        alert("내용에 금지단어('" + content + "')가 포함되어있습니다");
+                                        f.wr_content.focus();
+                                        return false;
+                                    }
+
+                                    // 양쪽 공백 없애기
+                                    var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+                                    document.getElementById('wr_content').value = document.getElementById('wr_content').value.replace(pattern, "");
+                                    if (char_min > 0 || char_max > 0) {
+                                        check_byte('wr_content', 'char_count');
+                                        var cnt = parseInt(document.getElementById('char_count').innerHTML);
+                                        if (char_min > 0 && char_min > cnt) {
+                                            alert("댓글은 " + char_min + "글자 이상 쓰셔야 합니다.");
+                                            return false;
+                                        } else if (char_max > 0 && char_max < cnt) {
+                                            alert("댓글은 " + char_max + "글자 이하로 쓰셔야 합니다.");
+                                            return false;
+                                        }
+                                    } else if (!$("#wr_content").val()) {
+                                        alert("댓글을 입력하여 주십시오.");
+                                        $("#wr_content").focus();
+                                        return false;
+                                    }
+
+                                    if (typeof (f.wr_name) != 'undefined') {
+                                        f.wr_name.value = f.wr_name.value.replace(pattern, "");
+                                        if (f.wr_name.value == '') {
+                                            alert('이름이 입력되지 않았습니다.');
+                                            f.wr_name.focus();
+                                            return false;
+                                        }
+                                    }
+
+                                    if (typeof (f.wr_password) != 'undefined') {
+                                        f.wr_password.value = f.wr_password.value.replace(pattern, "");
+                                        if (f.wr_password.value == '') {
+                                            alert('비밀번호가 입력되지 않았습니다.');
+                                            f.wr_password.focus();
+                                            return false;
+                                        }
+                                    }
+
+                                    if (!chk_captcha()) return false;
+
+                                    document.getElementById("btn_submit").disabled = "disabled";
+
+                                    return true;
+                                }
+
+                                function comment_box(comment_id, work) {
+                                    var el_id;
+                                    // 댓글 아이디가 넘어오면 답변, 수정
+                                    if (comment_id) {
+                                        if (work == 'c')
+                                            el_id = 'reply_' + comment_id;
+                                        else
+                                            el_id = 'edit_' + comment_id;
+                                    } else
+                                        el_id = 'bo_vc_w';
+
+                                    if (save_before != el_id) {
+                                        if (save_before) {
+                                            document.getElementById(save_before).style.display = 'none';
+                                            document.getElementById(save_before).innerHTML = '';
+                                        }
+
+                                        document.getElementById(el_id).style.display = '';
+                                        document.getElementById(el_id).innerHTML = save_html;
+                                        // 댓글 수정
+                                        if (work == 'cu') {
+                                            document.getElementById('wr_content').value = document.getElementById('save_comment_' + comment_id).value;
+                                            if (typeof char_count != 'undefined')
+                                                check_byte('wr_content', 'char_count');
+                                            if (document.getElementById('secret_comment_' + comment_id).value)
+                                                document.getElementById('wr_secret').checked = true;
+                                            else
+                                                document.getElementById('wr_secret').checked = false;
+                                        }
+
+                                        document.getElementById('comment_id').value = comment_id;
+                                        document.getElementById('w').value = work;
+
+                                        if (save_before)
+                                            $("#captcha_reload").trigger("click");
+
+                                        save_before = el_id;
+                                    }
+                                    $(".checkbox2").check_box({fontSize: 11});
+                                }
+
+                                function comment_delete() {
+                                    return confirm("이 댓글을 삭제하시겠습니까?");
+                                }
+
+                                comment_box('', 'c'); // 댓글 입력폼이 보이도록 처리하기위해서 추가 (root님)*/
+
+                            </script>
+                            <!-- } 댓글 쓰기 끝 -->
+                            <script src="http://feelz.net/js/md5.js"></script>
+
+                            <!-- 링크 버튼 시작 { -->
+                            <div id="bo_v_bot">
+
+                                <ul class="bo_v_com">
+                                    <li><a href="./password.php?w=u&amp;bo_table=test1&amp;wr_id=19&amp;page="
+                                           class="list_btn btn_edit"><i class="fa fa-rotate-right"></i> 수정</a></li>
+                                    <li><a href="./password.php?w=d&amp;bo_table=test1&amp;wr_id=19&amp;page="
+                                           class="list_btn btn_del" onclick="del(this.href); return false;"><i
+                                            class="fa fa-remove"></i> 삭제</a></li>
+                                    <li><a href="./board.php?bo_table=test1&amp;page=" class="list_btn btn_list"><i
+                                            class="fa fa-list"></i> 목록</a></li>
+                                    <li><a href="./write.php?w=r&amp;bo_table=test1&amp;wr_id=19"
+                                           class="list_btn btn_reply">답변</a></li>
+                                </ul>
+                            </div>
+                            <!-- } 링크 버튼 끝 -->
+
+                        </article>
+                        <!-- } 게시판 읽기 끝 -->
+
+                        <script type="text/javascript">
+
+                            function board_move(href) {
+                                window.open(href, "boardmove", "left=50, top=50, width=500, height=550, scrollbars=1");
+                            }
+
+                            $(function () {
+                                $("a.view_image").click(function () {
+                                    window.open(this.href, "large_image", "location=yes,links=no,toolbar=no,top=10,left=10,width=10,height=10,resizable=yes,scrollbars=no,status=no");
+                                    return false;
+                                });
+
+                                // 추천, 비추천
+                                $("#good_button, #nogood_button").click(function () {
+                                    if ($(this).attr('href') == "#no_member") {
+                                        alert("회원만 참여 가능합니다.");
+                                        return false;
+                                    }
+                                    excute_good(this.href, this.id == "good_button" ? 1 : 0);
+                                    return false;
+                                });
+
+                                // 이미지 리사이즈
+                                $("#bo_v_atc").viewimageresize();
+                            });
+
+                            function excute_good(href, $tx) {
+                                $.post(
+                                    href,
+                                    {js: "on"},
+                                    function (data) {
+                                        if (data.error) {
+                                            alert(data.error);
+                                            return false;
+                                        }
+
+                                        if (data.count) {
+                                            if ($tx) {
+                                                $("#txt_good").text(number_format(String(data.count)));
+                                                var score_good = parseInt(data.count);
+                                                var score_nogood = parseInt($("#txt_nogood").text());
+                                            } else {
+                                                $("#txt_nogood").text(number_format(String(data.count)));
+                                                var score_good = parseInt($("#txt_good").text());
+                                                var score_nogood = parseInt(data.count);
+                                            }
+                                            var score_sum = score_good + score_nogood;
+                                            var rate = score_good / score_sum;
+                                            var size = Math.round(rate * 100);
+                                            $("#score_bar").css('width', size + "%");
+                                            alert((!$tx ? "비" : "") + "추천이 반영되었습니다.");
+                                        }
+                                    }, "json"
+                                );
+                            }
+
+                            var layer_file = function (file) {
+
+                                var $file = jQuery("#file_sector_" + file);
+
+                                if ($file.children(".btn_handle").hasClass("on")) {
+                                    $file.children(".btn_handle").removeClass("on");
+                                    $file.children(".txt_file_content").hide();
+                                } else {
+                                    $file.children(".btn_handle").addClass("on");
+                                    $file.children(".txt_file_content").show();
+                                }
+                            }
+                        </script>
+                        <!-- } 게시글 읽기 끝 --><h2 id="container_title">일반 게시판<span class="sound_only"> 목록</span></h2>
+                        <!-- 게시판 목록 시작 { -->
+                        <div id="bo_list" class="fz_wrap">
+                            <!-- 게시판 카테고리 시작 { -->
+                            <nav id="bo_cate">
+                                <h2>일반 게시판 카테고리</h2>
+                                <ul id="bo_cate_ul">
+                                    <li><a href="http://feelz.net/bbs/board.php?bo_table=test1" id="bo_cate_on">전체</a>
+                                    </li>
+                                    <li><a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=Category1">Category1</a>
+                                    </li>
+                                    <li><a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=Category2">Category2</a>
+                                    </li>
+                                    <li><a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=Category3">Category3</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <!-- } 게시판 카테고리 끝 -->
+
+                            <!-- 게시판 페이지 정보 및 RSS { -->
+                            <div class="fz_header">
+                                <div class="fz_total_count"><span> Total <strong>14</strong>건</span></div>
+                            </div>
+                            <!-- } 게시판 페이지 정보 및 RSS 끝 -->
+
+                            <form name="fboardlist" id="fboardlist" action="./board_list_update.php" method="post">
+                                <input type="hidden" name="bo_table" value="test1">
+                                <input type="hidden" name="sfl" value="">
+                                <input type="hidden" name="stx" value="">
+                                <input type="hidden" name="spt" value="">
+                                <input type="hidden" name="sca" value="">
+                                <input type="hidden" name="sst" value="wr_num, wr_reply">
+                                <input type="hidden" name="sod" value="">
+                                <input type="hidden" name="page" value="1">
+                                <input type="hidden" name="sw" value="">
+
+                                <ul class="fz_list">
+                                    <li class="fz_list_th">
+                                        <div class="fz_num hidden-xs">번호</div>
+                                        <div class="fz_subject">제목</div>
+                                        <div class="fz_writer hidden-xs">글쓴이</div>
+                                        <div class="fz_date hidden-xs">날짜</div>
+                                        <div class="fz_hit hidden-xs">조회</div>
+                                        <div class="fz_nogood hidden-xs">비추천</div>
+                                    </li>
+
+                                    <li class="" th:each="c : ${list}">
+                                        <div class="fz_num hidden-xs" th:text="${c.getCommunityId()}">
+                                            번호
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a th:href="@{/view(cId=${c.getCommunityId()})}"
+                                               class='ellipsis'><span
+                                                    class='icon_pack2 icon_file2'>파일첨부</span><span
+                                                    class="bo_cate_link">[Category1]</span>[[${c.getCommunityTitle()}]]</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=12"
+                                                       title="12" class="sv_guest"
+                                                       onclick="return false;" th:text="${c.getMember().getMemberId()}">글쓴이</a></span>
+                                        </div>
+                                        <div class="fz_date"
+                                             th:text="${c.getCommunityCreatedDate()}"><span
+                                                class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>날짜
+                                        </div>
+                                        <div class="fz_hit" th:text="${c.getCommunityHit()}"><span
+                                                class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>조회수
+                                        </div>
+                                        <div class="fz_nogood" th:text="${c.getCommunityReport()}"><span
+                                                class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>비추천
+                                        </div>
+                                    </li>
+                                    <!--<li class="">
+                                        <div class="fz_num hidden-xs">
+                                            11
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=18'
+                                               class='ellipsis'><span
+                                                    class='icon_pack2 icon_secret2'>비밀글</span><span
+                                                    class="bo_cate_link">[Category1]</span>test<span
+                                                    class='icon_pack icon_link'>링크</span></a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=test"
+                                                       title="test" class="sv_guest"
+                                                       onclick="return false;">test</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>01-31
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>6
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            10
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=15'
+                                               class='ellipsis'><span class='icon_pack2 icon_txt2'>텍스트</span><span
+                                                    class="bo_cate_link">[Category1]</span>테스트<span
+                                                    class='sound_only'>댓글</span><span class="cnt_cmt">4</span><span
+                                                    class='sound_only'>개</span></a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=테스트해봅니다"
+                                                       title="테스트해봅니다" class="sv_guest"
+                                                       onclick="return false;">테스트해봅니다</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>12-20
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>2658
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            9
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=14'
+                                               class='ellipsis'><span
+                                                    class='icon_pack2 icon_file2'>파일첨부</span><span
+                                                    class="bo_cate_link">[Category1]</span>제목</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=737117"
+                                                       title="737117" class="sv_guest"
+                                                       onclick="return false;">737117</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>12-11
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>882
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            8
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=12'
+                                               class='ellipsis'><span class='icon_pack2 icon_txt2'>텍스트</span><span
+                                                    class="bo_cate_link">[Category1]</span>가나다라마바사가나다라마바사가나다라마바사가나다라마바사</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=1111"
+                                                       title="1111" class="sv_guest"
+                                                       onclick="return false;">1111</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>11-14
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>1066
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            7
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=11'
+                                               class='ellipsis'><span
+                                                    class='icon_pack2 icon_file2'>파일첨부</span><span
+                                                    class="bo_cate_link">[Category1]</span>ㅁㅇㅁㄴㅇ</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=ㅁㅁㅁ"
+                                                       title="ㅁㅁㅁ" class="sv_guest"
+                                                       onclick="return false;">ㅁㅁㅁ</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>10-29
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>1790
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            6
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=10'
+                                               class='ellipsis'><span
+                                                    class='icon_pack2 icon_file2'>파일첨부</span><span
+                                                    class="bo_cate_link">[Category1]</span>1111</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=1111"
+                                                       title="1111" class="sv_guest"
+                                                       onclick="return false;">1111</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>10-18
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>989
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            5
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=6'
+                                               class='ellipsis'><span class='icon_pack2 icon_txt2'>텍스트</span><span
+                                                    class="bo_cate_link">[Category1]</span>1111<span
+                                                    class='sound_only'>댓글</span><span class="cnt_cmt">3</span><span
+                                                    class='sound_only'>개</span></a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=1111"
+                                                       title="1111=" class="sv_guest"
+                                                       onclick="return false;">1111</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>09-27
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>2459
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            4
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=3'
+                                               class='ellipsis'><span class='icon_pack2 icon_txt2'>텍스트</span><span
+                                                    class="bo_cate_link">[Category3]</span>샘플3</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/profile.php?mb_id=admin"
+                                                       class="sv_member" title="Feelz" target="_blank"
+                                                       onclick="return false;"> Feelz</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>08-14
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>1232
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="re1">
+                                        <div class="fz_num hidden-xs">
+                                            3
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=5'
+                                               class='ellipsis'><span class='icon_pack2 icon_reply'>답변</span><span
+                                                    class='icon_pack2 icon_txt2'>텍스트</span><span
+                                                    class="bo_cate_link">[Category3]</span>Re: 샘플3</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/board.php?bo_table=test1&amp;sca=&amp;sfl=wr_name,1&amp;stx=e"
+                                                       title="e" class="sv_guest" onclick="return false;">e</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>09-27
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>815
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            2
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=2'
+                                               class='ellipsis'><span class='icon_pack2 icon_txt2'>텍스트</span><span
+                                                    class="bo_cate_link">[Category2]</span>샘플2</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/profile.php?mb_id=admin"
+                                                       class="sv_member" title="Feelz" target="_blank"
+                                                       onclick="return false;"> Feelz</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>08-14
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>982
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="fz_num hidden-xs">
+                                            1
+                                        </div>
+                                        <div class="fz_subject">
+                                            <a href='http://feelz.net/bbs/board.php?bo_table=test1&amp;wr_id=1'
+                                               class='ellipsis'><span class='icon_pack2 icon_txt2'>텍스트</span><span
+                                                    class="bo_cate_link">[Category1]</span>샘플1</a>
+                                        </div>
+                                        <div class="fz_writer"><span class="fz_mobile_info"><i
+                                                class="fa fa-user"></i></span><span class="sv_wrap">
+                                                    <a href="http://feelz.net/bbs/profile.php?mb_id=admin"
+                                                       class="sv_member" title="Feelz" target="_blank"
+                                                       onclick="return false;"> Feelz</a></span>
+                                        </div>
+                                        <div class="fz_date"><span class="fz_mobile_info"><i
+                                                class="fa fa-calendar-check-o"></i></span>08-14
+                                        </div>
+                                        <div class="fz_hit"><span class="fz_mobile_info"><i
+                                                class="fa fa-eye"></i></span>1058
+                                        </div>
+                                        <div class="fz_nogood"><span class="fz_mobile_info"><i
+                                                class="fa fa-thumbs-o-down"></i></span>0
+                                        </div>
+                                    </li>-->
+
+                                </ul>
+
+                                <div class="fz_footer">
+                                    <div class="fr">
+                                    </div>
+                                </div>
+
+                            </form>
+
+
+                            <!-- 페이지 -->
+
+                            <!-- 게시판 검색 시작 {
+                            <fieldset id="bo_sch">
+                                <legend>게시물 검색</legend>
+                                <form name="fsearch" method="get">
+                                    <input type="hidden" name="bo_table" value="test1">
+                                    <input type="hidden" name="sca" value="">
+                                    <input type="hidden" name="sop" value="and">
+                                    <label for="sfl" class="sound_only">검색대상</label>
+                                    <span class="select_box">
+    <select name="sfl" id="sfl">
+        <option value="wr_subject">제목</option>
+        <option value="wr_content">내용</option>
+        <option value="wr_subject||wr_content">제목+내용</option>
+        <option value="mb_id,1">회원아이디</option>
+        <option value="mb_id,0">회원아이디(코)</option>
+        <option value="wr_name,1">글쓴이</option>
+        <option value="wr_name,0">글쓴이(코)</option>
+    </select>
+	</span>
+                                    <input type="text" name="stx" value="" required id="stx"
+                                           class="i_text w_sbox required" size="15" maxlength="20" placeholder="검색어 필수">
+                                    <input type="image"
+                                           src="http://feelz.net/theme/new/skin/board/default/img/btn_search.gif"
+                                           class="btn_search_submit" alt="검색"/>
+
+                                </form>
+                            </fieldset>
+                             } 게시판 검색 끝 -->
+                        </div>
+
+                        <!--페이징, 글쓰기 시작-->
+                        <!--                        <div class="page_wrap">-->
+                        <!--                            &lt;!&ndash;start : 현재 페이지를 통해 현재 페이지 그룹의 시작 페이지를 구하는 로직&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;end : 전체 페이지 수와 현재 페이지 그룹의 시작 페이지를 통해 현재 페이지 그룹의-->
+                        <!--                            마지막 페이지를 구하는 로직&ndash;&gt;-->
+                        <!--                            <div th:if="${list.totalPages != 0}" class="page_nation"-->
+                        <!--                                 th:with="start=${(list.number/5)*5 + 1},-->
+                        <!--                                 end=(${start+4 < list.totalPages ? start+4 : list.totalPages})">-->
+                        <!--                                <a th:if="${start > 1}" class="arrow pprev" th:href="@{/view(cId=${cId})}"></a>-->
+                        <!--                                <a th:if="${start > 1}" class="arrow prev"-->
+                        <!--                                   th:href="@{/view(page=${list.number},cId=${cId})}"></a>-->
+                        <!--                                &lt;!&ndash; page=${list.number} : 현재 페이지의 page number를 지정하는 이유는-->
+                        <!--                                page number는 index 처럼 0에서 시작하기 때문에 현재 페이지 - 1이 자동으로 적용된다 &ndash;&gt;-->
+
+                        <!--                                <a th:each="page : ${#numbers.sequence(start, end)}"-->
+                        <!--                                   th:class="${page == list.number + 1} ? 'active'"-->
+                        <!--                                   th:text="${page}"-->
+                        <!--                                   th:href="@{/view(page=${page},cId=${cId})}">페이지 번호</a>-->
+
+                        <!--                                <a th:if="${end < list.totalPages}" class="arrow next"-->
+                        <!--                                   th:href="@{/view(page=${list.number + 2},cId=${cId})}"></a>-->
+                        <!--                                <a th:if="${end < list.totalPages}" class="arrow nnext"-->
+                        <!--                                   th:href="@{/view(page=${list.totalPages},cId=${cId})}"></a>-->
+                        <!--                            </div>-->
+                        <!--                            <a href="#"><img src="hak/img/btn_write.gif" style="float: right;"></a>-->
+                        <!--                        </div>-->
+                        <!--페이징, 글쓰기 끝-->
+
+                        <!-- } 게시판 목록 끝 -->
+
+                        <script type=" text/javascript">
+                            $(function () {
+                                $(".fz_list li").not(".fz_list_th").hover(function () {
+                                    $(this).addClass('bg_e');
+                                }, function () {
+                                    $(this).removeClass('bg_e');
+                                });
+                                $(".select_box").select_box({useBorderbox: true});
+                            });
+                        </script>
+                    </div>
+                    <!-- /#contents-container -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /#sub-cotainer -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /#page-container -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light text-center footer mt-5 py-3">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-6 col-md-6 mx-auto">
+                    <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
+                    <ul class="text-white px-0">
+                        <li><a href="#">petApet</a></li>
+                        <li><a href="#">이용약관</a></li>
+                        <li><a href="#">개인정보처리방침</a></li>
+                        <li><a href="#">이용안내</a></li>
+                    </ul>
+
+                    <p>법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
+                    <p>통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
+                    <p>서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
+
+                </div>
+                <!-- <div class="col-lg-6 mx-auto col-md-6">
+                    <h4 class="text-white mb-4">Our Office</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Copyright Start -->
+    <div class="container-fluid text-center copyright py-4">
+        <div class="container ">
+            <div class="row ">
+                <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
+                    &copy; petApet Project Team All Right Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+</div>
+<!-- /#page-wrapper -->
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-80827231-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<script src="http://feelz.net/js/sns.js"></script>
+<!-- } 하단 끝 -->
+
+
+<!-- ie6,7에서 사이드뷰가 게시판 목록에서 아래 사이드뷰에 가려지는 현상 수정 -->
+<!--[if lte IE 7]>
+<script>
+    $(function () {
+        var $sv_use = $(".sv_use");
+        var count = $sv_use.length;
+
+        $sv_use.each(function () {
+            $(this).css("z-index", count);
+            $(this).css("position", "relative");
+            count = count - 1;
+        });
+    });
+</script>
+<![endif]-->
+
+</body>
+</html>
+
+<!-- 사용스킨 : theme/default -->

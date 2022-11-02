@@ -3,6 +3,8 @@ package com.teamproject.petapet.domain.community;
 import com.teamproject.petapet.domain.member.Member;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -28,9 +30,17 @@ public class Comment {
     @Column(columnDefinition = "text not null")
     private String commentContent;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime commentDate;
+//    @CreationTimestamp
+//    @Column(updatable = false)
+//    private LocalDateTime commentDate;
+
+    @CreatedDate
+    @Column
+    private String commentCreatedDate;
+
+//    @LastModifiedDate
+//    @Column
+//    private String commentModifiedDate;
 
     @ManyToOne
     @JoinColumn(name = "memberId")

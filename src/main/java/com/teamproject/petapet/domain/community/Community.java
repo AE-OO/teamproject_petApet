@@ -5,6 +5,7 @@ import com.teamproject.petapet.domain.report.Report;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -35,18 +36,29 @@ public class Community {
     @Column(columnDefinition = "TEXT NOT NULL")
     private String communityContent;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime communityDate;
+//    @CreationTimestamp
+//    @Column(updatable = false)
+//    private LocalDateTime communityDate;
+
+    @CreatedDate
+    @Column
+    private String communityCreatedDate;
+
+//    @LastModifiedDate
+//    @Column
+//    private String communityModifiedDate;
 
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] communityImg;
 
+    @Column(columnDefinition = "bigint(5) default 0")
+    private int communityHit;
+
     @Column(columnDefinition = "bigint(3) default 0")
     private Long communityReport;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "memberId")
     private Member member;
 
