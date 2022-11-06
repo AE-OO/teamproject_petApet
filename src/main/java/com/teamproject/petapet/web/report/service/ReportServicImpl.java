@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.report.service;
 
 import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.domain.report.ReportRepository;
+import com.teamproject.petapet.web.report.dto.ReportProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,11 @@ public class ReportServicImpl implements ReportService{
     @Override
     public List<Report> getReportProductList() {
         return reportRepository.getProductReportList();
+    }
+
+    @Override
+    public void addProductReport(ReportProductDTO reportProductDTO) {
+        reportRepository.save(dtoToEntityProduct(reportProductDTO));
     }
 
     @Override

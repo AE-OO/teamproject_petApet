@@ -26,4 +26,9 @@ public class testController {
         }
         return "index";}
 
+    @GetMapping("/reportTest")
+    public String reportTest(){
+        return "testCW/buttons";
+    }
+
 }

@@ -8,5 +8,6 @@ import lombok.Data;
 public class ReportMemberDTO {
     private Long reportId;
     private String reportReason;
+    private String reportReasonDetail;
     private String memberId;
 }
