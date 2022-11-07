@@ -30,48 +30,48 @@
         <div class="row g-5">
             <div class="mx-auto">
                 <h1 class="display-5 mb-5"><a class="" href="/"><img alt="logo">petApet</a></h1>
-                <p class="invalid-feedback">아이디와 비밀번호를 입력하세요.</p>
-                <form method="post" action="/login">
-                    <div class="row g-3">
-
-                        <!-- memberId Start-->
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="input-memberId" name="memberId"
-                                       th:value="${loginDto.memberId}" placeholder="login"/>
-                                <label for="input-memberId">아이디</label>
-                            </div>
-                            <p id="feedback-memberId" class="text-start text-danger ps-2 my-1"
-                               th:text="${valid_memberId}"/>
-                        </div>
-                        <!-- memberId End -->
-
-                        <!-- memberPw Start -->
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input type="password" class="form-control" id="input-memberPw" name="memberPw"
-                                       autocomplete="off"
-                                       placeholder="password"/>
-                                <label for="input-memberPw">비밀번호</label>
-                            </div>
-                            <p id="feedback-memberPw" class="text-start text-danger ps-2 my-1"
-                               th:text="${valid_memberPw}"/>
-                        </div>
-                        <!-- memberPw End -->
-
-                        <!-- button , url Start -->
-                        <div class="col-12">
-                            <button type="button" id="loginBtn" class="btn btn-primary mb-2 col-12 py-3">로그인</button>
-                            <hr/>
-                            <span class="mx-3"><a href="#">비밀번호 찾기</a></span>|
-                            <span class="mx-3"> <a href="#">아이디 찾기</a></span>|
-                            <span class="mx-3"><a href="/join">회원가입</a></span>
-                        </div>
-                        <!-- button, url End -->
-                    </div>
-                </form>
+                <p class="text-danger" th:text="${error}"/>
             </div>
         </div>
+        <form method="post" action="/login">
+            <div class="row g-3">
+
+                <!-- memberId Start-->
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="input-memberId" name="memberId"
+                               placeholder="login"/>
+                        <label for="input-memberId">아이디</label>
+                    </div>
+                    <p id="feedback-memberId" class="text-start text-danger ps-2 my-1"
+                       th:text="${valid_memberId}"/>
+                </div>
+                <!-- memberId End -->
+
+                <!-- memberPw Start -->
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="input-memberPw" name="memberPw"
+                               autocomplete="off"
+                               placeholder="password"/>
+                        <label for="input-memberPw">비밀번호</label>
+                    </div>
+                    <p id="feedback-memberPw" class="text-start text-danger ps-2 my-1"
+                       th:text="${valid_memberPw}"/>
+                </div>
+                <!-- memberPw End -->
+
+                <!-- button a Start -->
+                <div class="col-12">
+                    <button type="button" id="loginBtn" class="btn btn-primary mb-2 col-12 py-3">로그인</button>
+                    <hr/>
+                    <span class="mx-3"><a href="/findMemberPw">비밀번호 찾기</a></span>|
+                    <span class="mx-3"> <a href="/findMemberId">아이디 찾기</a></span>|
+                    <span class="mx-3"><a href="/join">회원가입</a></span>
+                </div>
+                <!-- button a End -->
+            </div>
+        </form>
     </div>
 </main>
 <!-- Login End -->
@@ -90,8 +90,24 @@
 <!-- Copyright End -->
 
 <!-- Login Script Start -->
-<script src="/js/login.js"></script>
+<script src="/js/member/login.js"></script>
 <!-- Login Script End -->
+
+<!-- Modal start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header py-5">
+                <h5 class="modal-title mx-auto " id="staticBackdropLabel"></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal end-->
 
 </body>
 </html>

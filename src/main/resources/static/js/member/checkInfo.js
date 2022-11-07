@@ -23,7 +23,7 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (check) {
                     if (check) {
-                        window.location = "/member/info/modify"
+                        window.location = "/member/modifyInfo"
                     } else {
                         $("#staticBackdropLabel").text("비밀번호가 일치하지 않습니다.");
                         $("#staticBackdrop").modal();

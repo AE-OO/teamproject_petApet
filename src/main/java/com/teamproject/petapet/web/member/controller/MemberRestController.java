@@ -1,11 +1,12 @@
 package com.teamproject.petapet.web.member.controller;
 
+import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.security.Principal;
 
 /**
@@ -28,4 +29,22 @@ public class MemberRestController {
     boolean checkMemberPw(Principal principal, @RequestParam String memberPw){
         return memberService.checkMemberPw(principal.getName(),memberPw);
     }
+
+    //인증번호 확인용
+    @PostMapping("/checkSmsConfirmNum")
+    boolean checkSmsConfirmNum(@RequestParam String smsConfirmNum, HttpSession session){
+        if (session.getAttribute("smsConfirmNum") != null) {
+            return session.getAttribute("smsConfirmNum").toString().equals(smsConfirmNum);
+        }
+        return false;
+    }
+
+    @PostMapping("/updateMemberPw")
+    int updateMemberPw(Principal principal,@Valid @RequestBody MemberRequestDTO.UpdateMemberPwDTO updateMemberPwDTO){
+        if(!memberService.checkMemberPw(principal.getName(),updateMemberPwDTO.getNewMemberPw())) {
+            return memberService.updateMemberPw(principal.getName(), updateMemberPwDTO.getNewMemberPw());
+        }
+        return 0;
+    }
+
 }

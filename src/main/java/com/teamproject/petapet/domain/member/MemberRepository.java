@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 import java.util.Optional;
@@ -34,12 +35,34 @@ public interface MemberRepository extends JpaRepository<Member, String> {
             "FROM Member " +
             "where memberName not in('admin')) a group by a.age order by a.age) b " +
             "on b.age = age.age", nativeQuery = true)
-
     List<Integer> getAgeList();
 
     @Query("select m.memberPw from Member m where m.memberId = :memberId")
     String findMemberPw(String memberId);
 
+    @Modifying
+    @Transactional
+    @Query("update Member m set m.memberPw=:memberPw where m.memberId =:memberId")
+    int updateMemberPw(String memberId, String memberPw);
 
+    @Modifying
+    @Transactional
+    @Query("update Member m " +
+            "set m.memberBirthday=:memberBirthday, m.memberPhoneNum=:memberPhoneNum," +
+            "m.memberGender=:memberGender, m.memberAddress=:memberAddress where m.memberId =:memberId")
+    void updateMember(String memberId, Date memberBirthday, String memberPhoneNum, String memberGender, String memberAddress);
+
+    @Modifying
+    @Transactional
+    @Query("update Member m set m.activated=true where m.memberId=:memberId")
+    void updateActivated(String memberId);
+
+    @Query("select m.memberId from Member m where m.memberName=:memberName and m.memberPhoneNum=:memberPhoneNum")
+    Optional<String> findMemberId(String memberName, String memberPhoneNum);
+
+    boolean existsMemberByMemberIdAndMemberNameAndMemberPhoneNum(String memberId, String memberName, String memberPhoneNum);
+
+    @Query("select m.memberId from Member m where m.memberId=:memberId and m.memberName=:memberName and m.memberPhoneNum=:memberPhoneNum")
+    Optional<String> existMemberId(String memberId, String memberName, String memberPhoneNum);
 
 }

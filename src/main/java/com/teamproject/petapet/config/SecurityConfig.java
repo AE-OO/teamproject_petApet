@@ -11,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * 장사론 22.10.19 작성
@@ -24,6 +26,7 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final CorsFilter corsFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,6 +57,7 @@ public class SecurityConfig {
                 .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")
                 .antMatchers("/login","/login","/adminLogin").permitAll()
                 .antMatchers("/join","/sms/send").permitAll()
+                .antMatchers("/product/**").permitAll()
                 .antMatchers("/").permitAll()
                 //나머지 경로는 인증 없이 접근 불가
 //                .anyRequest().authenticated()
