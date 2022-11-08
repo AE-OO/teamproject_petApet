@@ -88,6 +88,13 @@ public class CartController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/removeOne" , method = { RequestMethod.POST }, produces = "application/json")
+    public void removeCartOne(@RequestBody CartVO vo){
+        log.info(">> ={}", vo.getCartId());
+        cartService.removeCartOne(vo.getCartId());
+    }
+
 
     private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
         httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));

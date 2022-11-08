@@ -311,7 +311,7 @@
                                                                                     stroke="white"></path>
                                                                         </svg><span class="blind">찜하기</span></button>
                                                                         <div class="product-removal">
-                                                                            <button type="button" class="remove-product">
+                                                                            <button th:value="${cart.cartId}" type="button" class="remove-product">
                                                                                 <!--                                                                            <a href="">삭제</a>-->삭제
                                                                             </button>
                                                                         </div>
@@ -498,8 +498,9 @@
         });
     }
 
-</script>
-    <script src="js/cart.js" th:src="@{/js/cart.js}"></script>
+
+</script >
+    <script th:inline="javascript" src="js/cart.js" th:src="@{/js/cart.js}"></script>
 </body>
 
 </html>

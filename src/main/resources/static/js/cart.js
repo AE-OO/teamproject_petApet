@@ -181,11 +181,32 @@ $(document).ready(function() {
 
     // 선택 삭제
     $(removeCard).on("click", card, function(e){
+        console.log("제거실행");
+        const cartId = $(this).val();
+        console.log(">> : " + cartId);
+        var deleteOne = {"cartId": cartId};
+        $.ajax({
+            url: "/cart/removeOne",
+            type: "POST",
+            data: JSON.stringify(deleteOne),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("삭제 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
+            }
+        });
+
         $(e.target).closest(card).remove();
     });
 
     // 전체 삭제
     $(selectDeleteCards).click(function(){
+        console.log("전체 제거 실행");
+
         $(this).parents().eq(4).children().find(cards).remove();
     });
 });
