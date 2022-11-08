@@ -34,7 +34,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">상품신고</h1>
+                <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">상품신고</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -47,7 +47,7 @@
                 </select>
                 <hr>
                 <h6>구체적인 사유를 작성해 주세요</h6>
-                <textarea name="reportProductReasonDetail" rows="3" placeholder="구체적인 신고 사유 입력"></textarea>
+                <textarea class="form-control" name="reportProductReasonDetail" rows="3" placeholder="구체적인 신고 사유 입력"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -61,12 +61,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">회원신고</h1>
+                <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">회원신고</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <h6>신고 사유를 선택해 주세요</h6>
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" aria-label="Default select example" id="reportMemberReason">
                     <option value="">신고사유</option>
                     <option value="회원비난/비하">회원비난/비하</option>
                     <option value="욕설/비속어">욕설/비속어</option>
@@ -78,7 +78,7 @@
                 </select>
                 <hr>
                 <h6>구체적인 사유를 작성해 주세요</h6>
-                <textarea rows="3" placeholder="구체적인 신고 사유 입력"></textarea>
+                <textarea class="form-control" rows="3" name="reportMemberReasonDetail" placeholder="구체적인 신고 사유 입력"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -93,12 +93,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">게시글신고</h1>
+                <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">게시글신고</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <h6>신고 사유를 선택해 주세요</h6>
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" aria-label="Default select example" id="reportCommunityReason">
                     <option value="">신고사유</option>
                     <option value="예의에 어긋난 게시물">예의에 어긋난 게시물</option>
                     <option value="무단광고/홍보">무단광고/홍보</option>
@@ -112,7 +112,7 @@
                 </select>
                 <hr>
                 <h6>구체적인 사유를 작성해 주세요</h6>
-                <textarea rows="3" placeholder="구체적인 신고 사유 입력"></textarea>
+                <textarea class="form-control" rows="3" name="reportCommunityReasonDetail" placeholder="구체적인 신고 사유 입력"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

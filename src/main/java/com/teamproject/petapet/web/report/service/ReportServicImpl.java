@@ -2,6 +2,8 @@ package com.teamproject.petapet.web.report.service;
 
 import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.domain.report.ReportRepository;
+import com.teamproject.petapet.web.report.dto.ReportCommunityDTO;
+import com.teamproject.petapet.web.report.dto.ReportMemberDTO;
 import com.teamproject.petapet.web.report.dto.ReportProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,6 +36,16 @@ public class ReportServicImpl implements ReportService{
     @Override
     public void addProductReport(ReportProductDTO reportProductDTO) {
         reportRepository.save(dtoToEntityProduct(reportProductDTO));
+    }
+
+    @Override
+    public void addMemberReport(ReportMemberDTO reportMemberDTO) {
+        reportRepository.save(dtoToEntityMember(reportMemberDTO));
+    }
+
+    @Override
+    public void addCommunityReport(ReportCommunityDTO reportCommunityDTO) {
+        reportRepository.save(dtoToEntityCommunity(reportCommunityDTO));
     }
 
     @Override
