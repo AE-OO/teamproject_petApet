@@ -13,4 +13,7 @@ public interface CartService {
 
     Cart findOne(Long cartId);
 
+    void removeCartOne(Long cartId);
+
+    void removeCartAll(String memberId);
 }

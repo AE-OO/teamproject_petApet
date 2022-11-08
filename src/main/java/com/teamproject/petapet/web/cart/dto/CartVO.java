@@ -6,6 +6,11 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 public class CartVO {
+
+    private Long cartId;
+
+    private String memberId;
+
     private Long product;
 
     @NotNull(message = "수량을 입력하세요")
