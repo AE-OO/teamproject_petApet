@@ -12,6 +12,7 @@ import com.teamproject.petapet.domain.report.Report;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -113,4 +114,7 @@ public class Member{
     public void addAuthority(Authority authority) {
         authorities.add(authority);
     }
+
+
+
 }

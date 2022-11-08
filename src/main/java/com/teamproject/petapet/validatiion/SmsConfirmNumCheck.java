@@ -17,6 +17,9 @@ import javax.validation.ConstraintValidatorContext;
 public class SmsConfirmNumCheck implements ConstraintValidator<SmsConfirmNum, String> {
     @Override
     public boolean isValid(String smsConfirmNum, ConstraintValidatorContext context) {
+        if(smsConfirmNum == null){
+            return true;
+        }
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         if (session.getAttribute("smsConfirmNum") != null) {

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class SmsResponseDto {
+public class SmsResponseDTO {
     private String requestId;
     private LocalDateTime requestTime;
     private String statusCode;
