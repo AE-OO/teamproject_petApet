@@ -34,7 +34,4 @@ public class ExceptionAdvice {
         model.addAttribute("error","잦은 신고로 이용이 정지된 아이디입니다.");
         return "login";
     }
-
-
-
 }
