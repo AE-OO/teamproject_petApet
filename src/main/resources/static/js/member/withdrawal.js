@@ -47,6 +47,6 @@ $(document).ready(function () {
     });
 
     $("#cancelBtn").click(function () {
-        window.location = "/member/info"
+        window.location = "/member/checkInfo"
     })
 });

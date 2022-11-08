@@ -27,20 +27,25 @@ public class MemberController {
     @GetMapping("/checkInfo")
     public String myInfo(){return "/member/checkInfo";}
 
-    @GetMapping("/modifyInfo")
+    @PostMapping("/checkInfo")
     public String myInfo(Principal principal, Model model){
         model.addAttribute("memberDTO", memberService.memberInfo(principal.getName()));
         return "member/modifyInfo";
     }
 
+//    @GetMapping("/modifyInfo")
+//    public String test(Principal principal, Model model){
+//        model.addAttribute("memberDTO", memberService.memberInfo(principal.getName()));
+//        return "member/modifyInfo";}
+
     @PostMapping("/modifyInfo")
     public String modifyInfo(Principal principal, @Valid MemberRequestDTO.UpdateMemberInfo updateMemberInfo,
                              BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return "redirect:/member/modifyInfo";
+            return "redirect:/member/checkInfo";
         }
         memberService.updateMemberInfo(principal.getName(),updateMemberInfo);
-        return "/member/checkInfo";
+        return "redirect:/member/checkInfo";
     }
 
     //회원탈퇴

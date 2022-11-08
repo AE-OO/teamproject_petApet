@@ -437,9 +437,9 @@ $(document).ready(function () {
             alert("수정이 완료되었습니다.");
             $("#modifyBtn").attr("type", "submit");
         }
-        if (smsConfirmNum() !== "") {
+        if (smsConfirmNum().val().length > 0) {
             if (checkMemberBirthday() && checkMemberAddress() && checkMemberPhoneNum() && checkSmsConfirmNum()) {
-                alert("수정이 완료되었습니다.")
+                alert("수정이 완료되었습니다.");
                 $("#modifyBtn").attr("type", "submit");
             }
         }

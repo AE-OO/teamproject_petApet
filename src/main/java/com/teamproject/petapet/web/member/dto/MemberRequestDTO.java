@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class MemberRequestDTO {
         private String memberPw2;
 
         @NotBlank(message = "생년월일은 필수 입력값입니다.")
-        @Pattern(regexp ="^(19[2-9][0-9]|20\\d{2}),([1-9]|1[0-2]),([1-9]|[1-2][0-9]|3[0-1])$",
+        @Pattern(regexp ="^(19[0-9][0-9]|20\\d{2}),([1-9]|0[1-9]|1[0-2]),(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])$",
                 message="생년월일을 다시 확인해주세요.")
         private String memberBirthday;
 
@@ -106,6 +107,7 @@ public class MemberRequestDTO {
     @Builder
     public static class UpdateMemberInfo {
         @NotBlank
+        @Pattern(regexp = "^(19[0-9][0-9]|20\\d{2}),([1-9]|0[1-9]|1[0-2]),(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])$")
         private String memberBirthday;
         @NotBlank
         private String memberAddress;

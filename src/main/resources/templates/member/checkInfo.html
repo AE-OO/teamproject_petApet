@@ -10,7 +10,7 @@
 
     <!-- Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
-            rel="stylesheet">
+          rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -114,7 +114,8 @@
                             <button class="py-3 w-100 btn btn-link2">1:1 문의 <i class="fa fa-arrow-right"></i></button>
                         </p>
                         <p class="py-0 mb-0 checked">
-                            <button class="py-3 w-100 btn btn-link" onclick="location.href='info'">개인 정보 수정<i class="fa fa-arrow-right"></i></button>
+                            <button class="py-3 w-100 btn btn-link" onclick="location.href='info'">개인 정보 수정<i
+                                    class="fa fa-arrow-right"></i></button>
                         </p>
                     </div>
                 </div>
@@ -134,16 +135,20 @@
                             <div class="row g-5">
                                 <div class="mx-auto">
                                     <!-- memberId start -->
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="row g-2 mb-4 px-1">
-                                                <label for="input-memberId" class="myinfo-p col-3">아이디</label>
-                                                <input type="text" id="input-memberId"
-                                                       th:value="${#authentication.name}"
-                                                       class="form-control px-3 py-2 w-75" name="memberId" readonly>
+                                    <form id="sendMemberId" action="/member/checkInfo" method="post">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+
+                                                    <label for="input-memberId" class="myinfo-p col-3">아이디</label>
+                                                    <input type="text" id="input-memberId"
+                                                           th:value="${#authentication.name}"
+                                                           class="form-control px-3 py-2 w-75" readonly>
+
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                     <!-- memberId end -->
 
                                     <!-- memberPw start -->

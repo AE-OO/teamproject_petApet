@@ -73,7 +73,6 @@ function sendBtnClick() {
     //     },
     //     dataType: "json",
     //     success: function (response) {
-    //         $("#staticBackdrop").modal();
     //         alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
     //         startTimer(leftSec); // 타이머 시작
     //         alert(response);
