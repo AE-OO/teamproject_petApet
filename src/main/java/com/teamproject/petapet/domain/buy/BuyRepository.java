@@ -19,7 +19,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
      * @param memberId
      * @return
      */
-    @Query("select b from Buy b where b.member.memberId =:memberId order by b.buyDate")
+    @Query("select b from Buy b where b.member.memberId =:memberId order by b.buyDate desc ")
     List<Buy> findBuyByMember(@Param("memberId") String memberId);
 
 }

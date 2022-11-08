@@ -37,5 +37,16 @@ public class CartServiceImpl implements CartService{
         return cartRepository.findById(cartId).get();
     }
 
+    @Override
+    public void removeCartOne(Long cartId) {
+        cartRepository.deleteById(cartId);
+    }
+
+    @Override
+    public void removeCartAll(String
+                                          memberId) {
+        cartRepository.deleteAllByMember(memberId);
+    }
+
 
 }

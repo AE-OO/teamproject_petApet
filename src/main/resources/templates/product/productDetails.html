@@ -22,7 +22,7 @@
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item" th:each="img : *{productImg}">
-                                    <img th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${img.storeFileName})}|"
+                                    <img th:src="|@{/Users/seonghyeon/Desktop/test/{path}(path=${img.storeFileName})}|"
                                          width="400" height="400"
                                          style="min-height: 400px; min-width: 400px"
                                          class="d-block w-auto" alt="...">
@@ -743,7 +743,7 @@ console.log(data)
     });
 
     var urlCart = "/cart/add";
-    var urlBuy = "/buy/addByProduct";
+    var urlBuy = "/buy/add";
     var productId = $("#productId").val();
     var quantityVal  = $("#quantity").val();
     var param = {"product": productId, "quantity":quantityVal};
