@@ -10,6 +10,8 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
     // 회원조회 : 상품 -> 장바구니  (최근 추가한 순으로 가져오기)
-    @Query("select c from Cart c where c.member.memberId =:memberId order by c.cartId")
+    @Query("select c from Cart c where c.member.memberId =:memberId order by c.cartId desc ")
     List<Cart> findCartByMember(@Param("memberId") String memberId);
+
+    void deleteAllByMember(@Param("memberId") String memberId);
 }

@@ -54,16 +54,17 @@ $(document).ready(function() {
         if (this.className == checkboxAllTargeted){
             $(this).attr('class', checkboxAllTarget);
             $(this).parents().eq(11).children().find(buy).attr('class', offBuy);
-            $(this).parents().eq(11).children().find(input).val(0);
+            // $(this).parents().eq(11).children().find(input).val(0);
             console.log("val", $(input).val());
 
             // 전체 삭제
             $(selectDeleteCards).click(function(){
                 $(this).parents().eq(4).children().find(cards).remove();
-                $(this).parents().eq(4).children().find(input).val(0);
+                // $(this).parents().eq(4).children().find(input).val(0);
                 console.log("val", $(input).val());
             });
         } else{
+            // const quan = [[${cart.quantity}]];
             $(this).attr('class', checkboxAllTargeted);
             $(this).parents().eq(11).children().find(buy).attr('class', onBuy);
         }
@@ -181,12 +182,100 @@ $(document).ready(function() {
 
     // 선택 삭제
     $(removeCard).on("click", card, function(e){
+        console.log("제거실행");
+        const cartId = $(this).val();
+        console.log(">> : " + cartId);
+        var deleteOne = {"cartId": cartId};
+        $.ajax({
+            url: "/cart/removeOne",
+            type: "POST",
+            data: JSON.stringify(deleteOne),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("삭제 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
+            }
+        });
+
         $(e.target).closest(card).remove();
     });
 
     // 전체 삭제
     $(selectDeleteCards).click(function(){
+        var memberId = $('#memberName').val();
+        // btn_delete--3P5eHI2eDa
+        console.log("전체 삭제 실행");
+        console.log(">> " + memberId);
+        var deleteAll = {"memberId": memberId};
+        $.ajax({
+            url: "/cart/removeAll",
+            type: "POST",
+            data: JSON.stringify(deleteAll),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("전체 삭제 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
+            }
+        });
+
         $(this).parents().eq(4).children().find(cards).remove();
     });
+
 });
 
+
+// function deleteNotices(){
+//     var deleteList = [];
+//     $("input[name='']:checked").each(function(){
+//         deleteList.push($(this).val());
+//     })
+//     console.log(deleteList)
+//     $.ajax({
+//         url: "/board/deleteNotices.do",
+//         type: "POST",
+//         data: {deleteList : deleteList},
+//         success: function(data){
+//             alert("삭제되었습니다.");
+//             window.location.reload();
+//         },
+//         error: function (error){
+//             alert('삭제 실패했습니다.');
+//         }
+//     });
+
+
+// 전체 삭제
+// $(selectDeleteCards).click(function(){
+//     var memberId = $('#memberName').val();
+//     // btn_delete--3P5eHI2eDa
+//     console.log("전체 삭제 실행");
+//     console.log(">> " + memberId);
+//     var deleteAll = {"memberId": memberId};
+//     $.ajax({
+//         url: "/cart/removeAll",
+//         type: "POST",
+//         data: JSON.stringify(deleteAll),
+//         dataType: "text",
+//         contentType : "application/json",
+//         charset : "UTF-8",
+//         success: function (data) {
+//             alert("전체 삭제 되었음!! ")
+//         },
+//         error: function (jqXHR, status, errorThrown) {
+//             alert("에러");
+//         }
+//     });
+//
+//     $(this).parents().eq(4).children().find(cards).remove();
+// });
+//
+// });
+//
