@@ -12,5 +12,6 @@ import lombok.Data;
 public class ReportProductDTO {
     private Long reportId;
     private String reportReason;
+    private String reportReasonDetail;
     private Long productId;
 }

@@ -19,9 +19,7 @@ import javax.persistence.*;
 public class Cart{
 
     @Id
-    @GeneratedValue(
-
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
 
     @ManyToOne
