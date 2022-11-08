@@ -433,6 +433,8 @@ $(document).ready(function () {
         if (!checkMemberBirthday()) {
             mBirthFeedback().text("필수 정보입니다.");
         }
+
+        // alert(checkMemberBirthday()+"///"+checkMemberAddress()+"///"+checkMemberPhoneNum()+"///")
         if (checkMemberBirthday() && checkMemberAddress() && checkMemberPhoneNum()) {
             alert("수정이 완료되었습니다.");
             $("#modifyBtn").attr("type", "submit");
