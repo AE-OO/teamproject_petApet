@@ -78,7 +78,7 @@
             <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
                sec:authorize="isAuthenticated()">Logout</a>
             <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-            ><strong th:text="${#authentication.name}"/></a>
+            ><strong id="memeberName" th:text="${#authentication.name}" th:value="${#authentication.name}"/></a>
 
             <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
         </div>

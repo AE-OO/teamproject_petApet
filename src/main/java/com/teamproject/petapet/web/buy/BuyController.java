@@ -55,7 +55,7 @@ public class BuyController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/addByProduct", method = { RequestMethod.POST }, produces = "application/json")
+    @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
     public void productToBuy(@RequestBody BuyVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
 
         String loginMember = checkMember(principal, request, httpSession);
