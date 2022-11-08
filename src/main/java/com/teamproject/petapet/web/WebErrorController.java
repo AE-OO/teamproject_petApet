@@ -12,28 +12,28 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 장사론 22.10.27 작성
  */
-@Controller
-public class WebErrorController implements ErrorController {
-
-    private String ERROR_TEMPLATES_PATH = "/errors/";
-
-    @RequestMapping(value = "/error")
-    public String handleError(HttpServletRequest request) {
-        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        if(status != null){
-            int statusCode = Integer.valueOf(status.toString());
-
-            if(statusCode == HttpStatus.NOT_FOUND.value()){
-                return ERROR_TEMPLATES_PATH + "404";
-            }
-
-            if(statusCode == HttpStatus.FORBIDDEN.value()){
-                return ERROR_TEMPLATES_PATH + "500";
-            }
-
-        }
-        return "error";
-    }
-
-
-}
+//@Controller
+//public class WebErrorController implements ErrorController {
+//
+//    private String ERROR_TEMPLATES_PATH = "/errors/";
+//
+//    @RequestMapping(value = "/error")
+//    public String handleError(HttpServletRequest request) {
+//        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+//        if(status != null){
+//            int statusCode = Integer.valueOf(status.toString());
+//
+//            if(statusCode == HttpStatus.NOT_FOUND.value()){
+//                return ERROR_TEMPLATES_PATH + "404";
+//            }
+//
+//            if(statusCode == HttpStatus.FORBIDDEN.value()){
+//                return ERROR_TEMPLATES_PATH + "500";
+//            }
+//
+//        }
+//        return "error";
+//    }
+//
+//
+//}

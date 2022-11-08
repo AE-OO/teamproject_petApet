@@ -16,8 +16,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @Setter
 @Getter
-public class SmsDto {
-
+public class SmsDTO {
     @NotBlank(message = "휴대전화는 필수 입력값입니다.")
     @Pattern(regexp = "^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$",
             message = "형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.")

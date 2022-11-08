@@ -1,7 +1,7 @@
 package com.teamproject.petapet.jwt;
 
 
-import com.teamproject.petapet.web.member.dto.TokenDto;
+import com.teamproject.petapet.web.member.dto.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,7 +54,7 @@ public class JwtTokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDto createToken(Authentication authentication) {
+    public TokenDTO createToken(Authentication authentication) {
         // 권한들 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -72,7 +71,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .setExpiration(validity)
                 .compact();
 
-        return TokenDto.builder()
+        return TokenDTO.builder()
                 .token(token)
                 .accessTokenExpiresIn(validity.getTime())
                 .build();

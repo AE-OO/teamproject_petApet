@@ -12,11 +12,11 @@ import java.util.List;
 @Setter
 @Getter
 @Builder
-public class SmsRequestDto {
+public class SmsRequestDTO {
     private String type;
     private String contentType;
     private String countryCode;
     private String from;
     private String content;
-    private List<SmsDto> messages;
+    private List<SmsDTO> messages;
 }

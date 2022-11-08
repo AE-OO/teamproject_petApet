@@ -1,15 +1,9 @@
 package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.member.dto.JoinDto;
+import com.teamproject.petapet.web.member.dto.*;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import com.teamproject.petapet.domain.product.Product;
-import com.teamproject.petapet.web.member.dto.LoginDto;
-import com.teamproject.petapet.web.member.dto.MemberDto;
-import com.teamproject.petapet.web.member.dto.TokenDto;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,18 +20,25 @@ public interface MemberService {
     int[] getGenderList();
     List<Integer> getAgeList();
 
-    TokenDto login(LoginDto loginDto);
-    void join(JoinDto joinDto);
+    TokenDTO login(MemberRequestDTO.LoginDTO loginDTO);
+    void join(MemberRequestDTO.JoinDTO joinDTO);
     Member findOne(String memberId);
 
     boolean duplicateCheckMemberId(String memberId);
     Map<String, String> validateHandling(BindingResult bindingResult);
-    MemberDto memberInfo(String memberId);
+    MemberDTO memberInfo(String memberId);
 
     boolean checkMemberPw(String memberId, String memberPw);
 
+    void updateMemberInfo (String memberId, MemberRequestDTO.UpdateMemberInfo updateMemberInfo);
 
+    int updateMemberPw (String memberId, String memberPw);
 
+    String findMemberId (MemberRequestDTO.FindMemberIdDTO findMemberIdDTO);
+
+//    boolean findMemberPw (MemberRequestDTO.FindMemberPwDTO findMemberPwDTO);
+
+    String findMemberPw (MemberRequestDTO.FindMemberPwDTO findMemberPwDTO);
 
 
 }
