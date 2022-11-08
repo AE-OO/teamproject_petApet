@@ -281,7 +281,7 @@
                                                                             <a th:href="|@{/product/{productType}/{productId}/details(productType=${cart.product.productDiv.name().toLowerCase()},productId=${cart.product.productId})}|">
 
                                                                             <img th:src="|@{/product/images/{filename}(filename=${cart.product.getProductImg().get(0).getStoreFileName()})}|" alt="상품이미지"></a>
-                                                                            <input id="productId" type="hidden" th:value="${cart.getProduct().getProductId()}"/>
+                                                                            <input id="productId" class="productId" type="hidden" th:value="${cart.product.productId}"/>
                                                                         </div>
                                                                         <div class="info_area--2AT8d3T9eq">
                                                                             <div class="title--2r7IrJqWav">
@@ -351,7 +351,7 @@
                                                                 <div class="order_buttons--2Fb79h6uWq"><button
                                                                         type="button">찜하기</button><button type="button"><span
                                                                         class="none_280--1-kFXWiEW1">주문</span>수정</button><button
-                                                                        type="button" class="btn_order--4bpIwtdOmc" th:onclick="'javascript:addBuy()'">주문<span
+                                                                        type="button" class="btn_order--4bpIwtdOmc">주문<span
                                                                         class="none_280--1-kFXWiEW1">하기</span></button>
                                                                 </div>
                                                             </div>
@@ -378,7 +378,7 @@
                                                     th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}">20,000</span>원</em></div>
                                             <div class="price_area--jjAq5tYP9m discount--2RJZlYQP1m">
                                                 <span class="title--3G_o4_rhfc">수량</span>
-                                                <em class="quan"><span class="num--37aOyGmdW1"
+                                                <em class="quan"><span class="num--37aOyGmdW1 qtt"
                                                                        th:text="${cart.quantity}">1</span>&nbsp;개</em>
                                             </div>
                                             <div class="price_area--jjAq5tYP9m"><span class="title--3G_o4_rhfc">총 배송비<span
@@ -395,7 +395,8 @@
                                         </div>
                                     </div>
                                     <div class="store_price_empty_area--1jjMvE5SXu"></div>
-                                    <button type="button" th:onclick="'javascript:addBuy()'" class="link_area--14aJI6oflh"><a href="#" class="link_buy--KOU5pZhUVG"><em
+                                    <button type="button" class="link_area--14aJI6oflh addBuy" th:value="${cart.product.productId}">
+                                        <a href="#" class="link_buy--KOU5pZhUVG"><em
                                             th:text="${cart.quantity}">상품수량</em>&nbsp;건 주문하기</a></button>
                                 </div>
                             </div>
@@ -473,33 +474,6 @@
             </div>
         </div>
     </div>
-<script th:inline="javascript">
-    var urlBuy = "/buy/addByCart";
-    var productId = $("#productId").val();
-    var quantityVal  = $("#quantity").val();
-    var param = {"product": productId, "quantity":quantityVal};
-    function addBuy(){
-        alert("실행");
-        console.log("product : " + productId);
-        console.log("quantity : " + quantity);
-        $.ajax({
-            url: urlBuy,
-            type: "POST",
-            data: JSON.stringify(param),
-            dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
-            success: function (data) {
-                alert("주문 되었음!! ")
-            },
-            error: function (jqXHR, status, errorThrown) {
-                alert("에러");
-            }
-        });
-    }
-
-
-</script >
     <script th:inline="javascript" src="js/cart.js" th:src="@{/js/cart.js}"></script>
 </body>
 
