@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/cart.css" th:href="@{/css/cart.css}">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
@@ -41,30 +40,30 @@
             #pap-left-menu{display: none;}
         }
     </style>
-    <title>Document</title>
+    <title>마이페이지 - 장바구니</title>
 </head>
 
 <body style="display: block">
 <!-- Navbar Start -->
 <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-    <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-        <h1 class="m-0">petApet</h1>
+    <a href="index.html" th:href="@{/}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h3 class="m-0">petApet</h3>
     </a>
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href="about.html" class="nav-item nav-link">About</a>
-            <a href="service.html" class="nav-item nav-link">Services</a>
-            <a href="project.html" class="nav-item nav-link">Product</a>
+            <a href="#" class="nav-item nav-link">About</a>
+            <a href="#" class="nav-item nav-link">Services</a>
+            <a th:href="@{/product}" class="nav-item nav-link">Product</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
                 <div class="dropdown-menu bg-light m-0">
-                    <a href="feature.html" class="dropdown-item">Test1</a>
-                    <a href="quote.html" class="dropdown-item">Test2</a>
-                    <a href="team.html" class="dropdown-item">Test3</a>
-                    <a href="testimonial.html" class="dropdown-item">Test5</a>
+                    <a href="#" class="dropdown-item">Test1</a>
+                    <a href="#" class="dropdown-item">Test2</a>
+                    <a href="#" class="dropdown-item">Test3</a>
+                    <a href="#" class="dropdown-item">Test5</a>
                     <a href="404.html" class="dropdown-item">404 Page</a>
                 </div>
             </div>
@@ -78,7 +77,7 @@
             <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
                sec:authorize="isAuthenticated()">Logout</a>
             <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-            ><strong id="memeberName" th:text="${#authentication.name}" th:value="${#authentication.name}"/></a>
+            ><strong th:text="${#authentication.name}"/></a>
 
             <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
         </div>
@@ -401,7 +400,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>e
+                    </div>
                 </div>
             </div>
             <div></div>

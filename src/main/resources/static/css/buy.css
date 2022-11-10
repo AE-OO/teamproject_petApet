@@ -29,10 +29,6 @@ div{
   overflow: hidden;
 }
 
-.header, .footer{
-  display: block;
-  background-color: bisque;
-}
 
 .contents{
   z-index: inherit !important;
