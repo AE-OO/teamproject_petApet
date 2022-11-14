@@ -1,17 +1,21 @@
 package com.teamproject.petapet.web.admin;
 
-import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
+import com.teamproject.petapet.web.report.dto.ReportProductDTO;
 import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -144,5 +148,19 @@ public class AdminController {
     @GetMapping("/setOutOfStock")
     public void setOutOfStock(@RequestParam(value="productIdList[]") List<String> productIdList){
         productService.updateProductStatusOutOfStock(productIdList);
+    }
+
+    @ResponseBody
+    @GetMapping("/getReportReason/{id}/{type}")
+    public HashMap<String, ReportProductDTO> getReportReason(@PathVariable("id") Long id, @PathVariable("type") String type){
+        HashMap<String, ReportProductDTO> reportProduct = new HashMap<String, ReportProductDTO>();
+        reportProduct.put("report",reportService.getOneReportProduct(id, type));
+        return reportProduct;
+    }
+
+    @ResponseBody
+    @PostMapping("/refuseReport/{reportId}")
+    public void refuseReport(@PathVariable("reportId") Long reportId){
+        reportService.refuseReport(reportId);
     }
 }

@@ -52,4 +52,17 @@ public class ReportServicImpl implements ReportService{
     public void setResponseStatusCommunity(Long reportId) {
         reportRepository.setResponseStatusTrue(reportId);
     }
+
+    @Override
+    public ReportProductDTO getOneReportProduct(Long reportId, String type) {
+        if(type.equals("product")){
+            return entityToDTOProduct(reportRepository.getReportByReportId(reportId));
+        }
+        return null;
+    }
+
+    @Override
+    public void refuseReport(Long reportId) {
+        reportRepository.deleteById(reportId);
+    }
 }

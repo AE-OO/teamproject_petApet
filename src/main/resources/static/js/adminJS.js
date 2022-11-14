@@ -136,18 +136,8 @@ $(document).ready(function () {
        })
     });
 
-    $(".acceptProductReportBtn").click(function(){
-        var reportId = $(this).parent().parent().find("td[id=productReportId]").text();
-        var productId = $(this).parent().parent().find("td[id=productId]").text();
-
-        $.ajax({
-            url: "/admin/acceptProductReport/" + reportId,
-            data: {productId : productId},
-            type: "get",
-            success(){
-                location.reload();
-            }
-        })
+    $("#showProductReportModal").click(function (){
+        getReportReason(this, "product");
     });
 })
 
@@ -215,5 +205,38 @@ function movePage(){
     $('#goMemberManage').click(function(){
         var offset = $('#memberManage').offset();
         $('html').animate({scrollTop : offset.top}, 400);
+    });
+}
+
+function getReportReason(data, type){
+    var id = $(data).parent().parent().find("td[id=productReportId]").text();
+
+    $.getJSON("/admin/getReportReason/" + id + "/" + type, function(data){
+        $("#reportReason").val(data.report.reportReason);
+        $("#reportDetailReason").text(data.report.reportReasonDetail);
+
+        var reportId = data.report.reportId;
+        var productId = data.report.productId;
+
+        $("#acceptProductReportBtn").click(function(){
+            $.ajax({
+                url: "/admin/acceptProductReport/" + reportId,
+                data: {productId : productId},
+                type: "get",
+                success(){
+                    location.reload();
+                }
+            })
+        });
+
+        $("#cancelProductReportBtn").click(function(){
+            $.ajax({
+                url: "/admin/refuseReport/" + reportId,
+                type: "post",
+                success(){
+                    location.reload();
+                }
+            })
+        })
     });
 }

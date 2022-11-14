@@ -18,29 +18,8 @@ public interface ReportService {
     void addMemberReport(ReportMemberDTO reportMemberDTO);
     void addCommunityReport(ReportCommunityDTO reportCommunityDTO);
     void setResponseStatusCommunity(Long reportId);
-
-    default ReportCommunityDTO entityToDTOCommunity(Report report){
-        ReportCommunityDTO reportCommunityDTO = ReportCommunityDTO.builder()
-                .reportReason(report.getReportReason())
-                .reportReasonDetail(report.getReportReasonDetail())
-                .communityId(report.getCommunity().getCommunityId())
-                .build();
-
-        return reportCommunityDTO;
-    }
-
-    default Report dtoToentityCommunity(ReportCommunityDTO reportCommunityDTO){
-        Community community = Community.builder().communityId(reportCommunityDTO.getCommunityId()).build();
-
-        Report report = Report.builder()
-                .reportReason(reportCommunityDTO.getReportReason())
-                .reportReasonDetail(reportCommunityDTO.getReportReasonDetail())
-                .community(community)
-                .build();
-
-        return report;
-    }
-
+    ReportProductDTO getOneReportProduct(Long reportId, String type);
+    void refuseReport(Long reportId);
     default Report dtoToEntityProduct(ReportProductDTO reportProductDTO){
         Product product = Product.builder().productId(reportProductDTO.getProductId()).build();
 
@@ -51,6 +30,17 @@ public interface ReportService {
                 .build();
 
         return report;
+    }
+
+    default ReportProductDTO entityToDTOProduct(Report report){
+        ReportProductDTO reportProductDTO = ReportProductDTO.builder()
+                .productId(report.getReportId())
+                .reportId(report.getReportId())
+                .reportReason(report.getReportReason())
+                .reportReasonDetail(report.getReportReasonDetail())
+                .build();
+
+        return reportProductDTO;
     }
 
     default Report dtoToEntityCommunity(ReportCommunityDTO reportCommunityDTO){

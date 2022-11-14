@@ -3,7 +3,7 @@ $(document).ready(function () {
         var reportProductDTO = {
             reportReason : $("#reportProductReason option:selected").val(),
             reportReasonDetail : $("textarea[name=reportProductReasonDetail]").val(),
-            productId : $("input[name=productId]").val()
+            productId : $("#productId").val()
         }
 
         $.ajax({
