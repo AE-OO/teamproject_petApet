@@ -8,11 +8,12 @@ import com.teamproject.petapet.validatiion.MemberPwEquals;
 import com.teamproject.petapet.web.member.dto.*;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +32,7 @@ import java.util.Map;
  */
 
 @Service
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
@@ -67,12 +67,12 @@ public class MemberServiceImpl implements MemberService {
 //        ArrayList<Integer> genderList = new ArrayList<>();
         int[] genderList = new int[3];
 
-        for(String gender : memberRepository.getGenderList()){
-            if(gender.equals("남자")){
+        for (String gender : memberRepository.getGenderList()) {
+            if (gender.equals("남자")) {
                 genderList[0] += 1;
-            } else if(gender.equals("여자")){
+            } else if (gender.equals("여자")) {
                 genderList[1] += 1;
-            }else{
+            } else {
                 genderList[2] += 1;
             }
         }
@@ -81,11 +81,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<Integer> getAgeList() {
-//        List<Integer> ageList = new ArrayList<Integer>();
-//        for(int i = 0; i < 6; i++){
-//            ageList.add(memberRepository.getAgeList().get(i));
-//        }
-//        ageList.add(memberRepository.getAgeList().get(6)+memberRepository.getAgeList().get(7)+memberRepository.getAgeList().get(8)+memberRepository.getAgeList().get(9));
         return memberRepository.getAgeList();
     }
 
@@ -97,28 +92,24 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public TokenDto login(LoginDto loginDto) {
+    public TokenDTO login(MemberRequestDTO.LoginDTO loginDTO) {
         // 1. memberId, memberPw 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getMemberId(), loginDto.getMemberPw());
-
+                new UsernamePasswordAuthenticationToken(loginDTO.getMemberId(), loginDTO.getMemberPw());
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
         // 3. 인증 정보를 기반으로 JWT 토큰 생성 후 발급
         return jwtTokenProvider.createToken(authentication);
     }
 
-    @Override
     @Transactional
-    public void join(JoinDto joinDto) {memberRepository.save(JoinDto.toEntity(joinDto, passwordEncoder));}
+    @Override
+    public void join(MemberRequestDTO.JoinDTO joinDTO) {memberRepository.save(joinDTO.toEntity(passwordEncoder));}
 
     @Transactional(readOnly = true)
     @Override
-    public boolean duplicateCheckMemberId(String memberId) {
-        return memberRepository.existsById(memberId);
-    }
+    public boolean duplicateCheckMemberId(String memberId) {return memberRepository.existsById(memberId);}
 
 
     //유효성 검사
@@ -140,17 +131,57 @@ public class MemberServiceImpl implements MemberService {
         return validatorResult;
     }
 
+
     @Transactional(readOnly = true)
     @Override
-    public MemberDto memberInfo(String memberId) {return MemberDto.fromEntity(memberRepository.findById(memberId).get());}
+    public MemberDTO memberInfo(String memberId) {
+        return MemberDTO.fromEntity(memberRepository.findById(memberId)
+                .orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다.")));
+    }
 
     @Override
     public boolean checkMemberPw(String memberId, String memberPw) {
-        String dbMemberPw = memberRepository.findMemberPw(memberId);
-        if(dbMemberPw == null || !passwordEncoder.matches(memberPw,dbMemberPw)){
-            return false;
-        }
-        return true;
+        return passwordEncoder.matches(memberPw, memberRepository.findMemberPw(memberId));
     }
 
+    @Transactional
+    @Override
+    public void updateMemberInfo(String memberId, MemberRequestDTO.UpdateMemberInfo updateMemberInfo) {
+        Member member = updateMemberInfo.toEntity();
+        memberRepository.updateMember(memberId, member.getMemberBirthday(),member.getMemberPhoneNum(),
+                member.getMemberGender(),member.getMemberAddress());
+    }
+
+    @Override
+    public int updateMemberPw(String memberId, String memberPw) {
+       return memberRepository.updateMemberPw(memberId,passwordEncoder.encode(memberPw));
+    }
+
+    @Override
+    public String findMemberId(MemberRequestDTO.FindMemberIdDTO findMemberIdDTO) {
+        return MemberDTO.builder()
+                .memberId(memberRepository.findMemberId(findMemberIdDTO.getMemberName(),findMemberIdDTO.getMemberPhoneNum()).orElse("0"))
+                .build().getMemberId();
+    }
+
+    @Override
+    public String findMemberPw(MemberRequestDTO.FindMemberPwDTO findMemberPwDTO) {
+        return MemberDTO.builder()
+                .memberId(memberRepository.existMemberId(
+                        findMemberPwDTO.getMemberId(),
+                        findMemberPwDTO.getMemberName(),
+                        findMemberPwDTO.getMemberPhoneNum())
+                        .orElse("0"))
+                .build().getMemberId();
+    }
+
+//    @Override
+//    public boolean findMemberPw(MemberRequestDTO.FindMemberPwDTO findMemberPwDTO) {
+//        return memberRepository.existsMemberByMemberIdAndMemberNameAndMemberPhoneNum(
+//                findMemberPwDTO.getMemberId(),findMemberPwDTO.getMemberName(),findMemberPwDTO.getMemberPhoneNum());
+//    }
+
+
 }
+
+

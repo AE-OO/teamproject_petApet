@@ -12,5 +12,6 @@ import lombok.Data;
 public class ReportCommunityDTO {
     private Long reportId;
     private String reportReason;
+    private String reportReasonDetail;
     private Long communityId;
 }

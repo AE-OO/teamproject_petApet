@@ -38,7 +38,6 @@ function chnSelectGender() {
         $("#label-gender").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
     }
 }
-
 function chnSelectMonth() {
     if ($("#select-month option:checked").val() != "") {
         $("#select-month").css("color", "#212529");
@@ -49,7 +48,6 @@ function chnSelectMonth() {
         $("#label-month").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
     }
 }
-
 //error메세지 text 색상 변경용
 function textInfo(value) {
     if ((value.hasClass("text-info"))) {
@@ -59,8 +57,6 @@ function textInfo(value) {
         return;
     }
 }
-
-
 function textDanger(value) {
     if (value.hasClass("text-danger")) {
         return;
@@ -77,7 +73,7 @@ const mPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])
 //이름 정규식 (한글, 2-6글자)
 const mNameRegExp = /^[가-힣]{2,6}$/;
 //휴대전화 정규식 (-빼고 입력 01로 시작, 총 10-11글자)
-const mPhoneumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
+const mPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
 //숫자 정규식 (길이 상관 없이 숫자만 입력)
 const numRegExp = /^[0-9]+$/;
 
@@ -97,15 +93,7 @@ function startTimer(count) {
 
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
-        textInfo(mPhoneNumFeedback());
         mPhoneNumFeedback().text(minutes + ":" + seconds + " 안에 인증번호를 입력해주세요.");
-        // 인증번호 맞으면 종료
-        if (smsConfirmNum().val() == certificationNum) {
-            smsConfirmNumFeedback().val("");
-            mPhoneNumFeedback().text("OK");
-            smsConfirmNum().attr("reaonly", true);
-            return;
-        }
         // 타이머 끝
         if (--count < 0) {
             clearInterval(timer);
@@ -116,9 +104,98 @@ function startTimer(count) {
             smsConfirmNum().val("");
             smsConfirmNumFeedback().text("");
             smsConfirmNum().attr("disabled", true);
+            clearInterval(timer);
+            return;
+        }
+
+        // 인증번호 맞으면 종료
+        if (checkSmsConfirmNum()) {
+            alert("인증이 완료되었습니다.");
+            mPhoneNumFeedback().text("");
+            textInfo(smsConfirmNumFeedback());
+            smsConfirmNumFeedback().text("OK");
+            smsConfirmNum().attr("readonly", true);
+            clearInterval(timer);
+            timer == null;
             return;
         }
     }, 1000);
+}
+
+//인증번호 발송용
+function sendBtnClick() {
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // 휴대전화 체크 (인증번호 문자포함) - 문자서비스 막아놓음 사용하려면 /////////ajax 주석 살리기 + 테스트 주석처리//////
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // $.ajax({
+    //     type: "POST",
+    //     url: "/sms/send",
+    //     data: {
+    //         to: memberPhoneNum(),
+    //     },
+    //     dataType: "json",
+    //     success: function (response) {
+    //         alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
+    //         startTimer(leftSec); // 타이머 시작
+    //         alert(response);
+    //         return certificationNum = response;
+    //     },
+    //     error: function () {
+    //         alert("인증번호 발송 실패");
+    //         location.href="/join"
+    //     }
+    // });
+    //////////////////////////테스트용////////////////////////////
+    $.ajax({
+        type: "POST",
+        url: "/sms/test",
+        data: {
+            to: memberPhoneNum(),
+        },
+        dataType: "json",
+        success: function (response) {
+            alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
+            startTimer(leftSec); // 타이머 시작
+            alert(response);
+            return certificationNum = response;
+        },
+        error: function () {
+            alert("인증번호 발송 실패");
+            window.location = "/join"
+        }
+    });
+    //////////////////////////테스트용////////////////////////////
+}
+
+//인증번호 체크
+function checkSmsConfirmNum() {
+    if (smsConfirmNum().val() === null || smsConfirmNum().val() === "") {
+        smsConfirmNumFeedback().text("");
+        return false;
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/checkSmsConfirmNum",
+            data: {
+                smsConfirmNum: smsConfirmNum().val()
+            },
+            dataType: "json",
+            success: function (check) {
+                if (check) {
+                    // alert("인증이 완료되었습니다.");
+                    // $("#input-smsConfirmNum").attr("readonly", true);
+                    checkResult = true;
+                } else {
+                    smsConfirmNumFeedback().text("인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
+                    checkResult = false;
+                }
+            }, error: function () {
+                alert("통신오류");
+                window.location = "/join"
+            }
+        });
+        return checkResult;
+    }
 }
 
 //생년월일 변수
@@ -222,7 +299,6 @@ $(document).ready(function () {
     let memberNameResult = false;
     let memberAddressResult = false;
     let memberPhoneNumResult = false;
-    let smcConfirmNumResult = false;
 
     // 생년월일 - 월 select option 자동 추가
     for (var i = 1; i < 13; i++) {
@@ -341,28 +417,22 @@ $(document).ready(function () {
 
     //휴대전화 체크
     $("#input-memberPhoneNum").blur(function () {
-        textDanger(mAddrFeedback());
+        textDanger(mPhoneNumFeedback());
         if (memberPhoneNum() === null || memberPhoneNum() === "") {
-            mPhoneNumFeedback().text("인증번호를 입력해주세요.");
-        } else if (!(mPhoneumRegExp.test(memberPhoneNum()))) {
+            mPhoneNumFeedback().text("인증이 필요합니다.");
+            return memberPhoneNumResult = false;
+        } else if (!(mPhoneNumRegExp.test(memberPhoneNum()))) {
             mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
+            return memberPhoneNumResult = false;
         } else {
             mPhoneNumFeedback().text("");
+            return memberPhoneNumResult = true;
         }
     });
 
     // 인증번호 체크
     $("#input-smsConfirmNum").blur(function () {
-        if (smsConfirmNum().val() === null || smsConfirmNum().val() === "") {
-            smsConfirmNumFeedback().text("인증번호를 입력해주세요.");
-            smcConfirmNumResult = false;
-        } else if (!(certificationNum == smsConfirmNum().val())) {
-            smsConfirmNumFeedback().text("인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
-            smcConfirmNumResult = false;
-        } else {
-            smsConfirmNumFeedback().text("");
-            smcConfirmNumResult = true;
-        }
+        checkSmsConfirmNum();
     });
 
 
@@ -373,53 +443,10 @@ $(document).ready(function () {
         textDanger(mPhoneNumFeedback());
         if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
             mPhoneNumFeedback().text("인증이 필요합니다.");
-            return memberPhoneNumResult = false;
-        } else if (!(mPhoneumRegExp.test(memberPhoneNum()))) { //정규식에 맞지 않을 때
+        } else if (!(mPhoneNumRegExp.test(memberPhoneNum()))) { //정규식에 맞지 않을 때
             mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
-            return memberPhoneNumResult = false;
         } else {
-            // 조건에 맞을 때
-            // $.ajax({
-            //     type: "POST",
-            //     url: "/sms/send",
-            //     data: {
-            //         to: memberPhoneNum(),
-            //     },
-            //     dataType: "json",
-            //     success: function (response) {
-            //         alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
-            //         startTimer(leftSec); // 타이머 시작
-            //         alert(response);
-            //         return memberPhoneNumResult = true , certificationNum = response;
-            //     },
-            //     error: function () {
-            //         alert("인증번호 발송 실패");
-            //         location.href="/join"
-            //     }
-            // });
-
-            //////////////////////////테스트용////////////////////////////
-            $.ajax({
-                type: "POST",
-                url: "/sms/test",
-                data: {
-                    to: memberPhoneNum(),
-                },
-                dataType: "json",
-                success: function (response) {
-                    alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
-                    startTimer(leftSec); // 타이머 시작
-                    alert(response);
-                    return memberPhoneNumResult = true , certificationNum = response;
-                },
-                error: function () {
-                    alert("인증번호 발송 실패");
-                    window.location = "/join"
-                }
-            });
-            //////////////////////////테스트용////////////////////////////
-
-
+            sendBtnClick();
         }
     });
 
@@ -449,12 +476,10 @@ $(document).ready(function () {
 
         alert(memberIdResult + "///" + memberPwResult + "///" + memberPwResult2 + "///" + memberNameResult
             + "///" + checkMemberBirthday() + "///" + memberAddressResult + "///" + memberPhoneNumResult
-            + "///" + smcConfirmNumResult); //확인용
+            + "///" + checkSmsConfirmNum()); //확인용
 
         if (memberIdResult && memberPwResult && memberPwResult2 && memberNameResult &&
-            checkMemberBirthday() && memberAddressResult && memberPhoneNumResult && smcConfirmNumResult) {
-            certificationNum = null;
-            mPhoneNumFeedback().hide();
+            checkMemberBirthday() && memberAddressResult && memberPhoneNumResult && checkSmsConfirmNum()) {
             $("#joinBtn").attr("type", "submit");
         }
     });

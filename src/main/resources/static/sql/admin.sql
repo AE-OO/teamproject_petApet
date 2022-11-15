@@ -12,3 +12,9 @@ insert into agetable value(6);
 insert into agetable value(7);
 insert into agetable value(8);
 insert into agetable value(9);
+
+
+/*
+ admin 아이디 비번 통일
+ */
+ insert into Member(memberId, memberBirthday, memberName, memberPhoneNum, memberPw) value('admin1101', '1900-01-01', 'admin', '010-0000-0000', 'asdfasdf1!');

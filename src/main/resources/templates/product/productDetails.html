@@ -677,8 +677,6 @@
     }
     }
 
-
-
     let total = 10;
 
     function moreReview() {
@@ -724,10 +722,10 @@ console.log(data)
 
     const btnMinus = $('#minus');
     const btnPlus = $('#plus');
-    const quantity2 =$('#quantity');
+    const quantity =$('#quantity');
 
     $(btnMinus).click(function () {
-        var $input = $(this).parents().eq(2).find(quantity2);
+        var $input = $(this).parents().eq(2).find(quantity);
         var count = parseInt($input.val()) - 1;
         count = count < 1 ? 1 : count;
         $input.val(count);
@@ -736,21 +734,21 @@ console.log(data)
     });
 
     $(btnPlus).click(function () {
-        var $input = $(this).parents().eq(2).find(quantity2);
+        var $input = $(this).parents().eq(2).find(quantity);
         $input.val(parseInt($input.val()) + 1);
         $input.change();
         console.log("더하기 >>", $input.val());
     });
 
     var urlCart = "/cart/add";
-    var urlBuy = "/buy/addByProduct";
+    var urlBuy = "/buy/add";
     var productId = $("#productId").val();
-    var quantity  = $("#quantity").val();
-    var param = {"product": productId, "quantity":quantity};
+    var quantityVal  = $("#quantity").val();
+    var param = {"product": productId, "quantity":quantityVal};
     function addCart() {
         alert("실행");
         console.log("product : " + productId);
-        console.log("quantity : " + quantity);
+        console.log("quantity : " + quantityVal);
         $.ajax({
             url: urlCart,
             type: "POST",

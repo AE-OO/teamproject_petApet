@@ -30,7 +30,7 @@ $(document).ready(function () {
             });
         }
     });
-    $("#withdrawlBtn").click(function () {
+    $("#withdrawalBtn").click(function () {
         if (memberPw().val() == "") {
             mPwFeedback().text("비밀번호를 입력해주세요.");
             memberPw().focus();
@@ -46,7 +46,7 @@ $(document).ready(function () {
         $("form").submit();
     });
 
-    $("#cancleBtn").click(function () {
-        window.location = "/member/info"
+    $("#cancelBtn").click(function () {
+        window.location = "/member/checkInfo"
     })
 });

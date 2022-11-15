@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -73,11 +74,19 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
-                <a href="mypage/mypage.html" th:onclick="|location.href='@{/mypage}'|"
-                    class="nav-item nav-link">Mypage</a>
-                <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>
-                <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
+                <a href="#" class="nav-item nav-link">Contact</a>
+                <a href="/login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="isAnonymous()">Login</a>
+                <a href="/admin/admininfo" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="hasRole('MEMBER')">MyInfo</a>
+                <a href="/admin/adminPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="hasRole('ADMIN')">adminPage</a>
+                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                   sec:authorize="isAuthenticated()">Logout</a>
+                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+                ><strong th:text="${#authentication.name}"/></a>
+
+                <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
             </div>
 
         </div>

@@ -3,6 +3,8 @@ package com.teamproject.petapet.web.member.service;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,11 +14,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
@@ -31,16 +35,21 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails createUser(String memberId, Member member) {
-        if (!member.isActivated()) {
-            System.out.println("////정지회원 입니다./////"); //확인용
-            throw new RuntimeException(memberId + " -> 정지회원 입니다.");
+        if (member.getMemberStopDate() != null) {
+            if (member.getMemberStopDate().toLocalDate().plusDays(3).isBefore(LocalDate.now())) {
+                memberRepository.updateActivated(memberId);
+            } else {
+                throw new LockedException((memberId + " -> 정지회원 입니다."));
+            }
         }
+//        if (!member.isActivated()) {
+//            log.info("정지회원임...........");
+//            throw new RuntimeException(memberId + " -> 정지회원 입니다.");
+//        }
         List<GrantedAuthority> grantedAuthorities = member.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getRole()))
                 .collect(Collectors.toList());
-        return new User(member.getMemberId(),
-                member.getMemberPw(),
-                grantedAuthorities);
+        return new User(member.getMemberId(), member.getMemberPw(), grantedAuthorities);
     }
 }
 

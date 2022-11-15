@@ -28,7 +28,6 @@ import java.security.NoSuchAlgorithmException;
 public class SmsRestController {
     private final SmsService smsService;
 
-
     ////테스트용임// - 실제로 문자서비스 안됨
     @PostMapping("/test")
     public String sendTest(@RequestParam String to, HttpSession session){
@@ -37,6 +36,7 @@ public class SmsRestController {
         return session.getAttribute("smsConfirmNum").toString();
     }
 
+    //인증번호 발송용
     @PostMapping("/send")
     public String sendSms(@RequestParam String to, HttpSession session) throws JsonProcessingException, RestClientException,
             URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
