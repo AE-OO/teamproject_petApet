@@ -22,7 +22,7 @@
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item" th:each="img : *{productImg}">
-                                    <img th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${img.storeFileName})}|"
+                                    <img th:src="|@{/product/images/{filename}(filename=${img.storeFileName})}|"
                                          width="400" height="400"
                                          style="min-height: 400px; min-width: 400px"
                                          class="d-block w-auto" alt="...">
@@ -258,7 +258,7 @@
                         </div>
                         <div class="col-7" id="ppp" th:value="${review.reviewImg}">
                             <img th:each="reviewImage : ${review.reviewImg}"
-                                 th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${reviewImage.storeFileName})}|"
+                                 th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
                                  width="100" height="100"
                                  class="img" id="osh">
                             <div class="modal" id="modal">
@@ -672,11 +672,11 @@
         modal.addEventListener('click', () => {
             modalDisplay("none");
         });
-    }
-
     function modalDisplay(text) {
         modal.style.display = text;
     }
+    }
+
 
 
     let total = 10;
