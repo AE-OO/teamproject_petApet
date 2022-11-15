@@ -14,7 +14,6 @@ class EmailServiceTest {
     @Test
     void sendMail() throws Exception {
         emailService.sendEmailMessage("skyair419@naver.com");
-//        [보낼 이메일 계정]);
 
     }
 }

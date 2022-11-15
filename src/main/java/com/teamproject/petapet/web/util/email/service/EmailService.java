@@ -23,7 +23,7 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
 
         message.addRecipients(MimeMessage.RecipientType.TO, email); // 보낼 이메일 설정
-        message.setSubject("[차량 보조금산정 결과] 주식회사 petApet에서 발신한 메일 입니다"); // 이메일 제목
+        message.setSubject("[결제 완료] 주식회사 petApet에서 발신한 메일 입니다"); // 이메일 제목
         message.setText(setContext(code), "utf-8", "html"); // 내용 설정(Template Process)
 
         // 보낼 때 이름 설정하고 싶은 경우
@@ -36,7 +36,7 @@ public class EmailService {
     private String setContext(String code) { // 타임리프 설정하는 코드
         Context context = new Context();
         context.setVariable("code", code); // Template에 전달할 데이터 설정
-        return templateEngine.process("mail", context); // mail.html
+        return templateEngine.process("mypage/mail", context); // mail.html
     }
 
     private String createCode() {
