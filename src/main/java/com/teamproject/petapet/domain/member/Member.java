@@ -58,6 +58,10 @@ public class Member{
     @Column(length = 45, nullable = false)
     private String memberName;
 
+//    temp by jo
+    @Column
+    private String memberEmail;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime memberJoinDate;

@@ -1,0 +1,373 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fff;
+}
+
+/* 헤더 */
+.nognb {
+    position: relative;
+    height: 85px;
+    border-bottom: 1px solid #5fc8af;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 1020px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.m-0 {
+    margin: 0 !important;
+    display: block;
+    float: left;
+    width: 174px;
+    height: 41px;
+    color :#5fc8af;
+}
+/* 주문 테이블 */
+#body {
+    width: 1020px;
+    margin: 0 auto 20px;
+
+    position: relative;
+    clear: both;
+    font-size: 12px;
+    z-index: 20;
+}
+
+#body .middle {
+    clear: both;
+    padding: 0 0 40px;
+    background: #fff;
+}
+
+.ordTitle {
+    height: 70px;
+    overflow: hidden;
+    border-bottom: 3px solid #5fc8af;
+}
+
+.ordTitle .title {
+    float: left;
+    margin-top: 5px;
+    padding-left: 0;
+    line-height: 70px;
+    font-size: 30px;
+    color: #5fc8af;
+}
+
+.ordTitle .steps {
+    float: right;
+    padding-right: 5px;
+    margin-top: 20px;
+    line-height: 50px;
+    font-size: 15px;
+    color: #bbb;
+    font-weight: 700;
+}
+
+.ordTitle .steps em {
+    font-weight: 700;
+    color: #5fc8af;
+}
+/* 구매자 정보 */
+.customer__root {
+    margin-top: 30px;
+}
+.customer__h2 {
+    padding-left: 2px;
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #5fc8af;
+}
+.customer__table {
+    width: 100%;
+    border-top: 2px solid #5fc8af;
+}
+.customer__col--1 {
+    width: 104px;
+    border: solid #5fc8af;
+    border-width: 0 1px 1px 0;
+    padding: 7px 10px 7px 15px;
+    font-weight: 700;
+    text-align: right;
+    background: #f4f4f4;
+}
+.customer__col--2 {
+    border-bottom: 1px solid #5fc8af;
+    padding: 10px 16px;
+}
+.page-pc.page-order input[type=password], .page-pc.page-order input[type=tel], .page-pc.page-order input[type=text] {
+    height: 22px;
+    padding: 0 0 0 5px;
+    border: 1px solid #5fc8af;
+    font-size: 12px;
+    color: #333;
+}
+.page-pc.page-order button {
+    padding: 5px 10px;
+    border: 1px solid #5fc8af;
+    color: #333;
+    border-radius: 2px;
+    box-shadow: 0 -2px 0 rgb(0 0 0 / 10%) inset;
+    font-size: 11px;
+}
+
+/* 받는사람 정보*/
+.delivery-address__caption-header {
+    padding-left: 2px;
+    margin: 30px 0 8px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 700;
+    color: #5fc8af;
+}
+
+.delivery-address {
+    border-top: 2px solid #5fc8af;
+    width: 100%;
+}
+
+.delivery-address__popup-list-button {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.delivery-address {
+    border-top: 2px solid #5fc8af;
+    width: 100%;
+}
+.delivery-address__th {
+    border-right: 1px solid #5fc8af;
+    border-bottom: 1px solid #5fc8af;
+    padding: 10px 10px 7px 15px;
+    width: 104px;
+    background-color: #f4f4f4;
+    text-align: right;
+}
+.delivery-address__td--name {
+    padding-top: 12.5px;
+    padding-bottom: 12.5px;
+}
+.delivery-address__td {
+    border-bottom: 1px solid #5fc8af;
+    padding: 10px 0 10px 16px;
+}
+.delivery-address__name {
+    margin-right: 5px;
+}
+.delivery-request-message__th {
+    padding: 7px 10px 7px 15px;
+    border-right: 1px solid #5fc8af;
+    width: 103px;
+    background-color: #f4f4f4;
+    text-align: right;
+}
+.delivery-request-message__td {
+    padding: 10px 0 10px 16px;
+    border-left: 1px solid #5fc8af;
+}
+.delivery-request-message__td--name {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.delivery-request-message__popup-list-button {
+    margin-left: 13px;
+    vertical-align: middle;
+}
+.page-pc .bundle-info__pdd-group-title {
+    margin-top: 20px;
+}
+.bundle-info__pdd-group-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 9px;
+    margin-top: 20px;
+    line-height: 21px;
+    color: #5fc8af;
+}
+.bundle-info__pdd-group-box {
+    border: 1px solid #5fc8af;
+    border-radius: 3px;
+}
+.bundle-info__opt-radio-box {
+    padding: 12px 16px 12px 20px;
+    background-color: #eee;
+    line-height: 35px;
+}
+.bundle-info__opt-radio-table {
+    width: 100%;
+    border-collapse: separate;
+}
+.bundle-info__opt-radio-tr {
+    line-height: 32px;
+}
+.bundle-info__opt-radio-td {
+    width: 28px;
+}
+.page-pc .bundle-info__opt-radio-box input[type=radio]:checked {
+    background-color: #5fc8af;
+    border-color: #5fc8af;
+}
+.bundle-info__delivery-type__row {
+    vertical-align: top;
+}
+.bundle-info__expected-delivery-info_option {
+    font-size: 14px;
+}
+.bundle-info__expected-delivery-info_option .bundle-info__expected-delivery-date {
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 7px;
+}
+.bundle-info__expected-delivery-date-suffix_option {
+    font-size: 16px;
+}
+.bundle-info__expected-delivery-date-suffix--colored {
+    color: #5fc8af;
+}
+
+.bundle-info__item-list {
+    overflow: hidden;
+    zoom: 1;
+    margin-left: 0!important;
+    margin-right: 0!important;
+    padding: 0 15px 0 20px;
+}
+.bundle-info__item-list:last-child .bundle-info__vendor-item-box {
+    border-bottom: 0;
+}
+.bundle-info__vendor-item {
+    float: left;
+    width: 60%!important;
+    padding-right: 40px!important;
+    font-size: 12px!important;
+    color: #555;
+}
+.page-pc .bundle-info__item-description {
+    font-size: 14px!important;
+    margin-left: 50px;
+    float: right;
+    text-align: right;
+    font-size: 14px;
+    color: #888;
+}
+.bundle-info__vendor-item-box {
+    border-bottom: 1px solid #5fc8af;
+    padding-top: 10px!important;
+    padding-bottom: 10px!important;
+}
+/* 결제 수단*/
+.mb10 {
+    margin-bottom: 10px;
+}
+.orderBox {
+    margin-top: 30px;
+}
+.checkout__h2 {
+    padding-left: 2px;
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #5fc8af;
+}
+.card-benefit-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 360px;
+    min-height: 605px;
+    border: solid 1px #5fc8af;
+    z-index: 3100;
+    background: #fff;
+}
+.card-benefit-popup__header {
+    position: relative;
+    padding: 11px 16px 10px;
+    border-bottom: solid 1px #5fc8af;
+    margin-bottom: -1px;
+}
+.card-benefit-popup__header-title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.5;
+}
+.card-benefit-popup__header-close {
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    margin-top: -8px;
+    font-size: 20px;
+    /*background: url(//static.coupangcdn.com/image/static/order/btn_close.png) no-repeat 0 0;*/
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    text-indent: 99px;
+    color: transparent;
+}
+
+.orderBox table.pay-price {
+    width: 100%;
+}
+.pay-price {
+    border-top: 2px solid #5fc8af;
+}
+.pay-price .wrap-title {
+    vertical-align: top;
+    text-align: right;
+    border-right: 1px solid #5fc8af;
+    background: #f4f4f4;
+}
+.pay-price th {
+    padding: 10px 15px 0 0;
+    border-bottom: 1px solid #5fc8af;
+}
+.pay-price .price {
+    display: inline-block;
+    width: 100px;
+    padding-left: 15px;
+    padding-bottom: 10px;
+}
+#totalPriceDisp {
+    color: #333;
+}
+.pay-price .unit {
+    color: #111;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.pay-price td {
+    padding: 10px 0 0 0;
+    border-bottom: 1px solid #5fc8af;
+}
+
+.confirm-agreements-message {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.orderBox.wrap-order-agree {
+    margin-top: 20px;
+}
+.agreeBtn.hasRocketPayCheckoutButton {
+    margin-top: 40px;
+}
+.agreeBtn {
+    text-align: center;
+}
+#paymentBtn {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+}
+

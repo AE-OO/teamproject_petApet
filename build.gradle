@@ -45,6 +45,15 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
+    // POI
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
+
+    // 이메일 전송
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.5.1'
+
+
 }
 
 tasks.named('test') {

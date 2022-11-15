@@ -88,6 +88,16 @@ public class CartController {
 
     }
 
+//    @PostMapping("/checkout")
+//    public String payOne(@ModelAttribute("CartPayVO") CartPayVO vo){
+//
+//        log.info("카트 ={}", vo.getCart().getCartId());
+//        log.info("멤버 ={}", vo.getCart().getMember().getMemberId());
+//        log.info("상품 ={}", vo.getCart().getProduct().getProductId());
+//
+//        return "mypage/checkout";
+//    }
+
     @ResponseBody
     @RequestMapping(value = "/removeOne" , method = { RequestMethod.POST }, produces = "application/json")
     public void removeCartOne(@RequestBody CartVO vo){

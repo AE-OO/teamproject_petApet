@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
-public class BuyServiceImpl implements Buyservice{
+public class BuyServiceImpl implements BuyService {
 
     private final BuyRepository buyRepository;
 
