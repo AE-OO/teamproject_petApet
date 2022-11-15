@@ -108,36 +108,40 @@ $(document).ready(function () {
         })
     });
 
-    $(".acceptCommunityReportBtn").click(function(){
-        var reportId = $(this).parent().parent().find("td[id=communityReportId]").text();
-        var communityId = $(this).parent().parent().find("td[id=communityId]").text();
-
-        $.ajax({
-            url: "/admin/acceptCommunityReport/" + reportId,
-            data: {communityId : communityId},
-            type: "get",
-            success(){
-                location.reload();
-            }
-        })
-    });
-
-    $(".acceptMemberReportBtn").click(function(){
-       var reportId = $(this).parent().parent().find("td[id=memberReportId]").text();
-       var memberId = $(this).parent().parent().find("td[id=memberId]").text();
-
-       $.ajax({
-           url: "/admin/acceptMemberReport/" + reportId,
-           data: {memberId : memberId},
-           type: "get",
-           success(){
-               location.reload();
-           }
-       })
-    });
+    // $(".acceptCommunityReportBtn").click(function(){
+    //     var reportId = $(this).parent().parent().find("td[id=communityReportId]").text();
+    //     var communityId = $(this).parent().parent().find("td[id=communityId]").text();
+    //
+    //     $.ajax({
+    //         url: "/admin/acceptCommunityReport/" + reportId,
+    //         data: {communityId : communityId},
+    //         type: "get",
+    //         success(){
+    //             location.reload();
+    //         }
+    //     })
+    // });
+    //
+    // $(".acceptMemberReportBtn").click(function(){
+    //    var reportId = $(this).parent().parent().find("td[id=memberReportId]").text();
+    //    var memberId = $(this).parent().parent().find("td[id=memberId]").text();
+    //
+    //    $.ajax({
+    //        url: "/admin/acceptMemberReport/" + reportId,
+    //        data: {memberId : memberId},
+    //        type: "get",
+    //        success(){
+    //            location.reload();
+    //        }
+    //    })
+    // });
 
     $("#showProductReportModal").click(function (){
         getReportReason(this, "product");
+    });
+
+    $("#showMemberReportModal").click(function(){
+        getReportReason(this, "member");
     });
 })
 
@@ -208,35 +212,69 @@ function movePage(){
     });
 }
 
+//신고사유 모달
 function getReportReason(data, type){
-    var id = $(data).parent().parent().find("td[id=productReportId]").text();
+    var id;
+    var reportId;
+
+    if(type === "product"){
+        id = $(data).parent().parent().find("td[id=productReportId]").text();
+    }else if(type === "member"){
+        id = $(data).parent().parent().find("td[id=memberReportId]").text();
+    }else{
+        id = $(data).parent().parent().find("td[id=communityReportId]").text();
+    }
 
     $.getJSON("/admin/getReportReason/" + id + "/" + type, function(data){
         $("#reportReason").val(data.report.reportReason);
         $("#reportDetailReason").text(data.report.reportReasonDetail);
 
-        var reportId = data.report.reportId;
-        var productId = data.report.productId;
+        reportId = data.report.reportId;
 
-        $("#acceptProductReportBtn").click(function(){
-            $.ajax({
-                url: "/admin/acceptProductReport/" + reportId,
-                data: {productId : productId},
-                type: "get",
-                success(){
-                    location.reload();
-                }
-            })
-        });
-
-        $("#cancelProductReportBtn").click(function(){
-            $.ajax({
-                url: "/admin/refuseReport/" + reportId,
-                type: "post",
-                success(){
-                    location.reload();
-                }
-            })
-        })
+        if(type === "product"){
+            $("#acceptProductReportBtn").click(function(){
+                $.ajax({
+                    url: "/admin/acceptProductReport/" + reportId,
+                    data: {productId : data.report.productId},
+                    type: "get",
+                    success(){
+                        location.reload();
+                    }
+                })
+            });
+        }else if(type === "member"){
+            $("#acceptProductReportBtn").click(function(){
+                $.ajax({
+                    url: "/admin/acceptMemberReport/" + reportId,
+                    data: {memberId : data.report.memberId},
+                    type: "get",
+                    success(){
+                        location.reload();
+                    }
+                })
+            });
+        }else{
+            $("#acceptProductReportBtn").click(function(){
+                $.ajax({
+                    url: "/admin/acceptCommunityReport/" + reportId,
+                    data: {communityId : data.report.communityId},
+                    type: "get",
+                    success(){
+                        location.reload();
+                    }
+                })
+            });
+        }
     });
+
+    //공통
+    $("#cancelProductReportBtn").click(function(){
+        $.ajax({
+            url: "/admin/refuseReport/" + reportId,
+            type: "post",
+            success(){
+                location.reload();
+            }
+        })
+    })
 }

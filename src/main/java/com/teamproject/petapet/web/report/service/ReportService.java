@@ -18,7 +18,7 @@ public interface ReportService {
     void addMemberReport(ReportMemberDTO reportMemberDTO);
     void addCommunityReport(ReportCommunityDTO reportCommunityDTO);
     void setResponseStatusCommunity(Long reportId);
-    ReportProductDTO getOneReportProduct(Long reportId, String type);
+    ReportProductDTO getOneReportProduct(Long reportId);
     void refuseReport(Long reportId);
     default Report dtoToEntityProduct(ReportProductDTO reportProductDTO){
         Product product = Product.builder().productId(reportProductDTO.getProductId()).build();

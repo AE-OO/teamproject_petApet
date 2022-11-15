@@ -1,6 +1,5 @@
 package com.teamproject.petapet.web.admin;
 
-import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.service.CommunityService;
@@ -9,8 +8,6 @@ import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.report.dto.ReportProductDTO;
 import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -154,7 +151,16 @@ public class AdminController {
     @GetMapping("/getReportReason/{id}/{type}")
     public HashMap<String, ReportProductDTO> getReportReason(@PathVariable("id") Long id, @PathVariable("type") String type){
         HashMap<String, ReportProductDTO> reportProduct = new HashMap<String, ReportProductDTO>();
-        reportProduct.put("report",reportService.getOneReportProduct(id, type));
+        if(type.equals("product")){
+            reportProduct.put("report",reportService.getOneReportProduct(id));
+        }else if(type.equals("member")){
+            //메소드 하나로 다 처리하려니까 반환타입이 안맞아서 안됨
+            //메소드 여러개 쓸지 dto를 다시 설계할지
+            //dto 공통 reportId, reason, dreason
+            //차이 신고 대상의 아이디 타입 long long string
+        }else{
+
+        }
         return reportProduct;
     }
 

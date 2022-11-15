@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class ReportServicImpl implements ReportService{
+public class ReportServicImpl implements ReportService {
 
     private final ReportRepository reportRepository;
 
@@ -54,11 +54,8 @@ public class ReportServicImpl implements ReportService{
     }
 
     @Override
-    public ReportProductDTO getOneReportProduct(Long reportId, String type) {
-        if(type.equals("product")){
-            return entityToDTOProduct(reportRepository.getReportByReportId(reportId));
-        }
-        return null;
+    public ReportProductDTO getOneReportProduct(Long reportId) {
+        return entityToDTOProduct(reportRepository.getReportByReportId(reportId));
     }
 
     @Override
