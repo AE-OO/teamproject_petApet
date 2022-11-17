@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/checkout.css" th:href="@{/css/checkout.css}"/>
+    <link rel="stylesheet" href="css/cart.css" th:href="@{/css/cart.css}"/>
+
+    <!-- Favicon -->
+    <link href="/img/icon/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/animate/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/lightbox/css/lightbox.min.css}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/osh.css}" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+
+    <title>주문/결제</title>
+
+</head>
+<body>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+    <a href="index.html" th:href="@{/}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h3 class="m-0">petApet</h3>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="#" class="nav-item nav-link">About</a>
+            <a href="#" class="nav-item nav-link">Services</a>
+            <a th:href="@{/product}" class="nav-item nav-link">Product</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
+                <div class="dropdown-menu bg-light m-0">
+                    <a href="#" class="dropdown-item">Test1</a>
+                    <a href="#" class="dropdown-item">Test2</a>
+                    <a href="#" class="dropdown-item">Test3</a>
+                    <a href="#" class="dropdown-item">Test5</a>
+                    <a href="404.html" class="dropdown-item">404 Page</a>
+                </div>
+            </div>
+            <a href="#" class="nav-item nav-link">Contact</a>
+            <a href="/login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+               sec:authorize="isAnonymous()">Login</a>
+            <a href="/admin/admininfo" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+               sec:authorize="hasRole('MEMBER')">MyInfo</a>
+            <a href="/admin/adminPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+               sec:authorize="hasRole('ADMIN')">adminPage</a>
+            <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+               sec:authorize="isAuthenticated()">Logout</a>
+            <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
+            ><strong th:text="${#authentication.name}"/></a>
+
+            <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
+        </div>
+
+    </div>
+</nav>
+<!-- Navbar End -->
+<div class="nognb">
+    <div class="logo">
+        <h1 class="m-0">petApet</h1>
+    </div>
+</div>
+<div id="body">
+    <div class="middle">
+        <div class="ordTitle">
+            <h3 class="title">주문/결제</h3>
+            <span class="steps">
+                <em>주문결제 &gt;</em> &nbsp;주문완료
+		</span>
+        </div>
+        <div data-component="customer"><div class="customer__root">
+            <h2 class="customer__h2">
+                구매자정보
+            </h2>
+            <table class="customer__table">
+                <tbody>
+                <tr>
+                    <td class="customer__col customer__col--1">
+                        이름
+                    </td>
+                    <td class="customer__col customer__col--2" id="memberName" th:text="${member.memberName}">
+                        조성현
+                    </td>
+                </tr>
+                <tr>
+                    <td class="customer__col customer__col--1">
+                        이메일
+                    </td>
+                    <td class="customer__col customer__col--2" id="memberEmail" th:text="${member.memberEmail}" >
+                        skyair419@naver.com
+                    </td>
+                </tr>
+                <tr>
+                    <td class="customer__col customer__col--1">
+                        휴대폰 번호
+                    </td>
+                    <td class="customer__col customer__col--2">
+                        <div>
+                            <div class="customer-phone__root">
+                                <div>
+                                    <form>
+                                        <div>
+                                            <div type="tel" class="customer-phone__input-tel" id="memberPhoneNum" th:text="${member.memberPhoneNum}" ></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody></table>
+        </div>
+        </div>
+
+        <div data-component="deliveryAddress">
+            <h2 class="delivery-address__caption-header">
+                받는사람정보
+                <button class="delivery-address__popup-list-button" type="button">
+                    배송지변경
+                </button>
+            </h2>
+            <table class="delivery-address">
+                <tbody>
+                <tr>
+                    <th class="delivery-address__th">이름</th>
+                    <td class="delivery-address__td delivery-address__td--name delivery-address__td-rocket-fresh-mvp2">
+                        <span class="delivery-address__name" th:text="${member.memberName}">조성현</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="delivery-address__th">배송주소</th>
+                    <td class="delivery-address__td" id="buyAddress" th:text="${member.memberAddress}">
+                        인천광역시 부평구 체육관로 27
+                        &nbsp;709동2101호
+                        <div id="blocked-address-error-message" class="blocked-address-section">
+                            <span class="blocked-address__attention-icon">!</span>
+                            <p class="blocked-address__error-message">배송이 불가능한 주소입니다. 다른 배송지를 입력하거나 선택해주세요.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="delivery-address__th delivery-address__th--no-line">연락처</th>
+                    <td class="delivery-address__td delivery-address__td--no-line" th:text="${member.memberPhoneNum}">
+                        010
+                        -
+                        3632
+                        -
+                        1594
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div>
+                <div class="delivery-request-message__container">
+                    <table class="delivery-request-message">
+                        <tbody>
+                        <tr>
+                            <th class="delivery-request-message__th">
+                                <span>배송 요청사항</span>
+                            </th>
+                            <td class="delivery-request-message__td delivery-request-message__td--name">
+                            <span class="delivery-request-message__type-label delivery-request-message__type-label--select">
+                                문 앞 (종7***)
+                            </span>
+                                <span class="delivery-request-message__dawn-type-label">
+                            </span>
+                                <button class="delivery-request-message__popup-list-button" type="button">
+                                    변경
+                                </button>
+                                <div class="delivery-request-message__covid-nudge-container"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="bundle-info__retail " data-component="bundleInfo-retail">
+                    <div data-bundle-info__late-rocket-wow-over-night-box__wrapper=""></div>
+                    <div data-bundle-info__simple-warning-message-box__wrapper=""></div>
+                    <div class="bundle-info__pdd-group-title">배송 1건 중 1</div>
+                    <div class="bundle-info__pdd-group-box">
+
+
+                        <div class="bundle-info__opt-radio-box">
+                            <table class="bundle-info__opt-radio-table">
+                                <tbody>
+                                <tr class="bundle-info__opt-radio-tr">
+                                    <td class="bundle-info__opt-radio-td bundle-info__delivery-type__row">
+                                        <input class="bundle-info__opt-radio-td-option" id="overnightOptIn" type="radio" name="overnightOptInOut" value="IN" checked="">
+                                    </td>
+                                    <td class="bundle-info__delivery-type__row">
+                                        <label for="overnightOptIn">
+                            <span class="bundle-info__expected-delivery-info_option">
+                              <span class="bundle-info__expected-delivery-date">
+                                <strong data-bundle-info__over-night-pdd="">내일(목) 11/10 새벽 7시 전</strong>
+                                <span class="bundle-info__expected-delivery-date-suffix_option bundle-info__expected-delivery-date-suffix--colored" data-bundle-info__over-night-guarantee="">도착 보장</span>
+                              </span>
+                            </span>
+                                        </label>
+                                    </td>
+                                    <td class="bundle-info__delivery-type__row"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bundle-info__item-list ">
+                            <div class="bundle-info__vendor-item-box ">
+                                <input type="hidden" id="buyProduct" th:value="${product.productId}"/>
+                                <input type="hidden" id="buyQuantity" value="1">
+                                <div class="bundle-info__vendor-item">
+                                    <p th:text="${product.productName}" id="product">
+                                        <span class="bundle-info__vendor-item__offer-condition" ></span>
+                                        코멧 일회용 마스크, 100개입, 1개, 화이트
+                                    </p>
+                                </div>
+                                <div class="bundle-info__item-description bundle-info__vendor-item-description--last">
+                                    수량 1개 / <span>무료배송</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="pay-price-section" class="order-section orderBox mb10 multiple-coupon">
+            <h2 class="checkout__h2">
+                결제정보
+            </h2>
+            <table class="pay-price">
+                <colgroup>
+                    <col width="144">
+                    <col>
+                </colgroup>
+                <tbody>
+                <tr class="payOrder-wrap">
+                    <th class="wrap-title" scope="row">
+                        총상품가격
+                    </th>
+                    <td>
+                        <div class="payOrder">
+                            <strong class="price">
+                                <span id="totalPriceDisp" class="use-calculation-for-totalprice" th:text="${product.productPrice}">11590</span><span class="unit">원</span>
+                            </strong>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="wrap-title" scope="row">배송비</th>
+                    <td class="delivery-total-price">
+                        <div class="payDelivery">
+                            <strong class="price">
+                                <span id="deliveryPriceDisp" class="delivery-total-price-value use-calculation-for-totalprice" data-price="0">0</span><span class="unit">원</span>
+                            </strong>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="wrap-title">총결제금액</th>
+                    <td>
+                        <div class="payPrice">
+                            <strong class="price">
+                                <span id="totalPayPriceDisp" th:text="${product.productPrice}" >11,490</span><span class="unit">원</span>
+                            </strong>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="orderBox wrap-order-agree">
+        <div class="confirm-agreements-message" style="padding-bottom: 100px;">
+            <h2>위 주문 내용을 확인 하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.</h2>
+        </div>
+    </div>
+</div>
+
+<div class="floating_area--3yEuORHlfZ">
+    <div class="inner--2zhHC3FZRa">
+        <div class="list_price--2FzMcbJy3j">
+            <div class="pc_title--2b81eyMgJ3 pc_only">주문금액 상세내역<button type="button" class="btn_close--23XzFzG0JN"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="ico--103Gt-5Uu0">
+                <path d="M1.60355 0.896447C1.40829 0.701184 1.09171 0.701184 0.896447 0.896447C0.701184 1.09171 0.701184 1.40829 0.896447 1.60355L1.60355 0.896447ZM14.8964 15.6036C15.0917 15.7988 15.4083 15.7988 15.6036 15.6036C15.7988 15.4083 15.7988 15.0917 15.6036 14.8964L14.8964 15.6036ZM15.6036 1.60355C15.7988 1.40829 15.7988 1.09171 15.6036 0.896447C15.4083 0.701184 15.0917 0.701184 14.8964 0.896447L15.6036 1.60355ZM0.896447 14.8964C0.701184 15.0917 0.701184 15.4083 0.896447 15.6036C1.09171 15.7988 1.40829 15.7988 1.60355 15.6036L0.896447 14.8964ZM0.896447 1.60355L14.8964 15.6036L15.6036 14.8964L1.60355 0.896447L0.896447 1.60355ZM14.8964 0.896447L0.896447 14.8964L1.60355 15.6036L15.6036 1.60355L14.8964 0.896447Z" fill="black"></path>
+            </svg><span class="blind">닫기</span></button></div><button type="button" class="btn_top--3B9LQmKFq8 m_only"><svg width="23" height="8" viewBox="0 0 23 8" fill="none" xmlns="http://www.w3.org/2000/svg" class="ico--103Gt-5Uu0">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.4998 7.99987C11.2897 8.0004 11.0831 7.94666 10.8998 7.84387L0.547836 1.97687C0.00883639 1.66987 -0.162164 1.01287 0.168836 0.509866C0.498836 0.00786638 1.20684 -0.152134 1.74884 0.155866L11.4988 5.68187L21.2498 0.156866C21.7918 -0.150134 22.4998 0.00886637 22.8308 0.510866C23.1618 1.01287 22.9908 1.66987 22.4508 1.97687L12.0998 7.84387C11.9158 7.94687 11.7098 7.99987 11.4998 7.99987Z" fill="#9B9B9B"></path>
+        </svg><span class="blind">상세내역 닫기</span></button>
+            <div class="sub_area--hf6eGsIyiS">
+                <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 선택상품금액</span><em><span class="num--s28sqtGizJ">33,100</span>원</em></div>
+                <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 배송비</span><em><span class="num--s28sqtGizJ">+0</span>원</em></div>
+                <div class="price_area--mS4cPOr5t2 discount--1CgoO7hQt4"><span class="title---U2sFnkh4X">할인예상금액</span><em><span class="num--s28sqtGizJ">-3,680</span>원</em></div>
+            </div>
+            <div class="total_area--1Gh9HH8mfy">
+                <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 주문금액</span><em><span class="num--s28sqtGizJ" th:text="${product.productPrice}" >29,420</span>원</em></div>
+            </div>
+        </div>
+        <div class="buy_area--1s7Qe73yzk"><button type="button" class="btn_expand--2d-FsCrHVi"><span class="title--cW4o5HCufH">총 주문금액</span><em><span class="num--2CYvhIm-m6" id="card-total" th:text="${product.productPrice}">29,420</span>원<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg" class="ico--3qz69NgEHC">
+            <path opacity="0.9" d="M5.02414 10.3285L4.57129 9.84852L7.99986 6.21426L11.4284 9.84852L10.9756 10.3285L7.99986 7.1743L5.02414 10.3285Z" fill="white" stroke="white" stroke-width="0.5"></path>
+            <rect x="0.5" y="1" width="15" height="15" rx="7.5" stroke="white" stroke-opacity="0.6"></rect>
+        </svg></em><span class="blind">펼치기</span></button><button type="button" class="link_buy--jXvxZ8Agr-" onclick="requestPay()">총 주문하기<span class="badge--ltxr8Ih722">1</span></button></div>
+    </div>
+</div>
+<script th:inline="javascript">
+
+
+    var IMP = window.IMP; // 생략가능
+    IMP.init('imp34631730'); // <-- 본인 가맹점 식별코드 삽입
+    var param = {
+        pg : 'kakaopay',
+        pay_method : 'card', //생략 가능
+        merchant_uid: "order_" + new Date().getTime() , // 상점에서 관리하는 주문 번호
+        name : [[${product.productName}]], // 상품명
+        amount : [[${cproduct.productPrice}]],
+        buyer_name : [[${member.memberName}]],
+        buyer_tel : [[${member.memberPhoneNum}]],
+        buyerEmail : [[${member.memberEmail}]],
+        buyAddress : [[${member.memberAddress}]],
+        buyQuantity : 1,
+        buyMember : [[${member.memberId}]],
+        buyProduct : [[${product.productId}]]
+    }
+
+    var buyAddress = $('#buyAddress').text();
+    var buyQuantity = $('#buyQuantity').val();
+    var buyProduct = $('#buyProduct').val();
+    var buyerEmail = $('#memberEmail').text();
+
+
+    var param2 = {
+        "buyAddress" : buyAddress,
+        "buyQuantity" : buyQuantity,
+        "buyProduct" : buyProduct,
+        "buyerEmail" : buyerEmail
+    }
+
+    function requestPay() {
+        console.log(buyerEmail);
+        console.log(buyAddress);
+        console.log(buyQuantity);
+        console.log(buyProduct);
+
+        // IMP.request_pay(param, callback) 결제창 호출
+        IMP.request_pay(param, function (rsp) { // callback
+            if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+                // jQuery로 HTTP 요청
+                console.log("결제완료");
+                addBuyDB();
+
+            } else {
+                alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+            }
+        });
+    }
+
+    function addBuyDB(){
+        console.log("디비저장함수실행");
+        $.ajax({
+            url: "/checkout2",
+            type: "POST",
+            data: JSON.stringify(param2),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("DB 상품이 추가 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,7 +1,10 @@
 package com.teamproject.petapet.web.util.excel;
 
+import com.teamproject.petapet.domain.buy.Buy;
+import com.teamproject.petapet.domain.buy.BuyRepository;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
+import com.teamproject.petapet.web.buy.service.BuyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -13,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -24,6 +28,37 @@ import java.util.List;
 public class ExcelController {
 
     private final MemberRepository memberRepository;
+
+    private final BuyService buyService;
+
+//    @GetMapping("/{idx}/excelBuy")
+    public void downloadBuyExcel(HttpServletResponse response ,@PathVariable("idx") Long buyId) throws IOException {
+
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet("주문 영수증");
+        int rowNo = 0;
+
+        Row headerRow = sheet.createRow(rowNo++);
+        headerRow.createCell(0).setCellValue("주문 번호");
+        headerRow.createCell(1).setCellValue("회원 이름");
+        headerRow.createCell(2).setCellValue("회원 주문 상품");
+        headerRow.createCell(3).setCellValue("회원 주문 수량");
+
+        Buy buy = buyService.findById(buyId);
+
+        Row row = sheet.createRow(rowNo++);
+        row.createCell(0).setCellValue(buy.getBuyId());
+        row.createCell(1).setCellValue(buy.getMember().getMemberName());
+        row.createCell(2).setCellValue(buy.getProduct().getProductName());
+        row.createCell(3).setCellValue(buy.getQuantity());
+
+        response.setContentType("ms-vnd/excel");
+        response.setHeader("Content-Disposition", "attachment;filename=buylist.xls");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
+
 
     @GetMapping("/excel")
     public void downloadMemberExcel(HttpServletResponse response) throws IOException {

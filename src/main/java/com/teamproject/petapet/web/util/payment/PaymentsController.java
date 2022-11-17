@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.util.payment;
 import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.Email;
 import java.security.Principal;
 
 @Slf4j
@@ -31,12 +31,24 @@ public class PaymentsController {
 
     private final EmailService emailService;
 
-    @GetMapping("/direct/checkout/{idx}")
-    public String getPayment(@PathVariable("idx") Long cartId, Model model){
+    @GetMapping("/cart/checkout/{idx}")
+    public String getPayment1(@PathVariable("idx") Long cartId, Model model){
         Cart cart = cartService.findOne(cartId);
         model.addAttribute("cart", cart);
         log.info("뷰 완료!!");
-        return "mypage/checkout";
+        return "mypage/cartCheckout";
+    }
+
+    @GetMapping("/direct/checkout/{idx}")
+    public String getPayment2(@PathVariable("idx") Long productId, Model model,
+                              Principal principal, HttpServletRequest request, HttpSession httpSession){
+        Product product = productService.findOne(productId);
+        String loginMember = checkMember(principal, request, httpSession);
+        Member member = memberService.findOne(loginMember);
+        model.addAttribute("product", product);
+        model.addAttribute("member", member);
+        log.info("뷰 완료!!");
+        return "mypage/directCheckout";
     }
 
     @ResponseBody
@@ -55,6 +67,22 @@ public class PaymentsController {
         log.info("메일 전송 완료");
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/checkout2", method = { RequestMethod.POST }, produces = "application/json")
+    public void buySuccess2(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
+        String loginMember = checkMember(principal, request, httpSession);
+        Buy buy = new Buy(
+                vo.getBuyAddress(),
+                memberService.findOne(loginMember),
+                productService.findOne(vo.getBuyProduct()),
+                1L
+        );
+        buyService.addBuy(buy);
+        log.info("구매 정보 저장 완료");
+        emailService.sendEmailMessage(vo.getBuyerEmail(), buy.getBuyId());
+        log.info("메일 전송 완료");
+    }
+
     private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
         httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
         HttpSession session = request.getSession(false);
@@ -63,42 +91,4 @@ public class PaymentsController {
         return loginMember;
     }
 
-//    @PostMapping("/direct/checkout/{idx})
-//    public String doPayment(@PathVariable("idx") Long inquiredId, @ModelAttribute InquiryDTO inquiryDTO){
-//
-//        inquiredService.setInquiredCheck(inquiredId);
-//        log.info("수정 완료!!");
-//        return "redirect:/admin/adminPage";
-//    }
-
-//
-//    // 카트 -> 결제
-//    @GetMapping("/direct/checkout")
-//    public String payDirect(){
-//        return "mypage/checkout";
-//    }
-
-
-//    // 상품 -> 결제
-//    @GetMapping("/cart/checkout")
-//    public String pay(@ModelAttribute("CartPayVO") CartPayVO vo, Model model){
-//
-//        Cart cart = new Cart(
-//                vo.getCart().getCartId(),
-//                vo.getCart().getMember(),
-//                vo.getCart().getProduct(),
-//                vo.getCart().getQuantity()
-//                );
-//        log.info("카트 ={}", vo.getCart().getCartId());
-//        log.info("멤버 ={}", vo.getCart().getMember().getMemberId());
-//        log.info("상품 ={}", vo.getCart().getProduct().getProductId());
-//        model.addAttribute("CartPay", cart);
-//        return "mypage/checkout";
-//    }
-
-//    @ResponseBody
-//    @RequestMapping(value = "/checkout", method = { RequestMethod.POST }, produces = "application/json")
-//    public String checkout(@RequestBody CheckOutProductVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession, Model model){
-//        return "";
-//    }
 }
