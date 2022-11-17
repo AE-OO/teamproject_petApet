@@ -11,9 +11,9 @@ class EmailServiceTest {
     @Autowired
     private EmailService emailService;
 
-    @Test
-    void sendMail() throws Exception {
-        emailService.sendEmailMessage("skyair419@naver.com");
-
-    }
+//    @Test
+//    void sendMail() throws Exception {
+//        emailService.sendEmailMessage("skyair419@naver.com");
+//
+//    }
 }

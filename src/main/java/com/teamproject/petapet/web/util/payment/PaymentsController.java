@@ -51,9 +51,8 @@ public class PaymentsController {
         );
         buyService.addBuy(buy);
         log.info("구매 정보 저장 완료");
-        emailService.sendEmailMessage(vo.getBuyerEmail());
+        emailService.sendEmailMessage(vo.getBuyerEmail(), buy.getBuyId());
         log.info("메일 전송 완료");
-        model.addAttribute("buy", buy);
     }
 
     private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {

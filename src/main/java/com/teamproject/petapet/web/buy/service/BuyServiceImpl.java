@@ -24,6 +24,12 @@ public class BuyServiceImpl implements BuyService {
         return buyRepository.findBuyByMember(member);
     }
 
+    @Override
+    public Buy findById(Long buyId) {
+        return buyRepository.findById(buyId).get();
+    }
+
+
     // 장바구니 -> 구매
     @Override
     public Buy addBuy(Buy buy) {

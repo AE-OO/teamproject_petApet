@@ -1,6 +1,7 @@
 package com.teamproject.petapet.web.util.email.service;
 
 import com.teamproject.petapet.domain.buy.Buy;
+import com.teamproject.petapet.web.buy.service.BuyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -18,14 +19,17 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
+    private final BuyService buyService;
 
-    public void sendEmailMessage(String email) throws Exception {
-        String code = createCode(); // 인증코드 생성
+    public void sendEmailMessage(String email, Long buyId) throws Exception {
+//        String code = createCode(); // 인증코드 생성
+        Buy buy = buyService.findById(buyId); // 결제메일 맵핑
+
         MimeMessage message = javaMailSender.createMimeMessage();
 
         message.addRecipients(MimeMessage.RecipientType.TO, email); // 보낼 이메일 설정
         message.setSubject("[결제 완료] 주식회사 petApet에서 발신한 메일 입니다"); // 이메일 제목
-        message.setText(setContext(code), "utf-8", "html"); // 내용 설정(Template Process)
+        message.setText(setContextBuy(buy), "utf-8", "html"); // 내용 설정(Template Process)
 
         // 보낼 때 이름 설정하고 싶은 경우
         // message.setFrom(new InternetAddress([이메일 계정], [설정할 이름]));
@@ -33,6 +37,12 @@ public class EmailService {
         javaMailSender.send(message); // 이메일 전송
     }
 
+
+    private String setContextBuy (Buy buy){// 타임리프 설정하는 코드
+        Context context = new Context();
+        context.setVariable("buy", buy); // Template에 전달할 데이터 설정
+        return templateEngine.process("mypage/mail", context); // mail.html
+    }
     private String setContext(String code) { // 타임리프 설정하는 코드
         Context context = new Context();
         context.setVariable("code", code); // Template에 전달할 데이터 설정
