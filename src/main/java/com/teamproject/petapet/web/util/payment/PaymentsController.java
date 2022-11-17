@@ -7,6 +7,7 @@ import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
+import com.teamproject.petapet.web.util.email.service.EmailService;
 import com.teamproject.petapet.web.util.payment.dto.PaymentVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.Email;
 import java.security.Principal;
 
 @Slf4j
@@ -27,6 +29,8 @@ public class PaymentsController {
     private final BuyService buyService;
     private final CartService cartService;
 
+    private final EmailService emailService;
+
     @GetMapping("/direct/checkout/{idx}")
     public String getPayment(@PathVariable("idx") Long cartId, Model model){
         Cart cart = cartService.findOne(cartId);
@@ -37,7 +41,7 @@ public class PaymentsController {
 
     @ResponseBody
     @RequestMapping(value = "/checkout", method = { RequestMethod.POST }, produces = "application/json")
-    public void buySuccess(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession){
+    public void buySuccess(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
         String loginMember = checkMember(principal, request, httpSession);
         Buy buy = new Buy(
                 vo.getBuyAddress(),
@@ -46,6 +50,10 @@ public class PaymentsController {
                 vo.getBuyQuantity()
         );
         buyService.addBuy(buy);
+        log.info("구매 정보 저장 완료");
+        emailService.sendEmailMessage(vo.getBuyerEmail());
+        log.info("메일 전송 완료");
+        model.addAttribute("buy", buy);
     }
 
     private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {

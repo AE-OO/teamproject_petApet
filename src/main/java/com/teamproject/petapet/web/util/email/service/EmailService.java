@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.util.email.service;
 
+import com.teamproject.petapet.domain.buy.Buy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -32,13 +33,13 @@ public class EmailService {
         javaMailSender.send(message); // 이메일 전송
     }
 
-
     private String setContext(String code) { // 타임리프 설정하는 코드
         Context context = new Context();
         context.setVariable("code", code); // Template에 전달할 데이터 설정
         return templateEngine.process("mypage/mail", context); // mail.html
     }
 
+    // 인증번호 or 임시비밀번호 생성코드
     private String createCode() {
         // 인증 코드 생성
         StringBuilder code = new StringBuilder();

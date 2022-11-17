@@ -104,7 +104,7 @@
                     <td class="customer__col customer__col--1">
                         이름
                     </td>
-                    <td class="customer__col customer__col--2" th:text="${cart.member.memberId}">
+                    <td class="customer__col customer__col--2" id="memberName" th:text="${cart.member.memberName}">
                         조성현
                     </td>
                 </tr>
@@ -112,7 +112,7 @@
                     <td class="customer__col customer__col--1">
                         이메일
                     </td>
-                    <td class="customer__col customer__col--2" th:text="${cart.member.memberEmail}" >
+                    <td class="customer__col customer__col--2" id="memberEmail" th:text="${cart.member.memberEmail}" >
                         skyair419@naver.com
                     </td>
                 </tr>
@@ -126,7 +126,7 @@
                                 <div>
                                     <form>
                                         <div>
-                                            <div type="tel" class="customer-phone__input-tel" th:text="${cart.member.memberPhoneNum}" ></div>
+                                            <div type="tel" class="customer-phone__input-tel" id="memberPhoneNum" th:text="${cart.member.memberPhoneNum}" ></div>
                                         </div>
                                     </form>
                                 </div>
@@ -155,7 +155,7 @@
                 </tr>
                 <tr>
                     <th class="delivery-address__th">배송주소</th>
-                    <td class="delivery-address__td" th:text="${cart.member.memberAddress}">
+                    <td class="delivery-address__td" id="buyAddress" th:text="${cart.member.memberAddress}">
                         인천광역시 부평구 체육관로 27
                         &nbsp;709동2101호
                         <div id="blocked-address-error-message" class="blocked-address-section">
@@ -236,8 +236,10 @@
                         </div>
                         <div class="bundle-info__item-list ">
                             <div class="bundle-info__vendor-item-box ">
+                                <input type="hidden" id="buyProduct" th:value="${cart.product.productId}"/>
+                                <input type="hidden" id="buyQuantity" th:value="${cart.quantity}">
                                 <div class="bundle-info__vendor-item">
-                                    <p th:text="${cart.product.productName}">
+                                    <p th:text="${cart.product.productName}" id="product">
                                         <span class="bundle-info__vendor-item__offer-condition" ></span>
                                         코멧 일회용 마스크, 100개입, 1개, 화이트
                                     </p>
@@ -338,40 +340,61 @@
         merchant_uid: "order_" + new Date().getTime() , // 상점에서 관리하는 주문 번호
         name : [[${cart.product.productName}]], // 상품명
         amount : [[${cart.product.productPrice}]],
-        buyer_email : [[${cart.member.memberEmail}]],
         buyer_name : [[${cart.member.memberName}]],
         buyer_tel : [[${cart.member.memberPhoneNum}]],
-        buy_addr : [[${cart.member.memberAddress}]],
-        buy_quantity : [[${cart.quantity}]],
-        buy_member : [[${cart.member.memberId}]],
-        buy_productId : [[${cart.product.productId}]]
+        buyerEmail : [[${cart.member.memberEmail}]],
+        buyAddress : [[${cart.member.memberAddress}]],
+        buyQuantity : [[${cart.quantity}]],
+        buyMember : [[${cart.member.memberId}]],
+        buyProduct : [[${cart.product.productId}]]
+    }
+
+    var buyAddress = $('#buyAddress').text();
+    var buyQuantity = $('#buyQuantity').val();
+    var buyProduct = $('#buyProduct').val();
+    var buyerEmail = $('#memberEmail').text();
+
+
+    var param2 = {
+        "buyAddress" : buyAddress,
+        "buyQuantity" : buyQuantity,
+        "buyProduct" : buyProduct,
+        "buyerEmail" : buyerEmail
     }
 
     function requestPay() {
+        console.log(buyerEmail);
+        console.log(buyAddress);
+        console.log(buyQuantity);
+        console.log(buyProduct);
+
         // IMP.request_pay(param, callback) 결제창 호출
         IMP.request_pay(param, function (rsp) { // callback
-            var callback = {
-                "buyAddress" : rsp.buy_addr,
-                "buyQuantity" : rsp.buy_quantity,
-                "buyMember" : rsp.buy_member,
-                "buyProduct" : rsp.buy_productId
-                // imp_uid: rsp.imp_uid,
-                // merchant_uid: rsp.merchant_uid
-            }
             if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
                 // jQuery로 HTTP 요청
-                jQuery.ajax({
-                    url: "/checkout", // 예: https://www.myservice.com/payments/complete
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    data: JSON.stringify(callback)
-                }).done(function (data) {
-                    alert("데이터 저장이 성공하였습니다");
-                    // 가맹점 서버 결제 API 성공시 로직
-                })
-                alert("결제가 성공하였습니다");
+                console.log("결제완료");
+                addBuyDB();
+
             } else {
                 alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+            }
+        });
+    }
+
+    function addBuyDB(){
+        console.log("디비저장함수실행");
+        $.ajax({
+            url: "/checkout",
+            type: "POST",
+            data: JSON.stringify(param2),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("DB 상품이 추가 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+
             }
         });
     }
