@@ -238,7 +238,7 @@
         <div>
             <div class="d-flex flex-row pb-3 px-3">
                 <div class="d-flex flex-column flex-fill">
-                    <article class="row justify-content-start" th:each="review : ${reviews}">
+                    <article id="review" class="row justify-content-start" th:each="review : ${reviews}">
                         <div class="col-1">
                             <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                         </div>
@@ -260,12 +260,12 @@
                             <img th:each="reviewImage : ${review.reviewImg}"
                                  th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
                                  width="100" height="100"
-                                 class="img" id="osh">
+                                 class="reviewImage" id="reviewImage">
+                            </img>
                             <div class="modal" id="modal">
                                 <span class="close">&times;</span>
                                 <img class="modal_content" id="modal_content">
                             </div>
-                            </img>
                         </div>
                         <div class="col text-end">
                             <a href="#">신고</a>
@@ -286,9 +286,9 @@
                         </div>
                         <hr class="my-4">
                     </article>
-                    <div id="tagArea">
+                    <article id="tagArea" class="row justify-content-start">
 
-                    </div>
+                    </article>
                     <th:block
                             th:if="${reviews.hasNext()}">
                         <a role="button" onclick="moreReview()" class="m-lg-1 fs-5 text-center" id="moreReview"
@@ -621,7 +621,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-<script th:inline="javascript">
+<script th:inline="javascript" type="text/javascript">
+
+    let totalPage = 10;
+
     $('.carousel-inner > div:nth-child(1)').addClass('active');
     $('.carousel-indicators > button:nth-child(1)').addClass('active');
 
@@ -641,7 +644,7 @@
             reader.readAsDataURL(image);
         }
     }
-
+$(document).ready(function (){
     var size = $('p[class = star]').length;
     for (var i = 0; i < size; i++) {
         $('p[class = star]').eq(i).attr('id', "star" + i);
@@ -650,15 +653,16 @@
             return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
         });
     }
+})
 
-    var imgSize = $('img[class = img]').length;
+    var imgSize = $('img[class = reviewImage]').length;
     for (var q = 0; q < imgSize; q++) {
-        $('img[class = img]').eq(q).attr('id', "osh" + q);
+        $('img[class = reviewImage]').eq(q).attr('id', "reviewImage" + q);
         $('img[class = modal_content]').eq(q).attr('id', "modal_content" + q);
         $('div[class = modal]').eq(q).attr('id', "modal" + q);
 
         const modal = document.querySelector("#modal" + q);
-        const img = document.querySelector("#osh" + q);
+        const img = document.querySelector("#reviewImage" + q);
         const modal_img = document.querySelector("#modal_content" + q);
         const span = document.querySelector(".close");
 
@@ -677,28 +681,128 @@
     }
     }
 
-    let total = 10;
 
     function moreReview() {
+    let nextPage = (totalPage / 10);
         let data = '';
-        let nextPage = (total / 10);
         let productId = [[${productId}]];
         let url = '/product/moreReview?productId=' + productId + '&page=' + nextPage;
+        console.log(nextPage)
         $.getJSON(url,
             function (result) {
-                data = result;
-console.log(data)
-                // $.each(data.toto,function (idx,el){
-                // })
-                $('#tagArea').append(toHtml(data))
+                $.each(result,function (idx,el){
+                $('#tagArea').after("<article id=\"moreReview\" class=\"row justify-content-start\">\n" +
+                    "                        <div class=\"col-1\">\n" +
+                    "                            <img src=\/img/petSnack.jpg\ class=\"img-fluid\" style=\"\">\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"col-1 me-2\">\n" +
+                    "                            <h6 id='moreReviewMember'></h6>\n" +
+                    "                            <h6 style=\"font-size: 0.5rem\" class=\"text-secondary mt-1\" id='moreReviewDate'></h6>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"col-2\" style=\"position: center\">\n" +
+                    "                            <p class=\"star\" id='moreRating'>\n" +
+                    "                                <a class=\"my_star\" value=\"1\">★</a>\n" +
+                    "                                <a class=\"my_star\" value=\"2\">★</a>\n" +
+                    "                                <a class=\"my_star\" value=\"3\">★</a>\n" +
+                    "                                <a class=\"my_star\" value=\"4\">★</a>\n" +
+                    "                                <a class=\"my_star\" value=\"5\">★</a>\n" +
+                    "                            <p>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"col-7\" id=\"imgArea\">\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"col text-end\">\n" +
+                    "                            <a href=\"#\">신고</a>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"d-flex mt-2\">\n" +
+                    "                            <div class=\"me-2\">\n" +
+                    "                                <h6>상품명</h6>\n" +
+                    "                            </div>\n" +
+                    "                            <div class=\"col-3\">\n" +
+                    "                                <h6 id='moreReviewProduct' class=\"opacity-75\"></h6>\n" +
+                    "                            </div>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"review_comment\">\n" +
+                    "                            <div class=\"review_content\">\n" +
+                    "                                <div class=\"contentStr\" th:text=\"${review.reviewContent}\">\n" +
+                    "                                </div>\n" +
+                    "                            </div>\n" +
+                    "                        </div>\n" +
+                    "                        <hr class=\"my-4\">\n" +
+                    "                    </article>" +
+                    " <article id=\"tagArea\" class=\"row justify-content-start\">\n" +
+                    "\n" +
+                    "                    </article>")
+                    $('#moreReviewMember').text(result[idx].reviewMember);
+                    $('#moreReviewDate').text(result[idx].reviewDate);
+                    $('#moreRating').attr('value',result[idx].reviewRating);
+                    $('#moreReviewProduct').text(result[idx].reviewProduct);
+
+                    $(document).ready(function (){
+                        var size = $('p[class = star]').length;
+                        for (var i = 0; i < size; i++) {
+                            $('p[class = star]').eq(i).attr('id', "moreRating" + i);
+
+                            $("#moreRating" + i).find(".my_star").filter(function (k, v) {
+                                return $(v).attr("value") <= $("#moreRating" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+                            });
+                        }
+                    })
+                    $.each(result[idx].reviewImg,function (index){
+                    let moreReviewImg = document.createElement('img');
+                    moreReviewImg.width = 100;
+                    moreReviewImg.height = 100;
+                    moreReviewImg.setAttribute('class','moreReviewImg');
+                    moreReviewImg.setAttribute('id','moreReviewImg');
+                    moreReviewImg.src = '/product/images/'+result[idx].reviewImg[index].storeFileName;
+                    $('#imgArea').append(moreReviewImg);
+                    })
+
+                })
+                    let moreReviewModal = document.createElement('div');
+                        moreReviewModal.setAttribute('id','modal');
+                        moreReviewModal.setAttribute('class','modal');
+                    $('.imgArea').append(moreReviewModal);
+                    let modalClose = document.createElement('span');
+                    modalClose.setAttribute('class','close');
+                    modalClose.textContent = '×'
+                    $('.imgArea').append(modalClose);
+                    let modalImg = document.createElement('img');
+                    modalImg.setAttribute('class','modal_content');
+                    modalImg.setAttribute('id','modal_content');
+                    $('.imgArea').append(modalImg);
+
+                var imageSize = $('img[class = moreReviewImg]').length;
+                for (var q = 0; q < imageSize; q++) {
+                    $('img[class = moreReviewImg]').eq(q).attr('id', "moreReviewImg" + q);
+                    $('img[class = modal_content]').eq(q).attr('id', "modal_content" + q);
+                    $('div[class = modal]').eq(q).attr('id', "modal" + q);
+
+                    const modal = document.querySelector("#modal" + q);
+                    const img = document.querySelector("#moreReviewImg" + q);
+                    const modal_img = document.querySelector("#modal_content" + q);
+                    const span = document.querySelector(".close");
+
+                    img.addEventListener('click', () => {
+                        modalDisplay("block");
+                        modal_img.src = img.src;
+                    });
+                    span.addEventListener('click', () => {
+                        modalDisplay("none");
+                    });
+                    modal.addEventListener('click', () => {
+                        modalDisplay("none");
+                    });
+                    function modalDisplay(text) {
+                        modal.style.display = text;
+                    }
+                }
             })
-    }
-
-
-    total += 10;
+        totalPage += 10;
     if (data.total < 10) {
-        //TODO
+        TODO
     }
+    }
+
 
     function toHtml(data) {
         for (num = 0; num < 10; num++) {

@@ -120,7 +120,7 @@ public class ProductController {
         Product findProduct = productService.findOne(productId);
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(0, 10, sort);
-        Slice<Review> reviews = reviewRepository.test(productId, pageable);
+        Slice<Review> reviews = reviewRepository.requestMoreReview(productId, pageable);
         Long countReview = reviewRepository.countReviewByProduct(findProduct);
         model.addAttribute("countReview", countReview);
         model.addAttribute("findProduct", findProduct);
@@ -137,7 +137,7 @@ public class ProductController {
         List<UploadFile> uploadFiles = fileService.storeFiles(reviewImg);
 
         //테스트 유저
-        Member member = memberRepository.findOneWithAuthoritiesByMemberId("member3921").get();
+        Member member = memberRepository.findOneWithAuthoritiesByMemberId("memberId1").get();
 
         Review review = Review.builder().reviewTitle(reviewInsertDTO.getReviewTitle())
                 .reviewRating(reviewInsertDTO.getReviewRating())
