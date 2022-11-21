@@ -17,7 +17,8 @@
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                             <div class="carousel-indicators">
                                 <button type="button" th:each="idx, i : *{productImg}"
-                                        data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${i.index}" class="active"
+                                        data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${i.index}"
+                                        class="active"
                                         aria-current="true" th:aria-label="|@{Slide+${i.index}}|"></button>
                             </div>
                             <div class="carousel-inner">
@@ -86,8 +87,12 @@
                                    autocomplete="off">
                         </div>
                         <div style="display:table-cell;vertical-align:top;" class="col-3">
-                            <button id="plus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem" type="button">△</button>
-                            <button id="minus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem" type="button">▽</button>
+                            <button id="plus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem"
+                                    type="button">△
+                            </button>
+                            <button id="minus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem"
+                                    type="button">▽
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -97,7 +102,8 @@
                             <button id="addCart" class="btn btn-info ms-3" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
                         <div class="col-6 d-grid">
-                            <button id="addBuy" class="btn btn-info ms-3" th:onclick="'javascript:addBuy()'">바로구매</button>
+                            <button id="addBuy" class="btn btn-info ms-3" th:onclick="'javascript:addBuy()'">바로구매
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -137,18 +143,26 @@
                 </tbody>
             </table>
         </div>
-        <hr class="">
+        <hr>
         <div class="d-flex flex-row my-3" style="position: sticky; top: 5rem;">
             <div class="btn-group col-12">
-                <a role="button" class="btn text-dark col-3" style="background-color: white"> 상품상세</a>
-                <button class="btn text-dark col-3" style="background-color: white"> 상품평()</button>
-                <button class="btn text-dark col-3" style="background-color: white"> 상품문의</button>
-                <button class="btn text-dark col-3" style="background-color: white"> 배송/교환/반품</button>
+                <button onclick="productDetail_scroll_move()" class="btn text-dark col-3"
+                        style="background-color: white"> 상품상세
+                </button>
+                <button onclick="review_scroll_move()" class="btn text-dark col-3" style="background-color: white">
+                    상품평()
+                </button>
+                <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"
+                        style="background-color: white"> 상품문의
+                </button>
+                <button onclick="shipping_scroll_move()" class="btn text-dark col-3"
+                        style="background-color: white"> 배송/교환/반품
+                </button>
             </div>
         </div>
         <hr class="mb-5">
         <div class="d-flex flex-row">
-            <div class="row mb-4">
+            <div class="row mb-4" id="productDetail">
                 <h4>상품상세</h4>
             </div>
         </div>
@@ -166,10 +180,10 @@
     <hr class="mb-4 mt-4">
     <div class="d-flex flex-row">
         <div class="btn-group col-12">
-            <button class="btn text-dark col-3"> 상품상세</button>
-            <button class="btn text-dark col-3"> 상품평()</button>
-            <button class="btn text-dark col-3"> 상품문의</button>
-            <button class="btn text-dark col-3"> 배송/교환/반품</button>
+            <button onclick="productDetail_scroll_move()" class="btn text-dark col-3"> 상품상세</button>
+            <button onclick="review_scroll_move()" class="btn text-dark col-3"> 상품평()</button>
+            <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"> 상품문의</button>
+            <button onclick="shipping_scroll_move()" class="btn text-dark col-3"> 배송/교환/반품</button>
         </div>
     </div>
     <hr class="mb-4 mt-4">
@@ -177,7 +191,7 @@
         <div>
             <div class="d-flex flex-row p-3">
                 <div class="d-flex flex-column flex-fill">
-                    <div class="row mb-4">
+                    <div class="row mb-4" id="reviews">
                         <h4>상품평</h4>
                     </div>
                     <form enctype="multipart/form-data" method="post"
@@ -301,7 +315,7 @@
             <div>
                 <div class="d-flex flex-fill">
                     <div class="d-flex mb-4 col">
-                        <div class="col-11">
+                        <div class="col-11" id="productInquiry">
                             <h4>상품문의</h4>
                         </div>
                         <div class="col-1 text-end">
@@ -381,7 +395,7 @@
         <hr class="my-4">
         <div class="d-flex flex-row p-3">
             <div>
-                <div class="d-flex flex-fill">
+                <div class="d-flex flex-fill" id="shipping">
                     <h4>배송/교환/반품</h4>
                 </div>
             </div>
@@ -624,6 +638,26 @@
 
     let totalPage = 10;
 
+    function review_scroll_move() {
+        let offset = $("#reviews").offset(); //해당 위치 반환
+        $("html, body").animate({scrollTop: offset.top}); // 선택
+    };
+
+    function shipping_scroll_move() {
+        let offset = $("#shipping").offset(); //해당 위치 반환
+        $("html, body").animate({scrollTop: offset.top}); // 선택
+    };
+
+    function productInquiry_scroll_move() {
+        let offset = $("#productInquiry").offset(); //해당 위치 반환
+        $("html, body").animate({scrollTop: offset.top}); // 선택
+    };
+
+    function productDetail_scroll_move() {
+        let offset = $("#productDetail").offset(); //해당 위치 반환
+        $("html, body").animate({scrollTop: offset.top}); // 선택
+    };
+
     $('.carousel-inner > div:nth-child(1)').addClass('active');
     $('.carousel-indicators > button:nth-child(1)').addClass('active');
 
@@ -643,16 +677,17 @@
             reader.readAsDataURL(image);
         }
     }
-$(document).ready(function (){
-    var size = $('p[class = star]').length;
-    for (var i = 0; i < size; i++) {
-        $('p[class = star]').eq(i).attr('id', "star" + i);
 
-        $("#star" + i).find(".my_star").filter(function (k, v) {
-            return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
-        });
-    }
-})
+    $(document).ready(function () {
+        var size = $('p[class = star]').length;
+        for (var i = 0; i < size; i++) {
+            $('p[class = star]').eq(i).attr('id', "star" + i);
+
+            $("#star" + i).find(".my_star").filter(function (k, v) {
+                return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+            });
+        }
+    })
 
     var imgSize = $('img[class = reviewImage]').length;
     for (var q = 0; q < imgSize; q++) {
@@ -675,21 +710,22 @@ $(document).ready(function (){
         modal.addEventListener('click', () => {
             modalDisplay("none");
         });
-    function modalDisplay(text) {
-        modal.style.display = text;
-    }
+
+        function modalDisplay(text) {
+            modal.style.display = text;
+        }
     }
 
 
     function moreReview() {
-    let nextPage = (totalPage / 10);
+        let nextPage = (totalPage / 10);
         let data = '';
         let productId = [[${productId}]];
         let url = '/product/moreReview?productId=' + productId + '&page=' + nextPage;
         $.getJSON(url,
             function (result) {
-            console.log(result.length)
-                $.each(result,function (idx,el){
+                console.log(result.length)
+                $.each(result, function (idx, el) {
                     let reviewHtml =
                         `<div class="col-1">
                             <img src="/img/petSnack.jpg" class="img-fluid">
@@ -731,40 +767,40 @@ $(document).ready(function (){
                         <hr class="my-4">`;
                     $('#tagArea:last').append(reviewHtml);
 
-                    $.each(result[idx].reviewImg,function (index){
+                    $.each(result[idx].reviewImg, function (index) {
                         let moreReviewImg = document.createElement('img');
                         moreReviewImg.width = 100;
                         moreReviewImg.height = 100;
-                        moreReviewImg.setAttribute('class','moreReviewImg');
-                        moreReviewImg.setAttribute('id','moreReviewImg');
-                        moreReviewImg.src = '/product/images/'+result[idx].reviewImg[index].storeFileName;
-                        $('#imgArea'+idx).append(moreReviewImg);
+                        moreReviewImg.setAttribute('class', 'moreReviewImg');
+                        moreReviewImg.setAttribute('id', 'moreReviewImg');
+                        moreReviewImg.src = '/product/images/' + result[idx].reviewImg[index].storeFileName;
+                        $('#imgArea' + idx).append(moreReviewImg);
                     })
 
-                    $('#moreRating').attr('value',result[idx].reviewRating);
+                    $('#moreRating').attr('value', result[idx].reviewRating);
                     $('#moreReviewProduct').text(result[idx].reviewProduct);
-                    $('#moreReview').attr('id','moreReview'+idx);
-                        var size = $('p[class = star]').length;
-                        for (var i = 0; i < size; i++) {
-                            $('p[class = star]').eq(i).attr('id', "moreRating" + i);
+                    $('#moreReview').attr('id', 'moreReview' + idx);
+                    var size = $('p[class = star]').length;
+                    for (var i = 0; i < size; i++) {
+                        $('p[class = star]').eq(i).attr('id', "moreRating" + i);
 
-                            $("#moreRating" + i).find(".my_star").filter(function (k, v) {
-                                return $(v).attr("value") <= $("#moreRating" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
-                            });
-                        }
+                        $("#moreRating" + i).find(".my_star").filter(function (k, v) {
+                            return $(v).attr("value") <= $("#moreRating" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+                        });
+                    }
                 })
-                    let moreReviewModal = document.createElement('div');
-                        moreReviewModal.setAttribute('id','modal');
-                        moreReviewModal.setAttribute('class','modal');
-                    $('.imgArea').append(moreReviewModal);
-                    let modalClose = document.createElement('span');
-                    modalClose.setAttribute('class','close');
-                    modalClose.textContent = '×'
-                    $('.imgArea').append(modalClose);
-                    let modalImg = document.createElement('img');
-                    modalImg.setAttribute('class','modal_content');
-                    modalImg.setAttribute('id','modal_content');
-                    $('.imgArea').append(modalImg);
+                let moreReviewModal = document.createElement('div');
+                moreReviewModal.setAttribute('id', 'modal');
+                moreReviewModal.setAttribute('class', 'modal');
+                $('.imgArea').append(moreReviewModal);
+                let modalClose = document.createElement('span');
+                modalClose.setAttribute('class', 'close');
+                modalClose.textContent = '×'
+                $('.imgArea').append(modalClose);
+                let modalImg = document.createElement('img');
+                modalImg.setAttribute('class', 'modal_content');
+                modalImg.setAttribute('id', 'modal_content');
+                $('.imgArea').append(modalImg);
 
                 var imageSize = $('img[class = moreReviewImg]').length;
                 for (var q = 0; q < imageSize; q++) {
@@ -787,18 +823,19 @@ $(document).ready(function (){
                     modal.addEventListener('click', () => {
                         modalDisplay("none");
                     });
+
                     function modalDisplay(text) {
                         modal.style.display = text;
                     }
                 }
-    if (result.length == 0) {
-        let noMoreReview =
-            `<div><h6 class="m-lg-1 fs-5 text-center">더 이상 리뷰가 존재하지 않습니다.</h6></div>`;
-        $('#moreReview').hide();
-        $('#tagArea:last').append(noMoreReview);
-    }
+                if (result.length == 0) {
+                    let noMoreReview =
+                        `<div><h6 class="m-lg-1 fs-5 text-center">더 이상 리뷰가 존재하지 않습니다.</h6></div>`;
+                    $('#moreReview').hide();
+                    $('#tagArea:last').append(noMoreReview);
+                }
             }
-            )
+        )
         totalPage += 10;
     }
 
@@ -807,7 +844,7 @@ $(document).ready(function (){
 
     const btnMinus = $('#minus');
     const btnPlus = $('#plus');
-    const quantity =$('#quantity');
+    const quantity = $('#quantity');
 
     $(btnMinus).click(function () {
         var $input = $(this).parents().eq(2).find(quantity);
@@ -828,8 +865,9 @@ $(document).ready(function (){
     var urlCart = "/cart/add";
     var urlBuy = "/buy/add";
     var productId = $("#productId").val();
-    var quantityVal  = $("#quantity").val();
-    var param = {"product": productId, "quantity":quantityVal};
+    var quantityVal = $("#quantity").val();
+    var param = {"product": productId, "quantity": quantityVal};
+
     function addCart() {
         alert("실행");
         console.log("product : " + productId);
@@ -839,8 +877,8 @@ $(document).ready(function (){
             type: "POST",
             data: JSON.stringify(param),
             dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
+            contentType: "application/json",
+            charset: "UTF-8",
             success: function (data) {
                 alert("장바구니에 상품이 추가 되었음!! ")
             },
@@ -849,7 +887,8 @@ $(document).ready(function (){
             }
         });
     }
-    function addBuy(){
+
+    function addBuy() {
         alert("실행");
         console.log("product : " + productId);
         console.log("quantity : " + quantity);
@@ -858,8 +897,8 @@ $(document).ready(function (){
             type: "POST",
             data: JSON.stringify(param),
             dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
+            contentType: "application/json",
+            charset: "UTF-8",
             success: function (data) {
                 alert("주문 되었음!! ")
             },
