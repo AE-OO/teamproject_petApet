@@ -42,7 +42,7 @@ public class ProductRestController {
         try {
             InputStream fileStream = multipartFile.getInputStream();
             org.apache.commons.io.FileUtils.copyInputStreamToFile(fileStream, targetFile);
-            jsonObject.append("url", saveUrl + savedFileName);// 저장할 내부 폴더명 + 파일명
+            jsonObject.append("url", "/product/images/" + savedFileName);// 저장할 내부 폴더명 + 파일명
             jsonObject.append("responseCode", "success");
 
         } catch (IOException e) {
