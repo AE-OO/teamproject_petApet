@@ -1,9 +1,7 @@
 package com.teamproject.petapet.web.product;
 
-import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.product.ReviewRepository;
-import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Slf4j
 @RestController
@@ -34,7 +30,6 @@ public class ProductRestController {
     @Value("${editor.img.save.url}")
     private String saveUrl;
     private final ReviewRepository reviewRepository;
-    private final FileService fileService;
 
     @PostMapping(value = "/image", produces = "application/json; charset=utf8")
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
@@ -64,9 +59,8 @@ public class ProductRestController {
                                             @RequestParam("page") Integer page) {
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(page, 10, sort);
-        JSONObject jsonObject = new JSONObject();
         Slice<Review> requestMoreReview = reviewRepository.requestMoreReview(productId, pageable);
-        List<ReviewDTO> moreList = requestMoreReview.stream().map(m -> ReviewDTO.builder().reviewTitle(m.getReviewTitle())
+        return requestMoreReview.stream().map(m -> ReviewDTO.builder().reviewTitle(m.getReviewTitle())
                 .reviewContent(m.getReviewContent())
                 .reviewDate(m.getReviewDate())
                 .reviewRating(m.getReviewRating())
@@ -74,7 +68,6 @@ public class ProductRestController {
                 .reviewProduct(m.getProduct().getProductName())
                 .reviewImg(m.getReviewImg())
                 .build()).collect(Collectors.toList());
-        return moreList;
 
     }
 }
