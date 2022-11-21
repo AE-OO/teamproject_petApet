@@ -339,7 +339,7 @@
         pay_method : 'card', //생략 가능
         merchant_uid: "order_" + new Date().getTime() , // 상점에서 관리하는 주문 번호
         name : [[${product.productName}]], // 상품명
-        amount : [[${cproduct.productPrice}]],
+        amount : [[${product.productPrice}]],
         buyer_name : [[${member.memberName}]],
         buyer_tel : [[${member.memberPhoneNum}]],
         buyerEmail : [[${member.memberEmail}]],

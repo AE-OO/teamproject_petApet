@@ -33,6 +33,7 @@ public class BuyController {
     private final ProductService productService;
 
 
+    // 나의 주문 목록
     @GetMapping()
     public String myBuy(Principal principal,
                          HttpServletRequest request,

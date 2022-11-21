@@ -31,6 +31,8 @@ public class PaymentsController {
 
     private final EmailService emailService;
 
+
+    // cart 페이지에서 checkout 페이지로 이동
     @GetMapping("/cart/checkout/{idx}")
     public String getPayment1(@PathVariable("idx") Long cartId, Model model){
         Cart cart = cartService.findOne(cartId);
@@ -39,6 +41,7 @@ public class PaymentsController {
         return "mypage/cartCheckout";
     }
 
+    // productList 페이지에서 checkout 페이지로 이동
     @GetMapping("/direct/checkout/{idx}")
     public String getPayment2(@PathVariable("idx") Long productId, Model model,
                               Principal principal, HttpServletRequest request, HttpSession httpSession){
