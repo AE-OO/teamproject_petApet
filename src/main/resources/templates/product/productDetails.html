@@ -86,18 +86,18 @@
                                    autocomplete="off">
                         </div>
                         <div style="display:table-cell;vertical-align:top;" class="col-3">
-                            <button id="plus" class="btn-sm-square" style="height: 1rem" type="button">△</button>
-                            <button id="minus" class="btn-sm-square" style="height: 1rem" type="button">▽</button>
+                            <button id="plus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem" type="button">△</button>
+                            <button id="minus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem" type="button">▽</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-8">
                     <div class="m-lg-2 d-flex flex-row">
                         <div class="col-6 d-grid">
-                            <button id="addCart" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
+                            <button id="addCart" class="btn btn-info ms-3" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
                         <div class="col-6 d-grid">
-                            <button id="addBuy" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:addBuy()'">바로구매</button>
+                            <button id="addBuy" class="btn btn-info ms-3" th:onclick="'javascript:addBuy()'">바로구매</button>
                         </div>
                     </div>
                 </div>
@@ -256,12 +256,11 @@
                                 <a class="my_star" value="5">★</a>
                             <p>
                         </div>
-                        <div class="col-7" id="ppp" th:value="${review.reviewImg}">
+                        <div class="col-7" th:value="${review.reviewImg}">
                             <img th:each="reviewImage : ${review.reviewImg}"
                                  th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
                                  width="100" height="100"
                                  class="reviewImage" id="reviewImage">
-                            </img>
                             <div class="modal" id="modal">
                                 <span class="close">&times;</span>
                                 <img class="modal_content" id="modal_content">
@@ -687,57 +686,64 @@ $(document).ready(function (){
         let data = '';
         let productId = [[${productId}]];
         let url = '/product/moreReview?productId=' + productId + '&page=' + nextPage;
-        console.log(nextPage)
         $.getJSON(url,
             function (result) {
+            console.log(result.length)
                 $.each(result,function (idx,el){
-                $('#tagArea').after("<article id=\"moreReview\" class=\"row justify-content-start\">\n" +
-                    "                        <div class=\"col-1\">\n" +
-                    "                            <img src=\/img/petSnack.jpg\ class=\"img-fluid\" style=\"\">\n" +
-                    "                        </div>\n" +
-                    "                        <div class=\"col-1 me-2\">\n" +
-                    "                            <h6 id='moreReviewMember'></h6>\n" +
-                    "                            <h6 style=\"font-size: 0.5rem\" class=\"text-secondary mt-1\" id='moreReviewDate'></h6>\n" +
-                    "                        </div>\n" +
-                    "                        <div class=\"col-2\" style=\"position: center\">\n" +
-                    "                            <p class=\"star\" id='moreRating'>\n" +
-                    "                                <a class=\"my_star\" value=\"1\">★</a>\n" +
-                    "                                <a class=\"my_star\" value=\"2\">★</a>\n" +
-                    "                                <a class=\"my_star\" value=\"3\">★</a>\n" +
-                    "                                <a class=\"my_star\" value=\"4\">★</a>\n" +
-                    "                                <a class=\"my_star\" value=\"5\">★</a>\n" +
-                    "                            <p>\n" +
-                    "                        </div>\n" +
-                    "                        <div class=\"col-7\" id=\"imgArea\">\n" +
-                    "                        </div>\n" +
-                    "                        <div class=\"col text-end\">\n" +
-                    "                            <a href=\"#\">신고</a>\n" +
-                    "                        </div>\n" +
-                    "                        <div class=\"d-flex mt-2\">\n" +
-                    "                            <div class=\"me-2\">\n" +
-                    "                                <h6>상품명</h6>\n" +
-                    "                            </div>\n" +
-                    "                            <div class=\"col-3\">\n" +
-                    "                                <h6 id='moreReviewProduct' class=\"opacity-75\"></h6>\n" +
-                    "                            </div>\n" +
-                    "                        </div>\n" +
-                    "                        <div class=\"review_comment\">\n" +
-                    "                            <div class=\"review_content\">\n" +
-                    "                                <div class=\"contentStr\" th:text=\"${review.reviewContent}\">\n" +
-                    "                                </div>\n" +
-                    "                            </div>\n" +
-                    "                        </div>\n" +
-                    "                        <hr class=\"my-4\">\n" +
-                    "                    </article>" +
-                    " <article id=\"tagArea\" class=\"row justify-content-start\">\n" +
-                    "\n" +
-                    "                    </article>")
-                    $('#moreReviewMember').text(result[idx].reviewMember);
-                    $('#moreReviewDate').text(result[idx].reviewDate);
+                    let reviewHtml =
+                        `<div class="col-1">
+                            <img src="/img/petSnack.jpg" class="img-fluid">
+                        </div>
+                        <div class="col-1 me-2">
+                            <h6>${result[idx].reviewMember}</h6>
+                            <h6 style="font-size: 0.5rem" class="text-secondary mt-1">${result[idx].reviewDate}</h6>
+                        </div>
+                        <div class="col-2" style="position: center">
+                            <p class="star" id="moreRating">
+                                <a class="my_star" value="1">★</a>
+                                <a class="my_star" value="2">★</a>
+                                <a class="my_star" value="3">★</a>
+                                <a class="my_star" value="4">★</a>
+                                <a class="my_star" value="5">★</a>
+                            </p>
+                        </div>
+                        <div class="col-7" id="imgArea${idx}">
+
+                        </div>
+                        <div class="col text-end">
+                            <a href="#">신고</a>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <div class="me-2">
+                                <h6>상품명</h6>
+                            </div>
+                            <div class="col-3">
+                                <h6 class="opacity-75">${result[idx].reviewProduct}</h6>
+                            </div>
+                        </div>
+                        <div class="review_comment">
+                            <div class="review_content">
+                                <div class="contentStr">
+                                ${result[idx].reviewContent}
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4">`;
+                    $('#tagArea:last').append(reviewHtml);
+
+                    $.each(result[idx].reviewImg,function (index){
+                        let moreReviewImg = document.createElement('img');
+                        moreReviewImg.width = 100;
+                        moreReviewImg.height = 100;
+                        moreReviewImg.setAttribute('class','moreReviewImg');
+                        moreReviewImg.setAttribute('id','moreReviewImg');
+                        moreReviewImg.src = '/product/images/'+result[idx].reviewImg[index].storeFileName;
+                        $('#imgArea'+idx).append(moreReviewImg);
+                    })
+
                     $('#moreRating').attr('value',result[idx].reviewRating);
                     $('#moreReviewProduct').text(result[idx].reviewProduct);
-
-                    $(document).ready(function (){
+                    $('#moreReview').attr('id','moreReview'+idx);
                         var size = $('p[class = star]').length;
                         for (var i = 0; i < size; i++) {
                             $('p[class = star]').eq(i).attr('id', "moreRating" + i);
@@ -746,17 +752,6 @@ $(document).ready(function (){
                                 return $(v).attr("value") <= $("#moreRating" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
                             });
                         }
-                    })
-                    $.each(result[idx].reviewImg,function (index){
-                    let moreReviewImg = document.createElement('img');
-                    moreReviewImg.width = 100;
-                    moreReviewImg.height = 100;
-                    moreReviewImg.setAttribute('class','moreReviewImg');
-                    moreReviewImg.setAttribute('id','moreReviewImg');
-                    moreReviewImg.src = '/product/images/'+result[idx].reviewImg[index].storeFileName;
-                    $('#imgArea').append(moreReviewImg);
-                    })
-
                 })
                     let moreReviewModal = document.createElement('div');
                         moreReviewModal.setAttribute('id','modal');
@@ -796,30 +791,16 @@ $(document).ready(function (){
                         modal.style.display = text;
                     }
                 }
-            })
+    if (result.length == 0) {
+        let noMoreReview =
+            `<div><h6 class="m-lg-1 fs-5 text-center">더 이상 리뷰가 존재하지 않습니다.</h6></div>`;
+        $('#moreReview').hide();
+        $('#tagArea:last').append(noMoreReview);
+    }
+            }
+            )
         totalPage += 10;
-    if (data.total < 10) {
-        TODO
     }
-    }
-
-
-    function toHtml(data) {
-        for (num = 0; num < 10; num++) {
-            let tagArea = document.getElementById('tagArea');
-            let new_pTag = document.createElement('p');
-            // document.getElementById('tagArea').appendChild(new_pTag)
-
-            new_pTag.setAttribute('class', 'pTag');
-            new_pTag.innerHTML = data.data
-
-            tagArea.appendChild(new_pTag);
-
-        }
-    }
-
-
-
 
 </script>
 <script th:inline="javascript">
