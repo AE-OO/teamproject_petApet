@@ -24,9 +24,8 @@
                             <div class="carousel-inner">
                                 <div class="carousel-item" th:each="img : *{productImg}">
                                     <img th:src="|@{/product/images/{filename}(filename=${img.storeFileName})}|"
-                                         width="400" height="400"
-                                         style="min-height: 400px; min-width: 400px"
-                                         class="d-block w-auto" alt="...">
+                                         style="max-width: 100%; height: auto; vertical-align: bottom;"
+                                         class="d-block w-auto" id="carousel-img" alt="...">
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button"
@@ -150,7 +149,7 @@
                         style="background-color: white"> 상품상세
                 </button>
                 <button onclick="review_scroll_move()" class="btn text-dark col-3" style="background-color: white">
-                    상품평()
+                    상품평([[${reviews.size}]])
                 </button>
                 <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"
                         style="background-color: white"> 상품문의
