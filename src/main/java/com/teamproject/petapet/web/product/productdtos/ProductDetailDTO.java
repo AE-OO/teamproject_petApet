@@ -14,7 +14,6 @@ public class ProductDetailDTO {
     private Long productId;
     private String productContent;
     private List<UploadFile> productImg;
-//    private List<Review> review;
     private String productName;
     private Long productPrice;
     private Long productRating;

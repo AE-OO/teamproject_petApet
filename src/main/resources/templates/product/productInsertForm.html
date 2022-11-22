@@ -16,8 +16,8 @@
             <div class="d-flex col-6 justify-content-center">
                 <div class="portfolio-container">
                     <div class="portfolio-item">
-                        <div class="portfolio">
-                            <img class="img-fluid" th:src="@{/img/petSnack.jpg}" style="height: 27rem;">
+                        <div class="portfolio" id="thumbnailImg">
+<!--                            <img id="defaultImg" class="img-fluid" th:src="@{/img/petSnack.jpg}" style="width: 100%; height: auto">-->
                         </div>
                     </div>
                 </div>
@@ -35,36 +35,43 @@
                     </div>
                 </div>
                 <hr class="mb-4 mt-4">
-                <div class="d-flex m-lg-3 col">
+                <div class="d-flex mx-3 col">
                     <div class="col-6 m-lg-1">
-                        <h6>할인율</h6>
-                        <input type="number" id="discountRate" min="0" placeholder="할인율" required>
+                        <h6>할인율
+                            <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productDiscountRate}"/>
+                        </h6>
+                        <input type="number" id="discountRate" min="0" max="99"
+                               onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+                               class="col-8" th:field="*{productDiscountRate}"
+                               placeholder="할인율" required>
                         <span class="validity"></span>
                         <h6 class="text-secondary" id="disRateMessage"></h6>
                     </div>
                     <div class="col-6 m-lg-1">
-                        <h6 class="">price
-                            <div class="field-error text-secondary fs-6" th:errors="*{productPrice}"/>
+                        <h6 class="">판매가
+                            <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productUnitPrice}"/>
                         </h6>
-                        <input type="number" th:field="*{productPrice}" id="productPrice"
-                               min="1" placeholder="가격" required>
+                        <input type="number"  id="productPrice" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+                               class="col-8" min="1" max="9999999" th:field="*{productUnitPrice}" placeholder="가격" required>
                         <span class="validity"></span>
-                        <h6 class="text-secondary" id="priceMessage"></h6>
+                        <h6 class="text-secondary" id="priceMessage" style="font-size: 12px"></h6>
 
                     </div>
                 </div>
                 <hr class="mb-4 mt-4">
-                <div class="d-flex m-lg-3 col">
+                <div class="d-flex mx-3 col">
                     <div class="d-flex flex-row col">
                         <div class="col-6 m-lg-1">
-                            <h6>최종판매가</h6>
+                            <h6>최종판매가
+                                <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productPrice}"/>
+                            </h6>
                         </div>
                         <div class="col-6 m-lg-1">
-                            <input style="border: none" name="productPrice" readonly id="finalPrice">
+                            <input style="border: none; color: #347a5e" th:field="*{productPrice}" name="productPrice" id="finalPrice">
                         </div>
                     </div>
                 </div>
-                <div class="d-flex m-lg-3 col">
+                <div class="d-flex mx-3 col">
                     <div class="d-flex flex-row col">
                         <div class="col-6 m-lg-1">
                             <h6>판매자</h6>
@@ -74,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex m-lg-3 col">
+                <div class="d-flex mx-3 col">
                     <div class="d-flex flex-row col">
                         <div class="col-6 m-lg-1">
                             <h6>재고
@@ -82,14 +89,16 @@
                             </h6>
                         </div>
                         <div class="col-6 m-lg-1">
-                            <input type="number" th:field="*{productStock}" min="0"
+                            <input type="number" th:field="*{productStock}" min="100" max="9999"
+                                   class="col-8" id="productStock"
                                    name="productStock" placeholder="재고" required>
                             <span class="validity"></span>
+                            <h6 class="text-secondary" id="stockMessage"></h6>
                         </div>
                     </div>
                 </div>
                 <hr class="mb-4 mt-4">
-                <div class="d-flex m-lg-3 col">
+                <div class="d-flex mx-3 col">
                     <div class="d-flex flex-row col-6 m-lg-1">
                         <h6>사진첨부
                             <div class="field-error text-secondary fs-6" th:errors="*{productImg}"/>
@@ -97,10 +106,10 @@
                     </div>
                     <div class="d-flex flex-row col-6 m-lg-1">
                         <input type="file" th:field="*{productImg}" multiple="multiple"
-                               name="productImg">
+                               name="productImg" onchange="setThumbnail(event);">
                     </div>
                 </div>
-                <div class="d-flex m-lg-3 col">
+                <div class="d-flex mx-3 col">
                     <div class="d-flex flex-row col-6 m-lg-1">
                         <h6>상품카테고리
                             <div th:errors="*{productDiv}" class="field-error text-secondary">
@@ -225,6 +234,23 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
 <script type="text/javascript" th:inline="javascript">
+
+    function setThumbnail(event) {
+let from = Array.from(event.target.files);
+console.log(from[0])
+        for (var image of event.target.files) {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var img = document.createElement("img");
+                img.setAttribute("src", event.target.result);
+                img.setAttribute('style','width: 100%; height: auto')
+                // img.height = 100;
+                document.querySelector("#thumbnailImg").appendChild(img);
+            };
+            reader.readAsDataURL(image);
+        }
+    }
+
     $(document).ready(function () {
         $('#productContent').summernote({
             tabsize: 2,
@@ -274,16 +300,28 @@
             let discountRate = fnReplace($("#discountRate").val());
             if (discountRate>99){
                 $('#disRateMessage').text('0-99까지의 값을 입력하세요');
-                $('#disRateMessage:')
             } else {
                 $('#disRateMessage').empty();
             }
-            $('#finalPrice').val(price - (price * (discountRate / 100)));
+            $('#finalPrice').val(Math.ceil(price - (price * (discountRate / 100))));
         })
         $("#productPrice").on("propertychange change paste input", function() {
             let price = fnReplace($("#productPrice").val());
             let discountRate = fnReplace($("#discountRate").val());
-            $('#finalPrice').val(price - (price * (discountRate / 100)));
+            if (price>9999999){
+                $('#priceMessage').text('1,000원 이상, 9,999,999원 이하의 금액이여야 합니다');
+            } else {
+                $('#priceMessage').empty();
+            }
+            $('#finalPrice').val(Math.ceil(price - (price * (discountRate / 100))));
+        })
+        $("#productStock").on("propertychange change paste input", function() {
+            let productStock = fnReplace($("#productStock").val());
+            if (productStock>9999 || productStock<100){
+                $('#stockMessage').text('100-9999미만의 값을 입력하세요');
+            } else {
+                $('#stockMessage').empty();
+            }
         })
     })
     function fnReplace(val) {

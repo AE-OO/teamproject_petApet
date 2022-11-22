@@ -34,8 +34,14 @@ public class Product {
     @Column(length = 5, nullable = false)
     private Long productPrice;
 
-    @Column(columnDefinition = "bigint(5) default 0")
+    @Column(length = 4, nullable = false)
     private Long productStock;
+
+    @Column(length = 2, nullable = false)
+    private Long productDiscountRate;
+
+    @Column(length = 7, nullable = false)
+    private Long productUnitPrice;
 
     @ElementCollection
     @CollectionTable(name = "ProductImg", joinColumns = @JoinColumn(name = "productImgId", referencedColumnName = "productId"))
