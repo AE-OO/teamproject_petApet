@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/inquiry.css" th:href="@{/css/inquiry.css}" >
-    <link rel="stylesheet" href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="css/inquiry.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- Favicon -->
@@ -27,18 +26,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link th:href="@{/lib/animate/animate.min.css}" rel="stylesheet">
-    <link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
-    <link th:href="@{/lib/lightbox/css/lightbox.min.css}" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/osh.css}" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <style>
         @media screen and (max-width: 1280px) {
@@ -74,19 +70,11 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>
-                <a href="#" class="nav-item nav-link">Contact</a>
-                <a href="/login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="isAnonymous()">Login</a>
-                <a href="/admin/admininfo" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="hasRole('MEMBER')">MyInfo</a>
-                <a href="/admin/adminPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="hasRole('ADMIN')">adminPage</a>
-                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="isAuthenticated()">Logout</a>
-                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                ><strong th:text="${#authentication.name}"/></a>
-
-                <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
+                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                <a href="mypage/mypage.html" th:onclick="|location.href='@{/mypage}'|"
+                    class="nav-item nav-link">Mypage</a>
+                <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>
+                <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
             </div>
 
         </div>
@@ -109,12 +97,12 @@
                     <div class="sc-1liba5b-6 OvTJQ">MY 쇼핑</div>
                     <div class="sc-1liba5b-7 gvMCBX">
                         <ul class="sc-1liba5b-8 McnCE">
-                            <li id="mc-order-carts-page" class="sc-1liba5b-9 bgmWPR selected"><a href="cart.html" th:href="@{/cart}"
+                            <li id="mc-order-carts-page" class="sc-1liba5b-9 bgmWPR selected"><a href="cart.html"
                                     title="장바구니" target="_self" class="sc-1liba5b-10 eLReSz">장바구니<span
                                         class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
                             <li id="mc-order-list-page" class="sc-1liba5b-9 bgmWPR selected"><a
-                                    href="buy.html" th:href="@{/buy}" title="주문목록/배송조회" target="_self"
+                                    href="buy.html" title="주문목록/배송조회" target="_self"
                                     class="sc-1liba5b-10 eLReSz">주문목록/배송조회<span class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
                             <li id="mc-cancel-return-page" class="sc-1liba5b-9 bgmWPR"><a
@@ -129,11 +117,11 @@
                     <div class="sc-1liba5b-6 OvTJQ">MY 활동</div>
                     <div class="sc-1liba5b-7 gvMCBX">
                         <ul class="sc-1liba5b-8 McnCE">
-                            <li id="mc-cs-main-page" class="sc-1liba5b-9 bgmWPR"><a href="inquiry.html" th:href="@{/inquiry}"
+                            <li id="mc-cs-main-page" class="sc-1liba5b-9 bgmWPR"><a href="inquiry.html"
                                     title="문의하기" target="_self" class="sc-1liba5b-10 eLReSz">문의하기<span
                                         class="sc-1liba5b-11 fBiFRr"></span></a></li>
                             <li id="mc-product-inquiry-list-page" class="sc-1liba5b-9 bgmWPR"><a
-                                    href="inquiry.html" th:href="@{/inquiry}" title="문의내역 확인" target="_self"
+                                    href="inquiry.html" title="문의내역 확인" target="_self"
                                     class="sc-1liba5b-10 eLReSz">문의내역 확인<span class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
                             <li id="mc-product-review-page" class="sc-1liba5b-9 bgmWPR"><a
@@ -271,10 +259,35 @@
                                         <p class="sc-10d7xix-1 cvpLIN">최근 문의내역이 없습니다.</p>
                                         <p class="sc-10d7xix-2 lpuyPp">이전 문의내역이 필요하시면 고객센터에 문의해주세요.</p>
                                     </div>
-                                    <div class="sc-10d7xix-0 p-3 myInquiry" th:each="inquiry : ${myInquiry}">
-                                        <span class="btn btn-primary state" th:text="${inquiry.checked} ? '답변완료':'답변대기'">답변완료</span>
+                                    <div class="sc-10d7xix-0 p-3 myInquiry">
+                                        <span class="btn btn-primary state">답변완료</span>
                                         <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
-                                        <p class="sc-10d7xix-1 m-3 myInquiry-title" th:text="${inquiry.inquiredContent}">문의 타이틀입니다.</p>
+                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의 타이틀입니다.</p>
+                                    </div>
+                                    <div class="sc-10d7xix-0 p-3 myInquiry">
+                                        <span class="btn btn-primary state">답변 응답중</span>
+                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
+                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의2 타이틀입니다.</p>
+                                    </div>
+                                    <div class="sc-10d7xix-0 p-3 myInquiry">
+                                        <span class="btn btn-primary state">답변 응답중</span>
+                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
+                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의2 타이틀입니다.</p>
+                                    </div>
+                                    <div class="sc-10d7xix-0 p-3 myInquiry">
+                                        <span class="btn btn-primary state">답변 응답중</span>
+                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
+                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의3 타이틀입니다.</p>
+                                    </div>
+                                    <div class="sc-10d7xix-0 p-3 myInquiry">
+                                        <span class="btn btn-primary state">답변 응답중</span>
+                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
+                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의4 타이틀입니다.</p>
+                                    </div>
+                                    <div class="sc-10d7xix-0 p-3 myInquiry">
+                                        <span class="btn btn-primary state">답변 응답중</span>
+                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
+                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의5 타이틀입니다.</p>
                                     </div>
                                 </div>
                             </div>
@@ -285,27 +298,38 @@
                             <div id="btn2" class="sc-4clfj5-0 hTYEBQ">
                                 <div class="sc-4clfj5-1 hwgKvp">
                                     <span class="sc-4clfj5-5 ldyR">문의 폼을 작성해주세요!!</span>
-                                    <button type="submit" form="inquired" th:onclick="" class="btn btn-primary d-flex float-end m-4">제출</button>
+                                    <button type="submit" class="btn btn-primary d-flex float-end m-4">제출</button>
                                 </div>
                                 <div class="sc-4clfj5-6 byqNSx">
-                                    <form id="inquired" th:action="@{/inquiry/submit}" th:method="post" th:object="${Inquired}" class="row mb-3">
+                                    <form class="row mb-3">
                                         <div class="container-md m-5">
                                             <label for="" class="col-sm-2 col-form-label">제목</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="" th:field="*{title}">
+                                                <input type="text" class="form-control" id="">
                                             </div>
-                                            <label for="" class="col-sm-2 col-form-label">내용</label>
+                                            <label for="" class="col-sm-2 col-form-label">차량 타입</label>
                                             <div class="col-sm-10" >
-                                                <textarea class="form-control custom-area" id="" th:field="*{inquiredContent}"></textarea>
+                                                <input class="d-flex flex-row" type="hidden" th:field="*{productDiv}" id="osh" value=""
+                                                       name="productDiv" required>
+                                                <select type="input" onchange="putValue(this)" class="form-select form-select-sm"
+                                                        id="inputGroupSelect01" required>
+                                                    <option selected disabled></option>
+                                                    <option value="T1">총 중량 3.5톤 미만</option>
+                                                    <option value="CC3500">3,500CC 이하</option>
+                                                    <option value="CC5500">3,500CC 초과 / 5,500CC 미만</option>
+                                                    <option value="CC7500">5,500CC 초과 / 7,500CC 미만</option>
+                                                    <option value="CCEx">7,500 초과</option>
+                                                    <option value="T2">덤프트럭 콘크리트믹서 콘크리트펌프 트럭</option>
+                                                </select>
+                                                <span class="validity"></span>
                                             </div>
                                             <label for="" class="col-sm-2 col-form-label">이메일</label>
-                                            <h6 th:errors="*{email}"> </h6>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="" th:field="*{email}">
+                                                <input type="text" class="form-control" id="">
                                             </div>
                                         </div>
                                         <div class="container">
-                                            <input type="file" id="upload-button" multiple="multiple"/>
+                                            <input type="file" id="upload-button" multiple accept="image/*" />
                                             <label for="upload-button"
                                             ><i class="fa-solid fa-upload"></i>&nbsp; Choose Or Drop Photos
                                             </label>
@@ -566,7 +590,7 @@
             </div>
         </section>
     </div>
-    <script src="js/inquiry.js" th:src="@{/js/inquiry.js}"></script>
+    <script src="js/inquiry.js"></script>
 </body>
 
 </html>
