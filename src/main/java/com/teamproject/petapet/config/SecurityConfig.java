@@ -26,7 +26,6 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final CorsFilter corsFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -55,8 +54,8 @@ public class SecurityConfig {
                 //해당 url은 관리자만 접근 가능
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")
-                .antMatchers("/login","/login","/adminLogin").permitAll()
-                .antMatchers("/join","/sms/send").permitAll()
+                .antMatchers("/company/**").hasAnyRole("COMPANY","ADMIN")
+                .antMatchers("/login","/join","/sms/send","/companyJoin").permitAll()
                 .antMatchers("/product/**").permitAll()
                 .antMatchers("/").permitAll()
                 //나머지 경로는 인증 없이 접근 불가

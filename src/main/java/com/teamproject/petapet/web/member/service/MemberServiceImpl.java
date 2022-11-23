@@ -4,7 +4,7 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.jwt.JwtTokenProvider;
 
-import com.teamproject.petapet.validatiion.MemberPwEquals;
+import com.teamproject.petapet.web.member.validatiion.PasswordEquals;
 import com.teamproject.petapet.web.member.dto.*;
 
 import lombok.RequiredArgsConstructor;
@@ -97,7 +97,7 @@ public class MemberServiceImpl implements MemberService {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDTO.getMemberId(), loginDTO.getMemberPw());
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
-        //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
+        //    authenticate 메서드가 실행이 될 때 CustomCompanyUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         // 3. 인증 정보를 기반으로 JWT 토큰 생성 후 발급
         return jwtTokenProvider.createToken(authentication);
@@ -123,14 +123,13 @@ public class MemberServiceImpl implements MemberService {
         }
         //글로벌 에러
         for (ObjectError error : bindingResult.getGlobalErrors()) {
-            if (error.getCode().equals(MemberPwEquals.class.getSimpleName())) {
+            if (error.getCode().equals(PasswordEquals.class.getSimpleName())) {
                 String validKeyName = String.format("valid_%s", error.getObjectName());
                 validatorResult.put(validKeyName, error.getDefaultMessage());
             }
         }
         return validatorResult;
     }
-
 
     @Transactional(readOnly = true)
     @Override

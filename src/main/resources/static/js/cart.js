@@ -23,6 +23,9 @@ const productQuntity = $('em.quan > .num--37aOyGmdW1'); // 상품 주문 수량
 const productTotalFn = $('em.totalFn > .num--37aOyGmdW1'); // 상품 총 금액
 const fadeTime = 300;
 
+/* 주문 */
+const addBuy = $('.addBuy');
+
 
 $(document).ready(function() {
     // function cal_fn(){
@@ -60,7 +63,7 @@ $(document).ready(function() {
             // 전체 삭제
             $(selectDeleteCards).click(function(){
                 $(this).parents().eq(4).children().find(cards).remove();
-                // $(this).parents().eq(4).children().find(input).val(0);
+                $(this).parents().eq(4).children().find(input).val(0);
                 console.log("val", $(input).val());
             });
         } else{
@@ -83,6 +86,7 @@ $(document).ready(function() {
         var $input = $(this).parent().find('input');
         $input.val(parseInt($input.val()) + 1);
         $input.change();
+        console.log($input.change());
     });
 
 
@@ -227,6 +231,31 @@ $(document).ready(function() {
         });
 
         $(this).parents().eq(4).children().find(cards).remove();
+    });
+
+    $(addBuy).click(function(){
+        // var productId = $(this).parents().eq(4).find().children(".productId").val();
+        var productId = $(this).val();
+        var quantity = $(this).parents().eq(2).find().children('.qtt').text();
+        var urlBuy =  "/buy/add";
+
+        var param = {"product": productId, "quantity":quantity};
+        console.log("product : " + productId);
+        console.log("quantity : " + quantity);
+        // $.ajax({
+        //     url: urlBuy,
+        //     type: "POST",
+        //     data: JSON.stringify(param),
+        //     dataType: "text",
+        //     contentType : "application/json",
+        //     charset : "UTF-8",
+        //     success: function (data) {
+        //         alert("장바구니 추가되었음")
+        //     },
+        //     error: function (jqXHR, status, errorThrown) {
+        //         alert("에러");
+        //     }
+        // });
     });
 
 });

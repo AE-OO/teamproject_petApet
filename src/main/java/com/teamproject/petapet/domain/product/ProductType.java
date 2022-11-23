@@ -8,7 +8,7 @@ public enum ProductType {
     FASHION("패션/잡화"),
     STROLLER("유모차");
 
-    private String productCategory;
+    private final String productCategory;
 
     ProductType(String productCategory) {
         this.productCategory = productCategory;

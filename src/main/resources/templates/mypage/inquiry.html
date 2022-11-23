@@ -271,35 +271,10 @@
                                         <p class="sc-10d7xix-1 cvpLIN">최근 문의내역이 없습니다.</p>
                                         <p class="sc-10d7xix-2 lpuyPp">이전 문의내역이 필요하시면 고객센터에 문의해주세요.</p>
                                     </div>
-                                    <div class="sc-10d7xix-0 p-3 myInquiry">
-                                        <span class="btn btn-primary state">답변완료</span>
+                                    <div class="sc-10d7xix-0 p-3 myInquiry" th:each="inquiry : ${myInquiry}">
+                                        <span class="btn btn-primary state" th:text="${inquiry.checked} ? '답변완료':'답변대기'">답변완료</span>
                                         <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
-                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의 타이틀입니다.</p>
-                                    </div>
-                                    <div class="sc-10d7xix-0 p-3 myInquiry">
-                                        <span class="btn btn-primary state">답변 응답중</span>
-                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
-                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의2 타이틀입니다.</p>
-                                    </div>
-                                    <div class="sc-10d7xix-0 p-3 myInquiry">
-                                        <span class="btn btn-primary state">답변 응답중</span>
-                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
-                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의2 타이틀입니다.</p>
-                                    </div>
-                                    <div class="sc-10d7xix-0 p-3 myInquiry">
-                                        <span class="btn btn-primary state">답변 응답중</span>
-                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
-                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의3 타이틀입니다.</p>
-                                    </div>
-                                    <div class="sc-10d7xix-0 p-3 myInquiry">
-                                        <span class="btn btn-primary state">답변 응답중</span>
-                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
-                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의4 타이틀입니다.</p>
-                                    </div>
-                                    <div class="sc-10d7xix-0 p-3 myInquiry">
-                                        <span class="btn btn-primary state">답변 응답중</span>
-                                        <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
-                                        <p class="sc-10d7xix-1 m-3 myInquiry-title">문의5 타이틀입니다.</p>
+                                        <p class="sc-10d7xix-1 m-3 myInquiry-title" th:text="${inquiry.inquiredContent}">문의 타이틀입니다.</p>
                                     </div>
                                 </div>
                             </div>
@@ -310,22 +285,27 @@
                             <div id="btn2" class="sc-4clfj5-0 hTYEBQ">
                                 <div class="sc-4clfj5-1 hwgKvp">
                                     <span class="sc-4clfj5-5 ldyR">문의 폼을 작성해주세요!!</span>
-                                    <button type="submit" class="btn btn-primary d-flex float-end m-4">제출</button>
+                                    <button type="submit" form="inquired" th:onclick="" class="btn btn-primary d-flex float-end m-4">제출</button>
                                 </div>
                                 <div class="sc-4clfj5-6 byqNSx">
-                                    <form class="row mb-3">
+                                    <form id="inquired" th:action="@{/inquiry/submit}" th:method="post" th:object="${Inquired}" class="row mb-3">
                                         <div class="container-md m-5">
                                             <label for="" class="col-sm-2 col-form-label">제목</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="">
+                                                <input type="text" class="form-control" id="" th:field="*{title}">
                                             </div>
                                             <label for="" class="col-sm-2 col-form-label">내용</label>
                                             <div class="col-sm-10" >
-                                                <textarea class="form-control custom-area" id=""></textarea>
+                                                <textarea class="form-control custom-area" id="" th:field="*{inquiredContent}"></textarea>
+                                            </div>
+                                            <label for="" class="col-sm-2 col-form-label">이메일</label>
+                                            <h6 th:errors="*{email}"> </h6>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="" th:field="*{email}">
                                             </div>
                                         </div>
                                         <div class="container">
-                                            <input type="file" id="upload-button" multiple accept="image/*" />
+                                            <input type="file" id="upload-button" multiple="multiple"/>
                                             <label for="upload-button"
                                             ><i class="fa-solid fa-upload"></i>&nbsp; Choose Or Drop Photos
                                             </label>

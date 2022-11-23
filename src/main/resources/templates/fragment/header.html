@@ -1,50 +1,54 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <th:block th:fragment="header">
-    <header class="header header-expand-lg bg-white header-light sticky-top p-0">
-        <a href="index.html" class="header-brand d-flex align-items-center px-4 px-lg-5">
-            <img scr="#" alt="logo"> <h1 class="m-0">petApet</h1>
-        </a>
-        <button type="button" class="header-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="header-toggler-icon"></span>
-        </button>
-        <div class="collapse header-collapse" id="navbarCollapse">
-            <div class="header-nav ms-auto p-4 p-lg-0">
-                <a href="#l" class="nav-item nav-link">About</a>
-                <a href="#" class="nav-item nav-link">Services</a>
-                <a th:href="@{/product}" class="nav-item nav-link">Product</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
-                    <div class="dropdown-menu bg-light m-0">
-                        <a href="#" class="dropdown-item">Test1</a>
-                        <a href="#" class="dropdown-item">Test2</a>
-                        <a href="#" class="dropdown-item">Test3</a>
-                        <a href="#" class="dropdown-item">Test5</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a>
+    <header class="header fixed-top py-0">
+        <div class="container-fluid header-expand-lg bg-white header-light p-0">
+            <a href="/" class="header-brand d-flex align-items-center px-5 py-0">
+                <img class="w-20" th:src="@{/img/logo.png}" alt="logo">
+                <h1 class="m-0">petApet</h1>
+            </a>
+            <button type="button" id="test" class="header-toggler me-4" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="header-toggler-icon"></span>
+            </button>
+            <div class="collapse header-collapse" id="navbarCollapse">
+                <div class="header-nav ms-auto">
+                    <a href="#l" class="nav-item nav-link">About</a>
+                    <a th:href="@{/product}" class="nav-item nav-link">Product</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
+                        <div class="dropdown-menu bg-light m-0">
+                            <a href="#" class="dropdown-item">Test1</a>
+                            <a href="#" class="dropdown-item">Test2</a>
+                            <a href="#" class="dropdown-item">Test3</a>
+                            <a href="#" class="dropdown-item">Test5</a>
+                        </div>
+                    </div>
+                    <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
+                        <i class="fa fa-heart"></i></a>
+                    <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
+                        <i class="fa fa-shopping-bag"></i></a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link nav-link2 me-0 h-100" id="dropdownA" data-bs-toggle="dropdown">
+                            <i class="fa fa-user"></i></a>
+                        <div class="dropdown-menu bg-white text-center m-0" id="dropdownMenuDiv" style="right:0;">
+                            <a href="/login" class="dropdown-item" sec:authorize="isAnonymous()">로그인</a>
+                            <a href="/join" class="dropdown-item" sec:authorize="isAnonymous()">회원가입</a>
+                            <a href="/admin/adminPage" class="dropdown-item" sec:authorize="hasRole('ADMIN')">관리자</a>
+                            <a href="/member/checkInfo" class="dropdown-item" sec:authorize="hasRole('MEMBER')">내 정보</a>
+                            <a href="/company/info" class="dropdown-item" sec:authorize="hasRole('COMPANY')">기업 정보</a>
+                            <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
+                            <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
+                            <a href="/logout" class="dropdown-item" sec:authorize="isAuthenticated()">로그아웃</a>
+                        </div>
                     </div>
                 </div>
-
-                <a href="#" class="nav-item nav-link">Contact</a>
-                <a href="/login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="isAnonymous()">Login</a>
-                <a href="/admin/admininfo" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="hasRole('MEMBER')">MyInfo</a>
-                <a href="/admin/adminPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="hasRole('ADMIN')">adminPage</a>
-                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="isAuthenticated()">Logout</a>
-                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                ><strong th:text="${#authentication.name}"/></a>
-
-                <a href="cart.html" th:href="@{/cart}" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>
             </div>
-
         </div>
     </header>
 </th:block>

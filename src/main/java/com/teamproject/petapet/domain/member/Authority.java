@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.member;
 
+import com.teamproject.petapet.domain.company.Company;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -27,19 +28,23 @@ public class Authority implements GrantedAuthority {
     @JoinColumn(name = "memberId")
     private Member member;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "companyId")
+    private Company company;
+
     private String role;
 
-    public static Authority ofUser(Member member) {
+    public static Authority ofMember(Member member) {
         return Authority.builder()
                 .role("ROLE_MEMBER")
                 .member(member)
                 .build();
     }
 
-    public static Authority ofAdmin(Member member) {
+    public static Authority ofCompany(Company company) {
         return Authority.builder()
-                .role("ROLE_ADMIN")
-                .member(member)
+                .role("ROLE_COMPANY")
+                .company(company)
                 .build();
     }
 

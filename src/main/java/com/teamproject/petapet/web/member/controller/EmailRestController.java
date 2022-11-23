@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/email")
 public class EmailRestController {
-
     private final EmailService emailService;
-
     @PostMapping("/send")
     int emailSend(@RequestParam String email, @RequestParam String memberId){
         return emailService.emailSend(email,memberId);
+    }
+
+    @PostMapping("/sendCompany")
+    int emailSend(@RequestParam String companyId){
+        return emailService.emailSend(companyId);
     }
 }

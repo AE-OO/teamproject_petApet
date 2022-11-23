@@ -21,6 +21,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Long countReviewByProduct(Product product);
 
     @Query(value = "select a from Review a where a.product.productId = :id")
-    Slice<Review> test(@Param("id")Long id, Pageable pageable);
+    Slice<Review> requestMoreReview(@Param("id")Long id, Pageable pageable);
 }
 

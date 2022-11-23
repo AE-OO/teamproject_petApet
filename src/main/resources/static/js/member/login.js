@@ -2,14 +2,22 @@ memberId = () => $("#input-memberId");
 memberPw = () => $("#input-memberPw");
 mIdFeedback = () => $("#feedback-memberId");
 mPwFeedback = () => $("#feedback-memberPw");
+
+companyId = () => $("#input-companyId");
+companyPw = () => $("#input-companyPw");
+cIdFeedback = () => $("#feedback-companyId");
+cPwFeedback = () => $("#feedback-companyPw");
 //비밀번호 정규식 (영어 대소문자,특수문자,숫자 필수입력, 8-16글자)
-const mPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+const PwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
 //이 문자가 포함된 아이디는 에러메세지 안없어짐
 // const secret = window.atob("YWRtaW4=");
 
 $(document).ready(function () {
     let memberIdResult = false;
     let memberPwResult = false;
+
+    let companyIdResult = false;
+    let companyPwResult = false;
 
     memberId().blur(function () {
         if (memberId().val() == "") {  //ID란이 비어있다면
@@ -45,12 +53,11 @@ $(document).ready(function () {
             // });
         }
     });
-
     memberPw().blur(function () {
         if (memberPw().val() == "") { //PW란이 비어있다면
             mPwFeedback().text("비밀번호를 입력해주세요.");
             return memberPwResult = false;
-        } else if (!(mPwRegExp.test(memberPw().val()))) {
+        } else if (!(PwRegExp.test(memberPw().val()))) {
             mPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
             return memberPwResult = false;
         } else {
@@ -58,7 +65,6 @@ $(document).ready(function () {
             return memberPwResult = true;
         }
     });
-
     $("#loginBtn").click(function () {
 
         if (memberId().val() == "") {
@@ -99,4 +105,60 @@ $(document).ready(function () {
         // });
         }
     });
+
+
+    companyId().blur(function () {
+        if (companyId().val() == "") {  //ID란이 비어있다면
+            cIdFeedback().text("아이디를 입력해주세요.");
+            return companyIdResult = false;
+        }else{
+            cIdFeedback().text("");
+            return companyIdResult = true;
+        }
+    });
+
+    companyPw().blur(function () {
+        if (companyPw().val() == "") { //PW란이 비어있다면
+            cPwFeedback().text("비밀번호를 입력해주세요.");
+            return companyPwResult = false;
+        } else if (!(PwRegExp.test(companyPw().val()))) {
+            cPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+            return companyPwResult = false;
+        } else {
+            cPwFeedback().text("");
+            return companyPwResult = true;
+        }
+    });
+
+    $("#companyLoginBtn").click(function () {
+
+        if (companyId().val() == "") {
+            cIdFeedback().text("아이디를 입력해주세요.");
+            companyId().focus();
+            return;
+        } else {
+            cIdFeedback().text("");
+        }
+
+        if (companyPw().val() == "") {
+            cPwFeedback().text("비밀번호를 입력해주세요.");
+            companyPw().focus();
+            return;
+        } else {
+            cPwFeedback().text("")
+        }
+
+        if (companyIdResult && companyPwResult) {
+            $("#companyLoginBtn").attr("type","submit")
+        }
+    });
+    
+    $("#companyBtn").click(function () {
+        $("#memberForm").attr('hidden',true);
+        $("#companyForm").attr('hidden',false);
+    })
+    $("#memberBtn").click(function () {
+        $("#companyForm").attr('hidden',true);
+        $("#memberForm").attr('hidden',false);
+    })
 });

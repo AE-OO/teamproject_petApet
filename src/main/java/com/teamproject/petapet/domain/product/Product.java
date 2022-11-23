@@ -3,6 +3,7 @@ package com.teamproject.petapet.domain.product;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
+import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -33,14 +34,20 @@ public class Product {
     @Column(length = 5, nullable = false)
     private Long productPrice;
 
-    @Column(columnDefinition = "bigint(5) default 0")
+    @Column(length = 4, nullable = false)
     private Long productStock;
+
+    @Column(length = 2, nullable = false)
+    private Long productDiscountRate;
+
+    @Column(length = 7, nullable = false)
+    private Long productUnitPrice;
 
     @ElementCollection
     @CollectionTable(name = "ProductImg", joinColumns = @JoinColumn(name = "productImgId", referencedColumnName = "productId"))
     private List<UploadFile> productImg;
 
-    @Column(length = 45,columnDefinition = "varchar(45) default '판매중'")
+    @Column(length = 45, columnDefinition = "varchar(45) default '판매중'")
     private String productStatus;
 
     //상품분류
@@ -51,7 +58,7 @@ public class Product {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String productContent;
 
-    @Column(length = 1,columnDefinition = "int(1) default 0")
+    @Column(length = 1, columnDefinition = "int(1) default 0")
     private Long productRating;
 
     @Column(columnDefinition = "bigint(3) default 0")
@@ -76,5 +83,16 @@ public class Product {
         this.productStatus = productStatus;
         this.productDiv = productDiv;
         this.productContent = productContent;
+    }
+
+    public ProductDetailDTO toProductDetailDTO(Product product) {
+        return ProductDetailDTO.builder().productPrice(product.getProductPrice())
+                .productImg(product.getProductImg())
+                .productId(product.getProductId())
+                .productStock(product.getProductStock())
+                .productRating(product.getProductRating())
+                .productName(product.getProductName())
+                .productContent(product.getProductContent())
+                .build();
     }
 }

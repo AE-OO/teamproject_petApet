@@ -2,12 +2,9 @@ package com.teamproject.petapet.web.buy;
 
 
 import com.teamproject.petapet.domain.buy.Buy;
-import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.buy.dto.BuyDTO;
 import com.teamproject.petapet.web.buy.dto.BuyVO;
-import com.teamproject.petapet.web.buy.service.Buyservice;
-import com.teamproject.petapet.web.cart.dto.CartVO;
+import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BuyController {
 
-    private final Buyservice buyService;
+    private final BuyService buyService;
     private final MemberService memberService;
 
     private final CartService cartService;
@@ -37,13 +33,14 @@ public class BuyController {
     private final ProductService productService;
 
 
+    // 나의 주문 목록
     @GetMapping()
     public String myBuy(Principal principal,
                          HttpServletRequest request,
                          HttpSession httpSession,
                          Model model){
 
-        if(Principal.class.isInstance(principal)) {
+        if(principal instanceof Principal) {
             String loginMember = checkMember(principal, request, httpSession);
 
             List<Buy> buyList = buyService.findAll(loginMember);

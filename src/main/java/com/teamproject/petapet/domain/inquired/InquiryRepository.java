@@ -12,5 +12,5 @@ public interface InquiryRepository extends JpaRepository<Inquired, Long> {
 
     // 문의한 내용 보기 - 멤버
     @Query("select i from Inquired i where i.member =: memberId")
-    public List<Inquired> myInquiryList(@Param("member") String memberId);
+    List<Inquired> myInquiryList(@Param("member") String memberId);
 }

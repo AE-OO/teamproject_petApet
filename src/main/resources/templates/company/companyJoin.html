@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 사업자 회원가입</title>
+    <link>
+    <script src="/js/company/companyJoin.js"></script>
+</head>
+
+<body>
+
+<!-- companyJoin Start -->
+<main class="container-xxl text-center py-7 my-auto">
+    <div class="container join">
+        <div class="row g-5">
+            <div class="mx-auto">
+                <h1 class="display-5 mb-5"><a class="" href="/"><img width="15%" src="img/logo.png"
+                                                                           alt="logo">petApet</a></h1>
+                <h4 class="mb-3">사업자 회원가입</h4>
+
+                <p class="mb-4 text-end"><span class="text-danger">*</span>필수입력사항</p>
+                <form action="/companyJoin" method="post">
+                    <div class="row g-3">
+
+                        <!-- companyId start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" id="input-companyId" class="form-control" name="companyId"
+                                       maxlength="20" placeholder="loginId">
+                                <label for="input-companyId">아이디<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-companyId" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyId}"/>
+                        </div>
+                        <!-- companyId end -->
+
+                        <!-- companyPw start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="password" id="input-companyPw" name="companyPw" class="form-control"
+                                       maxlength="18" placeholder="companyPw">
+                                <label for="input-companyPw">비밀번호<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-companyPw" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyPw}"/>
+                        </div>
+                        <!-- companyPw end -->
+
+                        <!-- companyPw2 start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="password" id="input-companyPw2" name="companyPw2" class="form-control"
+                                       maxlength="18" placeholder="companyPw2">
+                                <label for="input-companyPw2">비밀번호 확인<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-companyPw2" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyJoinDTO}==null? ${valid_companyPw2}:${valid_companyJoinDTO}"/>
+
+                        </div>
+                        <!-- companyPw2 end -->
+
+                        <!-- companyName start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" id="input-companyName" name="companyName" class="form-control"
+                                       maxlength="20" placeholder="name">
+                                <label for="input-companyName">상호명<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-companyName" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyName}"/>
+                        </div>
+                        <!-- companyName end-->
+
+                        <!-- companyNumber start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" id="input-companyNumber" name="companyNumber" class="form-control"
+                                       maxlength="10" placeholder="companyNumber">
+                                <label for="input-companyNumber">사업자번호<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-companyNumber" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyNumber}"/>
+                        </div>
+                        <!-- companyNumber end-->
+
+                        <!-- companyEmail start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" id="input-companyEmail" name="companyEmail" class="form-control"
+                                       placeholder="companyEmail">
+                                <label for="input-companyEmail">이메일<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-companyEmail" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyEmail}"/>
+                        </div>
+                        <!-- companyNumber end-->
+
+                        <!-- companyPhoneNum start -->
+                        <div class="col-12">
+                            <div class="row g-2 mb-2 px-1">
+                                <div class="form-floating px-0 pe-1 col-8">
+                                    <input type="text" id="input-companyPhoneNum" name="companyPhoneNum"
+                                           class="form-control" maxlength="11"
+                                           placeholder="휴대전화">
+                                    <label for="input-companyPhoneNum" class="w-75">휴대전화<span
+                                            class="text-danger">*</span></label>
+                                </div>
+                                <div class="form-floating px-0 ps-1 col-4">
+                                    <button id="smsBtn" type="button" class="btn btn-dark w-100 h-100">
+                                        인증번호 받기
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="form-floating">
+                                    <input id="input-smsConfirmNum" type="text" class="form-control"
+                                           name="smsConfirmNum" maxlength="6" onclick=""
+                                           placeholder="휴대전화" disabled>
+                                    <label>인증번호 입력<span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <p id="feedback-companyPhoneNum" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyPhoneNum}"/>
+                            <p id="feedback-smsConfirmPhoneNum" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_smsConfirmNum}"/>
+                        </div>
+                        <!-- companyPhoneNum end -->
+
+                        <!-- join button-->
+                        <div class="col-12">
+                            <button type="button" id="joinBtn" class="btn btn-primary mb-2 col-12 py-3">
+                                회원가입 신청하기
+                            </button>
+                        </div>
+                        <!-- join button-->
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Join End -->
+
+<th:block th:replace="~{fragment/layout :: copyright}"></th:block>
+
+</body>
+
+</html>
