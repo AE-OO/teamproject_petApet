@@ -255,9 +255,13 @@
                                             <td id="communityId">[[${communityReport.community.communityId}]]</td>
                                             <td>[[${communityReport.reportReason}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm acceptCommunityReportBtn"
+                                                <button class="btn btn-danger btn-sm" id="showCommunityReportModal" th:onclick="getReportReason([[${communityReport.reportId}]], 'community');" data-bs-toggle="modal"
+                                                        data-bs-target="#confirmReportModal"
                                                         type="button">승인
                                                 </button>
+<!--                                                <button class="btn btn-danger btn-sm acceptCommunityReportBtn"-->
+<!--                                                        type="button">승인-->
+<!--                                                </button>-->
                                             </td>
                                         </tr>
                                         </tbody>
@@ -289,13 +293,10 @@
                                             <td id="memberId">[[${memberReport.member.memberId}]]</td>
                                             <td>[[${memberReport.reportReason}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm" id="showMemberReportModal" data-bs-toggle="modal"
-                                                        data-bs-target="#confirmProductReportModal"
+                                                <button class="btn btn-danger btn-sm" id="showMemberReportModal" th:onclick="getReportReason([[${memberReport.reportId}]], 'member');" data-bs-toggle="modal"
+                                                        data-bs-target="#confirmReportModal"
                                                         type="button">승인
                                                 </button>
-<!--                                                <button class="btn btn-danger btn-sm acceptMemberReportBtn"-->
-<!--                                                        type="button">승인-->
-<!--                                                </button>-->
                                             </td>
                                         </tr>
                                         </tbody>
@@ -328,8 +329,8 @@
                                             <td id="productId">[[${productReport.product.productId}]]</td>
                                             <td>[[${productReport.reportReason}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm" id="showProductReportModal" data-bs-toggle="modal"
-                                                        data-bs-target="#confirmProductReportModal"
+                                                <button class="btn btn-danger btn-sm" id="showProductReportModal" th:onclick="getReportReason([[${productReport.reportId}]], 'product');" data-bs-toggle="modal"
+                                                        data-bs-target="#confirmReportModal"
                                                         type="button">승인
                                                 </button>
                                             </td>
@@ -530,15 +531,18 @@
                     </div>
                 </div>
             </div>
-            <!-- 상품 신고 확인 Modal -->
-            <div class="modal fade" id="confirmProductReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- 신고 확인 Modal -->
+            <div class="modal fade" id="confirmReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h2 class="modal-title fs-5 text-center" id="exampleModalLabel">상품신고</h2>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" id="modalCloseBTN" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-center productReportBody">
+                            <input type="hidden" id="modalReportId">
+                            <input type="hidden" id="modalTargetType">
+                            <input type="hidden" id="modalTargetId">
                             <h4 class="text-left font-weight-bold">신고 사유</h4>
                             <input class="form-control form-control-sm" id="reportReason" value="" readonly>
                             <br>
@@ -546,8 +550,8 @@
                             <textarea class="form-control" id="reportDetailReason" value="" rows="4" readonly></textarea>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelProductReportBtn">반려</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="acceptProductReportBtn">승인</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelReportBtn">반려</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="acceptReportBtn">승인</button>
                         </div>
                     </div>
                 </div>

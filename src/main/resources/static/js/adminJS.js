@@ -4,6 +4,7 @@ $(document).ready(function () {
     movePage();
     setOutOfStock()
 
+    //faq 삭제 버튼 클릭
     $(".deleteFAQ").click(function () {
         var id = $(this).attr("id");
 
@@ -13,13 +14,14 @@ $(document).ready(function () {
                 url: "/admin/deleteFAQ/" + id,
                 type: "get",
                 success() {
-                    location.href="/admin/adminPage";
+                    location.href = "/admin/adminPage";
                 }
             })
         }
     });
 
-    $(".communityModal").click(function(){
+    //커뮤니티 관리 부분의 버튼 클릭 시 모달 뜨게
+    $(".communityModal").click(function () {
         var communityId = $(this).attr("id");
 
         $(".communityDelete").empty();
@@ -33,24 +35,24 @@ $(document).ready(function () {
         $("#confirmCommunityDeleteModal").modal('show');
     });
 
-    $(".confirmCommunityDelete").click(function(){
-       var communityId = $(this).attr("id");
-       console.log(communityId);
+    //게시글 삭제 버튼 클릭
+    $(".confirmCommunityDelete").click(function () {
+        var communityId = $(this).attr("id");
+        console.log(communityId);
 
-       $.ajax({
-           url: "/admin/deleteCommunity/" + communityId,
-           type: "get",
-           success(){
+        $.ajax({
+            url: "/admin/deleteCommunity/" + communityId,
+            type: "get",
+            success() {
                 $("#" + communityId).empty();
-               // location.href="/admin/adminPage";
-           }, error(){
-               $("#" + communityId).empty();
-               // location.href="/admin/adminPage";
-           }
-       })
+            }, error() {
+                $("#" + communityId).empty();
+            }
+        })
     });
 
-    $(".memberModal").click(function(){
+    //회원관리 부분의 버튼 클릭시 모달 뜨게
+    $(".memberModal").click(function () {
         var memberId = $(this).attr("id");
 
         $(".memberDelete").empty();
@@ -65,35 +67,37 @@ $(document).ready(function () {
         $("#confirmMemberDeleteModal").modal('show');
     });
 
-    $(".confirmDisabledMember").click(function(){
-       var memberId = $(this).attr("id");
-       console.log(memberId);
+    //회원 정지 버튼 클릭
+    $(".confirmDisabledMember").click(function () {
+        var memberId = $(this).attr("id");
+        console.log(memberId);
 
-       $.ajax({
-           url: "/admin/disabledMember/" + memberId,
-           type: "get",
-           success() {
-               location.reload();
-           }
-       })
+        $.ajax({
+            url: "/admin/disabledMember/" + memberId,
+            type: "get",
+            success() {
+                location.reload();
+            }
+        })
     });
 
-    $(".confirmMemberDelete").click(function(){
-       var memberId = $(this).attr("id");
-       console.log(memberId);
+    //회원 강제탈퇴 버튼 클릭
+    $(".confirmMemberDelete").click(function () {
+        var memberId = $(this).attr("id");
+        console.log(memberId);
 
-       $.ajax({
-           url: "/admin/deleteMember/" + memberId,
-           type: "get",
-           success() {
-               location.reload();
-           }, error(){
-               location.reload();
-           }
-       })
+        $.ajax({
+            url: "/admin/deleteMember/" + memberId,
+            type: "get",
+            success() {
+                location.reload();
+            }, error() {
+                location.reload();
+            }
+        })
     });
 
-    $(".setProductStatus").click(function(){
+    $(".setProductStatus").click(function () {
         var productId = $(this).attr("value");
         var selectedStatus = $(this).parent().parent().find("select[name=productStatus]").val();
         var productStock = $(this).parent().parent().find("input[name=productStock]").val();
@@ -101,64 +105,74 @@ $(document).ready(function () {
         $.ajax({
             url: "/admin/updateProductStatus/" + productId,
             type: "get",
-            data: {status : selectedStatus, stock : productStock},
-            success(){
-                location.href="/admin/adminPage";
+            data: {status: selectedStatus, stock: productStock},
+            success() {
+                location.href = "/admin/adminPage";
             }
         })
     });
 
-    // $(".acceptCommunityReportBtn").click(function(){
-    //     var reportId = $(this).parent().parent().find("td[id=communityReportId]").text();
-    //     var communityId = $(this).parent().parent().find("td[id=communityId]").text();
-    //
-    //     $.ajax({
-    //         url: "/admin/acceptCommunityReport/" + reportId,
-    //         data: {communityId : communityId},
-    //         type: "get",
-    //         success(){
-    //             location.reload();
-    //         }
-    //     })
-    // });
-    //
-    // $(".acceptMemberReportBtn").click(function(){
-    //    var reportId = $(this).parent().parent().find("td[id=memberReportId]").text();
-    //    var memberId = $(this).parent().parent().find("td[id=memberId]").text();
-    //
-    //    $.ajax({
-    //        url: "/admin/acceptMemberReport/" + reportId,
-    //        data: {memberId : memberId},
-    //        type: "get",
-    //        success(){
-    //            location.reload();
-    //        }
-    //    })
-    // });
+    //신고 승인 버튼 클릭
+    $("#acceptReportBtn").click(function () {
+        console.log($("#modalTargetId").val());
 
-    $("#showProductReportModal").click(function (){
-        console.log(this);
-        getReportReason(this, "product");
+        if ($("#modalTargetType").val() === "community") {
+            $.ajax({
+                url: "/admin/acceptCommunityReport/" + $("#modalReportId").val(),
+                data: {communityId: $("#modalTargetId").val()},
+                type: "get",
+                success() {
+                    location.reload();
+                }
+            })
+        } else if ($("#modalTargetType").val() === "product") {
+            $.ajax({
+                url: "/admin/acceptProductReport/" + $("#modalReportId").val(),
+                data: {productId: $("#modalTargetId").val()},
+                type: "get",
+                success() {
+                    location.reload();
+                }
+            })
+        } else {
+            $.ajax({
+                url: "/admin/acceptMemberReport/" + $("#modalReportId").val(),
+                data: {memberId: $("#modalTargetId").val()},
+                type: "get",
+                success() {
+                    location.reload();
+                }
+            })
+        }
     });
 
-    $("#showMemberReportModal").click(function(){
-        console.log(this);
-        getReportReason(this, "member");
+    //신고 반려 버튼 클릭
+    $("#cancelReportBtn").click(function () {
+        $.ajax({
+            url: "/admin/refuseReport/" + $("#modalReportId").val(),
+            type: "post",
+            success() {
+                location.reload();
+            }
+        })
     });
 })
 
-function reportColor(){
-    if($("#report").text() >= 3)
+//신고수가 3 이상이 되면 글씨 빨갛게 바꾸기 - 동작안함
+function reportColor() {
+    if ($("#report").text() >= 3) {
         $("#report").attr("class", "text-danger");
+    }
 }
 
-function setOutOfStock(){
+
+function setOutOfStock() {
     var size = $("input[name=productStock]").length;
     var productIdList = [];
 
-    if(size > 0){
-        for(i = 0; i < size; i++){
-            if($("input[name=productStock]").eq(i).val() === '0'){
+    if (size > 0) {
+        for (i = 0; i < size; i++) {
+            if ($("input[name=productStock]").eq(i).val() === '0') {
                 productIdList.push(i);
             }
         }
@@ -166,7 +180,7 @@ function setOutOfStock(){
         $.ajax({
             url: "/admin/setOutOfStock",
             type: "get",
-            data: {productIdList : productIdList},
+            data: {productIdList: productIdList},
             success: function () {
             }
         })
@@ -174,114 +188,61 @@ function setOutOfStock(){
 }
 
 //스크롤 위치를 따라 이동하는 사이드바 구현
-function moveSideBar(){
+function moveSideBar() {
     $('.float_sidebar').css('position', 'relative').css('z-index', '1');
 
-    $(window).scroll(function(){
+    $(window).scroll(function () {
         yPosition = $(window).scrollTop();  //스크롤의 현재 위치
         if (yPosition < 0) {
             yPosition = 0;
         }
-        $('.float_sidebar').animate({"top":yPosition }, {duration: 700, easing: 'linear', queue:false});
+        $('.float_sidebar').animate({"top": yPosition}, {duration: 700, easing: 'linear', queue: false});
     });
 }
 
 //페이지 내 이동 구현
-function movePage(){
-    $('#goInquiryManage').click(function(){
+function movePage() {
+    $('#goInquiryManage').click(function () {
         var offset = $('#inquiryManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 
-    $('#goReportManage').click(function(){
+    $('#goReportManage').click(function () {
         var offset = $('#reportManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 
-    $('#goProductManage').click(function(){
+    $('#goProductManage').click(function () {
         var offset = $('#productManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 
-    $('#goCommunityManage').click(function(){
+    $('#goCommunityManage').click(function () {
         var offset = $('#communityManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 
-    $('#goMemberManage').click(function(){
+    $('#goMemberManage').click(function () {
         var offset = $('#memberManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 }
 
 //신고사유 모달
-function getReportReason(data, type){
-    var targetId;
-    var reportId;
-
-    if(type === "product"){
-        targetId = $(data).parent().parent().find("td[id=productReportId]").text();
-    }else if(type === "member"){
-        targetId = $(data).parent().parent().find("td[id=memberReportId]").text();
-    }else{
-        targetId = $(data).parent().parent().find("td[id=communityReportId]").text();
-    }
-
-    console.log("targetId : " + targetId);
-
-    $.getJSON("/admin/getReportReason/" + targetId + "/" + type, function(data){
-        console.log(data);
+function getReportReason(targetId, type) {
+    $.getJSON("/admin/getReportReason/" + targetId + "/" + type, function (data) {
+        //클릭한 승인버튼에 맞는 신고 사유를 모달에 출력함 (이하 2줄)
         $("#reportReason").val(data.report.reportReason);
         $("#reportDetailReason").text(data.report.reportReasonDetail);
 
-        reportId = data.report.reportId;
+        //히든 값으로 리포트아이디, 타입, 신고대상의 아이디를 모달에 넘겨줌 (이하 8줄)
+        $("#modalReportId").val(data.report.reportId);
+        $("#modalTargetType").val(type);
 
-        console.log("reportId : " + reportId);
-
-        if(type === "product"){
-            $("#acceptProductReportBtn").click(function(){
-                $.ajax({
-                    url: "/admin/acceptProductReport/" + reportId,
-                    data: {productId : data.report.productId},
-                    type: "get",
-                    success(){
-                        location.reload();
-                    }
-                })
-            });
-        }else if(type === "member"){
-            $("#acceptProductReportBtn").click(function(){
-                $.ajax({
-                    url: "/admin/acceptMemberReport/" + reportId,
-                    data: {memberId : data.report.memberId},
-                    type: "get",
-                    success(){
-                        location.reload();
-                    }
-                })
-            });
-        }else{
-            $("#acceptProductReportBtn").click(function(){
-                $.ajax({
-                    url: "/admin/acceptCommunityReport/" + reportId,
-                    data: {communityId : data.report.communityId},
-                    type: "get",
-                    success(){
-                        location.reload();
-                    }
-                })
-            });
+        if (type === "product" || type === "community") {
+            $("#modalTargetId").val(data.report.targetLongId);
+        } else {
+            $("#modalTargetId").val(data.report.targetStringId);
         }
     });
-
-    //공통
-    $("#cancelProductReportBtn").click(function(){
-        $.ajax({
-            url: "/admin/refuseReport/" + reportId,
-            type: "post",
-            success(){
-                location.reload();
-            }
-        })
-    })
 }

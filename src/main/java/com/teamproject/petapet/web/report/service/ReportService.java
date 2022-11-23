@@ -21,6 +21,7 @@ public interface ReportService {
     void setResponseStatusCommunity(Long reportId);
     ReportTargetDTO getOneReport(Long reportId, String type);
     void refuseReport(Long reportId);
+
     default Report dtoToEntityProduct(ReportProductDTO reportProductDTO){
         Product product = Product.builder().productId(reportProductDTO.getProductId()).build();
 
@@ -32,17 +33,6 @@ public interface ReportService {
 
         return report;
     }
-
-//    default ReportProductDTO entityToDTOProduct(Report report){
-//        ReportProductDTO reportProductDTO = ReportProductDTO.builder()
-//                .productId(report.getReportId())
-//                .reportId(report.getReportId())
-//                .reportReason(report.getReportReason())
-//                .reportReasonDetail(report.getReportReasonDetail())
-//                .build();
-//
-//        return reportProductDTO;
-//    }
 
     default Report dtoToEntityCommunity(ReportCommunityDTO reportCommunityDTO){
         Community community = Community.builder().communityId(reportCommunityDTO.getCommunityId()).build();
