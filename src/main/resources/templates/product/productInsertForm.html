@@ -18,11 +18,8 @@
                     <div class="portfolio-item">
                         <div class="portfolio">
                             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active" id="thumbnailImg">
-                                        <img th:src="@{/img/petSnack.jpg}">
-                                    </div>
-
+                                <div class="carousel-inner" id="thumbnailImg">
+                                    <h5 class="mx-5">업로드 이미지 미리보기</h5>
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -251,10 +248,11 @@
 <script type="text/javascript" th:inline="javascript">
 
     function setThumbnail(event) {
-let from = Array.from(event.target.files);
+            let from = Array.from(event.target.files);
+            $('#thumbnailImg').empty();
         $.each(from,function (idx,el) {
             const carouselHtml = `<div class="carousel-item" id="addImg${idx}"></div>`;
-            $('#thumbnailImg').after(carouselHtml);
+            $('#thumbnailImg').append(carouselHtml);
 
 
             var reader = new FileReader();
@@ -262,10 +260,10 @@ let from = Array.from(event.target.files);
                 var img = document.createElement("img");
                 img.setAttribute("src", event.target.result);
                 img.setAttribute('style','width: 100%; height: auto')
-                // img.height = 100;
                 document.querySelector("#addImg"+idx).appendChild(img);
             };
             reader.readAsDataURL(el);
+            $('.carousel-inner > div:nth-child(1)').addClass('active');
         })
     }
 
