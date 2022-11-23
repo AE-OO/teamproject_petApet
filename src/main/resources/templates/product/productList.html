@@ -139,9 +139,9 @@
     }
 </script>
 <script th:inline="javascript">
+
     const addCartBtn = $('.addCart');  // 상품 리스트에서 장바구니로 상품을 추가하는 기능
-    const addBuyBtn = $('.addBuy'); // 구매페이지로 이동하는 기능
-    
+
     $(addCartBtn).click(function(){
         var productId = $(this).val();
         var quantity = $(this).children('.quan').val();
@@ -163,28 +163,6 @@
             }
         });
     });
-
-    // $(addBuyBtn).click(function(){
-    //     var productId = $(this).val();
-    //     var quantity = $(this).children('.quan').val();
-    //     var param = {"product": productId, "quantity":quantity};
-    //     console.log("product : " + productId);
-    //     console.log("quantity : " + quantity);
-    //     $.ajax({
-    //         url: "/buy/add",
-    //         type: "POST",
-    //         data: JSON.stringify(param),
-    //         dataType: "text",
-    //         contentType : "application/json",
-    //         charset : "UTF-8",
-    //         success: function (data) {
-    //             alert("장바구니 추가되었음")
-    //         },
-    //         error: function (jqXHR, status, errorThrown) {
-    //             alert("에러");
-    //         }
-    //     });
-    // });
 
 </script>
 

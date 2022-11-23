@@ -53,7 +53,20 @@ public class PaymentsController {
         log.info("뷰 완료!!");
         return "mypage/directCheckout";
     }
+    @ResponseBody
+    @RequestMapping(value = "/direct/checkout/{idx}", method = { RequestMethod.POST }, produces = "application/json")
+    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId, Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
+        String loginMember = checkMember(principal, request, httpSession);
+        Long getProduct = vo.getBuyProduct();
+        Member member = memberService.findOne(loginMember);
+        Product product = productService.findOne(getProduct);
+        model.addAttribute("product", product);
+        model.addAttribute("member", member);
+        return "mypage/directCheckout";
+    }
 
+
+    // mail 전송 1
     @ResponseBody
     @RequestMapping(value = "/checkout", method = { RequestMethod.POST }, produces = "application/json")
     public void buySuccess(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
@@ -70,6 +83,7 @@ public class PaymentsController {
         log.info("메일 전송 완료");
     }
 
+    // mail 전송 2
     @ResponseBody
     @RequestMapping(value = "/checkout2", method = { RequestMethod.POST }, produces = "application/json")
     public void buySuccess2(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
