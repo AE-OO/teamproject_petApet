@@ -1,7 +1,6 @@
 package com.teamproject.petapet.web.util.excel;
 
 import com.teamproject.petapet.domain.buy.Buy;
-import com.teamproject.petapet.domain.buy.BuyRepository;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.web.buy.service.BuyService;
