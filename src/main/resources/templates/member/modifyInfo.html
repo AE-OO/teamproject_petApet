@@ -1,132 +1,25 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-<head>
-    <meta charset="utf-8">
-    <title>petApet</title>
-
-    <!-- Favicon -->
-    <link href="/img/icon/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link
-            href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
-            rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="/css/style.css" rel="stylesheet">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.1.js"
-            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 내 정보 수정</title>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/member/modifyInfo.js"></script>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
 
 </head>
-
 <body>
-
-<!-- header Start -->
-<header class="header header-expand-lg bg-white header-light sticky-top p-0">
-    <a href="index.html" class="header-brand d-flex align-items-center px-4 px-lg-5">
-        <img scr="#" alt="logo">
-        <h1 class="m-0">petApet</h1>
-    </a>
-    <button type="button" class="header-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-        <span class="header-toggler-icon"></span>
-    </button>
-    <div class="collapse header-collapse" id="navbarCollapse">
-        <div class="header-nav ms-auto p-4 p-lg-0">
-            <a href="#l" class="nav-item nav-link">About</a>
-            <a href="#" class="nav-item nav-link">Services</a>
-            <a th:href="@{/product}" class="nav-item nav-link">Product</a>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
-                <div class="dropdown-menu bg-light m-0">
-                    <a href="#" class="dropdown-item">Test1</a>
-                    <a href="#" class="dropdown-item">Test2</a>
-                    <a href="#" class="dropdown-item">Test3</a>
-                    <a href="#" class="dropdown-item">Test5</a>
-                    <a href="errors/404.html" class="dropdown-item">404 Page</a>
-                </div>
-            </div>
-
-            <a href="#" class="nav-item nav-link">Contact</a>
-            <div class="nav-item dropdown">
-                <a href="/login" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-                   sec:authorize="isAnonymous()"><i class="fa fa-user"></i></a>
-                <div class="dropdown-menu bg-light m-0">
-                    <a href="#" class="dropdown-item">Test1</a>
-                    <a href="#" class="dropdown-item">Test2</a>
-                    <a href="#" class="dropdown-item">Test3</a>
-                    <a href="#" class="dropdown-item">Test5</a>
-                    <a href="errors/404.html" class="dropdown-item">404 Page</a>
-                </div>
-            </div>
-            <a href="/member/myPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-               sec:authorize="hasAnyRole('MEMBER','ADMIN')">MyInfo</a>
-            <a href="/admin/adminPage" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-               sec:authorize="hasRole('ADMIN')">adminPage</a>
-            <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"
-               sec:authorize="isAuthenticated()">Logout</a>
-            <!--                <a href="/logout" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block"-->
-            <!--                   ><strong th:text="${#authentication.name}"/></a>-->
-            <a href="#" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">
-                <i class="fa fa-heart"></i> <span>1</span></a>
-            <a href="#" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">
-                <i class="fa fa-shopping-bag"></i> <span>3</span></a>
-
-
-        </div>
-
-    </div>
-</header>
-<!-- header End -->
+<th:block th:replace="~{fragment/header :: header}"></th:block>
 
 <!-- Myinfo Start -->
-<div class="container-xxl py-7">
-    <div class="container ">
-        <div class="row g-2">
-            <div class="col-lg-2 col-md-6">
-                <div class="bg-primary py-5">
-                    <h4 class="text-white text-center mb-0">My petApet</h4>
-                </div>
-                <div class="myinfo-item d-flex">
-                    <div class="myinfo-text w-100">
-                        <p class="py-0 mb-0">
-                            <button class="py-3 w-100 btn btn-link2">주문 내역<i class="fa fa-arrow-right"></i></button>
-                        </p>
-                        <p class="py-0 mb-0">
-                            <button class="py-3 w-100 btn btn-link2">찜한 상품 <i class="fa fa-arrow-right"></i></button>
-                        </p>
-                        <p class="py-0 mb-0">
-                            <button class="py-3 w-100 btn btn-link2">장바구니 <i class="fa fa-arrow-right"></i></button>
-                        </p>
-                        <p class="py-0 mb-0">
-                            <button class="py-3 w-100 btn btn-link2">상품 문의 <i class="fa fa-arrow-right"></i></button>
-                        </p>
-                        <p class="py-0 mb-0">
-                            <button class="py-3 w-100 btn btn-link2">1:1 문의 <i class="fa fa-arrow-right"></i></button>
-                        </p>
-                        <p class="py-0 mb-0 checked">
-                            <button class="py-3 w-100 btn btn-link">개인 정보 수정<i class="fa fa-arrow-right"></i></button>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-10 col-md-6">
-                <div class="bg-primary py-5">
-                    <h4 class="text-white ps-5 mb-0">개인 정보 수정</h4>
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="bg-white pt-5 pb-3">
+                    <h4 class="text-black ps-5 mb-0"><i class="bi bi-arrow-left"></i> 개인 정보 수정</h4>
                 </div>
                 <div class="myinfo-item  d-flex">
-
                     <div class="myinfo-text w-100 p-5">
                         <div class="container join">
                             <div class="row g-5">
@@ -318,31 +211,6 @@
 </div>
 <!-- Myinfo End -->
 
-<!-- Footer Start -->
-<footer>
-    <div class="container-fluid bg-dark text-light text-center footer mt-5 py-3">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-6 col-md-6 mx-auto">
-                    <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
-                    <ul class="text-white px-0">
-                        <li><a href="#">petApet</a></li>
-                        <li><a href="#">이용약관</a></li>
-                        <li><a href="#">개인정보처리방침</a></li>
-                        <li><a href="#">이용안내</a></li>
-                    </ul>
-
-                    <p class="small">법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
-                    <p class="small">통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
-                    <p class="small">서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- Footer End -->
-
 <!-- smsConfirmNum Modal start -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -362,7 +230,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="mx-auto col-4 btn btn-link" data-dismiss="modal">닫기</button>
+                <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">닫기</button>
             </div>
 
         </div>
@@ -396,7 +264,7 @@
                         <div class="col-9 px-0">
                             <input type="password" id="input-newMemberPw"
                                    class="form-control px-3 py-2" maxlength="18"
-                                   placeholder="새 비밀번호를 입력해주세요" nkeyup="checkNewMemberPw()" disabled>
+                                   placeholder="새 비밀번호를 입력해주세요" onkeyup="checkNewMemberPw()" disabled>
                             <p id="feedback-newMemberPw"
                                class="text-start text-danger small ps-2 my-1"/>
                         </div>
@@ -419,7 +287,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="closeBtn" class="mx-auto me-1 col-5 btn btn-outline-primary"
-                        data-dismiss="modal">닫기
+                        data-bs-dismiss="modal">닫기
                 </button>
                 <button type="button" id="sendNewMemberPwBtn" class="mx-auto ms-1 col-5 btn btn-primary">확인</button>
             </div>
@@ -430,13 +298,8 @@
 <!-- updateMemberPw Modal end-->
 
 <!-- Back to Top -->
-<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
-        class="bi bi-arrow-up"></i></a>
-
-<!-- modify Script Start -->
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/member/modifyInfo.js"></script>
-<!-- modify Script End -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 
 </body>
 

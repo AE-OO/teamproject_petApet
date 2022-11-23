@@ -3,17 +3,15 @@ package com.teamproject.petapet.web.member.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamproject.petapet.domain.member.Authority;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.validatiion.DuplicateMemberId;
-import com.teamproject.petapet.validatiion.MemberPwEquals;
-import com.teamproject.petapet.validatiion.NotDuplicateMemberId;
-import com.teamproject.petapet.validatiion.SmsConfirmNum;
+import com.teamproject.petapet.web.member.validatiion.DuplicateMemberId;
+import com.teamproject.petapet.web.member.validatiion.PasswordEquals;
+import com.teamproject.petapet.web.member.validatiion.NotDuplicateMemberId;
+import com.teamproject.petapet.web.member.validatiion.SmsConfirmNum;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
 import java.util.Set;
@@ -21,7 +19,7 @@ import java.util.Set;
 public class MemberRequestDTO {
 
     @Data
-    @MemberPwEquals(text = "memberPw", comparison = "memberPw2") //custom validation
+    @PasswordEquals(text = "memberPw", comparison = "memberPw2") //custom validation
     public static class JoinDTO {
 
         @Pattern(regexp = "^[a-z0-9_-]{5,20}$" , message = "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
@@ -73,7 +71,7 @@ public class MemberRequestDTO {
                     .memberPhoneNum(memberPhoneNum)
                     .activated(true)
                     .build();
-            member.addAuthority(Authority.ofUser(member));
+            member.addAuthority(Authority.ofMember(member));
             return member;
         }
     }
@@ -92,7 +90,7 @@ public class MemberRequestDTO {
 
     @Data
     @Builder
-    @MemberPwEquals(text = "newMemberPw", comparison = "newMemberPw2") //custom validation
+    @PasswordEquals(text = "newMemberPw", comparison = "newMemberPw2") //custom validation
     public static class UpdateMemberPwDTO {
         @NotBlank
         private String originalMemberPw;
@@ -132,7 +130,6 @@ public class MemberRequestDTO {
     @Data
     @Builder
     public static class FindMemberIdDTO{
-
         @NotBlank(message = "인증이 필요합니다.")
         private String memberPhoneNum;
 

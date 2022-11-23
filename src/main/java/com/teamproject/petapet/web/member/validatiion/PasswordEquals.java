@@ -1,4 +1,4 @@
-package com.teamproject.petapet.validatiion;
+package com.teamproject.petapet.web.member.validatiion;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -14,8 +14,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ElementType.TYPE}) //
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = {MemberPwEqualsCheck.class})
-public @interface MemberPwEquals {
+@Constraint(validatedBy = {PasswordEqualsCheck.class})
+public @interface PasswordEquals {
     String message() default "비밀번호가 일치하지 않습니다.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

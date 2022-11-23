@@ -42,7 +42,7 @@ public class CartController {
                          HttpSession httpSession,
                          Model model){
 
-        if(Principal.class.isInstance(principal)) {
+        if(principal instanceof Principal) {
             String loginMember = checkMember(principal, request, httpSession);
 
             // 세션 유지되면 로그인으로 이동

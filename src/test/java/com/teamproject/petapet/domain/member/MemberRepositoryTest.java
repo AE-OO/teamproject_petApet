@@ -50,7 +50,4 @@ class MemberRepositoryTest {
     public void selectMember(){
         System.out.println(memberRepository.findById("memberId3"));
     }
-
-
-
 }

@@ -2,16 +2,22 @@
 memberName = () => $("#input-memberName").val();
 memberPhoneNum = () => $("#input-memberPhoneNum").val();
 smsConfirmNum = () => $("#input-smsConfirmNum");
+companyName = () => $("#input-companyName").val();
+companyNumber = () => $("#input-companyNumber").val();
 
 //error 메세지 (input 밑에 있는 p태그) 전역으로 사용하기위해 function 선언함
 mNameFeedback = () => $("#feedback-memberName");
 mPhoneNumFeedback = () => $("#feedback-memberPhoneNum");
 smsConfirmNumFeedback = () => $("#feedback-smsConfirmPhoneNum");
+cNameFeedback = () => $("#feedback-companyName");
+cNumberFeedback = () => $("#feedback-companyNumber");
 
 //이름 정규식 (한글, 2-6글자)
 const mNameRegExp = /^[가-힣]{2,6}$/;
 //휴대전화 정규식 (-빼고 입력 01로 시작, 총 10-11글자)
 const mPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
+const cNameRegExp = /^[가-힣|a-z|A-Z]{1,20}$/;
+const cNumberRegExp = /([0-9]{3})([0-9]{2})([0-9]{5})/;
 
 //인증시간 변수
 let timer = null;
@@ -48,7 +54,7 @@ function startTimer(count) {
             $("#smsBtn").attr("disabled", true);
             clearInterval(timer);
             timer == null;
-            return;
+
         }
     }, 1000);
 }
@@ -66,7 +72,6 @@ function sendBtnClick() {
     //     },
     //     dataType: "json",
     //     success: function (response) {
-    //         $("#staticBackdrop").modal();
     //         alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
     //         startTimer(leftSec); // 타이머 시작
     //         alert(response);
@@ -74,7 +79,7 @@ function sendBtnClick() {
     //     },
     //     error: function () {
     //         alert("인증번호 발송 실패");
-    //         location.href="/join"
+    //         location.href="/findId"
     //     }
     // });
     //////////////////////////테스트용////////////////////////////
@@ -93,7 +98,7 @@ function sendBtnClick() {
         },
         error: function () {
             alert("인증번호 발송 실패");
-            window.location = "/findMemberId"
+            window.location = "/findId"
         }
     });
     //////////////////////////테스트용////////////////////////////
@@ -123,16 +128,26 @@ function checkSmsConfirmNum() {
                 }
             }, error: function () {
                 alert("통신오류");
-                window.location = "/findMemberId"
+                window.location = "/findId"
             }
         });
         return checkResult;
     }
 }
 
+function goFindId(){
+    window.location="/findId";
+}
+
+function goLogin(){
+    window.location="/login";
+}
+
 $(document).ready(function () {
     let memberNameResult = false;
     let memberPhoneNumResult = false;
+    let companyNameResult = false;
+    let companyNumberResult = false;
 
     // 이름 체크
     $("#input-memberName").blur(function () {
@@ -167,6 +182,51 @@ $(document).ready(function () {
         checkSmsConfirmNum();
     });
 
+    // 상호명체크
+    $("#input-companyName").blur(function () {
+        if (companyName() === null || companyName() === "") {
+            cNameFeedback().text("필수 정보입니");
+            return companyNameResult = false;
+        } else if (!(cNameRegExp.test(companyName()))) {
+            cNameFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
+            return companyNameResult = false;
+        } else {
+            cNameFeedback().text("");
+            return companyNameResult = true;
+        }
+    });
+
+    $("#input-companyNumber").blur(function () {
+        if (companyNumber() === null || companyNumber() === "") { //값이 없을 때
+            cNumberFeedback().text("필수 정보입니다.");
+            return companyNumberResult = false;
+        } else if (!(cNumberRegExp.test(companyNumber()))) { //정규식에 맞지 않을 때
+            cNumberFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
+            return companyNumberResult = false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/checkCompanyNumber",
+                data: {
+                    companyNumber: companyNumber(),
+                },
+                dataType: "json",
+                success: function (check) {
+                    if (check) { // 존재
+                        cNumberFeedback().text("");
+                        return companyNumberResult = true;
+                    } else {//조건에 맞을 때
+                        cNumberFeedback().text("가입되지 않은 사업자번호입니다.");
+                        return companyNumberResult = false;
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/findId";
+                }
+            });
+        }
+    });
 
     $("#smsBtn").click(function () {
         if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
@@ -178,7 +238,6 @@ $(document).ready(function () {
         }
     });
 
-    // 회원가입 버튼 - 모든 조건이 만족할 때 submit됨
     $("#findBtn").click(function () {
         if (memberName() === null || memberName() === "") {
             mNameFeedback().text("필수 정보입니다.");
@@ -189,18 +248,38 @@ $(document).ready(function () {
         if (smsConfirmNum().val() === null || smsConfirmNum().val() === "") {
             mPhoneNumFeedback().text("인증이 필요합니다.");
         }
-
         if (memberNameResult && memberPhoneNumResult && checkSmsConfirmNum()) {
             $("#findBtn").attr("type", "submit");
         }
     });
 
+    $("#findCompanyBtn").click(function () {
+        if (companyName() === null || companyName() === "") {
+            cNameFeedback().text("필수 정보입니다.");
+        }
+        if (companyNumber() === null || companyNumber() === "") { //값이 없을 때
+            cPhoneNumFeedback().text("필수 정보입니다.");
+        }
+        if (companyNameResult && companyNumberResult) {
+            $("#findCompanyBtn").attr("type", "submit");
+        }
+    });
+
     if($("#findMemberIdResult").val().length > 0){
-        $("#staticBackdrop").modal();
+        $("#staticBackdrop").modal('show');
     }
 
-    $("#loginBtn").click(function (){
-        window.location="/login";
-    });
+    if($("#findCompanyIdResult").val().length > 0){
+        $("#staticBackdrop2").modal('show');
+    }
+
+    $("#companyBtn").click(function () {
+        $("#memberForm").attr('hidden',true);
+        $("#companyForm").attr('hidden',false);
+    })
+    $("#memberBtn").click(function () {
+        $("#companyForm").attr('hidden',true);
+        $("#memberForm").attr('hidden',false);
+    })
 
 });

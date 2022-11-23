@@ -12,7 +12,7 @@ $(document).ready(function () {
     $("#confirmBtn").click(function () {
         if (memberPw().val() == "") {
             $("#staticBackdropLabel").text("비밀번호를 입력해주세요");
-            $("#staticBackdrop").modal();
+            $("#staticBackdrop").modal('show');
         } else {
             $.ajax({
                 type: "POST",
@@ -26,7 +26,7 @@ $(document).ready(function () {
                         $("#sendMemberId").submit();
                     } else {
                         $("#staticBackdropLabel").text("비밀번호가 일치하지 않습니다.");
-                        $("#staticBackdrop").modal();
+                        $("#staticBackdrop").modal('show');
                     }
                 },
                 error: function () {

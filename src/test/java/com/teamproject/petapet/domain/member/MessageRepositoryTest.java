@@ -26,7 +26,6 @@ class MessageRepositoryTest {
                     .messageContent("Message Content " + i)
                     .member(member)
                     .build();
-
             messageRepository.save(message);
         });
     }

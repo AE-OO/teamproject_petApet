@@ -1,4 +1,4 @@
-package com.teamproject.petapet.validatiion;
+package com.teamproject.petapet.web.member.validatiion;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.server.ServerErrorException;
@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
  * 장사론 22.11.02 수정 - 다른 DTO에도 적용가능하게 수정
  */
 @Slf4j
-public class MemberPwEqualsCheck implements ConstraintValidator<MemberPwEquals, Object> {
+public class PasswordEqualsCheck implements ConstraintValidator<PasswordEquals, Object> {
 
 
     private String message;
@@ -21,7 +21,7 @@ public class MemberPwEqualsCheck implements ConstraintValidator<MemberPwEquals, 
     private String comparison;
 
     @Override
-    public void initialize(MemberPwEquals constraintAnnotation) {
+    public void initialize(PasswordEquals constraintAnnotation) {
         message = constraintAnnotation.message();
         text = constraintAnnotation.text();
         comparison = constraintAnnotation.comparison();

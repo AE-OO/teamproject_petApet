@@ -36,8 +36,6 @@ public interface MemberService {
 
     String findMemberId (MemberRequestDTO.FindMemberIdDTO findMemberIdDTO);
 
-//    boolean findMemberPw (MemberRequestDTO.FindMemberPwDTO findMemberPwDTO);
-
     String findMemberPw (MemberRequestDTO.FindMemberPwDTO findMemberPwDTO);
 
 
