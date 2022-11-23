@@ -6,6 +6,7 @@ import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.report.dto.ReportProductDTO;
+import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
 import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,6 @@ public class AdminController {
         model.addAttribute("product", productService.getProductList());
         model.addAttribute("community", communityService.getProductList());
         model.addAttribute("member", memberService.getMemberList());
-
 
         return "/admin/adminMain";
     }
@@ -149,19 +149,21 @@ public class AdminController {
 
     @ResponseBody
     @GetMapping("/getReportReason/{id}/{type}")
-    public HashMap<String, ReportProductDTO> getReportReason(@PathVariable("id") Long id, @PathVariable("type") String type){
-        HashMap<String, ReportProductDTO> reportProduct = new HashMap<String, ReportProductDTO>();
-        if(type.equals("product")){
-            reportProduct.put("report",reportService.getOneReportProduct(id));
-        }else if(type.equals("member")){
-            //메소드 하나로 다 처리하려니까 반환타입이 안맞아서 안됨
-            //메소드 여러개 쓸지 dto를 다시 설계할지
-            //dto 공통 reportId, reason, dreason
-            //차이 신고 대상의 아이디 타입 long long string
-        }else{
-
-        }
-        return reportProduct;
+    public HashMap<String, ReportTargetDTO> getReportReason(@PathVariable("id") Long id, @PathVariable("type") String type){
+        HashMap<String, ReportTargetDTO> reportTarget = new HashMap<String, ReportTargetDTO>();
+        reportTarget.put("report",reportService.getOneReport(id, type));
+        
+        //승인 눌리면 모든 타겟에 대해서 서비스가 실행됨
+        
+//        if(type.equals("product") || type.equals("community")){
+//            reportTarget.put("report",reportService.getOneReportProduct(id));
+//        }else if(type.equals("member")){
+//            //메소드 하나로 다 처리하려니까 반환타입이 안맞아서 안됨
+//            //메소드 여러개 쓸지 dto를 다시 설계할지
+//            //dto 공통 reportId, reason, dreason
+//            //차이 신고 대상의 아이디 타입 long long string
+//        }
+        return reportTarget;
     }
 
     @ResponseBody

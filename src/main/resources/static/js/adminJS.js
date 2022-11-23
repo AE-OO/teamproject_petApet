@@ -137,10 +137,12 @@ $(document).ready(function () {
     // });
 
     $("#showProductReportModal").click(function (){
+        console.log(this);
         getReportReason(this, "product");
     });
 
     $("#showMemberReportModal").click(function(){
+        console.log(this);
         getReportReason(this, "member");
     });
 })
@@ -214,22 +216,27 @@ function movePage(){
 
 //신고사유 모달
 function getReportReason(data, type){
-    var id;
+    var targetId;
     var reportId;
 
     if(type === "product"){
-        id = $(data).parent().parent().find("td[id=productReportId]").text();
+        targetId = $(data).parent().parent().find("td[id=productReportId]").text();
     }else if(type === "member"){
-        id = $(data).parent().parent().find("td[id=memberReportId]").text();
+        targetId = $(data).parent().parent().find("td[id=memberReportId]").text();
     }else{
-        id = $(data).parent().parent().find("td[id=communityReportId]").text();
+        targetId = $(data).parent().parent().find("td[id=communityReportId]").text();
     }
 
-    $.getJSON("/admin/getReportReason/" + id + "/" + type, function(data){
+    console.log("targetId : " + targetId);
+
+    $.getJSON("/admin/getReportReason/" + targetId + "/" + type, function(data){
+        console.log(data);
         $("#reportReason").val(data.report.reportReason);
         $("#reportDetailReason").text(data.report.reportReasonDetail);
 
         reportId = data.report.reportId;
+
+        console.log("reportId : " + reportId);
 
         if(type === "product"){
             $("#acceptProductReportBtn").click(function(){

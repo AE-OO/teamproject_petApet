@@ -5,6 +5,7 @@ import com.teamproject.petapet.domain.report.ReportRepository;
 import com.teamproject.petapet.web.report.dto.ReportCommunityDTO;
 import com.teamproject.petapet.web.report.dto.ReportMemberDTO;
 import com.teamproject.petapet.web.report.dto.ReportProductDTO;
+import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -54,8 +55,14 @@ public class ReportServicImpl implements ReportService {
     }
 
     @Override
-    public ReportProductDTO getOneReportProduct(Long reportId) {
-        return entityToDTOProduct(reportRepository.getReportByReportId(reportId));
+    public ReportTargetDTO getOneReport(Long reportId, String type) {
+        if(type.equals("product")){
+            return entityToDTOProduct(reportRepository.getReportByReportId(reportId));
+        }else if(type.equals("member")){
+            return entityToDTOMember(reportRepository.getReportByReportId(reportId));
+        }else{
+            return entityToDTOCommunity(reportRepository.getReportByReportId(reportId));
+        }
     }
 
     @Override

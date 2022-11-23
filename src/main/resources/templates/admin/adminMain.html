@@ -283,6 +283,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        <!-- 첫번째 승인 버튼 값만 계속 표시됨 -->
                                         <tr th:each="memberReport : ${memberReport}">
                                             <td class="pl-0" id="memberReportId">[[${memberReport.reportId}]]</td>
                                             <td id="memberId">[[${memberReport.member.memberId}]]</td>
