@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
-public class BuyServiceImpl implements Buyservice{
+public class BuyServiceImpl implements BuyService {
 
     private final BuyRepository buyRepository;
 
@@ -23,6 +23,12 @@ public class BuyServiceImpl implements Buyservice{
     public List<Buy> findAll(String member) {
         return buyRepository.findBuyByMember(member);
     }
+
+    @Override
+    public Buy findById(Long buyId) {
+        return buyRepository.findById(buyId).get();
+    }
+
 
     // 장바구니 -> 구매
     @Override

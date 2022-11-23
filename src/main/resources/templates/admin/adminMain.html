@@ -221,9 +221,9 @@
                                         <tbody>
                                         <tr th:each="Other : ${otherInquiry}">
                                             <td class="pl-0">[[${Other.inquiredId}]]</td>
-                                            <td><a href="#">[[${Other.inquiredTitle}]]</a></td>
+                                            <td><a href="#" th:href="|@{/admin/{idx}/edit(idx=${Other.inquiredId})}|">[[${Other.inquiredTitle}]]</a></td>
                                             <td>[[${Other.inquiredCategory}]]</td>
-                                            <td><label class="badge badge-danger">미답</label></td>
+                                            <td><label class="badge badge-danger" th:text="${Other.checked} ?'답변완료':'답변대기'">미답</label></td>
                                         </tr>
                                         </tbody>
                                     </table>

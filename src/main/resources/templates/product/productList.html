@@ -65,8 +65,9 @@
                                 <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
                                     <button type="button" class="btn bg-secondary me-1 addCart" th:value="*{product.productId}">장바구니
                                     <input type="hidden" class ="quan" value="1"/></button>
-                                    <button type="button" class="btn bg-secondary me-1 addBuy" th:value="*{product.productId}">바로구매
-                                        <input type="hidden" class ="quan" value="1"/></button>
+                                    <a class="btn bg-secondary me-1 addBuy"
+                                            th:href="|@{/direct/checkout/{idx}(idx=${product.productId})}|">바로구매
+                                        <input type="hidden" class ="quan" value="1"/></a>
                                 </div>
                             </div>
                         </div>
@@ -138,9 +139,9 @@
     }
 </script>
 <script th:inline="javascript">
-    const addCartBtn = $('.addCart');
-    const addBuyBtn = $('.addBuy');
-    
+
+    const addCartBtn = $('.addCart');  // 상품 리스트에서 장바구니로 상품을 추가하는 기능
+
     $(addCartBtn).click(function(){
         var productId = $(this).val();
         var quantity = $(this).children('.quan').val();
@@ -149,27 +150,6 @@
         console.log("quantity : " + quantity);
         $.ajax({
             url: "/cart/add",
-            type: "POST",
-            data: JSON.stringify(param),
-            dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
-            success: function (data) {
-                alert("장바구니 추가되었음")
-            },
-            error: function (jqXHR, status, errorThrown) {
-                alert("에러");
-            }
-        });
-    });
-    $(addBuyBtn).click(function(){
-        var productId = $(this).val();
-        var quantity = $(this).children('.quan').val();
-        var param = {"product": productId, "quantity":quantity};
-        console.log("product : " + productId);
-        console.log("quantity : " + quantity);
-        $.ajax({
-            url: "/buy/add",
             type: "POST",
             data: JSON.stringify(param),
             dataType: "text",

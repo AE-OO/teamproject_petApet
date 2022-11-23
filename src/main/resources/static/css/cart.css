@@ -6,10 +6,11 @@
 div{ display: block;}
 
 body {
-    position: relative;
     min-width: 1020px;
     background-color: #ffffff;
     display: block;
+    font-family: "맑은 고딕", malgun gothic, apple sd gothic neo, "나눔고딕", nanumgothic, "돋움", dotum, sans-serif;
+
 }
 
 #pap-left-menu{
@@ -446,9 +447,10 @@ a {
 }
 
 .title--1r0ibGcdKC .link_cart--3pmIi7AT5e {
-    padding: 0;
+    padding: 15px;
     margin: 0;
     font-size: 20px;
+    line-height: 20px;
     font-weight: bold;
     color: #000000;
 }
@@ -472,7 +474,7 @@ hr, legend, .blind {
     padding: 0 8px;
     border: 1px solid #e1e3e5;
     border-radius: 2px;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: normal;
     line-height: 25px;
     letter-spacing: -0.5px;
@@ -1387,10 +1389,6 @@ li {
     font-size: 11px;
     line-height: 18px;
     vertical-align: top;
-}
-
-.footer_wrap--1aAGSZPMzs.type_floating--3kq4kVTZ9j {
-    padding-bottom: 72px;
 }
 
 ._footer_footer_1tN14 {

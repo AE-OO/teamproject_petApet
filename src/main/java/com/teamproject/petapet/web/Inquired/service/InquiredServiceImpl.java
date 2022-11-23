@@ -6,6 +6,7 @@ import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,32 @@ import java.util.List;
 public class InquiredServiceImpl implements InquiredService{
 
     private final InquiredRepository inquiredRepository;
+
+    @Override
+    public List<Inquired> getMyInquired(String member) {
+        return inquiredRepository.findByMemberId(member);
+    }
+
+    @Override
+    public Inquired inquiredSubmit(Inquired inquired) {
+        return inquiredRepository.save(inquired);
+    }
+
+    @Override
+    public void removeInquiredOne(Long inquiredId) {
+        inquiredRepository.deleteById(inquiredId);
+    }
+
+//    @Transactional
+//    @Override
+//    public void setInquiredCheck(Boolean cheked, Long inquiredId) {
+//        inquiredRepository.setCheck(cheked,inquiredId);
+//    }
+
+    @Override
+    public Inquired findOne(Long id) {
+        return inquiredRepository.findById(id).get();
+    }
 
     @Override
     public List<Inquired> getFAQ() {

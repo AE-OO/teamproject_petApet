@@ -185,3 +185,13 @@ $(inquiryMy).click(function(){
     //     $(this).parent().remove();
     // }
 })
+
+const setValue = (target) => {
+    let val = $('#inputGroupSelect01').val();
+    $('input[name=carType]').attr('value',val);
+
+}
+
+function fn_delete(){
+    confirm("삭제하시겠습니까")
+}
