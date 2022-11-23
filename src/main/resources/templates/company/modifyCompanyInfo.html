@@ -22,7 +22,7 @@
                         <div class="container join">
                             <div class="row g-5">
                                 <div class="mx-auto">
-                                    <form action="/member/info" method="post">
+                                    <form action="/company/modifyInfo" method="post">
                                         <div class="row">
 
                                             <!-- companyId start -->
@@ -65,13 +65,29 @@
                                             <!-- companyNumber start -->
                                             <div class="col-12">
                                                 <div class="row g-2 mb-4 px-1">
-                                                    <label for="input-companyNumber" class="myinfo-p col-3">상호명</label>
+                                                    <label for="input-companyNumber" class="myinfo-p col-3">사업자 번호</label>
                                                     <input type="text" id="input-companyNumber"
                                                            class="form-control px-3 py-2 w-75"
                                                            th:value="${companyDTO.companyNumber}" readonly>
                                                 </div>
                                             </div>
                                             <!-- companyNumber end -->
+
+                                            <!-- companyEmail start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-companyEmail" class="myinfo-p col-3">이메일</label>
+                                                    <div class="px-0 col-9">
+                                                    <input type="text" id="input-companyEmail"
+                                                           class="form-control px-3 py-2" name="companyEmail"
+                                                           th:value="${companyDTO.companyEmail}"
+                                                           onkeyup="checkCompanyEmail()">
+                                                    <p id="feedback-companyEmail"
+                                                       class="text-start text-danger small ps-2 my-1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- companyEmail end -->
 
                                             <!-- companyPhoneNum start -->
                                             <div class="col-12">
@@ -86,7 +102,7 @@
                                                                        class="form-control px-3 py-2 "
                                                                        maxlength="11"
                                                                        th:value="${companyDTO.companyPhoneNum}"
-                                                                       onkeyup="checkMemberPhoneNum()"
+                                                                       onkeyup="checkCompanyPhoneNum()"
                                                                        placeholder="숫자만 입력해주세요" readonly>
                                                             </div>
                                                             <button id="smsBtn" type="button"
@@ -100,18 +116,6 @@
                                                 </div>
                                             </div>
                                             <!-- companyPhoneNum end -->
-
-                                            <!-- companyEmail start -->
-                                            <div class="col-12">
-                                                <div class="row g-2 mb-4 px-1">
-                                                    <label for="input-companyEmail" class="myinfo-p col-3">이메일</label>
-                                                    <input type="text" id="input-companyEmail"
-                                                           class="form-control px-3 py-2 w-75"
-                                                           th:value="${companyDTO.companyEmail}" readonly>
-                                                </div>
-                                            </div>
-                                            <!-- companyEmail end -->
-
                                         </div>
 
                                         <hr class="my-4"/>

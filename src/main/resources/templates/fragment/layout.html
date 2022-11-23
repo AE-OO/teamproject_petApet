@@ -122,17 +122,26 @@
                 <div class="sc-1liba5b-7 gvMCBX">
                     <ul class="sc-1liba5b-8 McnCE">
                         <li id="mc-user-modify-page" class="sc-1liba5b-9 bgmWPR">
-                            <a href="/member/checkInfo" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="/member/checkInfo" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('MEMBER')">
                                 개인정보수정
                             </a>
                         </li>
-<!--                        <li id="mc-address-book-page" class="sc-1liba5b-9 bgmWPR">-->
-<!--                            <a href="" title="배송지 변경" target="_self" class="sc-1liba5b-10 eLReSz">-->
-<!--                                배송지 변경-->
-<!--                            </a>-->
-<!--                        </li>-->
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="/member/withdrawal" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="/member/withdrawal" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('MEMBER')">
+                                회원 탈퇴
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a href="/company/info" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('COMPANY')">
+                                사업자정보수정
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a href="/company/withdrawal" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('COMPANY')">
                                 회원 탈퇴
                             </a>
                         </li>

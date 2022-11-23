@@ -26,4 +26,10 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
 
     @Query("select c.companyEmail from Company c where c.companyId = :companyId")
     String findEmail(String companyId);
+
+    @Modifying
+    @Transactional
+    @Query("update Company c set c.companyEmail =:companyEmail, c.companyPhoneNum=:companyPhoneNum where c.companyId =:companyId")
+    void updateCompany(String companyId, String companyEmail, String companyPhoneNum);
+
 }

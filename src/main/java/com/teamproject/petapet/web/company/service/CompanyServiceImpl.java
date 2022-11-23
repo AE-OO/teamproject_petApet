@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.company.service;
 
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.company.CompanyRepository;
 import com.teamproject.petapet.jwt.JwtTokenProvider;
 import com.teamproject.petapet.web.company.dto.CompanyDTO;
@@ -66,7 +67,7 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public int updateCompanyPw(String companyId, String companyPw) {
-        return companyRepository.updateCompanyPw("*"+companyId,passwordEncoder.encode(companyPw));
+        return companyRepository.updateCompanyPw(companyId,passwordEncoder.encode(companyPw));
     }
 
     @Override
@@ -76,6 +77,12 @@ public class CompanyServiceImpl implements CompanyService{
     public CompanyDTO companyInfo(String companyId) {
         return CompanyDTO.fromEntity(companyRepository.findById(companyId)
                 .orElseThrow(() -> new UsernameNotFoundException(companyId + " -> 데이터베이스에서 찾을 수 없습니다.")));
+    }
+
+    @Override
+    public void updateCompanyInfo(String companyId, CompanyRequestDTO.UpdateCompanyInfo updateCompanyInfo) {
+        Company company = updateCompanyInfo.toEntity();
+        companyRepository.updateCompany(companyId, company.getCompanyEmail(),company.getCompanyPhoneNum());
     }
 
 }

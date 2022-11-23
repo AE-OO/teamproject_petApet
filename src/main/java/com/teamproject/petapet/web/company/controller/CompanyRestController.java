@@ -1,11 +1,14 @@
 package com.teamproject.petapet.web.company.controller;
 
+import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
@@ -28,5 +31,13 @@ public class CompanyRestController {
     @PostMapping("/checkCompanyNumber")
     boolean checkCompanyNumber(@RequestParam String companyNumber){
         return companyService.checkCompanyNumber(companyNumber);
+    }
+
+    @PostMapping("/updateCompanyPw")
+    int updateMemberPw(Principal principal,@Valid @RequestBody CompanyRequestDTO.UpdateCompanyPwDTO updateCompanyPwDTO){
+        if(!companyService.checkCompanyPw(principal.getName(),updateCompanyPwDTO.getNewCompanyPw())) {
+            return companyService.updateCompanyPw(principal.getName(), updateCompanyPwDTO.getNewCompanyPw());
+        }
+        return 0;
     }
 }

@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.company.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.member.Authority;
+import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.company.validation.DuplicateCompanyId;
 import com.teamproject.petapet.web.company.validation.DuplicateCompanyNumber;
 import com.teamproject.petapet.web.company.validation.NotDuplicateCompanyId;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.sql.Date;
 import java.util.Set;
 
 public  class CompanyRequestDTO {
@@ -115,4 +117,36 @@ public  class CompanyRequestDTO {
         private String companyNumber;
     }
 
+    @Data
+    @Builder
+    @PasswordEquals(text = "newCompanyPw", comparison = "newCompanyPw2") //custom validation
+    public static class UpdateCompanyPwDTO {
+        @NotBlank
+        private String originalCompanyPw;
+        @Pattern(regexp = "^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$")
+        @NotBlank
+        private String newCompanyPw;
+        @NotBlank
+        private String newCompanyPw2;
+    }
+
+
+    @Data
+    @Builder
+    public static class UpdateCompanyInfo {
+        @NotBlank
+        private String companyEmail;
+        @Pattern(regexp = "^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$")
+        @NotBlank
+        private String companyPhoneNum;
+        @SmsConfirmNum //custom validation
+        private String smsConfirmNum; //문자 인증번호 확인용
+
+        public Company toEntity(){
+            return Company.builder()
+                    .companyEmail(companyEmail)
+                    .companyPhoneNum(companyPhoneNum)
+                    .build();
+        }
+    }
 }

@@ -20,11 +20,11 @@ smsConfirmNumFeedback = () => $("#feedback-smsConfirmNum");
 smsConfirmNumFeedback2 = () => $("#feedback-smsConfirmNum2");
 
 //비밀번호 정규식 (영어 대소문자,특수문자,숫자 필수입력, 8-16글자)
-const mPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+const cPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
 //휴대전화 정규식 (-빼고 입력 01로 시작, 총 10-11글자)
-const mPhoneumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
-//숫자 정규식 (길이 상관 없이 숫자만 입력)
-const numRegExp = /^[0-9]+$/;
+const cPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
+const cEmailRegExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+
 
 //현재 비밀번호 체크
 function checkOriginalCompanyPw() {
@@ -68,7 +68,7 @@ function checkNewCompanyPw() {
     } else if (newCompanyPw() === originalCompanyPw()) {
         cNewPwFeedback().text("현재 비밀번호와 동일합니다.");
         return false;
-    } else if (!(mPwRegExp.test(newCompanyPw()))) { //정규식에 맞지 않을 때
+    } else if (!(cPwRegExp.test(newCompanyPw()))) { //정규식에 맞지 않을 때
         cNewPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
         return false;
     } else {
@@ -103,7 +103,7 @@ function checkCompanyPhoneNum() {
         cPhoneNumFeedback().text("휴대폰 번호를 입력해주세요.");
         return false;
     }
-    if (!(mPhoneumRegExp.test(companyPhoneNum()))) {
+    if (!(cPhoneNumRegExp.test(companyPhoneNum()))) {
         cPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
         $("#smsBtn").attr("disabled", true);
         return false;
@@ -111,7 +111,19 @@ function checkCompanyPhoneNum() {
     cPhoneNumFeedback().text("");
     $("#smsBtn").attr("disabled", false);
     return true;
+}
 
+function checkCompanyEmail(){
+    if (companyEmail() === null || companyEmail() === "") { //값이 없을 때
+        cEmailFeedback().text("필수 정보입니다.");
+        return false;
+    } else if (!(cEmailRegExp.test(companyEmail()))) { //정규식에 맞지 않을 때
+        cEmailFeedback().text("이메일주소를 정확하게 입력해주세요. (예: petapet@pet.com) ");
+        return false;
+    } else { // 조건에 맞을 때
+        cEmailFeedback().text("");
+        return true;
+    }
 }
 
 //인증시간 변수
@@ -182,7 +194,7 @@ function sendBtnClick() {
     //     },
     //     error: function () {
     //         alert("인증번호 발송 실패");
-    //         location.href="/join"
+    //         location.href="/company/info"
     //     }
     // });
 
@@ -242,14 +254,14 @@ $(document).ready(function () {
         $("#updateCompanyPw").modal('show');
     })
     $("#sendNewCompanyPwBtn").click(function () {
-        if (checkOriginalCompanyPw() && checkNewCompanyPw() && checkNewMemberPw2()) {
+        if (checkOriginalCompanyPw() && checkNewCompanyPw() && checkNewCompanyPw2()) {
             $.ajax({
                 type: "POST",
-                url: "/updateMemberPw",
+                url: "/updateCompanyPw",
                 data: JSON.stringify({
-                    originalMemberPw: originalMemberPw(),
-                    newMemberPw: newMemberPw(),
-                    newMemberPw2: newMemberPw2()
+                    originalCompanyPw: originalCompanyPw(),
+                    newCompanyPw: newCompanyPw(),
+                    newCompanyPw2: newCompanyPw2()
                 }),
                 contentType: 'application/json',
                 dataType: "json",
@@ -259,37 +271,50 @@ $(document).ready(function () {
                     } else {
                         alert("비밀번호 변경에 실패했습니다.");
                     }
-                    $("#input-originalMemberPw").val("");
-                    $("#input-newMemberPw").val("");
-                    $("#input-newMemberPw2").val("");
+                    $("#input-originalCompanyPw").val("");
+                    $("#input-newCompanyPw").val("");
+                    $("#input-newCompanyPw2").val("");
                     oPwFeedback().text("");
-                    mNewPwFeedback().text("");
-                    mNewPwFeedback2().text("");
-                    $("#input-newMemberPw").attr("disabled", true);
-                    $("#input-newMemberPw2").attr("disabled", true);
-                    $("#updateMemberPw").modal('hide');
+                    cNewPwFeedback().text("");
+                    cNewPwFeedback2().text("");
+                    $("#input-newCompanyPw").attr("disabled", true);
+                    $("#input-newCompanyPw2").attr("disabled", true);
+                    $("#updateCompanyPw").modal('hide');
                 },
                 error: function () {
                     alert("통신 오류");
-                    window.location = "/member/checkInfo";
+                    window.location = "/company/info";
                 }
             });
         }
     });
     $("#closeBtn").click(function () {
-        $("#input-originalMemberPw").val("");
-        $("#input-newMemberPw").val("");
-        $("#input-newMemberPw2").val("");
+        $("#input-originalCompanyPw").val("");
+        $("#input-newCompanyPw").val("");
+        $("#input-newCompanyPw2").val("");
         oPwFeedback().text("");
-        mNewPwFeedback().text("");
-        mNewPwFeedback2().text("");
-        $("#input-newMemberPw").attr("disabled", true);
-        $("#input-newMemberPw2").attr("disabled", true);
+        cNewPwFeedback().text("");
+        cNewPwFeedback2().text("");
+        $("#input-newCompanyPw").attr("disabled", true);
+        $("#input-newCompanyPw2").attr("disabled", true);
+    });
+
+    $("#input-companyEmail").keyup(function () {
+        // if (companyEmail() === null || companyEmail() === "") { //값이 없을 때
+        //     cEmailFeedback().text("필수 정보입니다.");
+        //     return companyEmailResult = false;
+        // } else if (!(cEmailRegExp.test(companyEmail()))) { //정규식에 맞지 않을 때
+        //     cEmailFeedback().text("이메일주소를 정확하게 입력해주세요. (예: petapet@pet.com) ");
+        //     return companyEmailResult = false;
+        // } else { // 조건에 맞을 때
+        //     cEmailFeedback().text("");
+        //     return companyEmailResult = true;
+        // }
     });
 
     //인증번호 버튼
     $("#smsBtn").click(function () {
-        if (checkMemberPhoneNum() && ($("#smsBtnName").text() == "인증번호 받기")) {
+        if (checkCompanyPhoneNum() && ($("#smsBtnName").text() == "인증번호 받기")) {
             smsConfirmNum().attr("disabled", false);
             smsConfirmNum().val("");
             sendBtnClick();
@@ -297,44 +322,31 @@ $(document).ready(function () {
 
         if ($("#smsBtnName").text() == "다른번호 인증") {
             $("#smsBtnName").text("인증번호 받기");
-            $("#input-memberPhoneNum").val("");
+            $("#input-companyPhoneNum").val("");
             $("#smsBtn").attr("disabled", true);
-            $("#input-memberPhoneNum").attr("readonly", false);
+            $("#input-companyPhoneNum").attr("readonly", false);
         }
     });
 
     // 회원정보 수정버튼 - 모든 조건이 만족할 때 submit됨
     $("#modifyBtn").click(function () {
-        if (memberPostCode() === null || memberPostCode() === "") { //값이 없을 때
-            mAddrFeedback().text("필수 정보입니다.");
-
-        } else if (memberDetailAddress() === "") {
-            mAddrFeedback().text("상세 주소를 입력해주세요.");
+        if (companyEmail() === null || companyEmail() === "") {
+            cEmailFeedback().text("필수 정보입니다.");
         }
 
-        if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
-            mPhoneNumFeedback().text("인증이 필요합니다.");
+        if (companyPhoneNum() === null || companyPhoneNum() === "") {
+            cPhoneNumFeedback().text("인증이 필요합니다.");
         }
-        if (!checkMemberBirthday()) {
-            mBirthFeedback().text("필수 정보입니다.");
-        }
-
-        // alert(checkMemberBirthday()+"///"+checkMemberAddress()+"///"+checkMemberPhoneNum()+"///")
-        if (checkMemberBirthday() && checkMemberAddress() && checkMemberPhoneNum()) {
+        if ((checkCompanyPhoneNum() && checkCompanyEmail()) ||
+            (smsConfirmNum().val().length > 0 && checkCompanyPhoneNum() && checkSmsConfirmNum() && checkCompanyEmail())) {
             alert("수정이 완료되었습니다.");
             $("#modifyBtn").attr("type", "submit");
-        }
-        if (smsConfirmNum().val().length > 0) {
-            if (checkMemberBirthday() && checkMemberAddress() && checkMemberPhoneNum() && checkSmsConfirmNum()) {
-                alert("수정이 완료되었습니다.");
-                $("#modifyBtn").attr("type", "submit");
-            }
         }
 
     });
 
     // 회원탈퇴 버튼
     $("#withdrawalBtn").click(function () {
-        window.location = "/member/withdrawal"
+        window.location = "/company/withdrawal"
     });
 });

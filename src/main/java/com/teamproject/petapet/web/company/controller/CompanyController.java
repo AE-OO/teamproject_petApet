@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.company.controller;
 import com.teamproject.petapet.jwt.JwtAuthenticationFilter;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
+import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -93,11 +94,22 @@ public class CompanyController {
     }
 
     @GetMapping("/company/info")
-    public String myInfo(){return "company/checkCompanyInfo";}
+    public String companyInfoForm(){return "company/checkCompanyInfo";}
 
     @PostMapping("/company/info")
-    public String myInfo(Principal principal, Model model){
+    public String companyInfo(Principal principal, Model model){
         model.addAttribute("companyDTO", companyService.companyInfo(principal.getName()));
         return "company/modifyCompanyInfo";
     }
+
+    @PostMapping("/company/modifyInfo")
+    public String UpdateCompanyInfo(Principal principal, @Valid CompanyRequestDTO.UpdateCompanyInfo updateCompanyInfo,
+                                    BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return "redirect:/company/info";
+        }
+        companyService.updateCompanyInfo(principal.getName(),updateCompanyInfo);
+        return "redirect:/company/info";
+    }
+
 }

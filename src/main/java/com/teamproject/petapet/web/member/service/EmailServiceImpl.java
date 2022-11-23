@@ -86,7 +86,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public int emailSend(String companyId) {
         String password = getTempPassword();
-        companyService.updateCompanyPw(companyId, password);
+        companyService.updateCompanyPw("*"+companyId, password);
 
         String msg = "";
         msg += "<h1 style=\"font-size: 20px; padding-right: 30px; padding-left: 30px;\">임시비밀번호 안내</h1>";

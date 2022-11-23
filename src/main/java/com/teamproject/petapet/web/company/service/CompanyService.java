@@ -14,8 +14,9 @@ public interface CompanyService {
     String findCompanyPw (CompanyRequestDTO.FindCompanyPwDTO findCompanyPwDTO);
     int updateCompanyPw (String companyId, String companyPw);
     String findEmail(String companyId);
-
     CompanyDTO companyInfo(String companyId);
+    void updateCompanyInfo (String companyId, CompanyRequestDTO.UpdateCompanyInfo updateCompanyInfo);
+
 
 
 
