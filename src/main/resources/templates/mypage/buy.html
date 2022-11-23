@@ -15,9 +15,7 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -36,7 +34,6 @@
 
     <!-- Template Stylesheet -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
-
     <style>
         @media screen and (max-width: 1280px) {
             #pap-left-menu {
@@ -44,13 +41,13 @@
             }
         }
     </style>
-    <title>마이페이지 - 결제내역</title>
+    <title>마이페이지 - 주문목록</title>
 </head>
 
-<body style="display: block"ㅈ>
+<body style="display: block">
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <a href="index.html" th:href="@{/}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h3 class="m-0">petApet</h3>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">

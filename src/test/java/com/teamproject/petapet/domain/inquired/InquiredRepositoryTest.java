@@ -1,6 +1,10 @@
 package com.teamproject.petapet.domain.inquired;
 
+import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
+import com.teamproject.petapet.web.Inquired.service.InquiredService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +19,10 @@ class InquiredRepositoryTest {
     @Autowired
     InquiredRepository inquiredRepository;
 
-    @Test
+    @Autowired
+    InquiredService inquiredService;
+
+//    @Test
     public void insertInquiredDummies(){
         IntStream.rangeClosed(1,100).forEach(i ->{
             Member member = Member.builder().memberId("memberId" + (i % 30 + 1)).build();
@@ -31,4 +38,14 @@ class InquiredRepositoryTest {
         });
     }
 
+//    @Test
+//    void setCheck() {
+//
+//        Inquired inquired = new Inquired(1L,true);
+//        Long inquiredId = inquired.getInquiredId();
+//        boolean checked = inquired.isChecked();
+//
+//        inquiredRepository.setCheck(checked,inquiredId);
+//        Assertions.assertEquals(1L,inquired.getInquiredId());
+//    }
 }

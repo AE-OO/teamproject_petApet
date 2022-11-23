@@ -47,7 +47,7 @@ public class Buy {
     public Buy(String buyAddress, Member member, Product product, Long quantity) {
         this.buyAddress = buyAddress;
         this.member = member;
-        this.product = product;
         this.quantity = quantity;
+        this.product = product;
     }
 }

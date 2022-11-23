@@ -13,6 +13,17 @@ import java.util.List;
 
 public interface InquiredService {
 
+    List<Inquired> getMyInquired(String member);
+
+    Inquired inquiredSubmit(Inquired inquired);
+
+    void removeInquiredOne(Long inquiredId);
+
+//    void setInquiredCheck(Long inquiredId);
+
+    // 관리자 - VIEW
+    Inquired findOne(Long id);
+
     List<Inquired> getFAQ();
     List<Inquired> getOtherInquiries();
     void registerFAQ(InquiredFAQDTO inquiredFAQDTO);
