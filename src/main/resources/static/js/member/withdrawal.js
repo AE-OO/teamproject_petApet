@@ -38,7 +38,7 @@ $(document).ready(function () {
 
         if (memberPwResult) {
             $("#staticBackdropLabel").text("정말로 탈퇴하시겠습니까?");
-            $("#staticBackdrop").modal();
+            $("#staticBackdrop").modal('show');
         }
     });
 

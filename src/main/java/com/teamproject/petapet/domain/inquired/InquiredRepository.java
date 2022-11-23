@@ -14,13 +14,13 @@ import java.util.List;
 public interface InquiredRepository extends JpaRepository<Inquired, Long> {
 
     @Query("select i from Inquired i where i.inquiredCategory = 'FAQ'")
-    public List<Inquired> getFAQ();
+    List<Inquired> getFAQ();
 
     @Query("select i from Inquired i where i.inquiredCategory like '%문의'")
-    public List<Inquired> getOtherInquiries();
+    List<Inquired> getOtherInquiries();
 
     @Modifying
     @Transactional
     @Query("update Inquired i set i.inquiredTitle =:title, i.inquiredContent =:content where i.inquiredId =:FAQId")
-    public void updateFAQ(String title, String content, Long FAQId);
+    void updateFAQ(String title, String content, Long FAQId);
 }

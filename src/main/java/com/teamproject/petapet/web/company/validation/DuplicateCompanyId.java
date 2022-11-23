@@ -1,4 +1,4 @@
-package com.teamproject.petapet.validatiion;
+package com.teamproject.petapet.web.company.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,12 +9,17 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * 장사론 22.10.28 작성
+ * 사업자회원용 아이디 중복검사 validation
+ * (아이디가 존재할 경우에만 로그인 허용)
+ */
 @Target({ElementType.FIELD})
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = {SmsConfirmNumCheck.class})
-public @interface SmsConfirmNum {
-    String message() default "입력하신 번호가 인증번호와 일치하지 않습니다. ";
+@Constraint(validatedBy = {DuplicateCompanyIdCheck.class})
+public @interface DuplicateCompanyId {
+    String message() default "존재하지 않는 아이디입니다.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

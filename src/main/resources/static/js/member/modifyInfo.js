@@ -160,7 +160,7 @@ function startTimer(count) {
         $('#staticBackdrop').on('hidden.bs.modal', function (e) {
             clearInterval(timer);
             timer == null;
-            return;
+
         });
     }, 1000);
 }
@@ -178,7 +178,7 @@ function sendBtnClick() {
     //     },
     //     dataType: "json",
     //     success: function (response) {
-    //         $("#staticBackdrop").modal();
+    //         $("#staticBackdrop").modal('show');
     //         alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
     //         startTimer(leftSec); // 타이머 시작
     //         alert(response);
@@ -199,7 +199,7 @@ function sendBtnClick() {
         },
         dataType: "json",
         success: function (response) {
-            $("#staticBackdrop").modal();
+            $("#staticBackdrop").modal('show');
             alert("인증번호를 발송했습니다. 인증번호가 오지 않으면 입력하신 번호가 맞는지 확인해 주세요.");
             startTimer(leftSec); // 타이머 시작
             alert(response);
@@ -226,7 +226,7 @@ function checkSmsConfirmNum() {
             },
             dataType: "json",
             success: function (check) {
-                checkResult = false;
+                // checkResult = false;
                 if (check) {
                     // alert("인증이 완료되었습니다.");
                     // $("#input-smsConfirmNum").attr("readonly", true);
@@ -342,7 +342,7 @@ function checkMemberAddress() {
     if (memberPostCode() === null || memberPostCode() === "") { //값이 없을 때
         mAddrFeedback().text("필수 정보입니다.");
         return false;
-        return;
+
     } else if (memberDetailAddress() === "") {
         mAddrFeedback().text("상세 주소를 입력해주세요.");
         return false;
@@ -354,7 +354,7 @@ function checkMemberAddress() {
 
 $(document).ready(function () {
     $("#updateMemberPwBtn").click(function () {
-        $("#updateMemberPw").modal();
+        $("#updateMemberPw").modal('show');
     })
     $("#sendNewMemberPwBtn").click(function () {
         if (checkOriginalMemberPw() && checkNewMemberPw() && checkNewMemberPw2()) {

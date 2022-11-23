@@ -51,18 +51,18 @@ function chnSelectMonth() {
 //error메세지 text 색상 변경용
 function textInfo(value) {
     if ((value.hasClass("text-info"))) {
-        return;
+
     } else {
         value.removeClass("text-danger").addClass("text-info");
-        return;
+
     }
 }
 function textDanger(value) {
     if (value.hasClass("text-danger")) {
-        return;
+
     } else {
         value.removeClass("text-info").addClass("text-danger");
-        return;
+
     }
 }
 
@@ -117,7 +117,7 @@ function startTimer(count) {
             smsConfirmNum().attr("readonly", true);
             clearInterval(timer);
             timer == null;
-            return;
+
         }
     }, 1000);
 }
@@ -404,7 +404,7 @@ $(document).ready(function () {
         if (memberPostCode() === null || memberPostCode() === "") { //값이 없을 때
             mAddrFeedback().text("필수 정보입니다.");
             memberAddressResult = false;
-            return;
+
         } else if (memberDetailAddress() === "") {
             mAddrFeedback().text("상세 주소를 입력해주세요.");
             return memberAddressResult = false;
@@ -474,9 +474,9 @@ $(document).ready(function () {
             mPhoneNumFeedback().text("인증이 필요합니다.");
         }
 
-        alert(memberIdResult + "///" + memberPwResult + "///" + memberPwResult2 + "///" + memberNameResult
-            + "///" + checkMemberBirthday() + "///" + memberAddressResult + "///" + memberPhoneNumResult
-            + "///" + checkSmsConfirmNum()); //확인용
+        // alert(memberIdResult + "///" + memberPwResult + "///" + memberPwResult2 + "///" + memberNameResult
+        //     + "///" + checkMemberBirthday() + "///" + memberAddressResult + "///" + memberPhoneNumResult
+        //     + "///" + checkSmsConfirmNum()); //확인용
 
         if (memberIdResult && memberPwResult && memberPwResult2 && memberNameResult &&
             checkMemberBirthday() && memberAddressResult && memberPhoneNumResult && checkSmsConfirmNum()) {

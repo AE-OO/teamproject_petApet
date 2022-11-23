@@ -1,4 +1,4 @@
-package com.teamproject.petapet.validatiion;
+package com.teamproject.petapet.web.member.validatiion;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestContextHolder;

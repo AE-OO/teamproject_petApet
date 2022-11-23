@@ -12,5 +12,5 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Modifying
     @Transactional
     @Query("update Community c set c.communityReport = c.communityReport + 1 where c.communityId =:communityId")
-    public void addCommunityReport(Long communityId);
+    void addCommunityReport(Long communityId);
 }

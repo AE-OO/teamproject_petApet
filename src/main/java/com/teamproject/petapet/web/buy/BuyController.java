@@ -43,7 +43,7 @@ public class BuyController {
                          HttpSession httpSession,
                          Model model){
 
-        if(Principal.class.isInstance(principal)) {
+        if(principal instanceof Principal) {
             String loginMember = checkMember(principal, request, httpSession);
 
             List<Buy> buyList = buyService.findAll(loginMember);

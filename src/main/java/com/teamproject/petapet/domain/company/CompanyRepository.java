@@ -1,0 +1,29 @@
+package com.teamproject.petapet.domain.company;
+
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
+
+public interface CompanyRepository extends JpaRepository<Company, String> {
+    @Query("select c.companyPw from Company c where c.companyId = :companyId")
+    String findCompanyPw(String companyId);
+    @EntityGraph(attributePaths = "authorities")
+    Optional<Company> findOneWithAuthoritiesByCompanyId(String companyId);
+    Boolean existsByCompanyNumber(String companyNumber);
+    @Query("select c.companyId from Company c where c.companyName = :companyName and c.companyNumber = :companyNumber")
+    Optional<String> findCompanyId(String companyName, String companyNumber);
+    @Query("select c.companyId from Company c where c.companyId = :companyId and c.companyName = :companyName and c.companyNumber = :companyNumber")
+    Optional<String> existFindCompanyId(String companyId, String companyName, String companyNumber);
+
+    @Modifying
+    @Transactional
+    @Query("update Company c set c.companyPw =:companyPw where c.companyId = :companyId")
+    int updateCompanyPw(String companyId, String companyPw);
+
+    @Query("select c.companyEmail from Company c where c.companyId = :companyId")
+    String findEmail(String companyId);
+}
