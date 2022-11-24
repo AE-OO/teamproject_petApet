@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company, String> {
@@ -31,5 +32,8 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     @Transactional
     @Query("update Company c set c.companyEmail =:companyEmail, c.companyPhoneNum=:companyPhoneNum where c.companyId =:companyId")
     void updateCompany(String companyId, String companyEmail, String companyPhoneNum);
+
+    //22.11.25 박채원 추가
+    List<Company> getCompaniesByActivatedIsFalse();
 
 }

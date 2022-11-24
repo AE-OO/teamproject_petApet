@@ -6,6 +6,7 @@ import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.service.CommunityService;
+import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.report.dto.ReportProductDTO;
@@ -37,6 +38,7 @@ public class AdminController {
     private final CommunityService communityService;
     private final MemberService memberService;
     private final ReportService reportService;
+    private final CompanyService companyService;
 
     @GetMapping("/adminPage")
     public String adminPage(Model model){
@@ -49,7 +51,7 @@ public class AdminController {
         model.addAttribute("product", productService.getProductList());
         model.addAttribute("community", communityService.getProductList());
         model.addAttribute("member", memberService.getMemberList());
-
+        model.addAttribute("company", companyService.getCompanyList());
 
         return "/admin/adminMain";
     }

@@ -99,32 +99,32 @@
                 </li>
                 <li class="nav-item" id="goInquiryManage">
                     <a class="nav-link">
-                    <i class="icon-paper menu-icon"></i>
-                    <span class="menu-title">문의 관리</span>
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">문의 관리</span>
                     </a>
                 </li>
                 <li class="nav-item" id="goReportManage">
                     <a class="nav-link">
-                    <i class="icon-paper menu-icon"></i>
-                    <span class="menu-title">신고 관리</span>
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">신고 관리</span>
                     </a>
                 </li>
                 <li class="nav-item" id="goProductManage">
                     <a class="nav-link">
-                    <i class="icon-paper menu-icon"></i>
-                    <span class="menu-title">상품 관리</span>
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">상품 관리</span>
                     </a>
                 </li>
                 <li class="nav-item" id="goCommunityManage">
                     <a class="nav-link">
-                    <i class="icon-paper menu-icon"></i>
-                    <span class="menu-title">커뮤니티 관리</span>
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">커뮤니티 관리</span>
                     </a>
                 </li>
                 <li class="nav-item" id="goMemberManage">
                     <a class="nav-link">
-                    <i class="icon-paper menu-icon"></i>
-                    <span class="menu-title">회원 관리</span>
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">회원 관리</span>
                     </a>
                 </li>
             </ul>
@@ -221,9 +221,11 @@
                                         <tbody>
                                         <tr th:each="Other : ${otherInquiry}">
                                             <td class="pl-0">[[${Other.inquiredId}]]</td>
-                                            <td><a href="#" th:href="|@{/admin/{idx}/edit(idx=${Other.inquiredId})}|">[[${Other.inquiredTitle}]]</a></td>
+                                            <td><a href="#" th:href="|@{/admin/{idx}/edit(idx=${Other.inquiredId})}|">[[${Other.inquiredTitle}]]</a>
+                                            </td>
                                             <td>[[${Other.inquiredCategory}]]</td>
-                                            <td><label class="badge badge-danger" th:text="${Other.checked} ?'답변완료':'답변대기'">미답</label></td>
+                                            <td><label class="badge badge-danger"
+                                                       th:text="${Other.checked} ?'답변완료':'답변대기'">미답</label></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -255,13 +257,12 @@
                                             <td id="communityId">[[${communityReport.community.communityId}]]</td>
                                             <td>[[${communityReport.reportReason}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm" id="showCommunityReportModal" th:onclick="getReportReason([[${communityReport.reportId}]], 'community');" data-bs-toggle="modal"
+                                                <button class="btn btn-danger btn-sm" id="showCommunityReportModal"
+                                                        th:onclick="getReportReason([[${communityReport.reportId}]], 'community');"
+                                                        data-bs-toggle="modal"
                                                         data-bs-target="#confirmReportModal"
                                                         type="button">승인
                                                 </button>
-<!--                                                <button class="btn btn-danger btn-sm acceptCommunityReportBtn"-->
-<!--                                                        type="button">승인-->
-<!--                                                </button>-->
                                             </td>
                                         </tr>
                                         </tbody>
@@ -287,13 +288,14 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <!-- 첫번째 승인 버튼 값만 계속 표시됨 -->
                                         <tr th:each="memberReport : ${memberReport}">
                                             <td class="pl-0" id="memberReportId">[[${memberReport.reportId}]]</td>
                                             <td id="memberId">[[${memberReport.member.memberId}]]</td>
                                             <td>[[${memberReport.reportReason}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm" id="showMemberReportModal" th:onclick="getReportReason([[${memberReport.reportId}]], 'member');" data-bs-toggle="modal"
+                                                <button class="btn btn-danger btn-sm" id="showMemberReportModal"
+                                                        th:onclick="getReportReason([[${memberReport.reportId}]], 'member');"
+                                                        data-bs-toggle="modal"
                                                         data-bs-target="#confirmReportModal"
                                                         type="button">승인
                                                 </button>
@@ -329,7 +331,9 @@
                                             <td id="productId">[[${productReport.product.productId}]]</td>
                                             <td>[[${productReport.reportReason}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm" id="showProductReportModal" th:onclick="getReportReason([[${productReport.reportId}]], 'product');" data-bs-toggle="modal"
+                                                <button class="btn btn-danger btn-sm" id="showProductReportModal"
+                                                        th:onclick="getReportReason([[${productReport.reportId}]], 'product');"
+                                                        data-bs-toggle="modal"
                                                         data-bs-target="#confirmReportModal"
                                                         type="button">승인
                                                 </button>
@@ -342,7 +346,39 @@
                         </div>
                     </div>
                     <div class="col-md-6 stretch-card grid-margin">
-                        <!-- 뭐하지 -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <p class="card-title mb-0" style="float: left;">사업체가입 관리</p>
+                                </div>
+                                <div class="table-responsive" style="height: 400px;">
+                                    <table class="table table-hover" style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">#</th>
+                                            <th class="border-bottom pb-2">사업체명</th>
+                                            <th class="border-bottom pb-2">사업자번호</th>
+                                            <th class="border-bottom pb-2">승인</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="company, i : ${company}">
+                                            <td th:scope="row">[[${i.count}]]</td>
+                                            <td id="companyId">[[${company.companyName}]]</td>
+                                            <td>[[${company.companyNumber}]]</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" id="showProductReportModal"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmReportModal"
+                                                        type="button">승인
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -379,7 +415,8 @@
                                             <td>[[${product.productPrice}]]</td>
                                             <td><a href="#"><label class="btn btn-success btn-sm">수정</label></a></td>
                                             <td><a href="#"><label class="btn btn-danger btn-sm">삭제</label></a></td>
-                                            <td><input class="form-control form-control-sm w-50 mx-auto" name="productStock" th:value="${product.productStock}"></td>
+                                            <td><input class="form-control form-control-sm w-50 mx-auto"
+                                                       name="productStock" th:value="${product.productStock}"></td>
                                             <td>
                                                 <select class="form-control form-control-sm"
                                                         id="productStatus" name="productStatus">
@@ -532,12 +569,14 @@
                 </div>
             </div>
             <!-- 신고 확인 Modal -->
-            <div class="modal fade" id="confirmReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="confirmReportModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h2 class="modal-title fs-5 text-center" id="exampleModalLabel">상품신고</h2>
-                            <button type="button" class="btn-close" id="modalCloseBTN" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" id="modalCloseBTN" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-center productReportBody">
                             <input type="hidden" id="modalReportId">
@@ -547,11 +586,16 @@
                             <input class="form-control form-control-sm" id="reportReason" value="" readonly>
                             <br>
                             <h4 class="text-left font-weight-bold">구체적 사유</h4>
-                            <textarea class="form-control" id="reportDetailReason" value="" rows="4" readonly></textarea>
+                            <textarea class="form-control" id="reportDetailReason" value="" rows="4"
+                                      readonly></textarea>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelReportBtn">반려</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="acceptReportBtn">승인</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    id="cancelReportBtn">반려
+                            </button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="acceptReportBtn">
+                                승인
+                            </button>
                         </div>
                     </div>
                 </div>
