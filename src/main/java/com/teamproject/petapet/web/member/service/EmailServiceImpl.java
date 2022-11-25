@@ -136,8 +136,6 @@ public class EmailServiceImpl implements EmailService {
         msg += reason;
         msg += "</td></tr></tbody></table></div>";
 
-        System.out.println("사업자 이메일 ////////// " + companyService.findEmail(companyId.replace("*","")));
-
         EmailDTO emailDTO = EmailDTO.builder()
                 .address(companyService.findEmail(companyId.replace("*","")))
                 .title("petApet 사업자 회원 가입 안내 이메일입니다.")
