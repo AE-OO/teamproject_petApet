@@ -24,7 +24,7 @@
                             <div class="carousel-inner">
                                 <div class="carousel-item" th:each="img : *{productImg}">
                                     <img th:src="|@{/product/images/{filename}(filename=${img.storeFileName})}|"
-                                         style="max-width: 100%; height: auto; vertical-align: bottom;"
+                                         style="max-width: 100%; height: auto; max-height: 30rem; vertical-align: bottom;"
                                          class="d-block w-auto" id="carousel-img" alt="...">
                                 </div>
                             </div>
@@ -51,16 +51,22 @@
                     <h2 th:text="*{productName}">상품명</h2>
                 </div>
                 <div class="col-1 text-center mt-1">
-                    <p style="font-size: 1.5rem"><a role="button" style="color: red">♡</a></p>
+                    <th:block th:if="${existsDibsProduct}">
+                    <p style="font-size: 1.5rem"><a role="button" style="color: red">♥︎</a></p>
+                    </th:block>
+                    <th:block th:if="${!existsDibsProduct}">
+                    <p style="font-size: 1.5rem"><a role="button" onclick="addDibs(productId)" style="color: red">♡</a></p>
+                    </th:block>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
             <div class="d-flex m-lg-4">
                 <div class="col-4 m-lg-1">
                     <h5>할인율</h5>
-                    <h6 class="text-secondary">0%</h6>
+                    <h6 class="text-secondary" th:text="|*{productDiscountRate}%|">0%</h6>
                 </div>
                 <div class="col-8 m-lg-1 text-end">
+                    <span style="text-decoration: line-through;"><i><h5 class="me-3" th:text="*{productUnitPrice}">price</h5></i></span>
                     <h4 class="me-3" th:text="*{productPrice}">price</h4>
                 </div>
             </div>
@@ -101,7 +107,7 @@
                             <button id="addCart" class="btn btn-info ms-3" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
                         <div class="col-6 d-grid">
-                            <button id="addBuy" class="btn btn-info ms-3" style="height:2rem" th:onclick="'javascript:checkout()'">바로구매</button>
+                            <button id="addBuy" class="btn btn-info ms-3" th:onclick="'javascript:checkout()'">바로구매</button>
                         </div>
                     </div>
                 </div>
@@ -635,6 +641,28 @@
 <script th:inline="javascript" type="text/javascript">
 
     let totalPage = 10;
+
+    function addDibs(id) {
+        $.ajax({
+            type : 'post',           // 타입 (get, post, put 등등)
+            url : '/product/dibs/add',           // 요청할 서버url
+            async : true,            // 비동기화 여부 (default : true)
+            dataType : 'text',       // 데이터 타입 (html, xml, json, text 등등)
+            data :  {"productId" : id},
+            success : function(result) { // 결과 성공 콜백함수
+                if (result ==='login'){
+                    location.href = '/login'
+                } if (result === 'duplicate') {
+                    console.log(result)
+                } else {
+                    console.log(result)
+                }
+            },
+            error : function(request, status, error) { // 결과 에러 콜백함수
+                console.log(error)
+            }
+        })
+    }
 
     function review_scroll_move() {
         let offset = $("#reviews").offset();

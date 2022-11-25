@@ -18,4 +18,6 @@ public class ProductDetailDTO {
     private Long productPrice;
     private Long productRating;
     private Long productStock;
+    private Long productDiscountRate;
+    private Long productUnitPrice;
 }

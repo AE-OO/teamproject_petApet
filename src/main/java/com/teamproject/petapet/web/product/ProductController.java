@@ -6,10 +6,11 @@ import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.product.ReviewRepository;
+import com.teamproject.petapet.web.dibs.service.DibsProductService;
+import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
-import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,10 +35,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @Slf4j
@@ -47,7 +49,9 @@ public class ProductController {
     private final ProductService productService;
     private final FileService fileService;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final ReviewRepository reviewRepository;
+    private final DibsProductService dibsProductService;
 
     @GetMapping
     public String productMainPage() {
@@ -55,18 +59,33 @@ public class ProductController {
     }
 
     @GetMapping("/{category}")
-    public String productList(@PathVariable("category") String category, Model model) {
+    public String productList(@PathVariable("category") String category, Model model, Principal principal) {
         category = category.toUpperCase();
         ProductType productType = ProductType.valueOf(category);
-        List<Product> productList = productService.findAllByProductDiv(productType);
-        List<ProductListDTO> productListDTOS = productList.stream().map(m -> ProductListDTO.builder().productName(m.getProductName())
-                .productPrice(m.getProductPrice())
-                .productImg(m.getProductImg())
-                .productId(m.getProductId())
-                .productDiv(m.getProductDiv())
-                .productRating(m.getProductRating())
-                .review(m.getReview()).build()).collect(Collectors.toList());
+
+            List<Product> productList = productService.findAllByProductDiv(productType);
+        if (principal != null){
+            Member member = memberService.findOne(principal.getName());
+            List<ProductListDTO> productListDTOS = productList.stream().map(m -> ProductListDTO.builder().productName(m.getProductName())
+                    .productPrice(m.getProductPrice())
+                    .productImg(m.getProductImg())
+                    .productId(m.getProductId())
+                    .productDiv(m.getProductDiv())
+                    .productRating(m.getProductRating())
+                    .duplicateDibsProduct(dibsProductService.existsDibsProduct(productService.findOne(m.getProductId()),member))
+                    .review(m.getReview()).build()).collect(Collectors.toList());
         model.addAttribute("productList", productListDTOS);
+        } else {
+            List<ProductListDTO> productListDTOS = productList.stream().map(m -> ProductListDTO.builder().productName(m.getProductName())
+                    .productPrice(m.getProductPrice())
+                    .productImg(m.getProductImg())
+                    .productId(m.getProductId())
+                    .productDiv(m.getProductDiv())
+                    .productRating(m.getProductRating())
+                    .review(m.getReview()).build()).collect(Collectors.toList());
+        model.addAttribute("productList", productListDTOS);
+        }
+
         model.addAttribute("productDiv", productType.getProductCategory());
         return "product/productList";
     }
@@ -98,7 +117,9 @@ public class ProductController {
                 , uploadFiles
                 , "판매중"
                 , productDiv
-                , productInsertDTO.getProductContent());
+                , productInsertDTO.getProductContent()
+                , productInsertDTO.getProductDiscountRate()
+                , productInsertDTO.getProductUnitPrice());
         productService.productSave(product);
 
         String redirectURL = "/product/" +
@@ -128,8 +149,13 @@ public class ProductController {
 
     @GetMapping("/{productType}/{productId}/details")
     public String detailViewForm(@PathVariable("productType") String productType
-            , @PathVariable("productId") Long productId, Model model) {
+            , @PathVariable("productId") Long productId
+            , Principal principal , Model model) {
         Product findProduct = productService.findOne(productId);
+        if (principal != null){
+            boolean existsDibsProduct = dibsProductService.existsDibsProduct(findProduct, memberService.findOne(principal.getName()));
+            model.addAttribute("existsDibsProduct",existsDibsProduct);
+        }
         ProductDetailDTO productDetailDTO = findProduct.toProductDetailDTO(findProduct);
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(0, 10, sort);

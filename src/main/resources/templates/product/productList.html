@@ -57,10 +57,12 @@
                             </div>
                             <div class="d-flex flex-row">
                                 <div id="dib" class="justify-content-start">
-                                    <fieldset>
-                                        <input type="radio" value="1" class="btn bg-secondary me-1" id="product_dib">
-                                        <label for="product_dib" class="fs-4">♥</label>
-                                    </fieldset>
+                                    <th:block th:if="${product.duplicateDibsProduct}">
+                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button" style="color: red">♥︎</a></p>
+                                    </th:block>
+                                    <th:block th:if="${!product.duplicateDibsProduct}">
+                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button" th:id="${product.productId}" onclick="addDibs(this.getAttribute('id'))" style="color: red">♡</a></p>
+                                    </th:block>
                                 </div>
                                 <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
                                     <button type="button" class="btn bg-secondary me-1 addCart" th:value="*{product.productId}">장바구니
@@ -136,6 +138,28 @@
         $("#star" + i).find(".my_star").filter(function (k, v) {
             return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
         });
+    }
+
+    function addDibs(id) {
+        $.ajax({
+            type : 'post',           // 타입 (get, post, put 등등)
+            url : '/product/dibs/add',           // 요청할 서버url
+            async : true,            // 비동기화 여부 (default : true)
+            dataType : 'text',       // 데이터 타입 (html, xml, json, text 등등)
+            data :  {"productId" : id},
+            success : function(result) { // 결과 성공 콜백함수
+                if (result ==='login'){
+                    location.href = '/login'
+                } if (result === 'duplicate') {
+                    console.log(result)
+                } else {
+                    console.log(result)
+                }
+            },
+            error : function(request, status, error) { // 결과 에러 콜백함수
+                console.log(error)
+            }
+        })
     }
 </script>
 <script th:inline="javascript">
