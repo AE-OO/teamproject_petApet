@@ -285,7 +285,11 @@
                             </div>
                         </div>
                         <div class="col text-end">
-                            <a href="#">신고</a>
+                            <button type="button" class="btn btn-outline-primary" id="addMemberReport"
+                                    data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
+                                    title="신고">신고
+                            </button>
+<!--                            <a href="#">신고</a>-->
                         </div>
                         <div class="d-flex mt-2">
                             <div class="me-2">
@@ -386,7 +390,11 @@
                                         <p class="m-0">판매 부적격 상품 또는 허위과장광고 및 지식재산권을 침해하는 상품의 경우 신고하여 주시기 바랍니다.</p>
                                     </div>
                                     <div class="col-1 text-end">
-                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>
+                                        <button type="button" class="btn btn-outline-primary" id="addProductReport"
+                                                data-bs-toggle="modal" data-bs-target="#addProductReportModal"
+                                                title="신고하기">신고하기
+                                        </button>
+<!--                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>-->
                                     </div>
                                 </div>
                             </div>
@@ -622,20 +630,84 @@
 <!-- Footer End -->
 
 
-<!-- Copyright Start -->
-<div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
-    <div class="container ">
-        <div class="row ">
-            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
-                &copy; petApet Project Team All Right Reserved.
+    <!-- Copyright Start -->
+    <div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
+        <div class="container ">
+            <div class="row ">
+                <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
+                    &copy; petApet Project Team All Right Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 모달 동작 안함 -->
+<!-- 상품 신고 Modal -->
+<div class="modal fade" id="addProductReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">상품신고</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>신고 사유를 선택해 주세요</h6>
+                <select class="form-select" aria-label="Default select example" id="reportProductReason"
+                        name="reportProductReason">
+                    <option value="">신고사유</option>
+                    <option value="불량품 다수">불량품 다수</option>
+                    <option value="유해물질">유해물질</option>
+                    <option value="기타 사유">기타 사유</option>
+                </select>
+                <hr>
+                <h6>구체적인 사유를 작성해 주세요</h6>
+                <textarea class="form-control" name="reportProductReasonDetail" rows="3"
+                          placeholder="구체적인 신고 사유 입력"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="reportProductBTN">신고하기
+                </button>
             </div>
         </div>
     </div>
 </div>
-</body>
+
+<!-- 회원 신고 Modal -->
+<div class="modal fade" id="addMemberReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">회원신고</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>신고 사유를 선택해 주세요</h6>
+                <select class="form-select" aria-label="Default select example" id="reportMemberReason">
+                    <option value="">신고사유</option>
+                    <option value="회원비난/비하">회원비난/비하</option>
+                    <option value="욕설/비속어">욕설/비속어</option>
+                    <option value="불쾌감 조성">불쾌감 조성</option>
+                    <option value="이용방해 행위">이용방해 행위</option>
+                    <option value="타인권리 침해">타인권리 침해</option>
+                    <option value="특정집단 차별">특정집단 차별</option>
+                    <option value="기타 사유">기타 사유</option>
+                </select>
+                <hr>
+                <h6>구체적인 사유를 작성해 주세요</h6>
+                <textarea class="form-control" rows="3" name="reportMemberReasonDetail" placeholder="구체적인 신고 사유 입력"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="reportMemberBTN">신고하기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/js/reportJS.js"></script>
 
 
 <script th:inline="javascript" type="text/javascript">

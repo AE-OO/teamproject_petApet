@@ -8,6 +8,8 @@ import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
+import com.teamproject.petapet.web.report.dto.ReportProductDTO;
+import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
 import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -166,5 +169,19 @@ public class AdminController {
     @GetMapping("/setOutOfStock")
     public void setOutOfStock(@RequestParam(value="productIdList[]") List<String> productIdList){
         productService.updateProductStatusOutOfStock(productIdList);
+    }
+
+    @ResponseBody
+    @GetMapping("/getReportReason/{id}/{type}")
+    public HashMap<String, ReportTargetDTO> getReportReason(@PathVariable("id") Long id, @PathVariable("type") String type){
+        HashMap<String, ReportTargetDTO> reportTarget = new HashMap<String, ReportTargetDTO>();
+        reportTarget.put("report",reportService.getOneReport(id, type));
+        return reportTarget;
+    }
+
+    @ResponseBody
+    @PostMapping("/refuseReport/{reportId}")
+    public void refuseReport(@PathVariable("reportId") Long reportId){
+        reportService.refuseReport(reportId);
     }
 }
