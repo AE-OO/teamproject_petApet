@@ -283,5 +283,25 @@ function getCompanyInfo(companyId){
         $("#modalCompanyPhoneNum").val(data.companyPhoneNum);
         $("#modalCompanyEmail").val(data.companyEmail);
         $("#modalCompanyNumber").val(data.companyNumber);
+
+        //사업자 번호 상태확인
+        var number = {
+            "b_no": [data.companyNumber] //사업자 번호 받아옴
+        };
+
+        $.ajax({
+            url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=svcYNFjOh38o5jqJ7WAjnGxrQbGB7iFHkuLaWMdiulZa61RK3DpXgaFdClE%2F6xNkMEusenNBIBj5%2BoFIDCGiiw%3D%3D",
+            type: "POST",
+            data: JSON.stringify(number),
+            dataType: "JSON",
+            contentType: "application/json",
+            accept: "application/json",
+            success: function(result) {
+                $("#modalCompanyNumberConfirm").val(result.data[0].tax_type);  //국세청에 등록되어있는 사업자번호인지 확인
+            },
+            error: function(result) {
+                console.log(result.responseText);
+            }
+        });
     });
 }

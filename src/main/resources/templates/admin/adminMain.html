@@ -367,7 +367,9 @@
                                             <td>[[${company.companyName}]]</td>
                                             <td>[[${company.companyNumber}]]</td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm" th:onclick="getCompanyInfo([[${company.companyId}]])" id="showCompanyInfoModal"
+                                                <button class="btn btn-danger btn-sm"
+                                                        th:onclick="getCompanyInfo([[${company.companyId}]])"
+                                                        id="showCompanyInfoModal"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#confirmCompanyInfoModal"
                                                         type="button">승인
@@ -610,9 +612,9 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                         </div>
-                        <div class="modal-body text-center">
+                        <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-3">
                                     <label for="modalCompanyName" class="form-label">사업체명</label>
                                     <input type="text" class="form-control" id="modalCompanyName" readonly>
                                 </div>
@@ -622,7 +624,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-3">
                                     <label for="modalCompanyPhoneNum" class="form-label">전화번호</label>
                                     <input type="text" class="form-control" id="modalCompanyPhoneNum" readonly>
                                 </div>
@@ -632,28 +634,32 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12 mb-2">
                                     <label for="modalCompanyNumber" class="form-label">사업자번호</label>
                                     <input type="text" class="form-control" id="modalCompanyNumber" readonly>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="modalCompanyNumberConfirm" class="form-label">&nbsp</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <input type="text" class="form-control" id="modalCompanyNumberConfirm" readonly>
                                 </div>
                             </div>
                             <hr>
-                            <div class="col-md-3">
-                                <label for="refuseReasonJoinCompany" class="form-label">반려사유</label>
-                                <select class="form-select" id="refuseReasonJoinCompany">
-                                    <option selected value="등록되지 않은 사업자번호">등록되지 않은 사업자번호</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="refuseReasonJoinCompany" class="form-label">반려사유</label>
+                                    <select class="form-control" id="refuseReasonJoinCompany">
+                                        <option selected value="등록되지 않은 사업자번호">등록되지 않은 사업자번호</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                     id="refuseCompanyJoinBtn">반려
                             </button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="acceptCompanyJoinBtn">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                    id="acceptCompanyJoinBtn">
                                 승인
                             </button>
                         </div>
