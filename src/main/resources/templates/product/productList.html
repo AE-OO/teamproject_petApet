@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragment/heade :: head(product])}">
+<head th:replace="~{fragment/heade :: head(product)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -12,10 +12,10 @@
 <hr class="mt-0">
 <div class="container-xxl py-5">
     <div class="container">
-        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s"
-             style="max-width: 500px; visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+        <div class="text-center mx-auto"
+             style="max-width: 500px;">
             <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
-            <h1 class="display-5 mb-5"th:text="${productDiv}">Pet Food</h1>
+            <h1 class="display-5 mb-5" th:text="${productDiv}">Pet Food</h1>
         </div>
         <div class="wow fadeInUp" data-wow-delay="0.4s"
              style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
@@ -24,39 +24,36 @@
         <div class="row mb-5"></div>
         <div class="row g-4 portfolio-container " style="position: relative; height: auto;">
             <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp"
-                 data-wow-delay="0.1s" th:each="product : ${productList}">
+                 data-wow-delay="0.1s" th:each="product, i : ${productList}">
                 <div class="portfolio rounded">
-                        <img class=""
-                             th:src="|@{/product/images/{filename}(filename=${product.productImg.get(0).storeFileName})}|"
-                             width="300" height="300" alt=""/>
+                    <img class=""
+                         th:src="|@{/product/images/{filename}(filename=${product.productImg.get(0).storeFileName})}|"
+                         width="300" height="300" alt=""/>
                     <div class="portfolio-text" style="opacity: 1;">
-                        <div class="h-50">
-                            <h1 class="text-start rounded ms-2">
-                                <a style="text-decoration: none;" class="text-dark fs-5"
-                                   th:href="|@{/product/{productType}/{productId}/details(productType=${product.productDiv.name().toLowerCase()},productId=${product.productId})}|"
-                                   th:text="${product.productName}"></a>
-                            </h1>
-                            <div class="d-flex flex-row">
-                                <div id="myform">
-                                    <fieldset class="p-1 col">
-                                        <input type="radio" name="reviewStar" value="5" id="rate1"><label
-                                            for="rate1">★</label>
-                                        <input type="radio" name="reviewStar" value="4" id="rate2"><label
-                                            for="rate2">★</label>
-                                        <input type="radio" name="reviewStar" value="3" id="rate3"><label
-                                            for="rate3">★</label>
-                                        <input type="radio" name="reviewStar" value="2" id="rate4"><label
-                                            for="rate4">★</label>
-                                        <input type="radio" name="reviewStar" value="1" id="rate5"><label
-                                            for="rate5">★</label>
-                                    </fieldset>
-                                </div>
-                                <h6 class="align-self-center mt-2">(0)</h6>
+                        <h1 class="text-start rounded ms-2">
+                            <a style="text-decoration: none;" class="text-dark fs-5"
+                               th:href="|@{/product/{productType}/{productId}/details(productType=${product.productDiv.name().toLowerCase()},productId=${product.productId})}|"
+                               th:text="${product.productName}"></a>
+                        </h1>
+                        <div class="d-flex flex-row">
+                            <div>
+                                <fieldset class="p-1 col">
+                                    <div class="d-flex flex-row" style="max-height: 1rem; margin-top: 0.1rem">
+                                        <p th:class="star" th:value="${product.productRating}">
+                                            <a class="my_star" value="1">★</a>
+                                            <a class="my_star" value="2">★</a>
+                                            <a class="my_star" value="3">★</a>
+                                            <a class="my_star" value="4">★</a>
+                                            <a class="my_star" value="5">★</a>
+                                        <p>
+                                    </div>
+                                </fieldset>
                             </div>
+                            <h6 class="align-self-center mt-2" th:text="|(${product.review.size()})|">(0)</h6>
                         </div>
                         <div class="d-flex flex-column">
                             <div class="col">
-                                <h1 class="fs-6 text-end" th:text="${product.productPrice}">1000</h1>
+                                <h1 class="fs-6 text-end" th:text="${product.productPrice}"></h1>
                             </div>
                             <div class="d-flex flex-row">
                                 <div id="dib" class="justify-content-start">
@@ -66,8 +63,11 @@
                                     </fieldset>
                                 </div>
                                 <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
-                                    <button type="button" class="btn bg-secondary me-1">장바구니</button>
-                                    <button type="button" class="btn bg-secondary me-1">바로구매</button>
+                                    <button type="button" class="btn bg-secondary me-1 addCart" th:value="*{product.productId}">장바구니
+                                    <input type="hidden" class ="quan" value="1"/></button>
+                                    <a class="btn bg-secondary me-1 addBuy"
+                                            th:href="|@{/direct/checkout/{idx}(idx=${product.productId})}|">바로구매
+                                        <input type="hidden" class ="quan" value="1"/></a>
                                 </div>
                             </div>
                         </div>
@@ -123,19 +123,49 @@
         </div>
     </div>
 </div>
+
 </body>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/wow/wow.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="lib/counterup/counterup.min.js"></script>
-<script src="lib/parallax/parallax.min.js"></script>
-<script src="lib/isotope/isotope.pkgd.min.js"></script>
-<script src="lib/lightbox/js/lightbox.min.js"></script>
+<script th:inline="javascript">
+    var size = $('p[class = star]').length;
+    for (var i = 0; i < size; i++) {
+        $('p[class = star]').eq(i).attr('id', "star" + i);
+
+        $("#star" + i).find(".my_star").filter(function (k, v) {
+            return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+        });
+    }
+</script>
+<script th:inline="javascript">
+
+    const addCartBtn = $('.addCart');  // 상품 리스트에서 장바구니로 상품을 추가하는 기능
+
+    $(addCartBtn).click(function(){
+        var productId = $(this).val();
+        var quantity = $(this).children('.quan').val();
+        var param = {"product": productId, "quantity":quantity};
+        console.log("product : " + productId);
+        console.log("quantity : " + quantity);
+        $.ajax({
+            url: "/cart/add",
+            type: "POST",
+            data: JSON.stringify(param),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("장바구니 추가되었음")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
+            }
+        });
+    });
+
+</script>
 
 <!-- Template Javascript -->
-<script src="js/main.js"></script>
+<script th:src="@{/js/main.js}"></script>
 </html>

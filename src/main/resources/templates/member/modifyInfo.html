@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 내 정보 수정</title>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/member/modifyInfo.js"></script>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+
+<!-- Myinfo Start -->
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="bg-white pt-5 pb-3">
+                    <h4 class="text-black ps-5 mb-0"><i class="bi bi-arrow-left"></i> 개인 정보 수정</h4>
+                </div>
+                <div class="myinfo-item  d-flex">
+                    <div class="myinfo-text w-100 p-5">
+                        <div class="container join">
+                            <div class="row g-5">
+                                <div class="mx-auto">
+                                    <form action="/member/modifyInfo" method="post">
+                                        <div class="row">
+
+                                            <!-- memberId start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberId" class="myinfo-p col-3">아이디</label>
+                                                    <input type="text" id="input-memberId"
+                                                           class="form-control px-3 py-2 w-75"
+                                                           th:value="${memberDTO.memberId}" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- memberId end-->
+
+                                            <!-- memberPw updateBtn start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label class="myinfo-p col-3">
+                                                        비밀번호 변경</label>
+                                                    <div class="col-9 px-0">
+                                                        <button id="updateMemberPwBtn" type="button"
+                                                                class="btn btn-dark w-100 py-2">
+                                                            <span id="updateBtnName" class="text-white">변경하려면 클릭</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberPw updateBtn end -->
+
+                                            <!-- memberName start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberName" class="myinfo-p col-3">이름</label>
+                                                    <input type="text" id="input-memberName"
+                                                           class="form-control px-3 py-2 w-75"
+                                                           th:value="${memberDTO.memberName}" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- memberName end -->
+
+                                            <!-- memberPhoneNum start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberPhoneNum"
+                                                           class="myinfo-p col-3">휴대전화</label>
+                                                    <div class="px-0 col-9">
+                                                        <div class="row g-2 pe-1 mb-2">
+                                                            <div class="col-8">
+                                                                <input type="text" id="input-memberPhoneNum"
+                                                                       name="memberPhoneNum"
+                                                                       class="form-control px-3 py-2 "
+                                                                       maxlength="11"
+                                                                       th:value="${memberDTO.memberPhoneNum}"
+                                                                       onkeyup="checkMemberPhoneNum()"
+                                                                       placeholder="숫자만 입력해주세요" readonly>
+                                                            </div>
+                                                            <button id="smsBtn" type="button"
+                                                                    class="btn btn-dark col-4 py-2">
+                                                                <span id="smsBtnName" class="text-white">다른번호 인증</span>
+                                                            </button>
+                                                        </div>
+                                                        <p id="feedback-memberPhoneNum"
+                                                           class="text-start text-danger small ps-2 my-1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberPhoneNum end -->
+
+                                            <!-- memberGender start -->
+                                            <div class="col-12">
+                                                <div id="genderForm" class="row g-2 mb-4 px-1">
+                                                    <label class="myinfo-p col-3">성별(선택)</label>
+                                                    <div class="form-check col-3 mb-0 py-2">
+                                                        <input type="radio" id="check-male" class="form-check-input"
+                                                               name="memberGender" value="남자"
+                                                               th:checked="${memberDTO.memberGender eq '남자'}">
+                                                        <label for="check-male" class="form-check-label">남자</label>
+                                                    </div>
+                                                    <div class="form-check col-3 mb-0 py-2">
+                                                        <label for="check-female">여자</label>
+                                                        <input type="radio" id="check-female" class="form-check-input"
+                                                               name="memberGender" value="여자"
+                                                               th:checked="${memberDTO.memberGender eq '여자'}">
+                                                    </div>
+                                                    <div class="form-check col-3 mb-0 py-2">
+                                                        <input type="radio" id="check-test" class="form-check-input"
+                                                               name="memberGender" value="응답안함"
+                                                               th:checked="${memberDTO.memberGender eq '응답안함'}">
+                                                        <label for="check-test">응답 안함</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberGender end -->
+
+                                            <!-- memberBirthday start -->
+                                            <div class="col-12 ">
+                                                <div id="div-memberBirthday" class="row g-2 mb-4 px-1">
+                                                    <label for="input-year" class="myinfo-p col-3">생년월일</label>
+                                                    <div class="col-9 px-0">
+                                                        <input type="text" id="input-year" name="memberBirthday"
+                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               maxlength="4"
+                                                               th:value="${memberDTO.memberBirthday.get(0)}"
+                                                               onblur="checkMemberBirthday()" placeholder="년(4자)">
+                                                        <input type="text" id="input-month" name="memberBirthday"
+                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               maxlength="2"
+                                                               th:value="${memberDTO.memberBirthday.get(1)}"
+                                                               onblur="checkMemberBirthday()" placeholder="월">
+                                                        <input type="text" id="input-day"
+                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               maxlength="2" name="memberBirthday"
+                                                               th:value="${memberDTO.memberBirthday.get(2)}"
+                                                               onblur="checkMemberBirthday()" placeholder="일">
+                                                        <p id="feedback-memberBirthday" class="text-start text-danger small ps-2 my-1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberBirthday end -->
+
+                                            <!-- memberAddress-->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-2 px-1">
+
+                                                    <label class="myinfo-p col-3">주소</label>
+                                                    <div class="px-0 col-9">
+                                                        <div class="row g-2 pe-1 mb-2">
+                                                            <div class="col-7">
+                                                                <input type="text" id="sample6_postcode"
+                                                                       th:value="${memberDTO.memberAddress.get(0)}"
+                                                                       name="memberAddress"
+                                                                       class="form-control px-3 test"
+                                                                       placeholder="우편번호" readonly>
+                                                            </div>
+                                                            <button type="button" id="addressBtn"
+                                                                    class="btn btn-dark col-5 h-100"
+                                                                    onclick="findAddress()" readonly>
+                                                                우편번호 찾기
+                                                            </button>
+                                                        </div>
+                                                        <input type="text" id="sample6_address" name="memberAddress"
+                                                               class="form-control mb-2 px-3 py-2" placeholder="주소"
+                                                               th:value="${memberDTO.memberAddress.get(1)}" readonly>
+                                                        <input type="text" id="sample6_detailAddress"
+                                                               name="memberAddress" class="form-control mb-2 px-3 py-2"
+                                                               onblur="checkMemberAddress()"
+                                                               th:value="${memberDTO.memberAddress.get(2)}"
+                                                               placeholder="상세주소">
+
+                                                        <input type="text" id="sample6_extraAddress"
+                                                               name="memberAddress" class="form-control px-3 py-2"
+                                                               th:value="${memberDTO.memberAddress.size()== 4}?${memberDTO.memberAddress.get(3)}:'' "
+                                                               placeholder="참고항목" readonly>
+                                                        <p id="feedback-memberAddress"
+                                                           class="text-start text-danger small ps-2 my-1"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!-- memberAddress end -->
+                                        </div>
+
+                                        <hr class="my-4"/>
+                                        <!-- button-->
+                                        <div class="col-12">
+                                            <button type="button" id="withdrawalBtn"
+                                                    class="btn btn-outline-primary col-4 px-1 py-2">
+                                                회원탈퇴
+                                            </button>
+                                            <button type="button" id="modifyBtn"
+                                                    class="btn btn-primary col-4 px-1 py-2">
+                                                회원정보수정
+                                            </button>
+                                        </div>
+                                        <!-- button-->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Myinfo End -->
+
+<!-- smsConfirmNum Modal start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-8 mx-auto">
+                    <h5 class="modal-title text-center pt-3" id="staticBackdropLabel">인증번호 확인</h5>
+                    <div class="py-3">
+                        <div class="mb-0">
+                            <input id="input-smsConfirmNum" type="text" class="form-control"
+                                   name="smsConfirmNum" maxlength="6" placeholder="인증번호 6자리 입력">
+                            <p id="feedback-smsConfirmNum" class="text-start text-danger small ps-2 my-1"/>
+                            <p id="feedback-smsConfirmNum2" class="text-start text-danger small ps-2 my-1"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">닫기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- smsConfirmNum Modal end-->
+
+<!-- updateMemberPw Modal start -->
+<div class="modal fade" id="updateMemberPw" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="updateMemberPwLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-11 mx-auto">
+                    <h5 class="modal-title text-center py-3" id="updateMemberPwLabel">비밀번호 바꾸기</h5>
+                    <!-- Original memberPw start -->
+                    <div class="row g-2 mb-2">
+                        <label for="input-originalMemberPw" class="myinfo-p col-3">현재 비밀번호</label>
+                        <div class="col-9 px-0">
+                            <input type="password" id="input-originalMemberPw"
+                                   class="form-control px-3 py-2" maxlength="18"
+                                   placeholder="비밀번호를 입력해주세요" onkeyup="checkOriginalMemberPw()">
+                            <p id="feedback-originalMemberPw" class="text-start small text-danger ps-2 my-1"/>
+                        </div>
+                    </div>
+                    <!-- Original memberPw end -->
+
+                    <!-- New MemberPw start -->
+                    <div class="row g-2 mb-2">
+                        <label for="input-newMemberPw" class="myinfo-p col-3">새 비밀번호</label>
+                        <div class="col-9 px-0">
+                            <input type="password" id="input-newMemberPw"
+                                   class="form-control px-3 py-2" maxlength="18"
+                                   placeholder="새 비밀번호를 입력해주세요" onkeyup="checkNewMemberPw()" disabled>
+                            <p id="feedback-newMemberPw"
+                               class="text-start text-danger small ps-2 my-1"/>
+                        </div>
+                    </div>
+                    <!-- New MemberPw end -->
+
+                    <!-- New MemberPw2 start -->
+                    <div class="row g-2">
+                        <label for="input-newMemberPw2" class="myinfo-p col-3">새 비밀번호 확인</label>
+                        <div class="col-9 px-0">
+                            <input type="password" id="input-newMemberPw2"
+                                   class="form-control px-3 py-2" maxlength="18"
+                                   placeholder="새 비밀번호를 다시 입력해주세요" onkeyup="checkNewMemberPw2()" disabled>
+                            <p id="feedback-newMemberPw2"
+                               class="text-start text-danger small ps-2 my-1"/>
+                        </div>
+                    </div>
+                    <!-- New MemberPw2 end -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeBtn" class="mx-auto me-1 col-5 btn btn-outline-primary"
+                        data-bs-dismiss="modal">닫기
+                </button>
+                <button type="button" id="sendNewMemberPwBtn" class="mx-auto ms-1 col-5 btn btn-primary">확인</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- updateMemberPw Modal end-->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+
+</body>
+
+</html>

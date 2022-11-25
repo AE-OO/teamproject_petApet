@@ -20,7 +20,7 @@ public class DibsProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long dibsProductId;
 
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)

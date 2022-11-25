@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/checkout.css"/>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+
+    <title>주문/결제</title>
+
+</head>
+<body>
+<div class="nognb">
+    <div class="logo">
+        <h1 class="m-0">petApet</h1>
+    </div>
+</div>
+<div id="body">
+    <div class="middle">
+
+
+        <div class="ordTitle">
+            <h3 class="title">주문/결제</h3>
+            <span class="steps">
+
+                <em>주문결제 &gt;</em> &nbsp;주문완료
+
+		</span>
+        </div>
+
+
+        <div data-component="customer"><div class="customer__root">
+            <h2 class="customer__h2">
+                구매자정보
+            </h2>
+            <table class="customer__table">
+                <tbody>
+                <tr>
+                    <td class="customer__col customer__col--1">
+                        이름
+                    </td>
+                    <td class="customer__col customer__col--2" th:text>
+                        조성현
+                    </td>
+                </tr>
+                <tr>
+                    <td class="customer__col customer__col--1">
+                        이메일
+                    </td>
+                    <td class="customer__col customer__col--2">
+                        skyair419@naver.com
+                    </td>
+                </tr>
+                <tr>
+                    <td class="customer__col customer__col--1">
+                        휴대폰 번호
+                    </td>
+                    <td class="customer__col customer__col--2">
+                        <div>
+                            <div class="customer-phone__root">
+                                <div>
+                                    <form>
+                                        <div>
+                                            <input type="tel" class="customer-phone__input-tel" value="010-3632-1594">
+                                            <button type="submit">
+                                                수정
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody></table>
+        </div>
+        </div>
+
+        <div data-component="deliveryAddress">
+            <h2 class="delivery-address__caption-header">
+                받는사람정보
+                <button class="delivery-address__popup-list-button" type="button">
+                    배송지변경
+                </button>
+            </h2>
+            <table class="delivery-address">
+                <tbody>
+                <tr>
+                    <th class="delivery-address__th">이름</th>
+                    <td class="delivery-address__td delivery-address__td--name delivery-address__td-rocket-fresh-mvp2">
+                        <span class="delivery-address__name">조성현</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="delivery-address__th">배송주소</th>
+                    <td class="delivery-address__td">
+                        인천광역시 부평구 체육관로 27
+                        &nbsp;709동2101호
+                        <div id="blocked-address-error-message" class="blocked-address-section">
+                            <span class="blocked-address__attention-icon">!</span>
+                            <p class="blocked-address__error-message">배송이 불가능한 주소입니다. 다른 배송지를 입력하거나 선택해주세요.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="delivery-address__th delivery-address__th--no-line">연락처</th>
+                    <td class="delivery-address__td delivery-address__td--no-line">
+
+                        010
+                        -
+                        3632
+                        -
+                        1594
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div>
+                <div class="delivery-request-message__container">
+                    <table class="delivery-request-message">
+                        <tbody>
+                        <tr>
+                            <th class="delivery-request-message__th">
+                                <span>배송 요청사항</span>
+                            </th>
+                            <td class="delivery-request-message__td delivery-request-message__td--name">
+                            <span class="delivery-request-message__type-label delivery-request-message__type-label--select">
+                                문 앞 (종7***)
+                            </span>
+                                <span class="delivery-request-message__dawn-type-label">
+                            </span>
+                                <button class="delivery-request-message__popup-list-button" type="button">
+                                    변경
+                                </button>
+                                <div class="delivery-request-message__covid-nudge-container"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="bundle-info__retail " data-component="bundleInfo-retail">
+
+
+                    <div data-bundle-info__late-rocket-wow-over-night-box__wrapper=""></div>
+
+                    <div data-bundle-info__simple-warning-message-box__wrapper=""></div>
+
+                    <div class="bundle-info__pdd-group-title">배송 1건 중 1 (새벽배송)</div>
+                    <div class="bundle-info__pdd-group-box">
+
+
+                        <div class="bundle-info__opt-radio-box">
+                            <table class="bundle-info__opt-radio-table">
+                                <tbody>
+                                <tr class="bundle-info__opt-radio-tr">
+                                    <td class="bundle-info__opt-radio-td bundle-info__delivery-type__row">
+                                        <input class="bundle-info__opt-radio-td-option" id="overnightOptIn" type="radio" name="overnightOptInOut" value="IN" checked="">
+                                    </td>
+                                    <td class="bundle-info__delivery-type__row">
+                                        <label for="overnightOptIn">
+                            <span class="bundle-info__expected-delivery-info_option">
+                              <span class="bundle-info__expected-delivery-date">
+                                <strong data-bundle-info__over-night-pdd="">내일(목) 11/10 새벽 7시 전</strong>
+                                <span class="bundle-info__expected-delivery-date-suffix_option bundle-info__expected-delivery-date-suffix--colored" data-bundle-info__over-night-guarantee="">도착 보장</span>
+                              </span>
+                            </span>
+                                        </label>
+                                    </td>
+                                    <td class="bundle-info__delivery-type__row"></td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bundle-info__item-list ">
+
+
+                            <div class="bundle-info__vendor-item-box ">
+                                <div class="bundle-info__vendor-item">
+                                    <p>
+                                        <span class="bundle-info__vendor-item__offer-condition"></span>
+                                        코멧 일회용 마스크, 100개입, 1개, 화이트
+                                    </p>
+                                </div>
+                                <div class="bundle-info__item-description bundle-info__vendor-item-description--last">
+                                    수량 1개 / <span>무료배송</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="pay-price-section" class="order-section orderBox mb10 multiple-coupon">
+            <h2 class="checkout__h2">
+                결제정보
+            </h2>
+
+            <table class="pay-price">
+
+                <colgroup>
+                    <col width="144">
+                    <col>
+                </colgroup>
+                <tbody>
+
+                <tr class="payOrder-wrap">
+                    <th class="wrap-title" scope="row">
+                        총상품가격
+
+
+
+                    </th>
+                    <td>
+                        <div class="payOrder">
+                            <strong class="price">
+
+                                <span id="totalPriceDisp" class="use-calculation-for-totalprice" data-price="11,590">11590</span><span class="unit">원</span>
+
+                            </strong>
+                        </div>
+                    </td>
+                </tr>
+
+
+
+
+
+
+
+
+
+
+
+                <tr>
+                    <th class="wrap-title" scope="row">배송비</th>
+                    <td class="delivery-total-price">
+
+
+                        <div class="payDelivery">
+                            <strong class="price">
+
+                                <span id="deliveryPriceDisp" class="delivery-total-price-value use-calculation-for-totalprice" data-price="0">0</span><span class="unit">원</span>
+
+                            </strong>
+
+
+
+
+                        </div>
+
+                    </td>
+                </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <tr>
+                    <th class="wrap-title">총결제금액</th>
+                    <td>
+                        <div class="payPrice">
+                            <strong class="price">
+
+                                <span id="totalPayPriceDisp" data-price="11,490">11,490</span><span class="unit">원</span>
+
+                            </strong>
+
+
+
+
+
+
+
+                        </div>
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+
+
+        </div>
+    </div>
+
+
+
+    <div class="orderBox wrap-order-agree">
+
+
+
+
+
+
+        <div class="confirm-agreements-message">
+            위 주문 내용을 확인 하였으며, 회원 본인은 개인정보 이용 및 제공(해외직구의 경우 국외제공) 및 결제에 동의합니다.
+        </div>
+
+
+
+        <div class="agreeBtn hasRocketPayCheckoutButton" id="btn_all">
+
+
+
+            <button type="button" id="paymentBtn" onclick="requestPay()">
+                <img src="//image7.coupangcdn.com/image/rocketpay-order-image/pc/btn_payment.gif" width="260" height="60" alt="결제하기">
+            </button>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+</body>
+<script type="text/javascript" src="js/payment.js"></script>
+</html>

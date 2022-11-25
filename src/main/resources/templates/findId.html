@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 아이디 찾기</title>
+    <link>
+    <!-- findMemberId Script Start -->
+    <script src="/js/member/findMemberId.js"></script>
+    <!-- findMemberId Script End -->
+<body>
+<main class="container-xxl text-center py-7 my-auto">
+    <div class="container join">
+        <div class="row g-5">
+            <div class="mx-auto">
+                <h1 class="display-5 mb-4"><a class="" href="/"><img width="15%" src="img/logo.png" alt="logo">petApet</a></h1>
+                <h4 class="mb-3">아이디 찾기</h4>
+                <p class="mb-4 text-end"><span class="text-danger">*</span>필수입력사항</p>
+                <div class="row g-3">
+                    <div class="btn-group mb-4" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="memberBtn" autocomplete="off" checked>
+                        <label class="btn btn-outline-dark py-3" for="memberBtn">개인회원</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="companyBtn" autocomplete="off">
+                        <label class="btn btn-outline-dark py-3" for="companyBtn">사업자회원</label>
+                    </div>
+                </div>
+                <!-- findMemberId start -->
+                <form action="/findMemberId" id="memberForm" method="post">
+                    <div class="row g-3">
+                        <!-- memberName start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" id="input-memberName" name="memberName" class="form-control"
+                                       maxlength="6" placeholder="name">
+                                <label for="input-memberName">이름<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-memberName" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_memberName}"/>
+                        </div>
+                        <!--memberName end-->
+
+                        <!-- memberPhoneNum start -->
+                        <div class="col-12">
+                            <div class="row g-2 mb-2 px-1">
+                                <div class="form-floating px-0 pe-1 col-8">
+                                    <input type="text" id="input-memberPhoneNum" name="memberPhoneNum"
+                                           class="form-control" maxlength="11"
+                                           placeholder="휴대전화">
+                                    <label for="input-memberPhoneNum" class="w-75">휴대전화<span
+                                            class="text-danger">*</span></label>
+                                </div>
+                                <div class="form-floating px-0 ps-1 col-4">
+                                    <button id="smsBtn" type="button" class="btn btn-dark w-100 h-100">
+                                        인증번호 받기
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="form-floating">
+                                    <input id="input-smsConfirmNum" type="text" class="form-control"
+                                           name="smsConfirmNum" maxlength="6" onclick=""
+                                           placeholder="휴대전화" disabled>
+                                    <label>인증번호 입력<span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <p id="feedback-memberPhoneNum" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_memberPhoneNum}"/>
+                            <p id="feedback-smsConfirmPhoneNum" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_smsConfirmNum}"/>
+                        </div>
+                        <!-- memberPhoneNum end -->
+
+                        <!-- findId button-->
+                        <div class="col-12">
+                            <button type="button" id="findBtn" class="btn btn-primary mb-2 col-12 py-3">
+                                아이디찾기
+                            </button>
+                        </div>
+                        <!-- findId button-->
+                    </div>
+                </form>
+                <!-- findMemberId end -->
+
+                <!-- findCompanyId start -->
+                <form action="/findCompanyId" id="companyForm" method="post" hidden>
+                    <div class="row g-3">
+                        <!-- companyName start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" id="input-companyName" name="companyName" class="form-control"
+                                       maxlength="20" placeholder="name">
+                                <label for="input-companyName">상호명<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-companyName" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyName}"/>
+                        </div>
+                        <!-- companyName end-->
+
+                        <!-- companyNumber start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" id="input-companyNumber" name="companyNumber" class="form-control"
+                                       maxlength="10" placeholder="name">
+                                <label for="input-companyNumber">사업자번호<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-companyNumber" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_companyNumber}"/>
+                        </div>
+                        <!-- companyNumber end-->
+
+                        <!-- findCompanyId button-->
+                        <div class="col-12">
+                            <button type="button" id="findCompanyBtn" class="btn btn-info mb-2 col-12 py-3">
+                                아이디찾기
+                            </button>
+                        </div>
+                        <!-- findCompanyId button-->
+                    </div>
+                </form>
+                <!-- findCompanyId end -->
+
+                <hr/>
+                <span class="mx-3"><a href="/findPw">비밀번호 찾기</a></span>|
+                <span class="mx-3"> <a href="/login">로그인</a></span>|
+                <span class="mx-3"><a href="/join">회원가입</a></span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- findMemberId Modal start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header py-5">
+                <h5 class="modal-title mx-auto" id="staticBackdropLabel"
+                    th:text="${findMemberId}==0? '입력하신 정보와 일치하는 사용자가 없습니다.':'회원님의 아이디는 '+${findMemberId}+' 입니다'"></h5>
+            </div>
+            <input type="hidden" id="findMemberIdResult" th:value="${findMemberId}" >
+            <div class="modal-footer" th:if="${findMemberId}==0">
+                <button type="button" class="mx-auto col-4 btn btn-link" onclick="goFindId()">닫기</button>
+            </div>
+            <div class="modal-footer" th:unless="${findMemberId}==0">
+                <button type="button" class="mx-auto me-1 col-5 btn btn-outline-primary" onclick="goFindId()">닫기
+                </button>
+                <button type="button" class="mx-auto ms-1 col-5 btn btn-primary" onclick="goLogin()">로그인하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- findMemberId Modal end-->
+
+<!-- findMemberId Modal start -->
+<div class="modal fade" id="staticBackdrop2" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header py-5">
+                <h5 class="modal-title mx-auto" id="staticBackdropLabel2"
+                    th:text="${findCompanyId}==0? '입력하신 정보와 일치하는 사용자가 없습니다.':'회원님의 아이디는 '+${findCompanyId}+' 입니다'"></h5>
+            </div>
+            <input type="hidden" id="findCompanyIdResult" th:value="${findCompanyId}" >
+            <div class="modal-footer" th:if="${findCompanyId}==0">
+                <button type="button" class="mx-auto col-4 btn btn-link" onclick="goFindId()">닫기</button>
+            </div>
+            <div class="modal-footer" th:unless="${findCompanyId}==0">
+                <button type="button" class="mx-auto me-1 col-5 btn btn-outline-primary" onclick="goFindId()">닫기
+                </button>
+                <button type="button" class="mx-auto ms-1 col-5 btn btn-primary" onclick="goLogin()">로그인하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- findMemberId Modal end-->
+
+<th:block th:replace="~{fragment/layout :: copyright}"></th:block>
+
+</body>
+
+</html>

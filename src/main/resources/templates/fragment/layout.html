@@ -1,0 +1,156 @@
+<!-- Footer Start -->
+<footer th:fragment="mainFooter">
+    <div class="container-fluid bg-dark text-light text-center footer">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-8 mx-auto">
+                    <h4 class="text-white mb-4"><img width="8%" th:src="@{/img/subLogo.png}" alt="logo"/></h4>
+                    <ul class="text-white px-0">
+                        <li><a href="">petApet</a></li>
+                        <li><a href="">이용약관</a></li>
+                        <li><a href="">개인정보처리방침</a></li>
+                        <li><a href="">이용안내</a></li>
+                        <li><a href="/companyJoin">입점신청</a></li>
+                    </ul>
+                    <p class="small">법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
+                    <p class="small">통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
+                    <p class="small">서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer End -->
+
+<!-- Copyright Start -->
+<footer class="container-fluid text-center copyright py-4" th:fragment="copyright">
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
+                &copy; petApet Project Team All Right Reserved.
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Copyright End -->
+
+<!-- myPage SideBar Start -->
+<div id="pap-left-menu" class="h-100" th:fragment="sidebar">
+    <div class="mypage-text">
+        <div class="mytext">
+                <span class="tspan">
+                    <span class="wspan">MY PAP</span>
+                </span>
+        </div>
+    </div>
+    <div id="myMenu" class="myMenu h-100">
+        <h2 class="sc-1flepkn-0 gvaWmd">petApet</h2>
+        <nav>
+            <div class="sc-1liba5b-5 jzNnfi">
+                <div class="sc-1liba5b-6 OvTJQ">MY 쇼핑</div>
+                <div class="sc-1liba5b-7 gvMCBX">
+                    <ul class="sc-1liba5b-8 McnCE">
+                        <li id="mc-order-carts-page" class="sc-1liba5b-9 bgmWPR selected">
+                            <a href="/cart" title="장바구니" class="sc-1liba5b-10 eLReSz">
+                                장바구니
+                            </a>
+                        </li>
+                        <li id="mc-order-list-page" class="sc-1liba5b-9 bgmWPR selected">
+                            <a th:href="@{/buy}" title="주문목록/배송조회" target="_self" class="sc-1liba5b-10 eLReSz">
+                                주문목록/배송조회
+                            </a>
+                        </li>
+                        <li id="mc-cancel-return-page" class="sc-1liba5b-9 bgmWPR">
+                            <a href="" title="취소/반품/교환/환불내역" target="_self" class="sc-1liba5b-10 eLReSz">
+                                취소/반품/교환/환불내역
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sc-1liba5b-5 jzNnfi">
+                <div class="sc-1liba5b-6 OvTJQ">MY 활동</div>
+                <div class="sc-1liba5b-7 gvMCBX">
+                    <ul class="sc-1liba5b-8 McnCE">
+                        <li id="mc-cs-main-page" class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/inquiry}" title="문의하기" target="_self" class="sc-1liba5b-10 eLReSz">
+                                문의하기
+                            </a>
+                        </li>
+                        <li id="mc-product-inquiry-list-page" class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/inquiry}" title="문의내역 확인" target="_self" class="sc-1liba5b-10 eLReSz">
+                                문의내역 확인
+                            </a>
+                        </li>
+                        <li id="mc-product-review-page" class="sc-1liba5b-9 bgmWPR">
+                            <a href="" title="리뷰관리" target="_self" class="sc-1liba5b-10 eLReSz">
+                                리뷰관리
+                            </a>
+                        </li>
+                        <li id="mc-product-wish-page" class="sc-1liba5b-9 bgmWPR">
+                            <a href="" title="찜 리스트" target="_self" class="sc-1liba5b-10 eLReSz">
+                                찜 리스트
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sc-1liba5b-5 jzNnfi">
+                <div class="sc-1liba5b-6 OvTJQ">MY 커뮤니티 활동</div>
+                <div class="sc-1liba5b-7 gvMCBX">
+                    <ul class="sc-1liba5b-8 McnCE">
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a href="" title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz">
+                                글 작성
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a href="" title="글 목록" target="_self" class="sc-1liba5b-10 eLReSz">
+                                글 목록
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a href="" title="쪽지함" target="_self" class="sc-1liba5b-10 eLReSz">
+                                쪽지함
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sc-1liba5b-5 fRuGsa">
+                <div class="sc-1liba5b-6 OvTJQ">MY 정보</div>
+                <div class="sc-1liba5b-7 gvMCBX">
+                    <ul class="sc-1liba5b-8 McnCE">
+                        <li id="mc-user-modify-page" class="sc-1liba5b-9 bgmWPR">
+                            <a href="/member/checkInfo" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('MEMBER')">
+                                개인정보수정
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a href="/member/withdrawal" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('MEMBER')">
+                                회원 탈퇴
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a href="/company/info" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('COMPANY')">
+                                사업자정보수정
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a href="/company/withdrawal" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('COMPANY')">
+                                회원 탈퇴
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- myPage SideBar End -->
+
+

@@ -1,0 +1,102 @@
+#pap-left-menu{
+    /*position: fixed;*/
+    /*position: sticky;*/
+    display:inline-block;
+    margin-top:82.73px;
+    top: 0;
+    left: 0;
+    width: 150px;
+    float: left;
+    z-index: 1;
+}
+
+.pap-contents{
+    width: 830px;
+    float: left;
+}
+
+.mypage-text{
+    height: 122px;
+    padding: 1px;
+    background-color: #5fc8af;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.mytext{
+    width: auto;
+}
+
+.tspan{
+    width: 95px;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    text-indent: inherit;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -2px;
+}
+
+.myMenu{
+    background-color: rgb(249, 249, 249);
+    border-width: 0px 1px 1px;
+    border-style: solid;
+    border-color: rgb(225, 228, 230);
+    border-image: initial;
+    color: rgb(17, 17, 17);
+    padding: 10px 0px;
+    margin: 0px;
+}
+
+/* 마이 PAP 메뉴 */
+.gvaWmd {
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    position: absolute;
+    text-indent: -9999px;
+    text-align: left;
+}
+/* 마이 PAP 메뉴 - 박스 구분 */
+.jzNnfi {
+    padding: 15px 10px 16px 17px;
+    border-bottom: 1px solid rgb(225, 228, 230);
+}
+/* 마이 PAP 메뉴 - 박스 구분 마지막 부분*/
+.fRuGsa {
+    padding: 15px 10px 16px 17px;
+    border-bottom: 0px solid;
+}
+/* 마이 PAP 메뉴 - 헤더 */
+.OvTJQ {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgb(17, 17, 17);
+}
+
+/* 마이 PAP 메뉴 - 리스트 박스 */
+.gvMCBX {
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 11px;
+}
+
+/* 마이 PAP 메뉴 - 리스트 링크 */
+.gvMCBX a {
+    color: rgb(17, 17, 17);
+    display: block;
+    padding: 3px 0px;
+}
+
+.gvMCBX a:hover {
+    color: #5a9282;
+    text-decoration: underline;
+}

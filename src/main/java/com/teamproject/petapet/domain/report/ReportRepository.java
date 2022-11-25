@@ -14,6 +14,10 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     @Query("select r from Report r where r.community.communityId is not null and r.responseStatus = false")
     List<Report> getCommunityReportList();
+
+    @Query("select r from Report r where r.product.productId is not null and r.responseStatus = false")
+    List<Report> getProductReportList();
+    Report getReportByReportId(Long reportId);
     @Modifying
     @Transactional
     @Query("update Report r set r.responseStatus = 1 where r.reportId =:reportId")

@@ -1,14 +1,14 @@
 package com.teamproject.petapet.domain.inquired;
 
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 박채원 22.10.02 작성
@@ -42,11 +42,33 @@ public class Inquired {
     @Column(length = 45, nullable = false)
     private String inquiredCategory;
 
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] inquiredImg;
-
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
+
+    @Column
+    private String email;
+
+    // 답변 활성화 컬럼
+    @Column(nullable = false)
+    private boolean checked;
+
+    @ElementCollection
+    @CollectionTable(name = "InquiredImg", joinColumns = @JoinColumn(name = "inquiredImgId", referencedColumnName = "inquiredId"))
+    private List<UploadFile> inquiredImg;
+
+    public Inquired(String inquiredTitle, String inquiredContent, String inquiredCategory, Member member, String email, boolean checked) {
+        this.inquiredTitle = inquiredTitle;
+        this.inquiredContent = inquiredContent;
+        this.inquiredCategory = inquiredCategory;
+        this.member = member;
+        this.email = email;
+        this.checked = checked;
+//        this.inquiredImg = inquiredImg;
+    }
+
+    public Inquired(Long inquiredId, Boolean checked) {
+        this.inquiredId = inquiredId;
+        this.checked = checked;
+    }
 }

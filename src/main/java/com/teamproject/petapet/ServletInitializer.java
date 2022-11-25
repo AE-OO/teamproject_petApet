@@ -11,11 +11,5 @@ public class ServletInitializer extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(TeamPetApetApplication.class);
     }
-    @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver test(){
-        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        commonsMultipartResolver.setMaxUploadSize(1000000);
-        return commonsMultipartResolver;
-    }
 
 }

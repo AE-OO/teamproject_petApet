@@ -1,7 +1,15 @@
 package com.teamproject.petapet.web.product;
 
+import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
+import com.teamproject.petapet.domain.product.Review;
+import com.teamproject.petapet.domain.product.ReviewRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
+import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
+import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -10,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +33,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @Slf4j
@@ -34,6 +46,8 @@ public class ProductController {
 
     private final ProductService productService;
     private final FileService fileService;
+    private final MemberRepository memberRepository;
+    private final ReviewRepository reviewRepository;
 
     @GetMapping
     public String productMainPage() {
@@ -45,7 +59,14 @@ public class ProductController {
         category = category.toUpperCase();
         ProductType productType = ProductType.valueOf(category);
         List<Product> productList = productService.findAllByProductDiv(productType);
-        model.addAttribute("productList", productList);
+        List<ProductListDTO> productListDTOS = productList.stream().map(m -> ProductListDTO.builder().productName(m.getProductName())
+                .productPrice(m.getProductPrice())
+                .productImg(m.getProductImg())
+                .productId(m.getProductId())
+                .productDiv(m.getProductDiv())
+                .productRating(m.getProductRating())
+                .review(m.getReview()).build()).collect(Collectors.toList());
+        model.addAttribute("productList", productListDTOS);
         model.addAttribute("productDiv", productType.getProductCategory());
         return "product/productList";
     }
@@ -75,7 +96,7 @@ public class ProductController {
                 , productInsertDTO.getProductPrice()
                 , productInsertDTO.getProductStock()
                 , uploadFiles
-                ,"판매중"
+                , "판매중"
                 , productDiv
                 , productInsertDTO.getProductContent());
         productService.productSave(product);
@@ -109,8 +130,38 @@ public class ProductController {
     public String detailViewForm(@PathVariable("productType") String productType
             , @PathVariable("productId") Long productId, Model model) {
         Product findProduct = productService.findOne(productId);
-        model.addAttribute("findProduct",findProduct);
-//        model.addAttribute("content",findProduct.getProductContent());
+        ProductDetailDTO productDetailDTO = findProduct.toProductDetailDTO(findProduct);
+        Sort sort = Sort.by("reviewId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Slice<Review> reviews = reviewRepository.requestMoreReview(productId, pageable);
+        Long countReview = reviewRepository.countReviewByProduct(findProduct);
+        model.addAttribute("countReview", countReview);
+        model.addAttribute("findProduct", productDetailDTO);
+        model.addAttribute("reviews", reviews);
         return "/product/productDetails";
+    }
+
+
+    @PostMapping("/{productId}/reviewInsert")
+    public String reviewInsert(@ModelAttribute ReviewInsertDTO reviewInsertDTO,
+                               @RequestParam String requestURI,
+                               @PathVariable("productId") Long productId) throws IOException {
+        List<MultipartFile> reviewImg = reviewInsertDTO.getReviewImg();
+        List<UploadFile> uploadFiles = fileService.storeFiles(reviewImg);
+
+        //테스트 유저
+        Member member = memberRepository.findOneWithAuthoritiesByMemberId("memberId1").get();
+
+        Review review = Review.builder().reviewTitle(reviewInsertDTO.getReviewTitle())
+                .reviewRating(reviewInsertDTO.getReviewRating())
+                .reviewContent(reviewInsertDTO.getReviewContent())
+                .reviewImg(uploadFiles)
+                .reviewDate(LocalDateTime.now())
+                .member(member)
+                .product(productService.findOne(productId)).build();
+
+        reviewRepository.save(review);
+
+        return "redirect:" + requestURI;
     }
 }
