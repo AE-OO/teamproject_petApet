@@ -257,7 +257,7 @@
                             <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                         </div>
                         <div class="col-1 me-2">
-                            <h6 th:text="${review.member.memberId}">작성자</h6>
+                            <h6 th:text="${review.member.memberId}" id="memberId">작성자</h6>
                             <h6 style="font-size: 0.5rem" class="text-secondary mt-1"
                                 th:text="${#temporals.format(review.reviewDate,'yyyy-MM-dd')}">2000.00.00</h6>
                         </div>
