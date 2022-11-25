@@ -92,8 +92,12 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public List<CompanyDTO> getCompanyList() {
         List<Company> result = companyRepository.getCompaniesByActivatedIsFalse();
-        System.out.println("//////////////" + result.size());
         return result.stream().map(company -> CompanyDTO.getListFromEntity(company)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void acceptJoinCompany(String companyId) {
+        companyRepository.acceptJoinCompany(companyId);
     }
 
 }

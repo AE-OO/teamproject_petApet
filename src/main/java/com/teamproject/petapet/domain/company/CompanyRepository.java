@@ -36,4 +36,9 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     //22.11.25 박채원 추가
     List<Company> getCompaniesByActivatedIsFalse();
 
+    @Modifying
+    @Transactional
+    @Query("update Company c set c.activated = true, c.companyJoinDate = current_date where c.companyId =:companyId")
+    void acceptJoinCompany(String companyId);
+
 }

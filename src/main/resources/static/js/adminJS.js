@@ -156,6 +156,16 @@ $(document).ready(function () {
             }
         })
     });
+
+    $("#acceptCompanyJoinBtn").click(function(){
+       $.ajax({
+           url: "/acceptJoinCompany/" + $("#modalCompanyId").val(),
+           type: "post",
+           success(){
+                location.reload();
+           }
+       })
+    });
 })
 
 //신고수가 3 이상이 되면 글씨 빨갛게 바꾸기 - 동작안함
@@ -244,5 +254,16 @@ function getReportReason(targetId, type) {
         } else {
             $("#modalTargetId").val(data.report.targetStringId);
         }
+    });
+}
+
+//사업자 정보 불러오는 모달
+function getCompanyInfo(companyId){
+    $.getJSON("/getCompanyInfo/" + companyId, function(data){
+        $("#modalCompanyName").val(data.companyName);
+        $("#modalCompanyId").val(data.companyId);
+        $("#modalCompanyPhoneNum").val(data.companyPhoneNum);
+        $("#modalCompanyEmail").val(data.companyEmail);
+        $("#modalCompanyNumber").val(data.companyNumber);
     });
 }

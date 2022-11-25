@@ -1,15 +1,14 @@
 package com.teamproject.petapet.web.company.controller;
 
+import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,5 +38,16 @@ public class CompanyRestController {
             return companyService.updateCompanyPw(principal.getName(), updateCompanyPwDTO.getNewCompanyPw());
         }
         return 0;
+    }
+
+    //22.11.25 박채원 추가
+    @GetMapping("/getCompanyInfo/{companyId}")
+    public CompanyDTO getCompanyInfo(@PathVariable("companyId") String companyId){
+        return companyService.companyInfo(companyId);
+    }
+
+    @PostMapping("/acceptJoinCompany/{companyId}")
+    public void acceptJoinCompany(@PathVariable("companyId") String companyId){
+        companyService.acceptJoinCompany(companyId);
     }
 }
