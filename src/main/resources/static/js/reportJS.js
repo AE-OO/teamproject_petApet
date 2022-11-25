@@ -25,6 +25,7 @@ $(document).ready(function () {
             reportReasonDetail : $("textarea[name=reportMemberReasonDetail]").val(),
             memberId : $("input[name=memberId]").val()
         }
+        console.log(reportMemberDTO);
 
         $.ajax({
             url: "/report/addMemberReport",
