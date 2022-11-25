@@ -21,4 +21,9 @@ public class EmailRestController {
     int emailSend(@RequestParam String companyId){
         return emailService.emailSend(companyId);
     }
+
+    @PostMapping("/sendRefuseReason")
+    int sendRefuseReason(@RequestParam String companyId, @RequestParam String reason){
+        return emailService.refuseReasonSend(companyId, reason);
+    }
 }

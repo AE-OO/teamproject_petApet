@@ -50,4 +50,9 @@ public class CompanyRestController {
     public void acceptJoinCompany(@PathVariable("companyId") String companyId){
         companyService.acceptJoinCompany(companyId);
     }
+
+    @PostMapping("/refuseJoinCompany/{companyId}")
+    public void refuseJoinCompany(@PathVariable("companyId") String companyId){
+        companyService.refuseJoinCompany(companyId);
+    }
 }

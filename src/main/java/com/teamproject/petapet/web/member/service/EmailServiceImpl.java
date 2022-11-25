@@ -120,4 +120,41 @@ public class EmailServiceImpl implements EmailService {
             return 0;
         }
     }
+
+    @Override
+    public int refuseReasonSend(String companyId, String reason) {
+        String msg = "";
+        msg += "<h1 style=\"font-size: 20px; padding-right: 30px; padding-left: 30px;\">사업자회원 가입 안내</h1>";
+        msg += "<p style=\"font-size: 15px; padding-right: 30px; padding-left: 30px;\">안녕하세요.회원님!";
+        msg += "<p style=\"font-size: 15px; padding-right: 30px; padding-left: 30px;\">petApet 사업자 회원가입 관련 이메일입니다.</p>";
+        msg += "<p style=\"font-size: 15px; padding-right: 30px; padding-left: 30px;\">회원님은 아래와 같은 이유로 가입이 거절되었음을 알립니다.</p>";
+        msg += "<p style=\"font-size: 15px; padding-right: 30px; padding-left: 30px;\">사유를 확인하시고 다시 가입해 주시기 바랍니다.</p>";
+        msg += "<div style=\"padding-right: 15px; padding-left: 30px; margin: 32px 0 40px;\">" +
+                "<table style=\"border-collapse: collapse; border: 0; background-color: #F4F4F4; height: 70px; " +
+                "table-layout: fixed; word-wrap: break-word; border-radius: 6px;\"><tbody><tr><td style=\"" +
+                "text-align: center; vertical-align: middle; font-size: 20px;\">";
+        msg += reason;
+        msg += "</td></tr></tbody></table></div>";
+
+        System.out.println("사업자 이메일 ////////// " + companyService.findEmail(companyId.replace("*","")));
+
+        EmailDTO emailDTO = EmailDTO.builder()
+                .address(companyService.findEmail(companyId.replace("*","")))
+                .title("petApet 사업자 회원 가입 안내 이메일입니다.")
+                .message(msg)
+                .build();
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessageHelper.setTo(emailDTO.getAddress()); // 메일 수신자
+            mimeMessageHelper.setSubject(emailDTO.getTitle()); // 메일 제목
+            mimeMessageHelper.setText(emailDTO.getMessage(), true); // 메일 본문 내용, HTML 여부
+            mimeMessageHelper.setFrom(adminEmail);
+            javaMailSender.send(mimeMessage);
+            return 1;
+        } catch (MessagingException e) {
+            return 0;
+        }
+    }
 }

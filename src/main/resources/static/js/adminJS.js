@@ -166,6 +166,24 @@ $(document).ready(function () {
            }
        })
     });
+
+    $("#refuseCompanyJoinBtn").click(function(){
+        $.ajax({
+            url: "/email/sendRefuseReason",
+            type: "post",
+            data: {companyId : $("#modalCompanyId").val(), reason : $("#refuseReasonJoinCompany option:selected").val()},
+            success(){
+                alert("메일을 전송했습니다.");
+                $.ajax({
+                    url: "/refuseJoinCompany/" + $("#modalCompanyId").val(),
+                    type: "post",
+                    success(){
+                        location.reload();
+                    }
+                })
+            }
+        })
+    })
 })
 
 //신고수가 3 이상이 되면 글씨 빨갛게 바꾸기 - 동작안함

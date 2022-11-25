@@ -100,4 +100,9 @@ public class CompanyServiceImpl implements CompanyService{
         companyRepository.acceptJoinCompany(companyId);
     }
 
+    @Override
+    public void refuseJoinCompany(String companyId) {
+        companyRepository.deleteById(companyId);
+    }
+
 }

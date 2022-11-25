@@ -22,6 +22,7 @@ public interface CompanyService {
     //22.11.25 박채원 추가
     List<CompanyDTO> getCompanyList();
     void acceptJoinCompany(String companyId);
+    void refuseJoinCompany(String companyId);
 
 
 
