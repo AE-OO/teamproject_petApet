@@ -26,8 +26,6 @@ $(document).ready(function () {
             memberId : $("#modalMemberId").val()
         }
 
-        console.log(reportMemberDTO);
-
         $.ajax({
             url: "/report/addMemberReport",
             type: "post",
@@ -64,6 +62,5 @@ $(document).ready(function () {
 })
 
 function sendMemberId(memberId){
-    console.log(memberId);
     $("#modalMemberId").val(memberId);
 }
