@@ -20,12 +20,13 @@ $(document).ready(function () {
     });
 
     $("#reportMemberBTN").click(function(){
-        //리뷰 여러개일때 잘 동작하는지 확인하기
         var reportMemberDTO = {
             reportReason : $("#reportMemberReason option:selected").val(),
             reportReasonDetail : $("textarea[name=reportMemberReasonDetail]").val(),
-            memberId : $("#memberId").text()
+            memberId : $("#modalMemberId").val()
         }
+
+        console.log(reportMemberDTO);
 
         $.ajax({
             url: "/report/addMemberReport",
@@ -34,6 +35,7 @@ $(document).ready(function () {
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 if(result === 'success'){
+
                     alert("회원을 신고하였습니다.");
                 }
             }
@@ -60,3 +62,8 @@ $(document).ready(function () {
         })
     });
 })
+
+function sendMemberId(memberId){
+    console.log(memberId);
+    $("#modalMemberId").val(memberId);
+}

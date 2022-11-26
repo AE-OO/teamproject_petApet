@@ -281,7 +281,7 @@
                             </div>
                         </div>
                         <div class="col text-end">
-                            <button type="button" class="btn btn-outline-primary" id="addMemberReport"
+                            <button type="button" class="btn btn-outline-primary" id="addMemberReport" th:onclick="sendMemberId([[${review.member.memberId}]])"
                                     data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
                                     title="신고">신고
                             </button>
@@ -389,7 +389,6 @@
                                                 data-bs-toggle="modal" data-bs-target="#addProductReportModal"
                                                 title="신고하기">신고하기
                                         </button>
-                                        <!--                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>-->
                                     </div>
                                 </div>
                             </div>
@@ -677,6 +676,7 @@
             </div>
             <div class="modal-body">
                 <h6>신고 사유를 선택해 주세요</h6>
+                <input type="hidden" id="modalMemberId">
                 <select class="form-select" aria-label="Default select example" id="reportMemberReason">
                     <option value="">신고사유</option>
                     <option value="회원비난/비하">회원비난/비하</option>
@@ -816,7 +816,10 @@
 
                         </div>
                         <div class="col text-end">
-                            <a href="#">신고</a>
+                            <button type="button" class="btn btn-outline-primary" id="addMemberReport" onclick="sendMemberId('${result[idx].reviewMember}')"
+                                    data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
+                                    title="신고">신고
+                            </button>
                         </div>
                         <div class="d-flex mt-2">
                             <div class="me-2">
