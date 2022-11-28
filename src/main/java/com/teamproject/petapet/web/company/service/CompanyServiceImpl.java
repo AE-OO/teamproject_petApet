@@ -85,4 +85,7 @@ public class CompanyServiceImpl implements CompanyService{
         companyRepository.updateCompany(companyId, company.getCompanyEmail(),company.getCompanyPhoneNum());
     }
 
+    @Override
+    public void deleteCompany(String companyId) {companyRepository.deleteById(companyId);}
+
 }

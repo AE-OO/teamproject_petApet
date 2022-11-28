@@ -16,6 +16,7 @@ public interface CompanyService {
     String findEmail(String companyId);
     CompanyDTO companyInfo(String companyId);
     void updateCompanyInfo (String companyId, CompanyRequestDTO.UpdateCompanyInfo updateCompanyInfo);
+    void deleteCompany(String companyId);
 
 
 

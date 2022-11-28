@@ -112,4 +112,18 @@ public class CompanyController {
         return "redirect:/company/info";
     }
 
+    //회원탈퇴
+    @GetMapping("/company/withdrawal")
+    public String withdrawalPage(){ return "company/companyWithdrawal";}
+
+    @PostMapping("/company/withdrawal")
+    public String withdrawal(Principal principal, HttpServletResponse response){
+        companyService.deleteCompany(principal.getName());
+        Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:/";
+    }
+
 }
