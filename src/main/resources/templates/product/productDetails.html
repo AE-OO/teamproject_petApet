@@ -261,7 +261,7 @@
                             <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                         </div>
                         <div class="col-1 me-2">
-                            <h6 th:text="${review.member.memberId}">작성자</h6>
+                            <h6 th:text="${review.member.memberId}" id="memberId">작성자</h6>
                             <h6 style="font-size: 0.5rem" class="text-secondary mt-1"
                                 th:text="${#temporals.format(review.reviewDate,'yyyy-MM-dd')}">2000.00.00</h6>
                         </div>
@@ -289,7 +289,6 @@
                                     data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
                                     title="신고">신고
                             </button>
-<!--                            <a href="#">신고</a>-->
                         </div>
                         <div class="d-flex mt-2">
                             <div class="me-2">
@@ -394,7 +393,7 @@
                                                 data-bs-toggle="modal" data-bs-target="#addProductReportModal"
                                                 title="신고하기">신고하기
                                         </button>
-<!--                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>-->
+                                        <!--                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>-->
                                     </div>
                                 </div>
                             </div>
@@ -629,21 +628,20 @@
 </div>
 <!-- Footer End -->
 
-
-    <!-- Copyright Start -->
-    <div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
-        <div class="container ">
-            <div class="row ">
-                <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
-                    &copy; petApet Project Team All Right Reserved.
-                </div>
+<!-- Copyright Start -->
+<div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
+                &copy; petApet Project Team All Right Reserved.
             </div>
         </div>
     </div>
+</div>
 
 <!-- 모달 동작 안함 -->
 <!-- 상품 신고 Modal -->
-<div class="modal fade" id="addProductReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="addProductReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -674,7 +672,7 @@
 </div>
 
 <!-- 회원 신고 Modal -->
-<div class="modal fade" id="addMemberReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="addMemberReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -695,7 +693,8 @@
                 </select>
                 <hr>
                 <h6>구체적인 사유를 작성해 주세요</h6>
-                <textarea class="form-control" rows="3" name="reportMemberReasonDetail" placeholder="구체적인 신고 사유 입력"></textarea>
+                <textarea class="form-control" rows="3" name="reportMemberReasonDetail"
+                          placeholder="구체적인 신고 사유 입력"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -941,7 +940,7 @@
 
     const btnMinus = $('#minus');
     const btnPlus = $('#plus');
-    const quantity =$('#quantity');
+    const quantity = $('#quantity');
 
     $(btnMinus).click(function () {
         var $input = $(this).parents().eq(2).find(quantity);
@@ -962,8 +961,9 @@
     var urlCart = "/cart/add";
     var urlBuy = "/buy/addByProduct";
     var productId = $("#productId").val();
-    var quantityVal  = $("#quantity").val();
-    var param = {"product": productId, "quantity":quantityVal};
+    var quantityVal = $("#quantity").val();
+    var param = {"product": productId, "quantity": quantityVal};
+
     function addCart() {
         alert("실행");
         console.log("product : " + productId);
@@ -983,9 +983,11 @@
             }
         });
     }
+
     var product = $("#productId").text();
-    var param2 = {"buyProduct": productId, "buyQuantity":quantityVal};
-    function checkout(){
+    var param2 = {"buyProduct": productId, "buyQuantity": quantityVal};
+
+    function checkout() {
         alert("실행");
         $.ajax({
             url: "/direct/checkout",

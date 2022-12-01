@@ -156,6 +156,34 @@ $(document).ready(function () {
             }
         })
     });
+
+    $("#acceptCompanyJoinBtn").click(function(){
+       $.ajax({
+           url: "/acceptJoinCompany/" + $("#modalCompanyId").val(),
+           type: "post",
+           success(){
+                location.reload();
+           }
+       })
+    });
+
+    $("#refuseCompanyJoinBtn").click(function(){
+        $.ajax({
+            url: "/email/sendRefuseReason",
+            type: "post",
+            data: {companyId : $("#modalCompanyId").val(), reason : $("#refuseReasonJoinCompany option:selected").val()},
+            success(){
+                alert("메일을 전송했습니다.");
+                $.ajax({
+                    url: "/refuseJoinCompany/" + $("#modalCompanyId").val(),
+                    type: "post",
+                    success(){
+                        location.reload();
+                    }
+                })
+            }
+        })
+    })
 })
 
 //신고수가 3 이상이 되면 글씨 빨갛게 바꾸기 - 동작안함
@@ -244,5 +272,36 @@ function getReportReason(targetId, type) {
         } else {
             $("#modalTargetId").val(data.report.targetStringId);
         }
+    });
+}
+
+//사업자 정보 불러오는 모달
+function getCompanyInfo(companyId){
+    $.getJSON("/getCompanyInfo/" + companyId, function(data){
+        $("#modalCompanyName").val(data.companyName);
+        $("#modalCompanyId").val(data.companyId);
+        $("#modalCompanyPhoneNum").val(data.companyPhoneNum);
+        $("#modalCompanyEmail").val(data.companyEmail);
+        $("#modalCompanyNumber").val(data.companyNumber);
+
+        //사업자 번호 상태확인
+        var number = {
+            "b_no": [data.companyNumber] //사업자 번호 받아옴
+        };
+
+        $.ajax({
+            url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=svcYNFjOh38o5jqJ7WAjnGxrQbGB7iFHkuLaWMdiulZa61RK3DpXgaFdClE%2F6xNkMEusenNBIBj5%2BoFIDCGiiw%3D%3D",
+            type: "POST",
+            data: JSON.stringify(number),
+            dataType: "JSON",
+            contentType: "application/json",
+            accept: "application/json",
+            success: function(result) {
+                $("#modalCompanyNumberConfirm").val(result.data[0].tax_type);  //국세청에 등록되어있는 사업자번호인지 확인
+            },
+            error: function(result) {
+                console.log(result.responseText);
+            }
+        });
     });
 }
