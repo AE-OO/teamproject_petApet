@@ -674,7 +674,7 @@
 </div>
 
 <!-- 회원 신고 Modal -->
-<div class="modal fade" id="addMemberReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addMemberReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -775,6 +775,7 @@
     }
 
     $(document).ready(function () {
+
         var size = $('p[class = star]').length;
         for (var i = 0; i < size; i++) {
             $('p[class = star]').eq(i).attr('id', "star" + i);
