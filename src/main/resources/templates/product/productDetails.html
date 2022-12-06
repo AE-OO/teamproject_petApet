@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragment/heade :: head(product)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body th:object="${findProduct}">
 <th:block th:replace="~{fragment/header :: header}"></th:block>
-<hr class="mt-0">
+<hr class="mt-5">
 <div class="container-xxl py-5 px-5">
     <div class="d-flex flex-row m-lg-2">
         <div class="d-flex col-6 justify-content-center">
@@ -51,23 +51,34 @@
                     <h2 th:text="*{productName}">상품명</h2>
                 </div>
                 <div class="col-1 text-center mt-1">
-                    <th:block th:if="${existsDibsProduct}">
-                    <p style="font-size: 1.5rem"><a role="button" style="color: red">♥︎</a></p>
+                    <th:block sec:authorize="!isAuthenticated()">
+                        <p style="font-size: 1.5rem"><a role="button" style="color: red">♡</a></p>
                     </th:block>
-                    <th:block th:if="${!existsDibsProduct}">
-                    <p style="font-size: 1.5rem"><a role="button" onclick="addDibs(productId)" style="color: red">♡</a></p>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <th:block th:if="${existsDibsProduct}">
+                            <p style="font-size: 1.5rem"><a role="button" style="color: red">♥︎</a></p>
+                        </th:block>
+                        <th:block th:if="${!existsDibsProduct}">
+                            <p style="font-size: 1.5rem"><a role="button" onclick="addDibs(productId)"
+                                                            style="color: red">♡</a></p>
+                        </th:block>
                     </th:block>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
             <div class="d-flex m-lg-4">
                 <div class="col-4 m-lg-1">
+                    <th:block th:if="*{productDiscountRate>0}">
                     <h5>할인율</h5>
                     <h6 class="text-secondary" th:text="|*{productDiscountRate}%|">0%</h6>
+                    </th:block>
                 </div>
                 <div class="col-8 m-lg-1 text-end">
-                    <span style="text-decoration: line-through;"><i><h5 class="me-3" th:text="*{productUnitPrice}">price</h5></i></span>
-                    <h4 class="me-3" th:text="*{productPrice}">price</h4>
+                    <th:block th:if="*{productDiscountRate>0}">
+                    <span style="text-decoration: line-through;"><i><h5 class="me-3"
+                                                                        th:text="|*{productUnitPrice}원|">price</h5></i></span>
+                    </th:block>
+                    <h4 class="me-3" th:text="|*{productPrice}원|">price</h4>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
@@ -107,7 +118,8 @@
                             <button id="addCart" class="btn btn-info ms-3" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
                         <div class="col-6 d-grid">
-                            <button id="addBuy" class="btn btn-info ms-3" th:onclick="'javascript:checkout()'">바로구매</button>
+                            <button id="addBuy" class="btn btn-info ms-3" th:onclick="'javascript:checkout()'">바로구매
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -198,58 +210,60 @@
                     <div class="row mb-4" id="reviews">
                         <h4>상품평</h4>
                     </div>
-                    <form enctype="multipart/form-data" method="post"
-                          th:action="@{/product/{productId}/reviewInsert(productId=${productId},requestURI = ${#request.requestURI})}">
-                        <!--                          th:action="|@{/product/{productId}/reviewInsert(productId=${productId})}|">-->
-                        <article class="row justify-content-start">
-                            <div class="col-1">
-                                <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
-                            </div>
-                            <div class="col-1 mt-2">
-                                <h5>작성자</h5>
-                                <h6 style="font-size: 0.5rem" class="text-secondary mt-1">2000.00.00</h6>
-                            </div>
-                            <div id="myform" class="col-9">
-                                <fieldset class="p-1 col">
-                                    <input type="radio" name="reviewRating" id="rate1" value="5"><label
-                                        for="rate1">★</label>
-                                    <input type="radio" name="reviewRating" id="rate2" value="4"><label
-                                        for="rate2">★</label>
-                                    <input type="radio" name="reviewRating" id="rate3" value="3"><label
-                                        for="rate3">★</label>
-                                    <input type="radio" name="reviewRating" id="rate4" value="2"><label
-                                        for="rate4">★</label>
-                                    <input type="radio" name="reviewRating" id="rate5" value="1"><label
-                                        for="rate5">★</label>
-                                </fieldset>
-                            </div>
-                            <div class="col-1 text-end">
-                                <button role="button" type="submit"
-                                        class="btn btn-sm btn-secondary" href="#">작성
-                                </button>
-                            </div>
-                            <div class="d-flex flex-row my-2">
-                                <div class="col d-flex">
-                                    <h6 class="mt-1 me-5">제목</h6>
-                                    <input class="ms-2 flex-fill" type="text" name="reviewTitle" id="productName">
+                    <th:block sec:authorize="isAuthenticated()" th:if="${existsByBuyAndMember}">
+                        <form enctype="multipart/form-data" method="post"
+                              th:action="@{/product/{productId}/reviewInsert(productId=${productId},requestURI = ${#request.requestURI})}">
+                            <!--                          th:action="|@{/product/{productId}/reviewInsert(productId=${productId})}|">-->
+                            <article class="row justify-content-start">
+                                <div class="col-1">
+                                    <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                                 </div>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <label for="image"><h6 class="mt-1 me-2">이미지 첨부</h6></label>
-                                <input class="flex-fill mb-2" type="file"
-                                       id="image" accept="image/*"
-                                       onchange="setThumbnail(event);"
-                                       multiple name="reviewImg">
-                            </div>
-                            <div class="">
-                                <div class="d-flex">
+                                <div class="col-1 mt-2">
+                                    <h5>작성자</h5>
+                                    <h6 style="font-size: 0.5rem" class="text-secondary mt-1">2000.00.00</h6>
+                                </div>
+                                <div id="myform" class="col-9">
+                                    <fieldset class="p-1 col">
+                                        <input type="radio" name="reviewRating" id="rate1" value="5"><label
+                                            for="rate1">★</label>
+                                        <input type="radio" name="reviewRating" id="rate2" value="4"><label
+                                            for="rate2">★</label>
+                                        <input type="radio" name="reviewRating" id="rate3" value="3"><label
+                                            for="rate3">★</label>
+                                        <input type="radio" name="reviewRating" id="rate4" value="2"><label
+                                            for="rate4">★</label>
+                                        <input type="radio" name="reviewRating" id="rate5" value="1"><label
+                                            for="rate5">★</label>
+                                    </fieldset>
+                                </div>
+                                <div class="col-1 text-end">
+                                    <button role="button" type="submit"
+                                            class="btn btn-sm btn-secondary">작성
+                                    </button>
+                                </div>
+                                <div class="d-flex flex-row my-2">
+                                    <div class="col d-flex">
+                                        <h6 class="mt-1 me-5">제목</h6>
+                                        <input class="ms-2 flex-fill" type="text" name="reviewTitle" id="productName">
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row">
+                                    <label for="image"><h6 class="mt-1 me-2">이미지 첨부</h6></label>
+                                    <input class="flex-fill mb-2" type="file"
+                                           id="image" accept="image/*"
+                                           onchange="setThumbnail(event);"
+                                           multiple name="reviewImg">
+                                </div>
+                                <div class="">
+                                    <div class="d-flex">
                                 <textarea name="reviewContent" class="d-flex flex-fill"
                                           style="resize: none; min-height: 10rem"></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr class="my-4">
-                        </article>
-                    </form>
+                                <hr class="my-4">
+                            </article>
+                        </form>
+                    </th:block>
                 </div>
             </div>
         </div>
@@ -326,7 +340,7 @@
                             <h4>상품문의</h4>
                         </div>
                         <div class="col-1 text-end">
-                            <a href="#">문의하기</a>
+                            <a>문의하기</a>
                         </div>
                     </div>
                 </div>
@@ -587,7 +601,7 @@
                                 <div>구매안전 서비스</div>
                             </th>
                             <td colspan="3">
-                                <p>02-006-00042 <a href="http://www.fcsc.kr/B/fu_b_06.jsp" class="service-join__btn"
+                                <p>02-006-00042 <a class="service-join__btn"
                                                    target="_blank">서비스 가입사실 확인 &gt;</a></p>
                             </td>
                         </tr>
@@ -606,26 +620,8 @@
     </div>
 </div>
 <hr class="my-4">
-<div class="container-fluid text-light text-center footer mt-2 py-0" style="background-color: #78c2ad">
-    <div class="container pt-4">
-        <div class="row g-5">
-            <div class="col-lg-6 col-md-6 mx-auto">
-                <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
-                <ul class="text-white px-0">
-                    <li><a href="#">petApet</a></li>
-                    <li><a href="#">이용약관</a></li>
-                    <li><a href="#">개인정보처리방침</a></li>
-                    <li><a href="#">이용안내</a></li>
-                </ul>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 
-                <p>법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
-                <p>통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
-                <p>서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
-
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Footer End -->
 
 <!-- Copyright Start -->
@@ -641,7 +637,8 @@
 
 <!-- 모달 동작 안함 -->
 <!-- 상품 신고 Modal -->
-<div class="modal" id="addProductReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="addProductReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -672,7 +669,8 @@
 </div>
 
 <!-- 회원 신고 Modal -->
-<div class="modal" id="addMemberReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="addMemberReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -715,21 +713,22 @@
 
     function addDibs(id) {
         $.ajax({
-            type : 'post',           // 타입 (get, post, put 등등)
-            url : '/product/dibs/add',           // 요청할 서버url
-            async : true,            // 비동기화 여부 (default : true)
-            dataType : 'text',       // 데이터 타입 (html, xml, json, text 등등)
-            data :  {"productId" : id},
-            success : function(result) { // 결과 성공 콜백함수
-                if (result ==='login'){
+            type: 'post',           // 타입 (get, post, put 등등)
+            url: '/product/dibs/add',           // 요청할 서버url
+            async: true,            // 비동기화 여부 (default : true)
+            dataType: 'text',       // 데이터 타입 (html, xml, json, text 등등)
+            data: {"productId": id},
+            success: function (result) { // 결과 성공 콜백함수
+                if (result === 'login') {
                     location.href = '/login'
-                } if (result === 'duplicate') {
+                }
+                if (result === 'duplicate') {
                     console.log(result)
                 } else {
                     console.log(result)
                 }
             },
-            error : function(request, status, error) { // 결과 에러 콜백함수
+            error: function (request, status, error) { // 결과 에러 콜백함수
                 console.log(error)
             }
         })
@@ -815,12 +814,10 @@
 
     function moreReview() {
         let nextPage = (totalPage / 10);
-        let data = '';
         let productId = [[${productId}]];
         let url = '/product/moreReview?productId=' + productId + '&page=' + nextPage;
         $.getJSON(url,
             function (result) {
-                console.log(result.length)
                 $.each(result, function (idx, el) {
                     let reviewHtml =
                         `<div class="col-1">
@@ -843,7 +840,10 @@
 
                         </div>
                         <div class="col text-end">
-                            <a href="#">신고</a>
+                            <button type="button" class="btn btn-outline-primary" id="addMemberReport"
+                                    data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
+                                    title="신고">신고
+                            </button>
                         </div>
                         <div class="d-flex mt-2">
                             <div class="me-2">
@@ -935,9 +935,6 @@
         totalPage += 10;
     }
 
-</script>
-<script th:inline="javascript">
-
     const btnMinus = $('#minus');
     const btnPlus = $('#plus');
     const quantity = $('#quantity');
@@ -1007,7 +1004,7 @@
 
 </script>
 
-<script th:src="@{/js/osh.js}"></script>
+<script th:src="@{/js/reviewContentStr.js}"></script>
 <!-- Template Javascript -->
 <script th:src="@{/js/main.js}"></script>
 </body>

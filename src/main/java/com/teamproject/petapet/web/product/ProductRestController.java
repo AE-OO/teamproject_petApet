@@ -1,7 +1,7 @@
 package com.teamproject.petapet.web.product;
 
 import com.teamproject.petapet.domain.product.Review;
-import com.teamproject.petapet.domain.product.ReviewRepository;
+import com.teamproject.petapet.domain.product.repository.ReviewRepository;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,16 +50,17 @@ public class ProductRestController {
             jsonObject.append("responseCode", "error");
             e.printStackTrace();
         }
-        String jsonString = jsonObject.toString();
-        return jsonString;
+        return jsonObject.toString();
     }
 
     @GetMapping("/moreReview")
     public List<ReviewDTO> loadMoreReviewSlice(@RequestParam("productId") Long productId,
                                             @RequestParam("page") Integer page) {
+
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(page, 10, sort);
         Slice<Review> requestMoreReview = reviewRepository.requestMoreReview(productId, pageable);
+
         return requestMoreReview.stream().map(m -> ReviewDTO.builder().reviewTitle(m.getReviewTitle())
                 .reviewContent(m.getReviewContent())
                 .reviewDate(m.getReviewDate())

@@ -1,5 +1,7 @@
 package com.teamproject.petapet.domain.product;
 
+import com.teamproject.petapet.domain.product.repository.ProductRepository;
+import com.teamproject.petapet.domain.product.repository.ReviewRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,15 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 @SpringBootTest
 class ProductRepositoryTest {
@@ -64,13 +62,13 @@ class ProductRepositoryTest {
         Long avg = reviewRepository.avg(104L);
         System.out.println("avg = " + avg);
     }
-    @Test
-    @Transactional
-    void 상품찾기테스트(){
-        Sort sort = Sort.by("reviewId").descending();
-        Pageable pageable = PageRequest.of(1, 10, sort);
-        Slice<Review> test = reviewRepository.test(103L, pageable);
-        List<Review> content = test.getContent();
-        System.out.println("test = " + test.getContent().size());
-    }
+//    @Test
+//    @Transactional
+//    void 상품찾기테스트(){
+//        Sort sort = Sort.by("reviewId").descending();
+//        Pageable pageable = PageRequest.of(1, 10, sort);
+//        Slice<Review> test = reviewRepository.test(103L, pageable);
+//        List<Review> content = test.getContent();
+//        System.out.println("test = " + test.getContent().size());
+//    }
 }

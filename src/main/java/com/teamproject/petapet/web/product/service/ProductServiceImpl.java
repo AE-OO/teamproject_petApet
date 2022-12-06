@@ -1,7 +1,7 @@
 package com.teamproject.petapet.web.product.service;
 
 import com.teamproject.petapet.domain.product.Product;
-import com.teamproject.petapet.domain.product.ProductRepository;
+import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 
 import com.teamproject.petapet.domain.product.ProductType;
@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findOne(Long id) {
-        return productRepository.findById(id).get();
+        return productRepository.findById(id).orElse(null);
     }
 
     @Override

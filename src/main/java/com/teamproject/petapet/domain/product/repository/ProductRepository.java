@@ -1,5 +1,7 @@
-package com.teamproject.petapet.domain.product;
+package com.teamproject.petapet.domain.product.repository;
 
+import com.teamproject.petapet.domain.product.Product;
+import com.teamproject.petapet.domain.product.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByProductDiv(ProductType productType);
     @Query("select a from Product a,Review b where a.productId=:id and b.product.productId=:id")
     Product findProductWithReview(@Param("id") Long id);
-
 
     @Modifying
     @Transactional

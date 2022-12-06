@@ -6,7 +6,7 @@
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
-<hr class="mt-0">
+<hr class="mt-4">
 <form th:action="@{/product/insert}" method="post" enctype="multipart/form-data" th:object="${ProductInsertDTO}">
     <div th:if="${#fields.hasGlobalErrors()}">
         <p class="field-error" th:text="오류입니다">글로벌 오류 메시지</p>
@@ -350,7 +350,6 @@
 
 </script>
 
-<script th:src="@{/js/osh.js}"></script>
 <!-- Template Javascript -->
 <script th:src="@{/js/main.js}"></script>
 </html>
