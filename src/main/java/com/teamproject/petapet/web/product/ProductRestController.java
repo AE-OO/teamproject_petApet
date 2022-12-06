@@ -1,8 +1,12 @@
 package com.teamproject.petapet.web.product;
 
+import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
+import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.domain.product.repository.ReviewRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
+import com.teamproject.petapet.web.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -18,7 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO.getProductMainPageListDTOS;
+import static com.teamproject.petapet.web.product.reviewdto.ReviewDTO.getCollect;
 
 @Slf4j
 @RestController
@@ -30,6 +36,7 @@ public class ProductRestController {
     @Value("${editor.img.save.url}")
     private String saveUrl;
     private final ReviewRepository reviewRepository;
+    private final ProductService productService;
 
     @PostMapping(value = "/image", produces = "application/json; charset=utf8")
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
@@ -55,20 +62,28 @@ public class ProductRestController {
 
     @GetMapping("/moreReview")
     public List<ReviewDTO> loadMoreReviewSlice(@RequestParam("productId") Long productId,
-                                            @RequestParam("page") Integer page) {
+                                               @RequestParam("page") Integer page) {
 
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(page, 10, sort);
         Slice<Review> requestMoreReview = reviewRepository.requestMoreReview(productId, pageable);
 
-        return requestMoreReview.stream().map(m -> ReviewDTO.builder().reviewTitle(m.getReviewTitle())
-                .reviewContent(m.getReviewContent())
-                .reviewDate(m.getReviewDate())
-                .reviewRating(m.getReviewRating())
-                .reviewMember(m.getMember().getMemberId())
-                .reviewProduct(m.getProduct().getProductName())
-                .reviewImg(m.getReviewImg())
-                .build()).collect(Collectors.toList());
+        return getCollect(requestMoreReview);
 
     }
+
+    @GetMapping("/fetch")
+    public List<ProductMainPageListDTO> fetchTest(@RequestParam String sortType) {
+        if (sortType.equals("review")) {
+            Pageable pageable = PageRequest.of(0, 8);
+            Page<Product> productList = productService.getProductListByReview(pageable);
+            return getProductMainPageListDTOS(productList);
+        }
+        Sort sort = Sort.by(sortType).descending();
+        Pageable pageable = PageRequest.of(0, 8, sort);
+        Page<Product> productList = productService.getProductPage(pageable);
+        return getProductMainPageListDTOS(productList);
+    }
+
+
 }

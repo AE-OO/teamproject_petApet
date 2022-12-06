@@ -55,7 +55,7 @@ public class Review {
     @JoinColumn(name = "productId")
     private Product product;
 
-    public ReviewDTO toReviewDTO(Review review){
+    public static ReviewDTO toReviewDTO(Review review){
         return ReviewDTO.builder().reviewImg(review.getReviewImg())
                 .reviewRating(review.getReviewRating())
                 .reviewDate(review.getReviewDate())

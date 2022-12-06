@@ -2,6 +2,9 @@ package com.teamproject.petapet.web.product.service;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 /**
@@ -10,13 +13,15 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> getProductList();
+    Page<Product> getProductPage(Pageable pageable);
+    Page<Product> getProductListByReview(Pageable pageable);
     void updateProductStatus(String selectStatus, Long productStock, Long productId);
     List<Product> findAllByProductDiv(ProductType productType);
     void updateProductStatusOutOfStock(List<String> productId);
 
     Product findOne(Long id);
 
-    Product productSave(Product product);
+    void productSave(Product product);
 
     Product findProductWithReview(Long id);
     void addProductReport(Long productId);

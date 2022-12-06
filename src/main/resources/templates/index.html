@@ -99,11 +99,10 @@
         <div class="row wow fadeInUp" data-wow-delay="0.3s">
             <div class="col-12 text-center">
                 <ul class="list-inline rounded mb-5" id="portfolio-flters">
-                    <li class="mx-2 action" data-filter="*">All</li>
-                    <li class="mx-2" data-filter=".first">분류1</li>
-                    <li class="mx-2" data-filter=".second">분류2</li>
-                    <li class="mx-2" data-filter=".second">분류2</li>
-                    <li class="mx-2" data-filter=".second">분류2</li>
+                    <li class="mx-2 action" data-filter="*">ALL</li>
+                    <li class="mx-2" onclick="sortProduct('productId')" data-filter=".first">최근 등록상품</li>
+                    <li class="mx-2" onclick="sortProduct('review')" data-filter=".second">리뷰순</li>
+                    <li class="mx-2" onclick="sortProduct('productRating')" data-filter=".second">별점순</li>
                 </ul>
             </div>
         </div>
@@ -480,7 +479,7 @@
 <!-- Template Javascript -->
 <script src="js/main.js"></script>
 
-<script>
+<script type="text/javascript" th:inline="javascript">
     window.kakaoAsyncInit = function () {
         Kakao.Channel.createChatButton({
             container: '#kakao-talk-channel-chat-button',
@@ -497,6 +496,19 @@
         js.crossOrigin = 'anonymous';
         fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'kakao-js-sdk');
+
+   async function sortProduct(sortType) {
+        fetch('/product/fetch?sortType='+sortType, {
+            method: 'GET',
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            });
+    }
+
 </script>
 </body>
 
