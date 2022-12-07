@@ -14,13 +14,51 @@
     <div class="container">
         <div class="text-center mx-auto">
             <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
-            <h1 class="display-5 mb-5" th:text="${productDiv}">Pet Food</h1>
+            <h1 class="display-5 mb-3" th:text="${productDiv}">Pet Food</h1>
         </div>
+        <div class="row wow fadeInUp" data-wow-delay="0.3s">
+            <div class="col-12 text-center">
+                <ul class="list-inline rounded mb-4" id="portfolio-flters">
+                    <li class="mx-2"><a style="text-decoration: none"
+                                        th:href="@{/product/{category}(category=food)}">사료</a></h1></li>
+                    <li class="mx-2"><a style="text-decoration: none"
+                                        th:href="@{/product/{category}(category=snack)}">간식</a></h1></li>
+                    <li class="mx-2"><a style="text-decoration: none"
+                                        th:href="@{/product/{category}(category=walking)}">산책용품</a></li>
+                    <li class="mx-2"><a style="text-decoration: none"
+                                        th:href="@{/product/{category}(category=toy)}">장난감</a></li>
+                    <li class="mx-2"><a style="text-decoration: none"
+                                        th:href="@{/product/{category}(category=fashion)}">패션/잡화</a></li>
+                    <li class="mx-2"><a style="text-decoration: none"
+                                        th:href="@{/product/{category}(category=stroller)}">유모차</a></li>
+                </ul>
+            </div>
+        </div>
+        <form class="d-flex col justify-content-end">
+            <div class="col-6">
+                <div class="input-group mb-2">
+                    <div class="col-3">
+                        <select class="form-select" type="input"
+                                name="searchCategory">
+                            <option value="food" selected>사료</option>
+                            <option value="snack">간식</option>
+                            <option value="walking">산책용품</option>
+                            <option value="toy">장난감</option>
+                            <option value="fashion">패션/잡화</option>
+                            <option value="stroller">유모차</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" placeholder="찾고 싶은 상품을 입력하세요" name="searchContent"
+                           aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                </div>
+            </div>
+        </form>
         <div class="wow fadeInUp" data-wow-delay="0.4s"
              style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
-            <hr class="my-4">
+            <hr class="">
         </div>
-        <div class="row mb-5"></div>
+        <div class="row mb-3"></div>
         <div class="row g-4 portfolio-container " style="position: relative; height: auto;">
             <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp"
                  data-wow-delay="0.1s" th:each="product, i : ${productList}">
@@ -49,43 +87,53 @@
                                 </fieldset>
                             </div>
                             <div>
-                            <h6 class="align-self-center mt-2" th:text="|(${product.review.size()})|">(0)</h6>
+                                <h6 class="align-self-center mt-2" th:text="|(${product.review.size()})|">(0)</h6>
                             </div>
                             <div class="col text-end align-self-end m-0 p-0">
                                 <th:block th:if="${product.productDiscountRate>0}">
-                                <span><i><h5 style="text-decoration: line-through;" class="fs-6 text-end" th:text="|${product.productUnitPrice}원|"></h5></i></span>
+                                    <span><i><h5 style="text-decoration: line-through;" class="fs-6 text-end"
+                                                 th:text="|${product.productUnitPrice}원|"></h5></i></span>
                                 </th:block>
                             </div>
                         </div>
                         <div class="d-flex flex-column">
                             <div class="row col">
                                 <th:block th:if="${product.productDiscountRate==0}">
-                                <h1 class="fs-5 text-end" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></h1>
+                                    <h1 class="fs-5 text-end"
+                                        th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></h1>
                                 </th:block>
                                 <th:block th:if="${product.productDiscountRate>0}">
                                     <div class="col-4">
-                                    <h1 class="fs-6 align-self-end" style="color: red" th:text="|${product.productDiscountRate}%할인|"></h1>
+                                        <h1 class="fs-6 align-self-end" style="color: red"
+                                            th:text="|${product.productDiscountRate}%할인|"></h1>
                                     </div>
                                     <div class="col-8">
-                                    <h1 class="fs-5 text-end" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></h1>
+                                        <h1 class="fs-5 text-end"
+                                            th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></h1>
                                     </div>
                                 </th:block>
                             </div>
                             <div class="d-flex flex-row">
                                 <div id="dib" class="justify-content-start">
                                     <th:block th:if="${product.duplicateDibsProduct}">
-                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button" style="color: red">♥︎</a></p>
+                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
+                                                                                        style="color: red">♥︎</a></p>
                                     </th:block>
                                     <th:block th:if="${!product.duplicateDibsProduct}">
-                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button" th:id="${product.productId}" onclick="addDibs(this.getAttribute('id'))" style="color: red">♡</a></p>
+                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
+                                                                                        th:id="${product.productId}"
+                                                                                        onclick="addDibs(this.getAttribute('id'))"
+                                                                                        style="color: red">♡</a></p>
                                     </th:block>
                                 </div>
                                 <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
-                                    <button type="button" class="btn bg-secondary me-1 addCart" th:value="*{product.productId}">장바구니
-                                    <input type="hidden" class ="quan" value="1"/></button>
+                                    <button type="button" class="btn bg-secondary me-1 addCart"
+                                            th:value="*{product.productId}">장바구니
+                                        <input type="hidden" class="quan" value="1"/></button>
                                     <button class="btn bg-secondary addBuy"
-                                            th:onclick="|location.href='@{/direct/checkout/{idx}(idx=${product.productId})}'|">바로구매
-                                        <input type="hidden" class ="quan" value="1"/></button>
+                                            th:onclick="|location.href='@{/direct/checkout/{idx}(idx=${product.productId})}'|">
+                                        바로구매
+                                        <input type="hidden" class="quan" value="1"/></button>
                                 </div>
                             </div>
                         </div>
@@ -158,21 +206,22 @@
 
     function addDibs(id) {
         $.ajax({
-            type : 'post',           // 타입 (get, post, put 등등)
-            url : '/product/dibs/add',           // 요청할 서버url
-            async : true,            // 비동기화 여부 (default : true)
-            dataType : 'text',       // 데이터 타입 (html, xml, json, text 등등)
-            data :  {"productId" : id},
-            success : function(result) { // 결과 성공 콜백함수
-                if (result ==='login'){
+            type: 'post',           // 타입 (get, post, put 등등)
+            url: '/product/dibs/add',           // 요청할 서버url
+            async: true,            // 비동기화 여부 (default : true)
+            dataType: 'text',       // 데이터 타입 (html, xml, json, text 등등)
+            data: {"productId": id},
+            success: function (result) { // 결과 성공 콜백함수
+                if (result === 'login') {
                     location.href = '/login'
-                } if (result === 'duplicate') {
+                }
+                if (result === 'duplicate') {
                     console.log(result)
                 } else {
                     console.log(result)
                 }
             },
-            error : function(request, status, error) { // 결과 에러 콜백함수
+            error: function (request, status, error) { // 결과 에러 콜백함수
                 console.log(error)
             }
         })
@@ -182,10 +231,10 @@
 
     const addCartBtn = $('.addCart');  // 상품 리스트에서 장바구니로 상품을 추가하는 기능
 
-    $(addCartBtn).click(function(){
+    $(addCartBtn).click(function () {
         var productId = $(this).val();
         var quantity = $(this).children('.quan').val();
-        var param = {"product": productId, "quantity":quantity};
+        var param = {"product": productId, "quantity": quantity};
         console.log("product : " + productId);
         console.log("quantity : " + quantity);
         $.ajax({
@@ -193,8 +242,8 @@
             type: "POST",
             data: JSON.stringify(param),
             dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
+            contentType: "application/json",
+            charset: "UTF-8",
             success: function (data) {
                 alert("장바구니 추가되었음")
             },

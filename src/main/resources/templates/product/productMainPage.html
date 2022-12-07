@@ -21,7 +21,17 @@
              style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
             <hr class="my-4">
         </div>
-        <div class="row mb-5"></div>
+        <div class="col-lg col-md portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
+            <div class="portfolio-inner rounded">
+                <img width="1300" height="100" th:src="@{/img/petFood.jpg}" alt="">
+                <div class="portfolio-text" style="opacity: 1;">
+                    <h1 class="text-white text-center">
+                        <a style="text-decoration: none" class="text-white"
+                           th:href="@{/product/{category}(category=food)}">전체보기</a></h1>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3"></div>
         <div class="row g-4 portfolio-container " style="position: relative; height: auto;">
             <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
                 <div class="portfolio-inner rounded">

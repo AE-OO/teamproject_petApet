@@ -72,8 +72,8 @@ public class ProductRestController {
 
     }
 
-    @GetMapping("/fetch")
-    public List<ProductMainPageListDTO> fetchTest(@RequestParam String sortType) {
+    @GetMapping("/sort")
+    public List<ProductMainPageListDTO> sortIndexProductList(@RequestParam String sortType) {
         if (sortType.equals("review")) {
             Pageable pageable = PageRequest.of(0, 8);
             Page<Product> productList = productService.getProductListByReview(pageable);

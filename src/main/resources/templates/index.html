@@ -101,8 +101,10 @@
                 <ul class="list-inline rounded mb-5" id="portfolio-flters">
                     <li class="mx-2 action">ALL</li>
                     <li class="mx-2" onclick="sortProduct('productId')">최근 등록상품</li>
+                    <li class="mx-2">판매순</li>
                     <li class="mx-2" onclick="sortProduct('review')">리뷰순</li>
                     <li class="mx-2" onclick="sortProduct('productRating')">별점순</li>
+                    <li class="mx-2">상품목록으로→</li>
                 </ul>
             </div>
         </div>
@@ -476,7 +478,7 @@
 
     async function sortProduct(sortType) {
         $('#appendTarget').empty();
-        fetch('/product/fetch?sortType=' + sortType, {
+        fetch('/product/sort?sortType=' + sortType, {
             method: 'GET',
         })
             .then(response => {
