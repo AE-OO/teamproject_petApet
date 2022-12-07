@@ -36,4 +36,9 @@ public class BuyServiceImpl implements BuyService {
         return buyRepository.save(buy);
     }
 
+    @Override
+    public boolean existsByBuyAndMember(Long buyId, String memberId) {
+        return buyRepository.existsByBuyIdAndMember(buyId, memberId);
+    }
+
 }

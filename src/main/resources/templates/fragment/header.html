@@ -37,7 +37,7 @@
                         <a href="#" class="nav-link nav-link2 me-0 h-100" id="dropdownA" data-bs-toggle="dropdown">
                             <i class="fa fa-user"></i></a>
                         <div class="dropdown-menu bg-white text-center m-0" id="dropdownMenuDiv" style="right:0;">
-                            <a href="/login" class="dropdown-item" sec:authorize="isAnonymous()">로그인</a>
+                            <a th:href="@{/login(redirectURL=${#request.requestURI})}" class="dropdown-item" sec:authorize="isAnonymous()">로그인</a>
                             <a href="/join" class="dropdown-item" sec:authorize="isAnonymous()">회원가입</a>
                             <a href="/admin/adminPage" class="dropdown-item" sec:authorize="hasRole('ADMIN')">관리자</a>
                             <a href="/member/checkInfo" class="dropdown-item" sec:authorize="hasRole('MEMBER')">내 정보</a>

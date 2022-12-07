@@ -15,7 +15,10 @@ public class ProductListDTO {
     private String productName;
     private Long productPrice;
     private Long productRating;
+    private Long productDiscountRate;
+    private Long productUnitPrice;
     private ProductType productDiv;
     private List<UploadFile> productImg;
     private List<Review> review;
+    private boolean duplicateDibsProduct;
 }

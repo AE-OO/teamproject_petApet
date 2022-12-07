@@ -1,12 +1,14 @@
 package com.teamproject.petapet.web.product.service;
 
 import com.teamproject.petapet.domain.product.Product;
-import com.teamproject.petapet.domain.product.ProductRepository;
+import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 
 import com.teamproject.petapet.domain.product.ProductType;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> getProductPage(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> getProductListByReview(Pageable pageable) {
+        return productRepository.findAllOrderByReviewCount(pageable);
+    }
+
+    @Override
     public void updateProductStatus(String selectStatus, Long productStock, Long productId) {
         productRepository.updateProductStatus(selectStatus, productStock, productId);
     }
@@ -46,13 +58,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findOne(Long id) {
-        return productRepository.findById(id).get();
+    public void updateProductRating(Long productId) {
+        productRepository.updateProductRating(productId);
     }
 
     @Override
-    public Product productSave(Product product) {
-        return productRepository.save(product);
+    public Product findOne(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void productSave(Product product) {
+        productRepository.save(product);
     }
 
     @Override

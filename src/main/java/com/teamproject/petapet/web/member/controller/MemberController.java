@@ -5,12 +5,15 @@ import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -20,6 +23,7 @@ import java.util.Map;
 /**
  * 장사론 22.10.20 작성
  */
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 //@RequestMapping("/member")
