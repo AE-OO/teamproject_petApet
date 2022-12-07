@@ -75,8 +75,7 @@
                 </div>
                 <div class="col-8 m-lg-1 text-end">
                     <th:block th:if="*{productDiscountRate>0}">
-                    <span style="text-decoration: line-through;"><i><h5 class="me-3"
-                                                                        th:text="|*{productUnitPrice}원|">price</h5></i></span>
+                    <span style="text-decoration: line-through;"><i><h5 class="me-3" th:text="|*{productUnitPrice}원|">price</h5></i></span>
                     </th:block>
                     <h4 class="me-3" th:text="|*{productPrice}원|">price</h4>
                 </div>
@@ -219,8 +218,10 @@
                                     <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                                 </div>
                                 <div class="col-1 mt-2">
-                                    <h5>작성자</h5>
-                                    <h6 style="font-size: 0.5rem" class="text-secondary mt-1">2000.00.00</h6>
+                                    <th:block sec:authorize="isAuthenticated()">
+                                        <h5 sec:authentication="name"></h5>
+                                    </th:block>
+                                    <h6 style="font-size: 0.5rem" class="text-secondary mt-1" th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
                                 </div>
                                 <div id="myform" class="col-9">
                                     <fieldset class="p-1 col">

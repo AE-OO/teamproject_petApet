@@ -32,13 +32,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Controller
@@ -53,7 +54,6 @@ public class ProductController {
     private final MemberService memberService;
     private final ReviewRepository reviewRepository;
     private final DibsProductService dibsProductService;
-
     private final BuyService buyService;
 
     @GetMapping
@@ -76,6 +76,8 @@ public class ProductController {
                     .productId(m.getProductId())
                     .productDiv(m.getProductDiv())
                     .productRating(m.getProductRating())
+                    .productDiscountRate(m.getProductDiscountRate())
+                    .productUnitPrice(m.getProductUnitPrice())
                     .duplicateDibsProduct(dibsProductService.existsDibsProduct(productService.findOne(m.getProductId()), member))
                     .review(m.getReview()).build()).collect(Collectors.toList());
             model.addAttribute("productList", productListDTOS);
@@ -86,6 +88,8 @@ public class ProductController {
                     .productId(m.getProductId())
                     .productDiv(m.getProductDiv())
                     .productRating(m.getProductRating())
+                    .productDiscountRate(m.getProductDiscountRate())
+                    .productUnitPrice(m.getProductUnitPrice())
                     .review(m.getReview()).build()).collect(Collectors.toList());
             model.addAttribute("productList", productListDTOS);
         }
@@ -145,10 +149,9 @@ public class ProductController {
         String fullPath = fileService.getFullPath(filename);
         MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(fullPath)));
         UrlResource resource = new UrlResource("file:" + fullPath);
-        ResponseEntity<Resource> body = ResponseEntity.ok()
+        return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
                 .body(resource);
-        return body;
     }
 
     @GetMapping("/{productType}/{productId}/details")
@@ -193,7 +196,7 @@ public class ProductController {
                 .product(productService.findOne(productId)).build();
 
         reviewRepository.save(review);
-
+        productService.updateProductRating(productId);
         return "redirect:" + requestURI;
     }
 }

@@ -39,11 +39,4 @@ class ProductRepositoryTest {
         productRepository.deleteById(1L);
     }
 
-
-    @Test
-    void 카운트테스트(){
-        Long avg = reviewRepository.avg(104L);
-        System.out.println("avg = " + avg);
-    }
-
 }
