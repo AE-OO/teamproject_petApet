@@ -2,6 +2,7 @@ package com.teamproject.petapet.domain.product;
 
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.domain.product.repository.ReviewRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,5 +39,13 @@ class ProductRepositoryTest {
     public void deleteProductCascadeCounter(){
         productRepository.deleteById(1L);
     }
-
+    
+    @Test
+    void 검색테스트(){
+        Pageable pageable = PageRequest.of(0,10);
+        Slice<Product> result = productRepository.findAllByProductNameContainsAndProductDiv("트", null, pageable);
+        Slice<ProductListDTO> map = result.map(m -> ProductListDTO.builder().productId(m.getProductId())
+                .productName(m.getProductName()).build());
+        map.stream().forEach(i-> System.out.println("i.getProductName() = " + i.getProductName()));
+    }
 }

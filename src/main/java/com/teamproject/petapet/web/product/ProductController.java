@@ -41,6 +41,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @Slf4j
@@ -50,54 +51,35 @@ public class ProductController {
 
     private final ProductService productService;
     private final FileService fileService;
-    private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final ReviewRepository reviewRepository;
     private final DibsProductService dibsProductService;
     private final BuyService buyService;
 
-    @GetMapping
+    @GetMapping("/main")
     public String productMainPage() {
         return "/product/productMainPage";
     }
 
-    @GetMapping("/{category}")
-    public String productList(@PathVariable("category") String category, Model model, Principal principal) {
-        category = category.toUpperCase();
-        ProductType productType = ProductType.valueOf(category);
-
-        List<Product> productList = productService.findAllByProductDiv(productType);
-
-        if (principal != null) {
-            Member member = memberService.findOne(principal.getName());
-            List<ProductListDTO> productListDTOS = productList.stream().map(m -> ProductListDTO.builder().productName(m.getProductName())
-                    .productPrice(m.getProductPrice())
-                    .productImg(m.getProductImg())
-                    .productId(m.getProductId())
-                    .productDiv(m.getProductDiv())
-                    .productRating(m.getProductRating())
-                    .productDiscountRate(m.getProductDiscountRate())
-                    .productUnitPrice(m.getProductUnitPrice())
-                    .duplicateDibsProduct(dibsProductService.existsDibsProduct(productService.findOne(m.getProductId()), member))
-                    .review(m.getReview()).build()).collect(Collectors.toList());
-            model.addAttribute("productList", productListDTOS);
+    @GetMapping
+    public String getProductList(@RequestParam("category") String category,Model model, Principal principal) {
+        Pageable pageable = PageRequest.of(0,20);
+        ProductType productType = getProductType(category);
+        Slice<Product> productList;
+        if (category.equals("all")){
+            productList = productService.getProductPage(pageable);
         } else {
-            List<ProductListDTO> productListDTOS = productList.stream().map(m -> ProductListDTO.builder().productName(m.getProductName())
-                    .productPrice(m.getProductPrice())
-                    .productImg(m.getProductImg())
-                    .productId(m.getProductId())
-                    .productDiv(m.getProductDiv())
-                    .productRating(m.getProductRating())
-                    .productDiscountRate(m.getProductDiscountRate())
-                    .productUnitPrice(m.getProductUnitPrice())
-                    .review(m.getReview()).build()).collect(Collectors.toList());
-            model.addAttribute("productList", productListDTOS);
+            productList = productService.findAllByProductDiv(productType, pageable);
         }
-
+        getProductListDTO(model, principal, productList);
         model.addAttribute("productDiv", productType.getProductCategory());
         return "product/productList";
     }
+    @GetMapping("/product/search")
+    public void searchProduct(@RequestParam("searchCategory") String category, @RequestParam("searchContent")String content, Model model){
+        getProductType(category);
 
+    }
     @GetMapping("/insert")
     public String productInsertForm(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) {
         return "/product/productInsertForm";
@@ -152,6 +134,7 @@ public class ProductController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
                 .body(resource);
+
     }
 
     @GetMapping("/{productType}/{productId}/details")
@@ -185,8 +168,8 @@ public class ProductController {
         List<MultipartFile> reviewImg = reviewInsertDTO.getReviewImg();
         List<UploadFile> uploadFiles = fileService.storeFiles(reviewImg);
 
-        //테스트 유저
-        Member member = memberRepository.findOneWithAuthoritiesByMemberId("memberId1").get();
+        Member member = memberService.findOne(principal.getName());
+
         Review review = Review.builder().reviewTitle(reviewInsertDTO.getReviewTitle())
                 .reviewRating(reviewInsertDTO.getReviewRating())
                 .reviewContent(reviewInsertDTO.getReviewContent())
@@ -198,5 +181,38 @@ public class ProductController {
         reviewRepository.save(review);
         productService.updateProductRating(productId);
         return "redirect:" + requestURI;
+    }
+
+    private void getProductListDTO(Model model, Principal principal, Slice<Product> productList) {
+        if (principal != null) {
+            Member member = memberService.findOne(principal.getName());
+            Slice<ProductListDTO> productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
+                    .productPrice(m.getProductPrice())
+                    .productImg(m.getProductImg())
+                    .productId(m.getProductId())
+                    .productDiv(m.getProductDiv())
+                    .productRating(m.getProductRating())
+                    .productDiscountRate(m.getProductDiscountRate())
+                    .productUnitPrice(m.getProductUnitPrice())
+                    .duplicateDibsProduct(dibsProductService.existsDibsProduct(productService.findOne(m.getProductId()), member))
+                    .review(m.getReview()).build());
+            model.addAttribute("productList", productListDTOS);
+        } else {
+            Slice<ProductListDTO> productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
+                    .productPrice(m.getProductPrice())
+                    .productImg(m.getProductImg())
+                    .productId(m.getProductId())
+                    .productDiv(m.getProductDiv())
+                    .productRating(m.getProductRating())
+                    .productDiscountRate(m.getProductDiscountRate())
+                    .productUnitPrice(m.getProductUnitPrice())
+                    .review(m.getReview()).build());
+            model.addAttribute("productList", productListDTOS);
+        }
+    }
+
+    private ProductType getProductType(String category) {
+        category = category.toUpperCase();
+        return ProductType.valueOf(category);
     }
 }

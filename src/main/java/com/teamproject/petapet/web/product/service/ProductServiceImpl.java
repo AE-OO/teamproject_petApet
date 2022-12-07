@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,8 +47,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllByProductDiv(ProductType productType) {
-        return productRepository.findAllByProductDiv(productType);
+    public Slice<Product> findAllByProductDiv(ProductType productType,Pageable pageable) {
+        return productRepository.findAllByProductDiv(productType,pageable);
     }
 
     @Override

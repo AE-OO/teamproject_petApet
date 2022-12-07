@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface ProductService {
 
     void updateProductStatus(String selectStatus, Long productStock, Long productId);
 
-    List<Product> findAllByProductDiv(ProductType productType);
+    Slice<Product> findAllByProductDiv(ProductType productType,Pageable pageable);
 
     void updateProductStatusOutOfStock(List<String> productId);
 
