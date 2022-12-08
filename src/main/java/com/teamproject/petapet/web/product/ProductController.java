@@ -70,9 +70,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public String getProductList(@RequestParam("category") String category,@RequestParam(value = "page",defaultValue = "1",required = false) int page, Model model, Principal principal) {
+    public String getProductList(@RequestParam(value = "category",defaultValue = "all") String category,
+                                 @RequestParam(value = "page",defaultValue = "1",required = false) int page,
+                                 @RequestParam(value = "size",defaultValue = "20",required = false) int size,
+                                 Model model, Principal principal) {
         Sort sort = Sort.by("productId").descending();
-        Pageable pageable = PageRequest.of(page-1, 2, sort);
+        Pageable pageable = PageRequest.of(page-1, size, sort);
         ProductType productType = getProductType(category);
         Page<Product> productList;
         if (category.equals("all")) {
