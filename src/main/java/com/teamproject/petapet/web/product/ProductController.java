@@ -1,9 +1,13 @@
 package com.teamproject.petapet.web.product;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
+import com.teamproject.petapet.domain.product.QProduct;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.product.repository.ReviewRepository;
 import com.teamproject.petapet.web.buy.service.BuyService;
@@ -16,6 +20,7 @@ import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
+import com.teamproject.petapet.web.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -26,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -53,8 +59,10 @@ public class ProductController {
     private final FileService fileService;
     private final MemberService memberService;
     private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
     private final DibsProductService dibsProductService;
     private final BuyService buyService;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @GetMapping("/main")
     public String productMainPage() {
@@ -62,11 +70,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public String getProductList(@RequestParam("category") String category,Model model, Principal principal) {
-        Pageable pageable = PageRequest.of(0,20);
+    public String getProductList(@RequestParam("category") String category, Model model, Principal principal) {
+        Pageable pageable = PageRequest.of(0, 20);
         ProductType productType = getProductType(category);
         Slice<Product> productList;
-        if (category.equals("all")){
+        if (category.equals("all")) {
             productList = productService.getProductPage(pageable);
         } else {
             productList = productService.findAllByProductDiv(productType, pageable);
@@ -75,11 +83,19 @@ public class ProductController {
         model.addAttribute("productDiv", productType.getProductCategory());
         return "product/productList";
     }
-    @GetMapping("/product/search")
-    public void searchProduct(@RequestParam("searchCategory") String category, @RequestParam("searchContent")String content, Model model){
-        getProductType(category);
 
+    @GetMapping("/search")
+    public String searchProduct(@RequestParam("category") String category, @RequestParam("searchContent") String content, Model model, Principal principal) {
+        ProductType productType = getProductType(category);
+        QProduct product = QProduct.product;
+        BooleanBuilder builder = getBooleanBuilder(category, content, productType, product);
+        List<Product> productList = jpaQueryFactory.query().select(product).from(product).where(builder).fetch();
+        SliceImpl<Product> slices = convertToSlice(productList);
+        getProductListDTO(model,principal,slices);
+        model.addAttribute("productDiv", "검색 결과");
+        return "product/productList";
     }
+
     @GetMapping("/insert")
     public String productInsertForm(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) {
         return "/product/productInsertForm";
@@ -119,13 +135,6 @@ public class ProductController {
         return "redirect:" + redirectURL;
     }
 
-//    @GetMapping(value = "/Users/oh/Desktop/test/file/{fileName}",produces = MediaType.IMAGE_PNG_VALUE)
-//    @ResponseBody
-//    public Resource downloadImage(@PathVariable String filename) throws
-//            MalformedURLException {
-//        return new UrlResource("file:" + fileService.getFullPath(filename));
-//    }
-
     @GetMapping(value = "/images/{filename}")
     public ResponseEntity<Resource> downloadImageV2(@PathVariable String filename) throws IOException {
         String fullPath = fileService.getFullPath(filename);
@@ -134,7 +143,6 @@ public class ProductController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
                 .body(resource);
-
     }
 
     @GetMapping("/{productType}/{productId}/details")
@@ -145,8 +153,8 @@ public class ProductController {
         ProductDetailDTO productDetailDTO = findProduct.toProductDetailDTO(findProduct);
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(0, 10, sort);
-        Slice<Review> reviews = reviewRepository.requestMoreReview(productId, pageable);
-        Long countReview = reviewRepository.countReviewByProduct(findProduct);
+        Slice<Review> reviews = reviewService.requestMoreReview(productId, pageable);
+        Long countReview = reviewService.countReviewByProduct(findProduct);
         model.addAttribute("countReview", countReview);
         model.addAttribute("findProduct", productDetailDTO);
         model.addAttribute("reviews", reviews);
@@ -178,7 +186,7 @@ public class ProductController {
                 .member(member)
                 .product(productService.findOne(productId)).build();
 
-        reviewRepository.save(review);
+        reviewService.save(review);
         productService.updateProductRating(productId);
         return "redirect:" + requestURI;
     }
@@ -214,5 +222,26 @@ public class ProductController {
     private ProductType getProductType(String category) {
         category = category.toUpperCase();
         return ProductType.valueOf(category);
+    }
+
+    private BooleanBuilder getBooleanBuilder(String category, String content, ProductType productType, QProduct product) {
+        BooleanBuilder builder = new BooleanBuilder();
+        if (StringUtils.hasText(content)) {
+            builder.and(product.productName.contains(content));
+        }
+        if (!category.equals("all")) {
+            builder.and(product.productDiv.eq(productType));
+        }
+        return builder;
+    }
+
+    private SliceImpl<Product> convertToSlice(List<Product> productList) {
+        Pageable pageable = PageRequest.of(0, 16);
+        boolean hasNext = false;
+        if (productList.size() > pageable.getPageSize()) {
+            productList.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(productList, pageable, hasNext);
     }
 }
