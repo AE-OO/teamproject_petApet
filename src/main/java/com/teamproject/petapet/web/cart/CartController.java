@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Controller
@@ -42,7 +43,7 @@ public class CartController {
                          HttpSession httpSession,
                          Model model){
 
-        if(principal instanceof Principal) {
+        if(principal != null) {
             String loginMember = checkMember(principal, request, httpSession);
 
             // 세션 유지되면 로그인으로 이동
@@ -65,7 +66,7 @@ public class CartController {
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
                 memberService.findOne(loginMember),
-                productService.findOne(product),
+                productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
 
         cartService.addCart(cart);
@@ -81,7 +82,7 @@ public class CartController {
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
                 memberService.findOne(loginMember),
-                productService.findOne(product),
+                productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
 
         cartService.addCart(cart);
@@ -115,8 +116,7 @@ public class CartController {
         httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
         HttpSession session = request.getSession(false);
         Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        String loginMember = loginMemberSession.getMemberId();
-        return loginMember;
+        return loginMemberSession.getMemberId();
     }
 
 

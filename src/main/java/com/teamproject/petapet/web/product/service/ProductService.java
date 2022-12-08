@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 박채원 22.10.09 작성
@@ -27,11 +28,11 @@ public interface ProductService {
 
     void updateProductRating(Long productId);
 
-    Product findOne(Long id);
+    Optional<Product> findOne(Long id);
 
     void productSave(Product product);
 
-    Product findProductWithReview(Long id);
+    Optional<Product> findProductWithReview(Long id);
 
     void addProductReport(Long productId);
 }

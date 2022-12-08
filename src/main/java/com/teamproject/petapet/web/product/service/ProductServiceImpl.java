@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 박채원 22.10.09 작성
@@ -63,8 +64,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findOne(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public Optional<Product> findOne(Long id) {
+        return productRepository.findById(id);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product findProductWithReview(Long id) {
+    public Optional<Product> findProductWithReview(Long id) {
         return productRepository.findProductWithReview(id);
     }
 

@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
     @Transactional
@@ -21,7 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Slice<Product> findAllByProductNameContainsAndProductDiv(String productName, ProductType productType, Pageable pageable);
 
     @Query("select a from Product a,Review b where a.productId=:id and b.product.productId=:id")
-    Product findProductWithReview(@Param("id") Long id);
+    Optional<Product> findProductWithReview(@Param("id") Long id);
 
     @Query("select p from Product p order by p.review.size desc")
     Page<Product> findAllOrderByReviewCount(Pageable pageable);

@@ -46,6 +46,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,7 +59,6 @@ public class ProductController {
     private final ProductService productService;
     private final FileService fileService;
     private final MemberService memberService;
-    private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
     private final DibsProductService dibsProductService;
     private final BuyService buyService;
@@ -71,7 +71,8 @@ public class ProductController {
 
     @GetMapping
     public String getProductList(@RequestParam("category") String category, Model model, Principal principal) {
-        Pageable pageable = PageRequest.of(0, 20);
+        Sort sort = Sort.by("productId").descending();
+        Pageable pageable = PageRequest.of(0, 20, sort);
         ProductType productType = getProductType(category);
         Slice<Product> productList;
         if (category.equals("all")) {
@@ -149,7 +150,7 @@ public class ProductController {
     public String detailViewForm(@PathVariable("productType") String productType
             , @PathVariable("productId") Long productId
             , Principal principal, Model model) {
-        Product findProduct = productService.findOne(productId);
+        Product findProduct = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         ProductDetailDTO productDetailDTO = findProduct.toProductDetailDTO(findProduct);
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(0, 10, sort);
@@ -184,7 +185,7 @@ public class ProductController {
                 .reviewImg(uploadFiles)
                 .reviewDate(LocalDateTime.now())
                 .member(member)
-                .product(productService.findOne(productId)).build();
+                .product(productService.findOne(productId).orElseThrow(NoSuchElementException::new)).build();
 
         reviewService.save(review);
         productService.updateProductRating(productId);
@@ -202,7 +203,7 @@ public class ProductController {
                     .productRating(m.getProductRating())
                     .productDiscountRate(m.getProductDiscountRate())
                     .productUnitPrice(m.getProductUnitPrice())
-                    .duplicateDibsProduct(dibsProductService.existsDibsProduct(productService.findOne(m.getProductId()), member))
+                    .duplicateDibsProduct(dibsProductService.existsDibsProduct(productService.findOne(m.getProductId()).orElseThrow(NoSuchElementException::new), member))
                     .review(m.getReview()).build());
             model.addAttribute("productList", productListDTOS);
         } else {

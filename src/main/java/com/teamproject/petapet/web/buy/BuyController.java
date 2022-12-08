@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Controller
@@ -40,7 +41,7 @@ public class BuyController {
                          HttpSession httpSession,
                          Model model){
 
-        if(principal instanceof Principal) {
+        if(principal != null) {
             String loginMember = checkMember(principal, request, httpSession);
 
             List<Buy> buyList = buyService.findAll(loginMember);
@@ -63,7 +64,7 @@ public class BuyController {
 
         Buy buy = new Buy(member.getMemberAddress(),
                 member,
-                productService.findOne(product),
+                productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
 
         buyService.addBuy(buy);
@@ -82,7 +83,7 @@ public class BuyController {
 
         Buy buy = new Buy(member.getMemberAddress(),
                 member,
-                productService.findOne(product),
+                productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
 
         buyService.addBuy(buy);
@@ -94,7 +95,6 @@ public class BuyController {
         httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
         HttpSession session = request.getSession(false);
         Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        String loginMember = loginMemberSession.getMemberId();
-        return loginMember;
+        return loginMemberSession.getMemberId();
     }
 }

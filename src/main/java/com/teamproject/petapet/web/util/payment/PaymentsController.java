@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Controller
@@ -45,7 +46,7 @@ public class PaymentsController {
     @GetMapping("/direct/checkout/{idx}")
     public String getPayment2(@PathVariable("idx") Long productId, Model model,
                               Principal principal, HttpServletRequest request, HttpSession httpSession){
-        Product product = productService.findOne(productId);
+        Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         String loginMember = checkMember(principal, request, httpSession);
         Member member = memberService.findOne(loginMember);
         model.addAttribute("product", product);
@@ -55,11 +56,11 @@ public class PaymentsController {
     }
     @ResponseBody
     @RequestMapping(value = "/direct/checkout/{idx}", method = { RequestMethod.POST }, produces = "application/json")
-    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId, Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
+    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId, Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) {
         String loginMember = checkMember(principal, request, httpSession);
         Long getProduct = vo.getBuyProduct();
         Member member = memberService.findOne(loginMember);
-        Product product = productService.findOne(getProduct);
+        Product product = productService.findOne(getProduct).orElseThrow(NoSuchElementException::new);
         model.addAttribute("product", product);
         model.addAttribute("member", member);
         return "mypage/directCheckout";
@@ -74,7 +75,7 @@ public class PaymentsController {
         Buy buy = new Buy(
                 vo.getBuyAddress(),
                 memberService.findOne(loginMember),
-                productService.findOne(vo.getBuyProduct()),
+                productService.findOne(vo.getBuyProduct()).orElseThrow(NoSuchElementException::new),
                 vo.getBuyQuantity()
         );
         buyService.addBuy(buy);
@@ -91,7 +92,7 @@ public class PaymentsController {
         Buy buy = new Buy(
                 vo.getBuyAddress(),
                 memberService.findOne(loginMember),
-                productService.findOne(vo.getBuyProduct()),
+                productService.findOne(vo.getBuyProduct()).orElseThrow(NoSuchElementException::new),
                 1L
         );
         buyService.addBuy(buy);
@@ -104,8 +105,7 @@ public class PaymentsController {
         httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
         HttpSession session = request.getSession(false);
         Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        String loginMember = loginMemberSession.getMemberId();
-        return loginMember;
+        return loginMemberSession.getMemberId();
     }
 
 }
