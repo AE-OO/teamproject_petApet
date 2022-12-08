@@ -12,7 +12,7 @@
     <div class="container">
         <div class="text-center mx-auto">
             <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
-            <h1 class="display-5 mb-3" th:text="${productDiv}">Pet Food</h1>
+            <h1 class="display-5 mb-3" th:text="${productDiv.productCategory}">Pet Food</h1>
         </div>
         <div class="row wow fadeInUp" data-wow-delay="0.3s">
             <div class="col-12 text-center">
@@ -61,21 +61,21 @@
         </div>
         <div class="d-flex">
             <div class="col-8">
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <div class="btn-group form-check form-check-inline" role="group" aria-label="Basic radio toggle button group">
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="btnradio1">최신순</label>
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=productId,category=${productDiv.name().toLowerCase()})}'|" for="btnradio1">최신순</label>
 
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio2">낮은가격순</label>
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=salePriceAsc,category=${productDiv.name().toLowerCase()})}'|" for="btnradio2">낮은가격순</label>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio3">높은가격순</label>
+                    <input type="radio" class="btn-check"  name="btnradio" id="btnradio3" autocomplete="off">
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=salePriceDesc,category=${productDiv.name().toLowerCase()})}'|" for="btnradio3">높은가격순</label>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio4">리뷰순</label>
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" value="review" autocomplete="off">
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=review,category=${productDiv.name().toLowerCase()})}'|" for="btnradio4">리뷰순</label>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio5">평점순</label>
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="productRating" autocomplete="off">
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=productRating,category=${productDiv.name().toLowerCase()})}'|" for="btnradio5">평점순</label>
                 </div>
             </div>
             <div class="d-flex justify-content-end col-4">
@@ -273,7 +273,9 @@
             }
         });
     });
-
+    let urlSearchParams = new URLSearchParams(location.search);
+    const sortType = urlSearchParams.get('sortType');
+    $("input:radio[name ='btnradio']:input[value="+sortType+"]").attr("checked", true);
 </script>
 
 <!-- Template Javascript -->

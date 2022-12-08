@@ -1,6 +1,8 @@
 package com.teamproject.petapet.web.product;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.member.Member;
@@ -70,21 +72,31 @@ public class ProductController {
     }
 
     @GetMapping
-    public String getProductList(@RequestParam(value = "category",defaultValue = "all") String category,
-                                 @RequestParam(value = "page",defaultValue = "1",required = false) int page,
-                                 @RequestParam(value = "size",defaultValue = "20",required = false) int size,
+    public String getProductList(@RequestParam(value = "category", defaultValue = "all") String category,
+                                 @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                 @RequestParam(value = "size", defaultValue = "20", required = false) int size,
+                                 @RequestParam(value = "sortType", defaultValue = "productId", required = false) String sortType,
                                  Model model, Principal principal) {
-        Sort sort = Sort.by("productId").descending();
-        Pageable pageable = PageRequest.of(page-1, size, sort);
+        Sort sort = Sort.by(sortType).descending();
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
         ProductType productType = getProductType(category);
         Page<Product> productList;
+        QProduct product = QProduct.product;
         if (category.equals("all")) {
-            productList = productService.getProductPage(pageable);
+            List<Product> fetch = jpaQueryFactory.query().select(product).from(product).orderBy(product.productId.desc()).fetch();
+            productList = convertToPage(fetch);
+                log.info("sortType all");
         } else {
-            productList = productService.findAllByProductDiv(productType, pageable);
+            if (sortType.equals("review")) {
+                log.info("sortType review");
+                List<Product> fetch = jpaQueryFactory.query().select(product).from(product).where(product.productDiv.eq(productType)).orderBy(product.review.size().desc()).fetch();
+                productList = convertToPage(fetch);
+            } else {
+                productList = productService.findAllByProductDiv(productType, pageable);
+            }
         }
         getProductListDTO(model, principal, productList);
-        model.addAttribute("productDiv", productType.getProductCategory());
+        model.addAttribute("productDiv", productType);
         return "product/productList";
     }
 
@@ -95,9 +107,13 @@ public class ProductController {
         BooleanBuilder builder = getBooleanBuilder(category, content, productType, product);
         List<Product> productList = jpaQueryFactory.query().select(product).from(product).where(builder).orderBy(product.productId.desc()).fetch();
         PageImpl<Product> products = convertToPage(productList);
-        getProductListDTO(model,principal,products);
+        getProductListDTO(model, principal, products);
         model.addAttribute("productDiv", "검색 결과");
         return "product/productList";
+    }
+    @ModelAttribute("itemTypes")
+    public ProductType[] itemTypes() {
+        return ProductType.values();
     }
 
     @GetMapping("/insert")
