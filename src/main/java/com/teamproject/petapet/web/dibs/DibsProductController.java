@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class DibsProductController {
         }
 
         Member member = memberService.findOne(principal.getName());
-        Product product = productService.findOne(id);
+        Product product = productService.findOne(id).orElseThrow(NoSuchElementException::new);
 
         if (!duplicateDibsProduct(product, member)) {
             dibsProductService.saveDibsProduct(new DibsProduct(id, member, product));

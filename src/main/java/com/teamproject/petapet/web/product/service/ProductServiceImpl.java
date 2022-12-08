@@ -9,10 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 박채원 22.10.09 작성
@@ -22,7 +24,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
     private final ProductRepository productRepository;
 
     @Override
@@ -46,8 +47,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllByProductDiv(ProductType productType) {
-        return productRepository.findAllByProductDiv(productType);
+    public Page<Product> findAllByProductDiv(ProductType productType,Pageable pageable) {
+        return productRepository.findAllByProductDiv(productType,pageable);
     }
 
     @Override
@@ -63,8 +64,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findOne(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public Optional<Product> findOne(Long id) {
+        return productRepository.findById(id);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product findProductWithReview(Long id) {
+    public Optional<Product> findProductWithReview(Long id) {
         return productRepository.findProductWithReview(id);
     }
 

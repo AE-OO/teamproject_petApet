@@ -2,7 +2,6 @@ package com.teamproject.petapet.web.product;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
-import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.domain.product.repository.ReviewRepository;
 import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;

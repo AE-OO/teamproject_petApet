@@ -27,7 +27,7 @@
                 <div class="portfolio-text" style="opacity: 1;">
                     <h1 class="text-white text-center">
                         <a style="text-decoration: none" class="text-white"
-                           th:href="@{/product/{category}(category=food)}">전체보기</a></h1>
+                           th:href="@{/product(category=food)}">전체상품</a></h1>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
                     <div class="portfolio-text" style="opacity: 1;">
                         <h1 class="text-white text-center">
                             <a style="text-decoration: none" class="text-white"
-                               th:href="@{/product/{category}(category=food)}">사료</a></h1>
+                               th:href="@{/product(category=food)}">사료</a></h1>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                     <div class="portfolio-text" style="opacity: 1;">
                         <h1 class="text-white text-center">
                             <a style="text-decoration: none" class="text-white"
-                               th:href="@{/product/{category}(category=snack)}">간식</a></h1>
+                               th:href="@{/product(category=snack)}">간식</a></h1>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                     <div class="portfolio-text" style="opacity: 1;">
                         <h1 class="text-white text-center">
                             <a style="text-decoration: none" class="text-white"
-                               th:href="@{/product/{category}(category=walking)}">산책용품</a></h1>
+                               th:href="@{/product(category=walking)}">산책용품</a></h1>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                     <div class="portfolio-text" style="opacity: 1;">
                         <h1 class="text-white text-center">
                             <a style="text-decoration: none" class="text-white"
-                               th:href="@{/product/{category}(category=toy)}">장난감</a></h1>
+                               th:href="@{/product(category=toy)}">장난감</a></h1>
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                     <div class="portfolio-text" style="opacity: 1;">
                         <h1 class="text-white text-center">
                             <a style="text-decoration: none" class="text-white"
-                               th:href="@{/product/{category}(category=fashion)}">패션/잡화</a></h1>
+                               th:href="@{/product(category=fashion)}">패션/잡화</a></h1>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                     <div class="portfolio-text" style="opacity: 1;">
                         <h1 class="text-white text-center">
                             <a style="text-decoration: none" class="text-white"
-                               th:href="@{/product/{category}(category=stroller)}">유모차</a></h1>
+                               th:href="@{/product(category=stroller)}">유모차</a></h1>
                     </div>
                 </div>
             </div>
@@ -97,51 +97,7 @@
     </div>
 </div>
 <hr class="my-4">
-<div class="container-fluid bg-dark text-light text-center footer mt-5 py-3">
-    <div class="container py-5">
-        <div class="row g-5">
-            <div class="col-lg-6 col-md-6 mx-auto">
-                <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
-                <ul class="text-white px-0">
-                    <li><a href="#">petApet</a></li>
-                    <li><a href="#">이용약관</a></li>
-                    <li><a href="#">개인정보처리방침</a></li>
-                    <li><a href="#">이용안내</a></li>
-                </ul>
-
-                <p>법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
-                <p>통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
-                <p>서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
-
-            </div>
-            <!-- <div class="col-lg-6 mx-auto col-md-6">
-                <h4 class="text-white mb-4">Our Office</h4>
-                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                <div class="d-flex pt-2">
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-instagram"></i></a>
-                </div>
-            </div> -->
-        </div>
-    </div>
-</div>
-<!-- Footer End -->
-
-
-<!-- Copyright Start -->
-<div class="container-fluid text-center copyright py-4">
-    <div class="container ">
-        <div class="row ">
-            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
-                &copy; petApet Project Team All Right Reserved.
-            </div>
-        </div>
-    </div>
-</div>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

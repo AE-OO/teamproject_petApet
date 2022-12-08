@@ -6,41 +6,42 @@
 </head>
 <body>
 
-<th:block th:replace="~{fragment/header :: header}">
-
-</th:block>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
 <hr class="mt-5">
 <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center mx-auto">
             <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
-            <h1 class="display-5 mb-3" th:text="${productDiv}">Pet Food</h1>
+            <h1 class="display-5 mb-3" th:text="${productDiv.productCategory}">Pet Food</h1>
         </div>
         <div class="row wow fadeInUp" data-wow-delay="0.3s">
             <div class="col-12 text-center">
                 <ul class="list-inline rounded mb-4" id="portfolio-flters">
                     <li class="mx-2"><a style="text-decoration: none"
-                                        th:href="@{/product/{category}(category=food)}">사료</a></h1></li>
+                                        th:href="@{/product(category=all)}">전체보기</a></li>
                     <li class="mx-2"><a style="text-decoration: none"
-                                        th:href="@{/product/{category}(category=snack)}">간식</a></h1></li>
+                                        th:href="@{/product(category=food)}">사료</a></li>
                     <li class="mx-2"><a style="text-decoration: none"
-                                        th:href="@{/product/{category}(category=walking)}">산책용품</a></li>
+                                        th:href="@{/product(category=snack)}">간식</a></li>
                     <li class="mx-2"><a style="text-decoration: none"
-                                        th:href="@{/product/{category}(category=toy)}">장난감</a></li>
+                                        th:href="@{/product(category=walking)}">산책용품</a></li>
                     <li class="mx-2"><a style="text-decoration: none"
-                                        th:href="@{/product/{category}(category=fashion)}">패션/잡화</a></li>
+                                        th:href="@{/product(category=toy)}">장난감</a></li>
                     <li class="mx-2"><a style="text-decoration: none"
-                                        th:href="@{/product/{category}(category=stroller)}">유모차</a></li>
+                                        th:href="@{/product(category=fashion)}">패션/잡화</a></li>
+                    <li class="mx-2"><a style="text-decoration: none"
+                                        th:href="@{/product(category=stroller)}">유모차</a></li>
                 </ul>
             </div>
         </div>
-        <form class="d-flex col justify-content-end">
+        <form class="d-flex col justify-content-end" th:action="@{/product/search}" method="get">
             <div class="col-6">
                 <div class="input-group mb-2">
                     <div class="col-3">
                         <select class="form-select" type="input"
-                                name="searchCategory">
-                            <option value="food" selected>사료</option>
+                                name="category">
+                            <option value="all" selected>전체</option>
+                            <option value="food">사료</option>
                             <option value="snack">간식</option>
                             <option value="walking">산책용품</option>
                             <option value="toy">장난감</option>
@@ -50,13 +51,57 @@
                     </div>
                     <input type="text" class="form-control" placeholder="찾고 싶은 상품을 입력하세요" name="searchContent"
                            aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Button</button>
                 </div>
             </div>
         </form>
         <div class="wow fadeInUp" data-wow-delay="0.4s"
              style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
             <hr class="">
+        </div>
+        <div class="d-flex">
+            <div class="col-8">
+                <div class="btn-group form-check form-check-inline" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=productId,category=${productDiv.name().toLowerCase()})}'|" for="btnradio1">최신순</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=salePriceAsc,category=${productDiv.name().toLowerCase()})}'|" for="btnradio2">낮은가격순</label>
+
+                    <input type="radio" class="btn-check"  name="btnradio" id="btnradio3" autocomplete="off">
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=salePriceDesc,category=${productDiv.name().toLowerCase()})}'|" for="btnradio3">높은가격순</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" value="review" autocomplete="off">
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=review,category=${productDiv.name().toLowerCase()})}'|" for="btnradio4">리뷰순</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="productRating" autocomplete="off">
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(sortType=productRating,category=${productDiv.name().toLowerCase()})}'|" for="btnradio5">평점순</label>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end col-4">
+                <li class="nav-item dropdown">
+                    <th:block th:if="${#request.getParameter('size') ne null}">
+                        <a class="nav-link dropdown-toggle" role="button"
+                           th:text="|${#request.getParameter('size')}개씩 보기|"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                        </a>
+                    </th:block>
+                    <th:block th:if="${#request.getParameter('size') eq null}">
+                        <a class="nav-link dropdown-toggle" role="button"
+                           th:text="|20개씩 보기|"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                        </a>
+                    </th:block>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item"
+                               th:href="@{/product(category=${#request.getParameter('category')},page=${#request.getParameter('page')},size=${'20'})}">20개씩
+                            보기</a></li>
+                        <li><a class="dropdown-item"
+                               th:href="@{/product(category=${#request.getParameter('category')},page=${#request.getParameter('page')},size=${'40'})}">40개씩
+                            보기</a></li>
+                    </ul>
+                </li>
+            </div>
         </div>
         <div class="row mb-3"></div>
         <div class="row g-4 portfolio-container " style="position: relative; height: auto;">
@@ -143,53 +188,29 @@
         </div>
     </div>
 </div>
+<div class="d-flex sticky-bottom justify-content-center">
+    <nav th:if="${productList.hasContent()}"
+         th:with="start=${(productList.getNumber()/5)*5 + 1},
+                  end=(${start+4 < productList.totalPages ? start+4 : productList.totalPages})">
+        <ul class="pagination page-body-wrapper">
+            <li class="page-item" th:if="${start > 5}">
+                <a class="page-link"
+                   th:href="@{/product(category=${#request.getParameter('category')},page=${start - 5})}">이전</a>
+            </li>
+            <li class="page-item" th:classappend="${productList.getNumber()==number}"
+                th:each="number : ${#numbers.sequence(start,end)}">
+                <a class="page-link" th:href="@{/product(category=${#request.getParameter('category')},page=${number})}"
+                   th:text="${number}"></a>
+            </li>
+            <li class="page-item" th:if="${end < productList.totalPages}">
+                <a class="page-link"
+                   th:href="@{/product(category=${#request.getParameter('category')},page=${start + 5})}">다음</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 <hr class="my-4">
-<div class="container-fluid text-light text-center footer mt-2 py-0" style="background-color: #78c2ad">
-    <div class="container pt-4">
-        <div class="row g-5">
-            <div class="col-lg-6 col-md-6 mx-auto">
-                <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
-                <ul class="text-white px-0">
-                    <li><a href="#">petApet</a></li>
-                    <li><a href="#">이용약관</a></li>
-                    <li><a href="#">개인정보처리방침</a></li>
-                    <li><a href="#">이용안내</a></li>
-                </ul>
-
-                <p>법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
-                <p>통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
-                <p>서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
-
-            </div>
-            <!-- <div class="col-lg-6 mx-auto col-md-6">
-                <h4 class="text-white mb-4">Our Office</h4>
-                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                <div class="d-flex pt-2">
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
-                    <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-instagram"></i></a>
-                </div>
-            </div> -->
-        </div>
-    </div>
-</div>
-<!-- Footer End -->
-
-
-<!-- Copyright Start -->
-<div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
-    <div class="container ">
-        <div class="row ">
-            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
-                &copy; petApet Project Team All Right Reserved.
-            </div>
-        </div>
-    </div>
-</div>
-
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -252,7 +273,9 @@
             }
         });
     });
-
+    let urlSearchParams = new URLSearchParams(location.search);
+    const sortType = urlSearchParams.get('sortType');
+    $("input:radio[name ='btnradio']:input[value="+sortType+"]").attr("checked", true);
 </script>
 
 <!-- Template Javascript -->

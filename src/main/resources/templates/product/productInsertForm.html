@@ -135,7 +135,7 @@
                                    name="productDiv" required>
                             <select type="input" onchange="putValue(this)" class="form-select form-select-sm"
                                     id="inputGroupSelect01" required>
-                                <option selected disabled></option>
+                                <option selected disabled>상품 카테고리를 선택하세요</option>
                                 <option value="FOOD">사료</option>
                                 <option value="SNACK">간식</option>
                                 <option value="WALKING">산책용품</option>
@@ -209,37 +209,7 @@
     </div>
 </div>
 <hr class="my-4">
-<div class="container-fluid text-light text-center footer mt-2 py-0" style="background-color: #78c2ad">
-    <div class="container pt-4">
-        <div class="row g-5">
-            <div class="col-lg-6 col-md-6 mx-auto">
-                <h4 class="text-white mb-4"><img src="#" alt="logo"/>petApet</h4>
-                <ul class="text-white px-0">
-                    <li><a href="#">petApet</a></li>
-                    <li><a href="#">이용약관</a></li>
-                    <li><a href="#">개인정보처리방침</a></li>
-                    <li><a href="#">이용안내</a></li>
-                </ul>
-                <p>법인명(상호) : petApet(펫어펫) | 사업자등록번호 : 123-45-678910</p>
-                <p>통신판매업 : 제 2022-서울강남-012345호 | 개인정보보호책임자:ㅇㅇㅇ</p>
-                <p>서울 강남구 테헤란로 7길 7(역삼동 에스코빌딩 6층) | 대표이사:ㅇㅇㅇ</p>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Footer End -->
-
-
-<!-- Copyright Start -->
-<div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
-    <div class="container ">
-        <div class="row ">
-            <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
-                &copy; petApet Project Team All Right Reserved.
-            </div>
-        </div>
-    </div>
-</div>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
@@ -352,6 +322,7 @@
 
 <!-- Template Javascript -->
 <script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/reviewContentStr.js}"></script>
 </html>
 </body>
 </html>

@@ -13,7 +13,6 @@
             <div class="portfolio-container">
                 <div class="portfolio-item">
                     <div class="portfolio">
-
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                             <div class="carousel-indicators">
                                 <button type="button" th:each="idx, i : *{productImg}"
@@ -165,7 +164,7 @@
                         style="background-color: white"> 상품상세
                 </button>
                 <button onclick="review_scroll_move()" class="btn text-dark col-3" style="background-color: white">
-                    상품평([[${reviews.size}]])
+                    상품평([[${countReview}]])
                 </button>
                 <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"
                         style="background-color: white"> 상품문의
@@ -196,7 +195,7 @@
     <div class="d-flex flex-row">
         <div class="btn-group col-12">
             <button onclick="productDetail_scroll_move()" class="btn text-dark col-3"> 상품상세</button>
-            <button onclick="review_scroll_move()" class="btn text-dark col-3"> 상품평()</button>
+            <button onclick="review_scroll_move()" class="btn text-dark col-3"> 상품평([[${countReview}]])</button>
             <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"> 상품문의</button>
             <button onclick="shipping_scroll_move()" class="btn text-dark col-3"> 배송/교환/반품</button>
         </div>
@@ -327,7 +326,7 @@
                     <th:block
                             th:if="${reviews.hasNext()}">
                         <a role="button" onclick="moreReview()" class="m-lg-1 fs-5 text-center" id="moreReview"
-                        >▼ 댓글 더보기</a>
+                       >▼ 댓글 더보기</a>
                     </th:block>
                 </div>
             </div>
