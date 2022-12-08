@@ -51,8 +51,8 @@ class ProductRepositoryTest {
     @Test
     void 검색테스트(){
         Pageable pageable = PageRequest.of(0,10);
-        Slice<Product> result = productRepository.findAllByProductNameContainsAndProductDiv("트", null, pageable);
-        Slice<ProductListDTO> map = result.map(m -> ProductListDTO.builder().productId(m.getProductId())
+        Page<Product> result = productRepository.findAllByProductNameContainsAndProductDiv("트", null, pageable);
+        Page<ProductListDTO> map = result.map(m -> ProductListDTO.builder().productId(m.getProductId())
                 .productName(m.getProductName()).build());
         map.stream().forEach(i-> System.out.println("i.getProductName() = " + i.getProductName()));
     }

@@ -22,7 +22,7 @@ public interface ProductService {
 
     void updateProductStatus(String selectStatus, Long productStock, Long productId);
 
-    Slice<Product> findAllByProductDiv(ProductType productType,Pageable pageable);
+    Page<Product> findAllByProductDiv(ProductType productType,Pageable pageable);
 
     void updateProductStatusOutOfStock(List<String> productId);
 

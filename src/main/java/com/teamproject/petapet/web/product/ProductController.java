@@ -70,11 +70,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public String getProductList(@RequestParam("category") String category, Model model, Principal principal) {
+    public String getProductList(@RequestParam("category") String category,@RequestParam(value = "page",defaultValue = "1",required = false) int page, Model model, Principal principal) {
         Sort sort = Sort.by("productId").descending();
-        Pageable pageable = PageRequest.of(0, 20, sort);
+        Pageable pageable = PageRequest.of(page-1, 2, sort);
         ProductType productType = getProductType(category);
-        Slice<Product> productList;
+        Page<Product> productList;
         if (category.equals("all")) {
             productList = productService.getProductPage(pageable);
         } else {
@@ -90,9 +90,9 @@ public class ProductController {
         ProductType productType = getProductType(category);
         QProduct product = QProduct.product;
         BooleanBuilder builder = getBooleanBuilder(category, content, productType, product);
-        List<Product> productList = jpaQueryFactory.query().select(product).from(product).where(builder).fetch();
-        SliceImpl<Product> slices = convertToSlice(productList);
-        getProductListDTO(model,principal,slices);
+        List<Product> productList = jpaQueryFactory.query().select(product).from(product).where(builder).orderBy(product.productId.desc()).fetch();
+        PageImpl<Product> products = convertToPage(productList);
+        getProductListDTO(model,principal,products);
         model.addAttribute("productDiv", "검색 결과");
         return "product/productList";
     }
@@ -192,10 +192,10 @@ public class ProductController {
         return "redirect:" + requestURI;
     }
 
-    private void getProductListDTO(Model model, Principal principal, Slice<Product> productList) {
+    private void getProductListDTO(Model model, Principal principal, Page<Product> productList) {
         if (principal != null) {
             Member member = memberService.findOne(principal.getName());
-            Slice<ProductListDTO> productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
+            Page<ProductListDTO> productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
                     .productPrice(m.getProductPrice())
                     .productImg(m.getProductImg())
                     .productId(m.getProductId())
@@ -207,7 +207,7 @@ public class ProductController {
                     .review(m.getReview()).build());
             model.addAttribute("productList", productListDTOS);
         } else {
-            Slice<ProductListDTO> productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
+            Page<ProductListDTO> productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
                     .productPrice(m.getProductPrice())
                     .productImg(m.getProductImg())
                     .productId(m.getProductId())
@@ -236,13 +236,14 @@ public class ProductController {
         return builder;
     }
 
-    private SliceImpl<Product> convertToSlice(List<Product> productList) {
+    private PageImpl<Product> convertToPage(List<Product> productList) {
         Pageable pageable = PageRequest.of(0, 16);
+        long size = productList.size();
         boolean hasNext = false;
         if (productList.size() > pageable.getPageSize()) {
             productList.remove(pageable.getPageSize());
             hasNext = true;
         }
-        return new SliceImpl<>(productList, pageable, hasNext);
+        return new PageImpl<>(productList, pageable, size);
     }
 }

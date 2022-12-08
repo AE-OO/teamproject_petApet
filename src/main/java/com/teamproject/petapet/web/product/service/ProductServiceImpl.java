@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Slice<Product> findAllByProductDiv(ProductType productType,Pageable pageable) {
+    public Page<Product> findAllByProductDiv(ProductType productType,Pageable pageable) {
         return productRepository.findAllByProductDiv(productType,pageable);
     }
 
