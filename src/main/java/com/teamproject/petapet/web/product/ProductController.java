@@ -97,6 +97,9 @@ public class ProductController {
         }
         getProductListDTO(model, principal, productList);
         model.addAttribute("productDiv", productType);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("sortType", sortType);
         return "product/productList";
     }
 
@@ -108,14 +111,10 @@ public class ProductController {
         List<Product> productList = jpaQueryFactory.query().select(product).from(product).where(builder).orderBy(product.productId.desc()).fetch();
         PageImpl<Product> products = convertToPage(productList);
         getProductListDTO(model, principal, products);
-        model.addAttribute("productDiv", "검색 결과");
+        model.addAttribute("productDiv", productType);
+        model.addAttribute("searchContent", content);
         return "product/productList";
     }
-    @ModelAttribute("itemTypes")
-    public ProductType[] itemTypes() {
-        return ProductType.values();
-    }
-
     @GetMapping("/insert")
     public String productInsertForm(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) {
         return "/product/productInsertForm";

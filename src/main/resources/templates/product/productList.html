@@ -13,23 +13,26 @@
         <div class="text-center mx-auto">
             <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
             <h1 class="display-5 mb-3" th:text="${productDiv.productCategory}">Pet Food</h1>
+            <th:block th:if="${#request.getParameter('searchContent') != null}">
+            <h5 class="display-7 mb-3" th:text="|&#039;${searchContent}&#039; 검색 결과|">Pet Food</h5>
+            </th:block>
         </div>
         <div class="row wow fadeInUp" data-wow-delay="0.3s">
             <div class="col-12 text-center">
                 <ul class="list-inline rounded mb-4" id="portfolio-flters">
-                    <li class="mx-2"><a style="text-decoration: none"
+                    <li class="mx-2" value="all"><a style="text-decoration: none"
                                         th:href="@{/product(category=all)}">전체보기</a></li>
-                    <li class="mx-2"><a style="text-decoration: none"
+                    <li class="mx-2" value="food"><a style="text-decoration: none"
                                         th:href="@{/product(category=food)}">사료</a></li>
-                    <li class="mx-2"><a style="text-decoration: none"
-                                        th:href="@{/product(category=snack)}">간식</a></li>
-                    <li class="mx-2"><a style="text-decoration: none"
+                    <li class="mx-2" value="snack"><a style="text-decoration: none"
+                                        th:href="@{/product(category=${productDiv},size=${size},page=${page},sortyType=${sortType})}">간식</a></li>
+                    <li class="mx-2" value="walking"><a style="text-decoration: none"
                                         th:href="@{/product(category=walking)}">산책용품</a></li>
-                    <li class="mx-2"><a style="text-decoration: none"
+                    <li class="mx-2" value="toy"><a style="text-decoration: none"
                                         th:href="@{/product(category=toy)}">장난감</a></li>
-                    <li class="mx-2"><a style="text-decoration: none"
+                    <li class="mx-2" value="fashion"><a style="text-decoration: none"
                                         th:href="@{/product(category=fashion)}">패션/잡화</a></li>
-                    <li class="mx-2"><a style="text-decoration: none"
+                    <li class="mx-2" value="stroller"><a style="text-decoration: none"
                                         th:href="@{/product(category=stroller)}">유모차</a></li>
                 </ul>
             </div>
@@ -192,12 +195,12 @@
     <nav th:if="${productList.hasContent()}"
          th:with="start=${(productList.getNumber()/5)*5 + 1},
                   end=(${start+4 < productList.totalPages ? start+4 : productList.totalPages})">
-        <ul class="pagination page-body-wrapper">
+        <ul class="pagination page-body-wrapper" id="paginationBox">
             <li class="page-item" th:if="${start > 5}">
                 <a class="page-link"
                    th:href="@{/product(category=${#request.getParameter('category')},page=${start - 5})}">이전</a>
             </li>
-            <li class="page-item" th:classappend="${productList.getNumber()==number}"
+            <li class="page-item" id="pageNumber" th:value="${number}" th:classappend="${productList.getNumber()==number}"
                 th:each="number : ${#numbers.sequence(start,end)}">
                 <a class="page-link" th:href="@{/product(category=${#request.getParameter('category')},page=${number})}"
                    th:text="${number}"></a>
@@ -273,9 +276,19 @@
             }
         });
     });
+
+    $(document).ready(setActive());
+
+    function setActive() {
     let urlSearchParams = new URLSearchParams(location.search);
     const sortType = urlSearchParams.get('sortType');
+    const sortCategory = urlSearchParams.get('category');
+    const pageNumber = urlSearchParams.get('page');
+
     $("input:radio[name ='btnradio']:input[value="+sortType+"]").attr("checked", true);
+    $("ul[id = 'portfolio-flters'] li[value="+sortCategory+']').attr("class",'mx-2 active');
+    $("ul[id = 'paginationBox'] li[value="+pageNumber+']').attr("class",'page-item active');
+    }
 </script>
 
 <!-- Template Javascript -->
