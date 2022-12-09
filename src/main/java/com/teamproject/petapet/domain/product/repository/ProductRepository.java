@@ -21,7 +21,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByProductDiv(ProductType productType, Pageable pageable);
     Page<Product> findAllByProductNameContainsAndProductDiv(String productName, ProductType productType, Pageable pageable);
-
+    @Modifying
+    @Transactional
+    @Query("update Product p set p.productReviewCount=:reviewCount where p.productId=:productId")
+    void updateProductReviewCount(@Param("productId") Long productId, @Param("reviewCount")Long reviewCount);
     @Query("select a from Product a,Review b where a.productId=:id and b.product.productId=:id")
     Optional<Product> findProductWithReview(@Param("id") Long id);
 

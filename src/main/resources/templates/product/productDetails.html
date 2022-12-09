@@ -164,7 +164,7 @@
                         style="background-color: white"> 상품상세
                 </button>
                 <button onclick="review_scroll_move()" class="btn text-dark col-3" style="background-color: white">
-                    상품평([[${countReview}]])
+                    상품평([[${findProduct.productReviewCount}]])
                 </button>
                 <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"
                         style="background-color: white"> 상품문의
@@ -195,7 +195,7 @@
     <div class="d-flex flex-row">
         <div class="btn-group col-12">
             <button onclick="productDetail_scroll_move()" class="btn text-dark col-3"> 상품상세</button>
-            <button onclick="review_scroll_move()" class="btn text-dark col-3"> 상품평([[${countReview}]])</button>
+            <button onclick="review_scroll_move()" class="btn text-dark col-3">상품평([[${findProduct.productReviewCount}]])</button>
             <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"> 상품문의</button>
             <button onclick="shipping_scroll_move()" class="btn text-dark col-3"> 배송/교환/반품</button>
         </div>

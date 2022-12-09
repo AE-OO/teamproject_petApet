@@ -80,17 +80,21 @@ public class ProductController {
         Sort sort = Sort.by(sortType).descending();
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         ProductType productType = getProductType(category);
+        log.info("productType = {}",productType);
         Page<Product> productList;
         QProduct product = QProduct.product;
-        if (category.equals("all")) {
+        if (category.equals("all") && !sortType.equals("productReviewCount")) {
             List<Product> fetch = jpaQueryFactory.query().select(product).from(product).orderBy(product.productId.desc()).fetch();
             productList = convertToPage(fetch);
                 log.info("sortType all");
         } else {
-            if (sortType.equals("review")) {
+            if (sortType.equals("productReviewCount")) {
                 log.info("sortType review");
-                List<Product> fetch = jpaQueryFactory.query().select(product).from(product).where(product.productDiv.eq(productType)).orderBy(product.review.size().desc()).fetch();
-                productList = convertToPage(fetch);
+//                List<Product> fetch = jpaQueryFactory.query().select(product).from(product).where(product.productDiv.eq(productType)).orderBy(sortType).fetch();
+//                List<Product> fetch1 = jpaQueryFactory.query().select(product).from(product).where(product.productDiv.eq(productType)).fetch();
+                  productList = productService.getProductPage(pageable);
+//                log.info("productJPAQuery = {}",fetch);
+//                productList = convertToPage(fetch);
             } else {
                 productList = productService.findAllByProductDiv(productType, pageable);
             }
@@ -173,8 +177,6 @@ public class ProductController {
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(0, 10, sort);
         Slice<Review> reviews = reviewService.requestMoreReview(productId, pageable);
-        Long countReview = reviewService.countReviewByProduct(findProduct);
-        model.addAttribute("countReview", countReview);
         model.addAttribute("findProduct", productDetailDTO);
         model.addAttribute("reviews", reviews);
         if (principal != null) {
@@ -206,7 +208,9 @@ public class ProductController {
                 .product(productService.findOne(productId).orElseThrow(NoSuchElementException::new)).build();
 
         reviewService.save(review);
+        Long aLong = reviewService.countReviewByProduct(productId);
         productService.updateProductRating(productId);
+        productService.updateProductReviewCount(productId,aLong);
         return "redirect:" + requestURI;
     }
 
@@ -221,6 +225,7 @@ public class ProductController {
                     .productRating(m.getProductRating())
                     .productDiscountRate(m.getProductDiscountRate())
                     .productUnitPrice(m.getProductUnitPrice())
+                    .productReviewCount(m.getProductReviewCount())
                     .duplicateDibsProduct(dibsProductService.existsDibsProduct(productService.findOne(m.getProductId()).orElseThrow(NoSuchElementException::new), member))
                     .review(m.getReview()).build());
             model.addAttribute("productList", productListDTOS);
@@ -232,6 +237,7 @@ public class ProductController {
                     .productDiv(m.getProductDiv())
                     .productRating(m.getProductRating())
                     .productDiscountRate(m.getProductDiscountRate())
+                    .productReviewCount(m.getProductReviewCount())
                     .productUnitPrice(m.getProductUnitPrice())
                     .review(m.getReview()).build());
             model.addAttribute("productList", productListDTOS);

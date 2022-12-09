@@ -19,4 +19,5 @@ public class ProductDetailDTO {
     private Long productStock;
     private Long productDiscountRate;
     private Long productUnitPrice;
+    private Long productReviewCount;
 }

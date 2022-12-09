@@ -23,7 +23,7 @@ public interface ProductService {
     void updateProductStatus(String selectStatus, Long productStock, Long productId);
 
     Page<Product> findAllByProductDiv(ProductType productType,Pageable pageable);
-
+    void updateProductReviewCount(Long productId, Long reviewCount);
     void updateProductStatusOutOfStock(List<String> productId);
 
     void updateProductRating(Long productId);

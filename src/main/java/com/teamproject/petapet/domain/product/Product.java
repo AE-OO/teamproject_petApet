@@ -61,6 +61,9 @@ public class Product {
     @Column(length = 1, columnDefinition = "int(1) default 0")
     private Long productRating;
 
+    @Column(columnDefinition = "bigint default 0")
+    private Long productReviewCount;
+
     @Column(columnDefinition = "bigint(3) default 0")
     private Long productReport;
 
@@ -96,6 +99,7 @@ public class Product {
                 .productContent(product.getProductContent())
                 .productDiscountRate(product.getProductDiscountRate())
                 .productUnitPrice(product.getProductUnitPrice())
+                .productReviewCount(product.getProductReviewCount())
                 .build();
     }
 }
