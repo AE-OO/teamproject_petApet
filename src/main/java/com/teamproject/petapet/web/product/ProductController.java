@@ -70,34 +70,28 @@ public class ProductController {
     @GetMapping
     public String getProductList(@RequestParam(value = "category", defaultValue = "all") String category,
                                  @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-                                 @RequestParam(value = "size", defaultValue = "2", required = false) Integer size,
+                                 @RequestParam(value = "size", defaultValue = "4", required = false) Integer size,
                                  @RequestParam(value = "sortType", defaultValue = "productId", required = false) String sortType,
-                                 @RequestParam(value = "searchContent",required = false) String content,
+                                 @RequestParam(value = "searchContent",defaultValue = "false", required = false) String content,
                                  Model model, Principal principal) {
         Sort sort = Sort.by(sortType).descending();
+        if (sortType.equals("salePriceAsc")){
+            sort = Sort.by("productPrice").ascending();
+            sortType = "productPrice";
+        } else if (sortType.equals("salePriceDesc")) {
+            sort = Sort.by("productPrice").descending();
+            sortType = "productPrice";
+        }
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         ProductType productType = getProductType(category);
-        Page<Product> page1 = productService.findPage(category, productType, sortType,content, pageable);
+        Page<Product> page1 = productService.findPage(category, productType, sortType, content, pageable);
         Page<ProductListDTO> productListDTO1 = getProductListDTO(principal, page1);
         model.addAttribute("productList",productListDTO1);
         model.addAttribute("productDiv", productType);
+        model.addAttribute("category", category);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("sortType", sortType);
-        return "product/productList";
-    }
-
-    @GetMapping("/search")
-    public String searchProduct(@RequestParam("category") String category,
-                                @RequestParam("searchContent") String content,
-                                @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-                                @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
-                                Model model, Principal principal) {
-        ProductType productType = getProductType(category);
-        List<Product> productList = jpaQueryFactory.query().select(product).from(product).where(isContent(content),isCategory(productType,category)).orderBy(product.productId.desc()).fetch();
-        PageImpl<Product> products = convertToPage(productList,page,size);
-        getProductListDTO(principal, products);
-        model.addAttribute("productDiv", productType);
         model.addAttribute("searchContent", content);
         return "product/productList";
     }
@@ -231,28 +225,5 @@ public class ProductController {
         return ProductType.valueOf(category);
     }
 
-    private BooleanExpression isContent(String content) {
-        if (StringUtils.hasText(content)) {
-            return product.productName.contains(content);
-        }
-        return null;
-    }
-
-    private BooleanExpression isCategory(ProductType productType,String category) {
-        if (!category.equals("all")) {
-            return product.productDiv.eq(productType);
-        }
-        return null;
-    }
-    private PageImpl<Product> convertToPage(List<Product> productList,Integer page,Integer size) {
-        Pageable pageable = PageRequest.of(page-1, size);
-        long totalCount = productList.size();
-        boolean hasNext = false;
-        if (productList.size() > pageable.getPageSize()) {
-            productList.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new PageImpl<>(productList, pageable, totalCount);
-    }
 }
 

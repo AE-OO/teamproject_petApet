@@ -110,7 +110,8 @@ public class ProductServiceImpl implements ProductService {
                 .limit(pageable.getPageSize())
                 .orderBy(orders.toArray(OrderSpecifier[]::new))
                 .fetch();
-        return new PageImpl<>(productList, pageable, productList.size());
+        long count = productRepository.count();
+        return new PageImpl<>(productList, pageable, count);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     private BooleanExpression isContent(String content) {
-        if (StringUtils.hasText(content)) {
+        if (StringUtils.hasText(content) && !content.equals("false")) {
             return product.productName.contains(content);
         }
         return null;
