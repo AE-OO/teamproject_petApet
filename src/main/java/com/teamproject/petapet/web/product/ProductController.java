@@ -1,17 +1,15 @@
 package com.teamproject.petapet.web.product;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.QProduct;
 import com.teamproject.petapet.domain.product.Review;
-import com.teamproject.petapet.domain.product.repository.ReviewRepository;
 import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.dibs.service.DibsProductService;
 import com.teamproject.petapet.web.member.service.MemberService;
@@ -45,12 +43,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static com.teamproject.petapet.domain.product.QProduct.product;
 
 @Controller
 @Slf4j
@@ -73,33 +69,17 @@ public class ProductController {
 
     @GetMapping
     public String getProductList(@RequestParam(value = "category", defaultValue = "all") String category,
-                                 @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-                                 @RequestParam(value = "size", defaultValue = "20", required = false) int size,
+                                 @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                                 @RequestParam(value = "size", defaultValue = "2", required = false) Integer size,
                                  @RequestParam(value = "sortType", defaultValue = "productId", required = false) String sortType,
+                                 @RequestParam(value = "searchContent",required = false) String content,
                                  Model model, Principal principal) {
         Sort sort = Sort.by(sortType).descending();
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         ProductType productType = getProductType(category);
-        log.info("productType = {}",productType);
-        Page<Product> productList;
-        QProduct product = QProduct.product;
-        if (category.equals("all") && !sortType.equals("productReviewCount")) {
-            List<Product> fetch = jpaQueryFactory.query().select(product).from(product).orderBy(product.productId.desc()).fetch();
-            productList = convertToPage(fetch);
-                log.info("sortType all");
-        } else {
-            if (sortType.equals("productReviewCount")) {
-                log.info("sortType review");
-//                List<Product> fetch = jpaQueryFactory.query().select(product).from(product).where(product.productDiv.eq(productType)).orderBy(sortType).fetch();
-//                List<Product> fetch1 = jpaQueryFactory.query().select(product).from(product).where(product.productDiv.eq(productType)).fetch();
-                  productList = productService.getProductPage(pageable);
-//                log.info("productJPAQuery = {}",fetch);
-//                productList = convertToPage(fetch);
-            } else {
-                productList = productService.findAllByProductDiv(productType, pageable);
-            }
-        }
-        getProductListDTO(model, principal, productList);
+        Page<Product> page1 = productService.findPage(category, productType, sortType,content, pageable);
+        Page<ProductListDTO> productListDTO1 = getProductListDTO(principal, page1);
+        model.addAttribute("productList",productListDTO1);
         model.addAttribute("productDiv", productType);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
@@ -108,13 +88,15 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public String searchProduct(@RequestParam("category") String category, @RequestParam("searchContent") String content, Model model, Principal principal) {
+    public String searchProduct(@RequestParam("category") String category,
+                                @RequestParam("searchContent") String content,
+                                @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                                @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
+                                Model model, Principal principal) {
         ProductType productType = getProductType(category);
-        QProduct product = QProduct.product;
-        BooleanBuilder builder = getBooleanBuilder(category, content, productType, product);
-        List<Product> productList = jpaQueryFactory.query().select(product).from(product).where(builder).orderBy(product.productId.desc()).fetch();
-        PageImpl<Product> products = convertToPage(productList);
-        getProductListDTO(model, principal, products);
+        List<Product> productList = jpaQueryFactory.query().select(product).from(product).where(isContent(content),isCategory(productType,category)).orderBy(product.productId.desc()).fetch();
+        PageImpl<Product> products = convertToPage(productList,page,size);
+        getProductListDTO(principal, products);
         model.addAttribute("productDiv", productType);
         model.addAttribute("searchContent", content);
         return "product/productList";
@@ -214,10 +196,11 @@ public class ProductController {
         return "redirect:" + requestURI;
     }
 
-    private void getProductListDTO(Model model, Principal principal, Page<Product> productList) {
+    private Page<ProductListDTO> getProductListDTO(Principal principal, Page<Product> productList) {
+        Page<ProductListDTO> productListDTOS;
         if (principal != null) {
             Member member = memberService.findOne(principal.getName());
-            Page<ProductListDTO> productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
+            productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
                     .productPrice(m.getProductPrice())
                     .productImg(m.getProductImg())
                     .productId(m.getProductId())
@@ -228,9 +211,8 @@ public class ProductController {
                     .productReviewCount(m.getProductReviewCount())
                     .duplicateDibsProduct(dibsProductService.existsDibsProduct(productService.findOne(m.getProductId()).orElseThrow(NoSuchElementException::new), member))
                     .review(m.getReview()).build());
-            model.addAttribute("productList", productListDTOS);
         } else {
-            Page<ProductListDTO> productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
+            productListDTOS = productList.map(m -> ProductListDTO.builder().productName(m.getProductName())
                     .productPrice(m.getProductPrice())
                     .productImg(m.getProductImg())
                     .productId(m.getProductId())
@@ -240,8 +222,8 @@ public class ProductController {
                     .productReviewCount(m.getProductReviewCount())
                     .productUnitPrice(m.getProductUnitPrice())
                     .review(m.getReview()).build());
-            model.addAttribute("productList", productListDTOS);
         }
+        return productListDTOS;
     }
 
     private ProductType getProductType(String category) {
@@ -249,25 +231,28 @@ public class ProductController {
         return ProductType.valueOf(category);
     }
 
-    private BooleanBuilder getBooleanBuilder(String category, String content, ProductType productType, QProduct product) {
-        BooleanBuilder builder = new BooleanBuilder();
+    private BooleanExpression isContent(String content) {
         if (StringUtils.hasText(content)) {
-            builder.and(product.productName.contains(content));
+            return product.productName.contains(content);
         }
-        if (!category.equals("all")) {
-            builder.and(product.productDiv.eq(productType));
-        }
-        return builder;
+        return null;
     }
 
-    private PageImpl<Product> convertToPage(List<Product> productList) {
-        Pageable pageable = PageRequest.of(0, 16);
-        long size = productList.size();
+    private BooleanExpression isCategory(ProductType productType,String category) {
+        if (!category.equals("all")) {
+            return product.productDiv.eq(productType);
+        }
+        return null;
+    }
+    private PageImpl<Product> convertToPage(List<Product> productList,Integer page,Integer size) {
+        Pageable pageable = PageRequest.of(page-1, size);
+        long totalCount = productList.size();
         boolean hasNext = false;
         if (productList.size() > pageable.getPageSize()) {
             productList.remove(pageable.getPageSize());
             hasNext = true;
         }
-        return new PageImpl<>(productList, pageable, size);
+        return new PageImpl<>(productList, pageable, totalCount);
     }
 }
+

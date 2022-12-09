@@ -1,19 +1,33 @@
 package com.teamproject.petapet.web.product.service;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import lombok.RequiredArgsConstructor;
 
 import com.teamproject.petapet.domain.product.ProductType;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.teamproject.petapet.domain.product.QProduct.product;
 
 /**
  * 박채원 22.10.09 작성
@@ -24,11 +38,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public List<Product> getProductList() {
         return productRepository.findAll();
     }
+
+
 
     @Override
     public Page<Product> getProductPage(Pageable pageable) {
@@ -84,7 +101,56 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findPage(String category,ProductType productType, String sortType,String content,Pageable pageable) {
+        List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, sortType);
+        List<Product> productList = jpaQueryFactory.select(product)
+                .from(product)
+                .where(isCategory(productType, category),isContent(content))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(orders.toArray(OrderSpecifier[]::new))
+                .fetch();
+        return new PageImpl<>(productList, pageable, productList.size());
+    }
+
+    @Override
     public void addProductReport(Long productId) {
         productRepository.addProductReport(productId);
+    }
+
+
+    private BooleanExpression isContent(String content) {
+        if (StringUtils.hasText(content)) {
+            return product.productName.contains(content);
+        }
+        return null;
+    }
+
+    private BooleanExpression isCategory(ProductType productType,String category) {
+        if (!category.equals("all")) {
+            return product.productDiv.eq(productType);
+        }
+        return null;
+    }
+
+    private OrderSpecifier<?> getSorted(Order order, Path<?> parent, String fieldName){
+        Path<Object> fieldPath = Expressions.path(Object.class, parent, fieldName);
+
+        return new OrderSpecifier(order, fieldPath);
+    }
+
+    private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable,String sortType) {
+        List<OrderSpecifier> ORDERS = new ArrayList<>();
+
+        if (!ObjectUtils.isEmpty(pageable.getSort())) {
+            for (Sort.Order order : pageable.getSort()) {
+                Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
+                if (order.getProperty().equals(sortType)){
+                    OrderSpecifier<?> createdDate = getSorted(direction, product, sortType);
+                    ORDERS.add(createdDate);
+                }
+            }
+        }
+        return ORDERS;
     }
 }

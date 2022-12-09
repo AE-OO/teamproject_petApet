@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.product.service;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
+import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -34,6 +35,7 @@ public interface ProductService {
 
     Optional<Product> findProductWithReview(Long id);
 
+    Page<Product> findPage(String category,ProductType productType, String sortType,String searchContent,Pageable pageable);
     void addProductReport(Long productId);
 }
 

@@ -12,7 +12,7 @@
             <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
             <h1 class="display-5 mb-3" th:text="${productDiv.productCategory}">Pet Food</h1>
             <th:block th:if="${#request.getParameter('searchContent') != null}">
-            <h5 class="display-7 mb-3" th:text="|&#039;${searchContent}&#039; 검색 결과|">Pet Food</h5>
+            <h5 class="display-7 mb-3" th:text="|&#039;${#request.getParameter('searchContent')}&#039; 검색 결과|">Pet Food</h5>
             </th:block>
         </div>
         <div class="row wow fadeInUp" data-wow-delay="0.3s">
@@ -37,7 +37,7 @@
         </div>
 <div class="customContainer-xxl pb-5">
     <div class="container m-0">
-        <form class="d-flex col justify-content-end" th:action="@{/product/search}" method="get">
+        <form class="d-flex col justify-content-end" th:action="@{/product}" method="get">
             <div class="col-6">
                 <div class="input-group mb-2">
                     <div class="col-3">
@@ -202,16 +202,16 @@
                             </div>
                             <div class="d-flex flex-row">
                                 <div id="dib" class="justify-content-start">
-                                    <th:block th:if="${product.duplicateDibsProduct}">
-                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
-                                                                                        style="color: red">♥︎</a></p>
-                                    </th:block>
-                                    <th:block th:if="${!product.duplicateDibsProduct}">
-                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
-                                                                                        th:id="${product.productId}"
-                                                                                        onclick="addDibs(this.getAttribute('id'))"
-                                                                                        style="color: red">♡</a></p>
-                                    </th:block>
+<!--                                    <th:block th:if="${product.duplicateDibsProduct}">-->
+<!--                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"-->
+<!--                                                                                        style="color: red">♥︎</a></p>-->
+<!--                                    </th:block>-->
+<!--                                    <th:block th:if="${!product.duplicateDibsProduct}">-->
+<!--                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"-->
+<!--                                                                                        th:id="${product.productId}"-->
+<!--                                                                                        onclick="addDibs(this.getAttribute('id'))"-->
+<!--                                                                                        style="color: red">♡</a></p>-->
+<!--                                    </th:block>-->
                                 </div>
                                 <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
                                     <button type="button" class="btn bg-secondary me-1 addCart"
@@ -233,7 +233,7 @@
     </div>
 </div>
 <div class="d-flex sticky-bottom justify-content-center">
-    <nav th:if="${productList.hasContent()}"
+    <nav th:if="${productList.totalPages != 0}"
          th:with="start=${(productList.getNumber()/5)*5 + 1},
                   end=(${start+4 < productList.totalPages ? start+4 : productList.totalPages})">
         <ul class="pagination page-body-wrapper" id="paginationBox">
