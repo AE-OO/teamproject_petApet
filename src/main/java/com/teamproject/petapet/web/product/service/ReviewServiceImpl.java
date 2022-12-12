@@ -14,8 +14,8 @@ public class ReviewServiceImpl implements ReviewService{
 
     private final ReviewRepository reviewRepository;
     @Override
-    public Long countReviewByProduct(Product product) {
-        return reviewRepository.countReviewByProduct(product);
+    public Long countReviewByProduct(Long productId) {
+        return reviewRepository.countReviewByProduct(productId);
     }
 
     @Override

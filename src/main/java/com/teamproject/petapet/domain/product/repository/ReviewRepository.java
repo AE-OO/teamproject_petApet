@@ -19,8 +19,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // 리뷰 평균점수 계산
     @Query(value = "select sum(a.reviewRating)/(select count(*) from Review where productId = ?1) from Review a where productId = ?1",nativeQuery = true)
     Long avg(@Param("id") Long id);
-
-    Long countReviewByProduct(Product product);
+    @Query("select count(r) from Review r where r.product.productId=:productId")
+    Long countReviewByProduct(@Param("productId")Long productId);
 
     @Query(value = "select a from Review a where a.product.productId = :id")
     Slice<Review> requestMoreReview(@Param("id")Long id, Pageable pageable);
