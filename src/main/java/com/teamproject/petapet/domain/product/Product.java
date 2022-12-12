@@ -1,7 +1,6 @@
 package com.teamproject.petapet.domain.product;
 
 import com.teamproject.petapet.domain.cart.Cart;
-import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import lombok.*;

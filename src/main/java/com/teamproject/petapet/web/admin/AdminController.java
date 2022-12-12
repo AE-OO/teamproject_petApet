@@ -1,15 +1,12 @@
 package com.teamproject.petapet.web.admin;
 
 import com.teamproject.petapet.domain.inquired.Inquired;
-import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
-import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
-import com.teamproject.petapet.web.report.dto.ReportProductDTO;
 import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
 import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,13 +69,13 @@ public class AdminController {
 //        return "redirect:/admin/adminPage";
 //    }
 
-    @GetMapping("/registerFAQ")
-    public String registerFAQForm(){
-        return "/admin/registerFAQ";
+    @GetMapping("/registerNotice")
+    public String registerNoticeForm(){
+        return "/admin/registerNotice";
     }
 
-    @PostMapping("/registerFAQ")
-    public String registerFAQ(InquiredFAQDTO inquiredFAQDTO){
+    @PostMapping("/registerNotice")
+    public String registerNotice(InquiredFAQDTO inquiredFAQDTO){
         inquiredService.registerFAQ(inquiredFAQDTO);
         return "redirect:/admin/adminPage";
     }

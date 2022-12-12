@@ -73,16 +73,16 @@
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">FAQ 등록</h4>
+                            <h4 class="card-title">공지사항 등록</h4>
                             <div style="height: 20px;"></div>
-                            <form class="form-sample" th:method="post" th:action="@{/admin/registerFAQ}">
+                            <form class="form-sample" th:method="post" th:action="@{/admin/registerNotice}">
                                 <div class="form-group">
-                                    <label for="FAQTitle">제목</label>
-                                    <input type="text" class="form-control" id="FAQTitle" name="inquiredTitle" placeholder="Title">
+                                    <label for="noticeTitle">제목</label>
+                                    <input type="text" class="form-control" id="noticeTitle" name="inquiredTitle" placeholder="Title">
                                 </div>
                                 <div class="form-group">
-                                    <label for="FAQContent">공지내용</label>
-                                    <textarea class="form-control" id="FAQContent" name="inquiredContent" rows="20"></textarea>
+                                    <label for="noticeContent">공지내용</label>
+                                    <textarea class="form-control" id="noticeContent" name="inquiredContent" rows="20"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary mr-2">등록</button>
                                 <a th:href="@{/admin/adminPage}">
