@@ -74,8 +74,9 @@ public class AdminController {
         return "/admin/registerNotice";
     }
 
-    @PostMapping("/registerNotice")
-    public String registerNotice(InquiredFAQDTO inquiredFAQDTO){
+    //여기부터
+    @PostMapping("/registerNotice") 
+    public String registerNotice(InquiredFAQDTO inquiredFAQDTO){  //여기 수정하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         inquiredService.registerFAQ(inquiredFAQDTO);
         return "redirect:/admin/adminPage";
     }
@@ -97,6 +98,7 @@ public class AdminController {
         inquiredService.deleteFAQ(FAQId);
         return "redirect:/admin/adminPage";
     }
+    //여기까지 faq를 notice로 수정하기
 
     @GetMapping("/registerProduct")
     public String registerProductForm(){
