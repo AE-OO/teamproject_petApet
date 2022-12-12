@@ -1,130 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>petApet</title>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="" name="keywords">
-        <meta content="" name="description">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 로그인</title>
+    <link>
+    <script src="/js/member/login.js"></script>
+</head>
 
-        <!-- Favicon -->
-        <link th:href="@{/img/icon/favicon.ico}" rel="icon">
+<body>
 
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+<!-- Login Start -->
+<main class="container-xxl text-center py-6 my-6">
+    <div class="container login">
+        <div class="row g-5">
+            <div class="mx-auto">
+                <h1 class="display-5 mb-5"><a class="" href="/"><img width="15%" src="img/logo.png"
+                                                                     alt="logo">petApet</a></h1>
+                <p class="text-danger" th:text="${error}"/>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="btn-group mb-4" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="memberBtn" autocomplete="off" checked>
+                <label class="btn btn-outline-dark py-3" for="memberBtn">개인회원</label>
 
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+                <input type="radio" class="btn-check" name="btnradio" id="companyBtn" autocomplete="off">
+                <label class="btn btn-outline-dark py-3" for="companyBtn">사업자회원</label>
+            </div>
+        </div>
 
-        <!-- Template Stylesheet -->
-        <link href="css/style.css" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.6.1.js"
-                integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-                crossorigin="anonymous">
-        </script>
-        <script>
-            $(document).ready(function (){
-                $("#loginBtn").click(function (){
-                    alert("클릭완...");
-                    let memberId = $("#memberId").val();
-                    let memberPw = $("#memberPw").val();
-
-                    if (memberId == "") {  //ID란이 비어있다면
-                        $("#mIdLoginErrorMsg").text("아이디를 입력해주세요.");  // 해당alert를 띄워주세요
-                        $("#memberId").focus();
-                        return;
-                    } else {
-                        $("#mIdLoginErrorMsg").text("")
-                    }
-
-                    if (memberPw == "") {//PW란이 비어있다면
-                        $("#mPwLoginErrorMsg").text("비밀번호를 입력해주세요.");// 해당alert를 띄워주세요
-                        $("#memberPw").focus();
-                        return;
-                    } else {
-                        $("#mPwLoginErrorMsg").text("")
-                    }
-                    $.ajax({
-                        type: "POST",
-                        url: "/members/login",
-                        data: {
-                            memberId: $("#memberId").val(),
-                            memberPw: $("#memberPw").val()
-                        },
-                        dataType: "json",
-                        success: function (response) {//검증을 통과하면 서버는 토큰을 발행시켜줌
-                            alert(response['grantType']+'////'+response['accessToken']+'////'+response['refreshToken']);
-                            $.cookie('mytoken', response['token'], {path: '/'}); //mytoken이라는 키가, 서버가 실제로 발행한 token을 저장하고 있음
-                            window.location.replace("/")
-                        },
-                        error: function (xhr, status, error) {
-                            alert("실패..ㅠ");
-                        }
-
-                    });
-                });
-            });
-
-        </script>
-
-    </head>
-
-    <body>
-
-    <!-- Login Start -->
-    <div class="container-xxl text-center py-6 my-6">
-        <div class="container login">
-            <div class="row g-5">
-                <div class="mx-auto">
-                    <h1 class="display-5 mb-5"><a class="" href="/"><img src="aa" alt="logo">petApet</a></h1>
-                    <p class="mb-4 ">아이디와 비밀번호를 입력하세요.</p>
-<!--                    <form >-->
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="memberId"   placeholder="login"/>
-                                    <label for="subject">아이디</label>
-                                </div>
-                                <p id="mIdLoginErrorMsg" class="text-start text-danger ps-2 my-1" />
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="password" class="form-control" id="memberPw" autocomplete="off" placeholder="password"/>
-                                    <label for="subject">비밀번호</label>
-                                </div>
-                                <p id="mPwLoginErrorMsg" class="text-start text-danger ps-2 my-1"/>
-                            </div>
-                            <div class="col-12">
-                                <button id="loginBtn" class="btn btn-primary mb-2 col-12 py-3">로그인</button>
-                                <hr/>
-                                <span class="mx-3"><a href="#">비밀번호 찾기</a></span>|
-                                <span class="mx-3"> <a href="#">아이디 찾기</a></span>|
-                                <span class="mx-3"><a href="/join">회원가입</a></span>
-                            </div>
-
-                        </div>
-<!--                    </form>-->
+        <!-- memberForm start-->
+        <form method="post" id="memberForm" th:action="@{/login}">
+            <div class="row g-3">
+                <!-- memberId Start-->
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="input-memberId" name="memberId"
+                               placeholder="login"/>
+                        <label for="input-memberId">아이디</label>
+                    </div>
+                    <p id="feedback-memberId" class="text-start text-danger ps-2 my-1"
+                       th:text="${valid_memberId}"/>
                 </div>
+                <!-- memberId End -->
+
+                <!-- memberPw Start -->
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="input-memberPw" name="memberPw"
+                               autocomplete="off"
+                               placeholder="password"/>
+                        <label for="input-memberPw">비밀번호</label>
+                    </div>
+                    <p id="feedback-memberPw" class="text-start text-danger ps-2 my-1"
+                       th:text="${valid_memberPw}"/>
+                </div>
+                <!-- memberPw End -->
+
+                <!-- button a Start -->
+                <div class="col-12">
+                    <button type="button" id="loginBtn" class="btn btn-primary mb-2 col-12 py-3">로그인</button>
+                </div>
+                <!-- button a End -->
+            </div>
+        </form>
+        <!-- memberForm end-->
+
+        <!-- companyForm start-->
+        <form method="post" id="companyForm" action="/companyLogin" hidden>
+            <div class="row g-3">
+                <!-- companyId Start-->
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="input-companyId" name="companyId" placeholder="login"/>
+                        <label for="input-companyId">아이디</label>
+                    </div>
+                    <p id="feedback-companyId" class="text-start text-danger ps-2 my-1"
+                       th:text="${valid_companyId}"/>
+                </div>
+                <!-- companyId End -->
+
+                <!-- companyPw Start -->
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="input-companyPw" name="companyPw"
+                               autocomplete="off" placeholder="password"/>
+                        <label for="input-companyPw">비밀번호</label>
+                    </div>
+                    <p id="feedback-companyPw" class="text-start text-danger ps-2 my-1"
+                       th:text="${valid_companyPw}"/>
+                </div>
+                <!-- companyPw End -->
+
+                <!-- button a Start -->
+                <div class="col-12">
+                    <button type="button" id="companyLoginBtn" class="btn btn-info mb-2 col-12 py-3">로그인</button>
+                </div>
+                <!-- button a End -->
+            </div>
+        </form>
+        <!-- companyForm end-->
+
+        <hr/>
+        <span class="mx-3"><a href="/findPw">비밀번호 찾기</a></span>|
+        <span class="mx-3"> <a href="/findId">아이디 찾기</a></span>|
+        <span class="mx-3"><a href="/join">회원가입</a></span>
+    </div>
+</main>
+<!-- Login End -->
+
+<!-- Modal start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header py-5">
+                <h5 class="modal-title mx-auto " id="staticBackdropLabel"></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">확인</button>
             </div>
         </div>
     </div>
-    <!-- Login End -->
+</div>
+<!--Modal end-->
 
+<th:block th:replace="~{fragment/layout :: copyright}"></th:block>
 
-
-    <!-- Copyright Start -->
-    <div class="container-fluid text-center copyright py-4">
-        <div class="container ">
-            <div class="row ">
-                <div class="col-md-6 text-center mx-auto  mb-3 mb-md-0">
-                    &copy; petApet Project Team All Right Reserved.
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Copyright End -->
-
-    </body>
+</body>
 </html>

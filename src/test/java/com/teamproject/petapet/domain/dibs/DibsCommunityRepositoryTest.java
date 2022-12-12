@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.dibs;
 
+import com.teamproject.petapet.domain.dibs.repository.DibsCommunityRepository;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import org.junit.jupiter.api.Test;

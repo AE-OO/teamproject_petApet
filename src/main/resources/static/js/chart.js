@@ -9,7 +9,14 @@ $(function() {
         labels: ["10대", "20대", "30대", "40대", "50대", "60대이상"],
         datasets: [{
             label: '# of Votes',
-            data: [10, 23, 32, 34, 29, 11],
+            data: [
+                getAgeList()[1].val,
+                getAgeList()[2].val,
+                getAgeList()[3].val,
+                getAgeList()[4].val,
+                getAgeList()[5].val,
+                getAgeList()[6].val+getAgeList()[7].val+getAgeList()[8].val+getAgeList()[9].val
+            ],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -346,6 +353,7 @@ $(function() {
     }
 });
 
+//DB에서 성별데이터 가져오기
 function getGenderList(){
     var genderJson = {};
     var genderArray = [];
@@ -360,10 +368,29 @@ function getGenderList(){
                 genderJson.val = value;
                 genderArray.push({...genderJson});
             });
-            console.log(genderArray[0]);
         }
     })
-    console.log(genderArray);
     return genderArray;
+}
+
+//DB에서 나잇대 데이터 가져오기
+function getAgeList(){
+    var ageJson = {};
+    var ageArray = [];
+
+    $.ajax({
+        url: "/admin/getAgeList",
+        type: "get",
+        async: false,
+        dataType: "json",
+        success(data){
+            $.each(data, function(key, value){
+                ageJson.id = key;
+                ageJson.val = value;
+                ageArray.push({...ageJson});
+            });
+        }
+    })
+    return ageArray;
 }
 

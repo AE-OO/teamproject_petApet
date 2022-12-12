@@ -24,7 +24,6 @@ class ReportRepositoryTest {
 
             Report report = Report.builder()
                     .reportReason("The reason is.....")
-                    .reportCategory("member")
                     .member(member)
                     .build();
 
@@ -40,7 +39,6 @@ class ReportRepositoryTest {
 
             Report report = Report.builder()
                     .reportReason("The reason is.....")
-                    .reportCategory("community")
                     .community(community)
                     .build();
 

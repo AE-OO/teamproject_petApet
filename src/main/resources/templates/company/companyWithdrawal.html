@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 회원탈퇴</title>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <script src="/js/member/withdrawal.js"></script>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+
+<!-- Myinfo Start -->
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="bg-white pt-5 pb-3">
+                    <h4 class="text-black ps-5 mb-0"><i class="bi bi-arrow-left"></i> 회원탈퇴</h4>
+                </div>
+                <div class="myinfo-item d-flex">
+                    <div class="myinfo-text w-100 p-5">
+                        <div class="container px-5 pt-3">
+                            <div class="row g-5">
+                                <div class="mx-auto">
+                                    <form action="/member/withdrawal" method="post">
+                                        <div class="col-12">
+                                            <div class="row g-2 mb-4 px-1">
+                                                <label for="input-memberPw" class="myinfo-p col-3">회원탈퇴안내</label>
+                                                <div class="col-9 px-0">
+                                                    <p class="text-start small text-dark my-1">
+                                                        고객님께서 회원 탈퇴를 원하신다니 저희 사이트의 서비스가 많이 부족하고 미흡했나 봅니다.
+                                                        불편하셨던 점이나 불만사항을 고객센터에 알려주시면 적극 반영해서 고객님의 불편함을 해결해 드리도록 노력하겠습니다.</p>
+                                                    <p class="text-start small text-danger my-2">
+                                                        아울러 회원 탈퇴시의 아래 사항을 숙지하시기 바랍니다.</p>
+                                                    <ul class="text-start small text-dark ps-0 my-1">
+                                                        <li>
+                                                            1. 회원탈퇴 시 회원전용 웹 서비스 이용이 불가합니다.
+                                                        </li>
+                                                        <li>
+                                                            2. 회원탈퇴 후 petApet 서비스에 이용했던 커뮤니티,상품관련 글,댓글,문의사항 모두 삭제되며
+                                                            복구가 불가능함을 알려드립니다.
+                                                        </li>
+                                                        <li>
+                                                            3. 이미 결제가 완료된 건은 탈퇴로 취소되지 않습니다.
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- memberPw start -->
+                                        <div class="col-12">
+                                            <div class="row g-2 mb-4 px-1">
+                                                <label for="input-memberPw" class="myinfo-p col-3">비밀번호 입력</label>
+                                                <div class="col-9 px-0">
+                                                    <input type="password" id="input-memberPw" name="memberPw"
+                                                           class="form-control px-3 py-2" maxlength="18"
+                                                           placeholder="현재 비밀번호를 입력해주세요">
+                                                    <p id="feedback-memberPw"
+                                                       class="text-start small text-danger ps-2 my-1"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- memberPw end -->
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr class="mt-2 mb-4"/>
+                        <!-- confirm button-->
+                        <div class="col-12 mb-3 pb-1">
+                            <button type="button" id="cancelBtn" class="btn btn-outline-primary col-3 px-1 py-2">
+                                취소
+                            </button>
+                            <button type="button" id="withdrawalBtn" class="btn btn-primary col-3 px-1 py-2">
+                                탈퇴
+                            </button>
+                        </div>
+                        <!-- confirm button-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Myinfo End -->
+
+<!-- Modal Start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header py-5">
+                <h5 class="modal-title mx-auto " id="staticBackdropLabel"></h5>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelBtn2" type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">취소
+                </button>
+                <button id="modalBtn" type="button" class="mx-auto col-4 btn btn-link">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal End-->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+
+</body>
+
+</html>

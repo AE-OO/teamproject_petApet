@@ -159,3 +159,39 @@ container.addEventListener(
 window.onload = () => {
     error.innerText = "";
 };
+
+const inquiryBox = $(".sc-r1vows-1.hQgEoq > div")
+const inquiryBlank = $(".bXaaqE");
+const inquiryMy = $(".myInquiry");
+const inquiryMyBtn = $("div.myInquiry > button.mySubmitInQuiry");
+
+if ($(inquiryBox).hasClass(inquiryMy)){
+
+    $(inquiryBlank).css('display','block');
+}else{
+    $(inquiryBlank).css('display','none');
+}
+
+$(inquiryMyBtn).click(function(){
+    $(this).parent().remove();
+    // if(confirm("문의내용을 삭제하시겠습니까?")== true) {
+    //     $(this).parent().remove();
+    // }
+})
+
+$(inquiryMy).click(function(){
+    $(this).children().find(inquiryMyBtn).text('>');
+    // if(confirm("문의내용을 삭제하시겠습니까?")== true) {
+    //     $(this).parent().remove();
+    // }
+})
+
+const setValue = (target) => {
+    let val = $('#inputGroupSelect01').val();
+    $('input[name=carType]').attr('value',val);
+
+}
+
+function fn_delete(){
+    confirm("삭제하시겠습니까")
+}

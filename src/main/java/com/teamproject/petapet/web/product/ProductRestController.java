@@ -1,33 +1,45 @@
 package com.teamproject.petapet.web.product;
 
+import com.teamproject.petapet.domain.product.Product;
+import com.teamproject.petapet.domain.product.Review;
+import com.teamproject.petapet.domain.product.repository.ReviewRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
+import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
+import com.teamproject.petapet.web.product.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
+
+import static com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO.getProductMainPageListDTOS;
+import static com.teamproject.petapet.web.product.reviewdto.ReviewDTO.getCollect;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
+@Transactional
+@RequestMapping("/product")
 public class ProductRestController {
 
     @Value("${editor.img.save.url}")
     private String saveUrl;
+    private final ReviewRepository reviewRepository;
+    private final ProductService productService;
 
-    @PostMapping(value = "/product/image", produces = "application/json; charset=utf8")
+    @PostMapping(value = "/image", produces = "application/json; charset=utf8")
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
-
-
-//        String fileRoot = "/Users/oh/IdeaProjects/teamproject_petApet/src/main/resources/static/img/osh/"; // 외부경로로 저장을 희망할때.
-
         String originalFileName = multipartFile.getOriginalFilename();    //오리지날 파일명
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));    //파일 확장자
         String savedFileName = UUID.randomUUID() + extension;    //저장될 파일 명
@@ -36,7 +48,7 @@ public class ProductRestController {
         try {
             InputStream fileStream = multipartFile.getInputStream();
             org.apache.commons.io.FileUtils.copyInputStreamToFile(fileStream, targetFile);
-            jsonObject.append("url", saveUrl + savedFileName);// 저장할 내부 폴더명 + 파일명
+            jsonObject.append("url", "/product/images/" + savedFileName);// 저장할 내부 폴더명 + 파일명
             jsonObject.append("responseCode", "success");
 
         } catch (IOException e) {
@@ -44,8 +56,33 @@ public class ProductRestController {
             jsonObject.append("responseCode", "error");
             e.printStackTrace();
         }
-        String jsonString = jsonObject.toString();
-        return jsonString;
+        return jsonObject.toString();
     }
+
+    @GetMapping("/moreReview")
+    public List<ReviewDTO> loadMoreReviewSlice(@RequestParam("productId") Long productId,
+                                               @RequestParam("page") Integer page) {
+
+        Sort sort = Sort.by("reviewId").descending();
+        Pageable pageable = PageRequest.of(page, 10, sort);
+        Slice<Review> requestMoreReview = reviewRepository.requestMoreReview(productId, pageable);
+
+        return getCollect(requestMoreReview);
+
+    }
+
+    @GetMapping("/sort")
+    public List<ProductMainPageListDTO> sortIndexProductList(@RequestParam String sortType) {
+        if (sortType.equals("review")) {
+            Pageable pageable = PageRequest.of(0, 8);
+            Page<Product> productList = productService.getProductListByReview(pageable);
+            return getProductMainPageListDTOS(productList);
+        }
+        Sort sort = Sort.by(sortType).descending();
+        Pageable pageable = PageRequest.of(0, 8, sort);
+        Page<Product> productList = productService.getProductPage(pageable);
+        return getProductMainPageListDTOS(productList);
+    }
+
 
 }

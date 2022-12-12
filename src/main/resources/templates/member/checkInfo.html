@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 내 정보 수정</title>
+    <script src="/js/member/checkInfo.js"></script>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<!-- Myinfo Start -->
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="bg-white pt-5 pb-3">
+                    <h4 class="text-black ps-5 mb-0"><i class="bi bi-arrow-left"></i> 개인 정보 수정</h4>
+                </div>
+                <div class="myinfo-item d-flex">
+                    <div class="myinfo-text w-100 p-5">
+                        <div class="text-start pt-3">
+                            <h6 class="pb-2 mb-0">비밀번호 재확인</h6>
+                            <p class="small">회원님의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인해주세요</p>
+                            <hr style="border-top:2px solid"/>
+                        </div>
+                        <div class="container join pt-3">
+                            <div class="row g-5">
+                                <div class="mx-auto">
+                                    <!-- memberId start -->
+                                    <form id="sendMemberId" action="/member/checkInfo" method="post">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+
+                                                    <label for="input-memberId" class="myinfo-p col-3">아이디</label>
+                                                    <input type="text" id="input-memberId"
+                                                           th:value="${#authentication.name}"
+                                                           class="form-control px-3 py-2 w-75" readonly>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- memberId end -->
+
+                                    <!-- memberPw start -->
+                                    <div class="col-12">
+                                        <div class="row g-2 mb-4 px-1">
+                                            <label for="input-memberPw" class="myinfo-p col-3">비밀번호<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-9 px-0">
+                                                <input type="password" id="input-memberPw" name="memberPw"
+                                                       class="form-control px-3 py-2" maxlength="18"
+                                                       placeholder="현재 비밀번호를 입력해주세요">
+                                                <p id="feedback-memberPw"
+                                                   class="text-start small text-danger ps-2 my-1"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- memberPw end -->
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr class="mt-2 mb-4"/>
+                        <!-- confirm button-->
+                        <div class="col-12 mb-3 pb-1">
+                            </button>
+                            <button type="button" id="confirmBtn" class="btn btn-primary col-4 px-1 py-2">
+                                확인
+                            </button>
+                        </div>
+                        <!-- confirm button-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Myinfo End -->
+
+<!-- Modal start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header py-5">
+                <h5 class="modal-title mx-auto " id="staticBackdropLabel"></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal end-->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+
+</body>
+</html>

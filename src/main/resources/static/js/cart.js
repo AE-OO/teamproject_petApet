@@ -13,6 +13,8 @@ const offBuy = "link_buy--KOU5pZhUVG disabled--1wqXh5SEyX";
 const btnMinus = $('.number .minus_btn');
 const btnPlus = $('.number .plus_btn');
 const input = $('.number > input');
+
+const selectedPrice =$('.num--37aOyGmdW1.dd'); // <- 작업해야함
 const productPrice = $('.price--2Uv-07hf78'); // 상품 개별 단가
 const totalProductPrice = $('.product-price>span'); // 상품 개별 총금액
 const selectDeleteCards = $('.btn_delete--3P5eHI2eDa'); // 상품 삭제 선택
@@ -21,8 +23,21 @@ const productQuntity = $('em.quan > .num--37aOyGmdW1'); // 상품 주문 수량
 const productTotalFn = $('em.totalFn > .num--37aOyGmdW1'); // 상품 총 금액
 const fadeTime = 300;
 
+/* 주문 */
+const addBuy = $('.addBuy');
+
 
 $(document).ready(function() {
+    // function cal_fn(){
+    //     const quantity = $(card).children().find(productQuntity).get().val();
+    //     const price = parseInt($(card).children().find(productPrice).get.text());
+    //     const totalFn = $(card).children().find(productTotalFn);
+    //     const number = quantity * price;
+    //     const dd = toString(number);
+    //     console.log("cal_fn >>>>>", dd);
+    //     return totalFn.text(dd);
+    // }
+
 
     // 전체 선택
     $(checkboxAll).click(function () {
@@ -42,7 +57,7 @@ $(document).ready(function() {
         if (this.className == checkboxAllTargeted){
             $(this).attr('class', checkboxAllTarget);
             $(this).parents().eq(11).children().find(buy).attr('class', offBuy);
-            $(this).parents().eq(11).children().find(input).val(0);
+            // $(this).parents().eq(11).children().find(input).val(0);
             console.log("val", $(input).val());
 
             // 전체 삭제
@@ -52,6 +67,7 @@ $(document).ready(function() {
                 console.log("val", $(input).val());
             });
         } else{
+            // const quan = [[${cart.quantity}]];
             $(this).attr('class', checkboxAllTargeted);
             $(this).parents().eq(11).children().find(buy).attr('class', onBuy);
         }
@@ -70,6 +86,7 @@ $(document).ready(function() {
         var $input = $(this).parent().find('input');
         $input.val(parseInt($input.val()) + 1);
         $input.change();
+        console.log($input.change());
     });
 
 
@@ -79,6 +96,7 @@ $(document).ready(function() {
         console.log("click:!", $(this).val());
 
     });
+
 
     /* Update quantity */
     function updateQuantity(quantityInput)
@@ -93,6 +111,19 @@ $(document).ready(function() {
         console.log('총가격', linePrice)
 
         // totalFnAll();
+
+        /* 선택상품금액 */
+       productRow.children().find(selectedPrice).each(function () {
+            // $(this).text(linePrice);
+            $(this).fadeOut(fadeTime, function() {
+                $(this).text(linePrice);
+                totalFnAll();
+                $(this).fadeIn(fadeTime);
+            });
+        });
+
+
+        /* 주문금액 */
         productRow.children().find(totalProductPrice).each(function () {
             // $(this).text(linePrice);
             $(this).fadeOut(fadeTime, function() {
@@ -102,6 +133,7 @@ $(document).ready(function() {
             });
         });
 
+        /* 수량 */
         productRow.children().find(productQuntity).each(function () {
             console.log('vv',this);
             // $(this).text(quantity);
@@ -154,12 +186,125 @@ $(document).ready(function() {
 
     // 선택 삭제
     $(removeCard).on("click", card, function(e){
+        console.log("제거실행");
+        const cartId = $(this).val();
+        console.log(">> : " + cartId);
+        var deleteOne = {"cartId": cartId};
+        $.ajax({
+            url: "/cart/removeOne",
+            type: "POST",
+            data: JSON.stringify(deleteOne),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("삭제 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
+            }
+        });
+
         $(e.target).closest(card).remove();
     });
 
     // 전체 삭제
     $(selectDeleteCards).click(function(){
+        var memberId = $('#memberName').val();
+        // btn_delete--3P5eHI2eDa
+        console.log("전체 삭제 실행");
+        console.log(">> " + memberId);
+        var deleteAll = {"memberId": memberId};
+        $.ajax({
+            url: "/cart/removeAll",
+            type: "POST",
+            data: JSON.stringify(deleteAll),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("전체 삭제 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
+            }
+        });
+
         $(this).parents().eq(4).children().find(cards).remove();
     });
+
+    $(addBuy).click(function(){
+        // var productId = $(this).parents().eq(4).find().children(".productId").val();
+        var productId = $(this).val();
+        var quantity = $(this).parents().eq(2).find().children('.qtt').text();
+        var urlBuy =  "/buy/add";
+
+        var param = {"product": productId, "quantity":quantity};
+        console.log("product : " + productId);
+        console.log("quantity : " + quantity);
+        // $.ajax({
+        //     url: urlBuy,
+        //     type: "POST",
+        //     data: JSON.stringify(param),
+        //     dataType: "text",
+        //     contentType : "application/json",
+        //     charset : "UTF-8",
+        //     success: function (data) {
+        //         alert("장바구니 추가되었음")
+        //     },
+        //     error: function (jqXHR, status, errorThrown) {
+        //         alert("에러");
+        //     }
+        // });
+    });
+
 });
 
+
+// function deleteNotices(){
+//     var deleteList = [];
+//     $("input[name='']:checked").each(function(){
+//         deleteList.push($(this).val());
+//     })
+//     console.log(deleteList)
+//     $.ajax({
+//         url: "/board/deleteNotices.do",
+//         type: "POST",
+//         data: {deleteList : deleteList},
+//         success: function(data){
+//             alert("삭제되었습니다.");
+//             window.location.reload();
+//         },
+//         error: function (error){
+//             alert('삭제 실패했습니다.');
+//         }
+//     });
+
+
+// 전체 삭제
+// $(selectDeleteCards).click(function(){
+//     var memberId = $('#memberName').val();
+//     // btn_delete--3P5eHI2eDa
+//     console.log("전체 삭제 실행");
+//     console.log(">> " + memberId);
+//     var deleteAll = {"memberId": memberId};
+//     $.ajax({
+//         url: "/cart/removeAll",
+//         type: "POST",
+//         data: JSON.stringify(deleteAll),
+//         dataType: "text",
+//         contentType : "application/json",
+//         charset : "UTF-8",
+//         success: function (data) {
+//             alert("전체 삭제 되었음!! ")
+//         },
+//         error: function (jqXHR, status, errorThrown) {
+//             alert("에러");
+//         }
+//     });
+//
+//     $(this).parents().eq(4).children().find(cards).remove();
+// });
+//
+// });
+//

@@ -1,6 +1,6 @@
 package com.teamproject.petapet.domain.dibs;
 
-import com.teamproject.petapet.domain.cart.Cart;
+import com.teamproject.petapet.domain.dibs.repository.DibsProductRepository;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import org.junit.jupiter.api.Test;
@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class DibsProductRepositoryTest {

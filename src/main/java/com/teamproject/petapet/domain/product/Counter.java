@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 /**
  * 박채원 22.10.01 작성
+ * 오성훈 22.12.12 Product에 편입, 삭제 예정
  */
 @Entity
 @Builder
