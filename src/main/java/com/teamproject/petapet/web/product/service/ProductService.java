@@ -2,6 +2,8 @@ package com.teamproject.petapet.web.product.service;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
+import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,11 +33,11 @@ public interface ProductService {
 
     Optional<Product> findOne(Long id);
 
-    void productSave(Product product);
+    Optional<Product> productSave(ProductInsertDTO productInsertDTO,List<UploadFile> uploadFiles);
 
     Optional<Product> findProductWithReview(Long id);
 
-    Page<Product> findPage(String category,ProductType productType, String sortType,String searchContent,Pageable pageable);
+    Page<Product> findPage(String category,ProductType productType, String sortType,String searchContent,Long starRating, Pageable pageable);
     void addProductReport(Long productId);
 }
 

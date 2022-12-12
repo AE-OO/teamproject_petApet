@@ -8,7 +8,8 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
-import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
+import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import lombok.RequiredArgsConstructor;
 
 import com.teamproject.petapet.domain.product.ProductType;
@@ -90,8 +91,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void productSave(Product product) {
-        productRepository.save(product);
+    public Optional<Product> productSave(ProductInsertDTO insertDTO,List<UploadFile> uploadFiles) {
+        ProductType productDiv = ProductType.valueOf(insertDTO.getProductDiv());
+
+        Product product = Product.ConvertToEntityByInsertDTO(insertDTO, uploadFiles, productDiv);
+
+        Product savedProduct = productRepository.save(product);
+
+        return Optional.of(savedProduct);
     }
 
     @Override
@@ -101,11 +108,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findPage(String category,ProductType productType, String sortType,String content,Pageable pageable) {
+    public Page<Product> findPage(String category,ProductType productType, String sortType,String content, Long starRating,Pageable pageable) {
         List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, sortType);
         List<Product> productList = jpaQueryFactory.select(product)
                 .from(product)
-                .where(isCategory(productType, category),isContent(content))
+                .where(isCategory(productType, category),isContent(content), isRating(starRating))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(orders.toArray(OrderSpecifier[]::new))
@@ -130,6 +137,12 @@ public class ProductServiceImpl implements ProductService {
     private BooleanExpression isCategory(ProductType productType,String category) {
         if (!category.equals("all")) {
             return product.productDiv.eq(productType);
+        }
+        return null;
+    }
+    private BooleanExpression isRating(Long rating) {
+        if (rating != 0) {
+            return product.productRating.goe(rating);
         }
         return null;
     }

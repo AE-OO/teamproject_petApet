@@ -19,19 +19,19 @@
             <div class="col-12 text-center">
                 <ul class="list-inline rounded mb-4" id="portfolio-flters">
                     <li class="mx-2" value="all"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'all'},${size},${page},${sortType},${'false'})}">전체보기</a></li>
+                                        th:href="#{product.querystring(${'all'},${size},${page},${sortType},${'false'},${starRating})}">전체보기</a></li>
                     <li class="mx-2" value="food"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'food'},${size},${page},${sortType},${'false'})}">사료</a></li>
+                                        th:href="#{product.querystring(${'food'},${size},${page},${sortType},${'false'},${starRating})}">사료</a></li>
                     <li class="mx-2" value="snack"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'snack'},${size},${page},${sortType},${'false'})}">간식</a></li>
+                                        th:href="#{product.querystring(${'snack'},${size},${page},${sortType},${'false'},${starRating})}">간식</a></li>
                     <li class="mx-2" value="walking"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'walking'},${size},${page},${sortType},${'false'})}">산책용품</a></li>
+                                        th:href="#{product.querystring(${'walking'},${size},${page},${sortType},${'false'},${starRating})}">산책용품</a></li>
                     <li class="mx-2" value="toy"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'toy'},${size},${page},${sortType},${'false'})}">장난감</a></li>
+                                        th:href="#{product.querystring(${'toy'},${size},${page},${sortType},${'false'},${starRating})}">장난감</a></li>
                     <li class="mx-2" value="fashion"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'fashion'},${size},${page},${sortType},${'false'})}">패션/잡화</a></li>
+                                        th:href="#{product.querystring(${'fashion'},${size},${page},${sortType},${'false'},${starRating})}">패션/잡화</a></li>
                     <li class="mx-2" value="stroller"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'stroller'},${size},${page},${sortType},${'false'})}">유모차</a></li>
+                                        th:href="#{product.querystring(${'stroller'},${size},${page},${sortType},${'false'},${starRating})}">유모차</a></li>
                 </ul>
             </div>
         </div>
@@ -76,23 +76,55 @@
                                 <div class="accordion-body p-1">
                                     <ul class="m-1 p-2">
                                         <li value="all"><a style="text-decoration: none"
-                                                                        th:href="#{product.querystring(${'all'},${size},${page},${sortType},${searchContent})}">전체보기</a></li>
+                                                                        th:href="#{product.querystring(${'all'},${size},${page},${sortType},${searchContent},${starRating})}">전체보기</a></li>
                                         <li value="food"><a style="text-decoration: none"
-                                                                         th:href="#{product.querystring(${'food'},${size},${page},${sortType},${searchContent})}">사료</a></li>
+                                                                         th:href="#{product.querystring(${'food'},${size},${page},${sortType},${searchContent},${starRating})}">사료</a></li>
                                         <li value="snack"><a style="text-decoration: none"
-                                                                          th:href="#{product.querystring(${'snack'},${size},${page},${sortType},${searchContent})}">간식</a></li>
+                                                                          th:href="#{product.querystring(${'snack'},${size},${page},${sortType},${searchContent},${starRating})}">간식</a></li>
                                         <li value="walking"><a style="text-decoration: none"
-                                                                            th:href="#{product.querystring(${'walking'},${size},${page},${sortType},${searchContent})}">산책용품</a></li>
+                                                                            th:href="#{product.querystring(${'walking'},${size},${page},${sortType},${searchContent},${starRating})}">산책용품</a></li>
                                         <li value="toy"><a style="text-decoration: none"
-                                                                        th:href="#{product.querystring(${'toy'},${size},${page},${sortType},${searchContent})}">장난감</a></li>
+                                                                        th:href="#{product.querystring(${'toy'},${size},${page},${sortType},${searchContent},${starRating})}">장난감</a></li>
                                         <li value="fashion"><a style="text-decoration: none"
-                                                                            th:href="#{product.querystring(${'fashion'},${size},${page},${sortType},${searchContent})}">패션/잡화</a></li>
+                                                                            th:href="#{product.querystring(${'fashion'},${size},${page},${sortType},${searchContent},${starRating})}">패션/잡화</a></li>
                                         <li value="stroller"><a style="text-decoration: none"
-                                                                             th:href="#{product.querystring(${'stroller'},${size},${page},${sortType},${searchContent})}">유모차</a></li>
+                                                                             th:href="#{product.querystring(${'stroller'},${size},${page},${sortType},${searchContent},${starRating})}">유모차</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="star">
+                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'1'})}" type="button">
+                            <div class="row align-items-start">
+                                <div class="col-5 nav-item">★☆☆☆☆</div>
+                                <div class="col-7 fs-6" style="color: #1f2326">1점 이상</div>
+                            </div>
+                        </a>
+                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'2'})}" type="button">
+                            <div class="row align-items-start">
+                                <div class="col-5 nav-item">★★☆☆☆</div>
+                                <div class="col-7 fs-6" style="color: #1f2326">2점 이상</div>
+                            </div>
+                        </a>
+                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'3'})}" type="button">
+                            <div class="row align-items-start">
+                                <div class="col-5 nav-item">★★★☆☆</div>
+                                <div class="col-7 fs-6" style="color: #1f2326">3점 이상</div>
+                            </div>
+                        </a>
+                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'4'})}" type="button">
+                            <div class="row align-items-start">
+                                <div class="col-5 nav-item">★★★★☆</div>
+                                <div class="col-7 fs-6" style="color: #1f2326">4점 이상</div>
+                            </div>
+                        </a>
+                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'5'})}" type="button">
+                            <div class="row align-items-start">
+                                <div class="col-5 nav-item">★★★★★</div>
+                                <div class="col-7 fs-6" style="color: #1f2326">5점 이상</div>
+                            </div>
+                        </a>
                     </div>
                     <a class="nav-link active" aria-current="page" href="#">Active</a>
                     <a class="nav-link" href="#">Link</a>
@@ -105,19 +137,19 @@
             <div class="col-8">
                 <div class="btn-group form-check form-check-inline" role="group" aria-label="Basic radio toggle button group">
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="productId" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productId,searchContent=${searchContent})}'|" for="btnradio1">최신순</label>
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productId,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio1">최신순</label>
 
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="salePriceAsc" autocomplete="off">
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=salePriceAsc,searchContent=${searchContent})}'|" for="btnradio2">낮은가격순</label>
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=salePriceAsc,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio2">낮은가격순</label>
 
                     <input type="radio" class="btn-check"  name="btnradio" id="btnradio3" value="salePriceDesc" autocomplete="off">
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=salePriceDesc,searchContent=${searchContent})}'|" for="btnradio3">높은가격순</label>
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=salePriceDesc,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio3">높은가격순</label>
 
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio4" value="productReviewCount" autocomplete="off">
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productReviewCount,searchContent=${searchContent})}'|" for="btnradio4">리뷰순</label>
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productReviewCount,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio4">리뷰순</label>
 
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="productRating" autocomplete="off">
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productRating,searchContent=${searchContent})}'|" for="btnradio5">평점순</label>
+                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productRating,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio5">평점순</label>
                 </div>
             </div>
             <div class="d-flex justify-content-end col-4">
@@ -136,10 +168,10 @@
                     </th:block>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item"
-                               th:href="#{product.querystring(${category},${'20'},${page},${sortType},${searchContent})}">20개씩
+                               th:href="#{product.querystring(${category},${'20'},${page},${sortType},${searchContent},${starRating})}">20개씩
                             보기</a></li>
                         <li><a class="dropdown-item"
-                               th:href="#{product.querystring(${category},${'40'},${page},${sortType},${searchContent})}">40개씩
+                               th:href="#{product.querystring(${category},${'40'},${page},${sortType},${searchContent},${starRating})}">40개씩
                             보기</a></li>
                     </ul>
                 </li>
@@ -248,18 +280,18 @@
         <ul class="pagination page-body-wrapper" id="paginationBox">
             <li class="page-item" th:if="${start > 5}">
                 <a class="page-link"
-                   th:href="#{product.querystring(${category},${size},${start - 5},${sortType},${searchContent})}">이전</a>
+                   th:href="#{product.querystring(${category},${size},${start - 5},${sortType},${searchContent},${starRating})}">이전</a>
 <!--                   th:href="@{/product(category=${#request.getParameter('category')},page=${start - 5},size=${#request.getParameter('size')})}">이전</a>-->
             </li>
             <li class="page-item" id="pageNumber" th:value="${number}" th:classappend="${productList.getNumber()==number}"
                 th:each="number : ${#numbers.sequence(start,end)}">
 <!--                <a class="page-link" th:href="@{/product(category=${#request.getParameter('category')},page=${number},size=${#request.getParameter('size')})}"-->
-                <a class="page-link" th:href="#{product.querystring(${category},${size},${number},${sortType},${searchContent})}"
+                <a class="page-link" th:href="#{product.querystring(${category},${size},${number},${sortType},${searchContent},${starRating})}"
                    th:text="${number}"></a>
             </li>
             <li class="page-item" th:if="${end < productList.totalPages}">
                 <a class="page-link"
-                   th:href="#{product.querystring(${category},${size},${start + 5},${sortType},${searchContent})}">다음</a>
+                   th:href="#{product.querystring(${category},${size},${start + 5},${sortType},${searchContent},${starRating})}">다음</a>
 <!--                   th:href="@{/product(category=${#request.getParameter('category')},page=${start + 5},size=${#request.getParameter('size')})}">다음</a>-->
             </li>
         </ul>

@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -100,6 +101,20 @@ public class Product {
                 .productDiscountRate(product.getProductDiscountRate())
                 .productUnitPrice(product.getProductUnitPrice())
                 .productReviewCount(product.getProductReviewCount())
+                .build();
+    }
+
+    public static Product ConvertToEntityByInsertDTO(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, ProductType productDiv) {
+       return Product.builder()
+                .productName(insertDTO.getProductName())
+                .productPrice(insertDTO.getProductPrice())
+                .productStock(insertDTO.getProductStock())
+                .productImg(uploadFiles)
+                .productStatus("판매중")
+                .productDiv(productDiv)
+                .productContent(insertDTO.getProductContent())
+                .productDiscountRate(insertDTO.getProductDiscountRate())
+                .productUnitPrice(insertDTO.getProductUnitPrice())
                 .build();
     }
 }

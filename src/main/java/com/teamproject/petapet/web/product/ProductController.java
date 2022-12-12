@@ -45,6 +45,9 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.teamproject.petapet.domain.product.QProduct.product;
 
@@ -72,29 +75,39 @@ public class ProductController {
                                  @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
                                  @RequestParam(value = "size", defaultValue = "4", required = false) Integer size,
                                  @RequestParam(value = "sortType", defaultValue = "productId", required = false) String sortType,
-                                 @RequestParam(value = "searchContent",defaultValue = "false", required = false) String content,
+                                 @RequestParam(value = "searchContent", defaultValue = "false", required = false) String content,
+                                 @RequestParam(value = "rating", defaultValue = "0", required = false)  Long starRating,
                                  Model model, Principal principal) {
-        Sort sort = Sort.by(sortType).descending();
-        if (sortType.equals("salePriceAsc")){
-            sort = Sort.by("productPrice").ascending();
-            sortType = "productPrice";
-        } else if (sortType.equals("salePriceDesc")) {
-            sort = Sort.by("productPrice").descending();
-            sortType = "productPrice";
-        }
+        Sort sort = getSort(sortType);
         Pageable pageable = PageRequest.of(page - 1, size, sort);
+        String property = Objects.requireNonNull(pageable.getSort().get().findFirst().orElse(null)).getProperty();
         ProductType productType = getProductType(category);
-        Page<Product> page1 = productService.findPage(category, productType, sortType, content, pageable);
-        Page<ProductListDTO> productListDTO1 = getProductListDTO(principal, page1);
-        model.addAttribute("productList",productListDTO1);
+
+        Page<Product> resultPage = productService.findPage(category, productType, property, content, starRating, pageable);
+        Page<ProductListDTO> productListDTO = getProductListDTO(principal, resultPage);
+
+        model.addAttribute("productList", productListDTO);
         model.addAttribute("productDiv", productType);
         model.addAttribute("category", category);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
+        model.addAttribute("starRating", starRating);
         model.addAttribute("sortType", sortType);
         model.addAttribute("searchContent", content);
+
         return "product/productList";
     }
+
+    private Sort getSort(String sortType) {
+        Sort sort = Sort.by(sortType).descending();
+        if (sortType.equals("salePriceAsc")) {
+            sort = Sort.by("productPrice").ascending();
+        } else if (sortType.equals("salePriceDesc")) {
+            sort = Sort.by("productPrice").descending();
+        }
+        return sort;
+    }
+
     @GetMapping("/insert")
     public String productInsertForm(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) {
         return "/product/productInsertForm";
@@ -114,22 +127,12 @@ public class ProductController {
         List<MultipartFile> productImg = productInsertDTO.getProductImg();
         List<UploadFile> uploadFiles = fileService.storeFiles(productImg);
 
-        ProductType productDiv = ProductType.valueOf(productInsertDTO.getProductDiv());
-
-        Product product = new Product(productInsertDTO.getProductName()
-                , productInsertDTO.getProductPrice()
-                , productInsertDTO.getProductStock()
-                , uploadFiles
-                , "판매중"
-                , productDiv
-                , productInsertDTO.getProductContent()
-                , productInsertDTO.getProductDiscountRate()
-                , productInsertDTO.getProductUnitPrice());
-        productService.productSave(product);
+        Product savedProduct = productService.productSave(productInsertDTO, uploadFiles)
+                .orElseThrow(NoSuchElementException::new);
 
         String redirectURL = "/product/" +
-                product.getProductDiv().name().toLowerCase() + "/" +
-                product.getProductId() + "/" + "details";
+                savedProduct.getProductDiv().name().toLowerCase() + "/" +
+                savedProduct.getProductId() + "/" + "details";
 
         return "redirect:" + redirectURL;
     }
@@ -167,8 +170,9 @@ public class ProductController {
 
     @PostMapping("/{productId}/reviewInsert")
     public String reviewInsert(@ModelAttribute ReviewInsertDTO reviewInsertDTO,
-                               @RequestParam String requestURI, Principal principal,
-                               @PathVariable("productId") Long productId) throws IOException {
+                               @RequestParam String requestURI,
+                               @PathVariable("productId") Long productId,
+                               Principal principal) throws IOException {
 
         List<MultipartFile> reviewImg = reviewInsertDTO.getReviewImg();
         List<UploadFile> uploadFiles = fileService.storeFiles(reviewImg);
@@ -184,9 +188,9 @@ public class ProductController {
                 .product(productService.findOne(productId).orElseThrow(NoSuchElementException::new)).build();
 
         reviewService.save(review);
-        Long aLong = reviewService.countReviewByProduct(productId);
+        Long countReviewByProduct = reviewService.countReviewByProduct(productId);
         productService.updateProductRating(productId);
-        productService.updateProductReviewCount(productId,aLong);
+        productService.updateProductReviewCount(productId, countReviewByProduct);
         return "redirect:" + requestURI;
     }
 
