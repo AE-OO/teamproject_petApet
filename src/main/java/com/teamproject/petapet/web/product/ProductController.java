@@ -82,7 +82,6 @@ public class ProductController {
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         String property = Objects.requireNonNull(pageable.getSort().get().findFirst().orElse(null)).getProperty();
         ProductType productType = getProductType(category);
-
         Page<Product> resultPage = productService.findPage(category, productType, property, content, starRating, pageable);
         Page<ProductListDTO> productListDTO = getProductListDTO(principal, resultPage);
 
@@ -94,7 +93,6 @@ public class ProductController {
         model.addAttribute("starRating", starRating);
         model.addAttribute("sortType", sortType);
         model.addAttribute("searchContent", content);
-
         return "product/productList";
     }
 

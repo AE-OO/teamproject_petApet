@@ -118,6 +118,7 @@ public class ProductServiceImpl implements ProductService {
                 .orderBy(orders.toArray(OrderSpecifier[]::new))
                 .fetch();
         long count = productRepository.count();
+//        int count = productList.size();
         return new PageImpl<>(productList, pageable, count);
     }
 
