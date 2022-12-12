@@ -2,17 +2,11 @@ package com.teamproject.petapet.web.cart.service;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.cart.CartRepository;
-import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.member.MemberRepository;
-import com.teamproject.petapet.domain.product.Product;
-import com.teamproject.petapet.domain.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service

@@ -1,16 +1,14 @@
 package com.teamproject.petapet.domain.product;
 
-import com.teamproject.petapet.domain.community.Comment;
-import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
+import com.teamproject.petapet.domain.product.repository.ProductRepository;
+import com.teamproject.petapet.domain.product.repository.ReviewRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ReviewRepositoryTest {

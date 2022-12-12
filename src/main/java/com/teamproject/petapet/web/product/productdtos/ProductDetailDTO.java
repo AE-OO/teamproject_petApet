@@ -1,6 +1,5 @@
 package com.teamproject.petapet.web.product.productdtos;
 
-import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +17,6 @@ public class ProductDetailDTO {
     private Long productPrice;
     private Long productRating;
     private Long productStock;
+    private Long productDiscountRate;
+    private Long productUnitPrice;
 }

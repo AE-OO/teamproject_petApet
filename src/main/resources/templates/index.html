@@ -99,75 +99,53 @@
         <div class="row wow fadeInUp" data-wow-delay="0.3s">
             <div class="col-12 text-center">
                 <ul class="list-inline rounded mb-5" id="portfolio-flters">
-                    <li class="mx-2 action" data-filter="*">All</li>
-                    <li class="mx-2" data-filter=".first">분류1</li>
-                    <li class="mx-2" data-filter=".second">분류2</li>
+                    <li class="mx-2 action">ALL</li>
+                    <li class="mx-2" onclick="sortProduct('productId')">최근 등록상품</li>
+                    <li class="mx-2">판매순</li>
+                    <li class="mx-2" onclick="sortProduct('review')">리뷰순</li>
+                    <li class="mx-2" onclick="sortProduct('productRating')">별점순</li>
+                    <li class="mx-2"><a th:href="|@{/product}|">상품목록으로→</a></li>
                 </ul>
             </div>
         </div>
-        <div class="row g-4 portfolio-container ">
-            <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
-                <div class="portfolio-inner rounded">
-                    <img class="img-fluid" src="img/service-1.jpg" alt="">
-                    <div class="portfolio-text">
-                        <h4 class="text-white mb-4">제품1</h4>
-                        <div class="d-flex">
-                            <button class="btn">보러가기</button>
+        <div class="row g-4" id="appendTarget">
+            <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
+                <div class="portfolio rounded">
+                    <img class="" src="/product/images/e234fd85-0585-497a-a27a-4da3b5506929.png" width="300"
+                         height="300" alt="">
+                    <div class="portfolio-text" style="opacity: 1;">
+                        <h1 class="text-start rounded ms-2">
+                            <a style="text-decoration: none;" class="text-dark fs-5" href="/product/food/106/details">123</a>
+                        </h1>
+                        <div class="d-flex flex-row">
+                            <div>
+                                <fieldset class="p-1 col">
+                                    <div class="d-flex flex-row" style="max-height: 1rem; margin-top: 0.1rem">
+                                        <p class="star" value="0" id="star0">
+                                            <a class="my_star" value="1">★</a>
+                                            <a class="my_star" value="2">★</a>
+                                            <a class="my_star" value="3">★</a>
+                                            <a class="my_star" value="4">★</a>
+                                            <a class="my_star" value="5">★</a>
+                                        </p>
+                                        <p>
+                                        </p></div>
+                                </fieldset>
+                            </div>
+                            <h6 class="align-self-center mt-2">(0)</h6>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.3s">
-                <div class="portfolio-inner rounded">
-                    <img class="img-fluid" src="img/service-2.jpg" alt="">
-                    <div class="portfolio-text">
-                        <h4 class="text-white mb-4">제품2</h4>
-                        <div class="d-flex">
-                            <button class="btn">보러가기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.5s">
-                <div class="portfolio-inner rounded">
-                    <img class="img-fluid" src="img/service-3.jpg" alt="">
-                    <div class="portfolio-text">
-                        <h4 class="text-white mb-4">제품3</h4>
-                        <div class="d-flex">
-                            <button class="btn">보러가기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.1s">
-                <div class="portfolio-inner rounded">
-                    <img class="img-fluid" src="img/service-4.jpg" alt="">
-                    <div class="portfolio-text">
-                        <h4 class="text-white mb-4">제품4</h4>
-                        <div class="d-flex">
-                            <button class="btn">보러가기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.3s">
-                <div class="portfolio-inner rounded">
-                    <img class="img-fluid" src="img/service-5.jpg" alt="">
-                    <div class="portfolio-text">
-                        <h4 class="text-white mb-4">제품5</h4>
-                        <div class="d-flex">
-                            <button class="btn">보러가기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.5s">
-                <div class="portfolio-inner rounded">
-                    <img class="img-fluid" src="img/service-6.jpg" alt="">
-                    <div class="portfolio-text">
-                        <h4 class="text-white mb-4">제품6</h4>
-                        <div class="d-flex">
-                            <button class="btn">보러가기</button>
+                        <div class="d-flex flex-column">
+                            <div class="col">
+                                <h1 class="fs-6 text-end">123</h1>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
+                                    <button type="button" class="btn bg-secondary me-1 addCart" value="106">장바구니
+                                        <input type="hidden" class="quan" value="1"></button>
+                                    <a class="btn bg-secondary me-1 addBuy" href="/direct/checkout/106">바로구매
+                                        <input type="hidden" class="quan" value="1"></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -478,7 +456,7 @@
 <!-- Template Javascript -->
 <script src="js/main.js"></script>
 
-<script>
+<script type="text/javascript" th:inline="javascript">
     window.kakaoAsyncInit = function () {
         Kakao.Channel.createChatButton({
             container: '#kakao-talk-channel-chat-button',
@@ -495,6 +473,77 @@
         js.crossOrigin = 'anonymous';
         fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'kakao-js-sdk');
+
+    $(document).ready(sortProduct('productId'));
+
+    async function sortProduct(sortType) {
+        $('#appendTarget').empty();
+        fetch('/product/sort?sortType=' + sortType, {
+            method: 'GET',
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                $.each(data, function (idx) {
+                    const productListHtml = `
+                <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
+                <div class="portfolio rounded">
+                    <img class="" src="/product/images/${data[idx].productImg.storeFileName}" width="300" height="300" alt="">
+                    <div class="portfolio-text" style="opacity: 1;">
+                        <h1 class="text-start rounded ms-2">
+                            <a style="text-decoration: none;" class="text-dark fs-5" href="/product/food/${data[idx].productId}/details">${data[idx].productName}</a>
+                        </h1>
+                        <div class="d-flex flex-row">
+                            <div>
+                                <fieldset class="p-1 col">
+                                    <div class="d-flex flex-row" style="max-height: 1rem; margin-top: 0.1rem">
+                                        <p class="star" value="${data[idx].productRating}" id="star0">
+                                            <a class="my_star" value="1">★</a>
+                                            <a class="my_star" value="2">★</a>
+                                            <a class="my_star" value="3">★</a>
+                                            <a class="my_star" value="4">★</a>
+                                            <a class="my_star" value="5">★</a>
+                                        </p><p>
+                                    </p></div>
+                                </fieldset>
+                            </div>
+                            <h6 class="align-self-center mt-2">(${data[idx].productReview})</h6>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div class="col">
+                                <h1 class="fs-6 text-end" id="priceToString${idx}"></h1>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
+                                    <button type="button" class="btn bg-secondary me-1 addCart" value="${data[idx].productId}">장바구니
+                                        <input type="hidden" class="quan" value="1"></button>
+                                    <a class="btn bg-secondary me-1 addBuy" href="/direct/checkout/${data[idx].productId}">바로구매
+                                        <input type="hidden" class="quan" value="1"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+                    var size = $('p[class = star]').length;
+                    for (var i = 0; i < size; i++) {
+                        $('p[class = star]').eq(i).attr('id', "moreRating" + i);
+
+                        $("#moreRating" + i).find(".my_star").filter(function (k, v) {
+                            return $(v).attr("value") <= $("#moreRating" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+                        });
+                    }
+                    $('#appendTarget').append(productListHtml);
+                    $('#priceToString'+idx).text(priceToString(data[idx].productPrice)+'원')
+                })
+            });
+    }
+    function priceToString(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
 </script>
 </body>
 

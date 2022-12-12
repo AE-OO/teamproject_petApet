@@ -74,8 +74,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Cart> cart;
 
-
-    public Product(String productName, Long productPrice, Long productStock, List<UploadFile> productImg, String productStatus, ProductType productDiv, String productContent) {
+    public Product(String productName, Long productPrice, Long productStock, List<UploadFile> productImg, String productStatus, ProductType productDiv, String productContent, Long productDiscountRate, Long productUnitPrice) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;
@@ -83,6 +82,8 @@ public class Product {
         this.productStatus = productStatus;
         this.productDiv = productDiv;
         this.productContent = productContent;
+        this.productDiscountRate = productDiscountRate;
+        this.productUnitPrice= productUnitPrice;
     }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {
@@ -93,6 +94,8 @@ public class Product {
                 .productRating(product.getProductRating())
                 .productName(product.getProductName())
                 .productContent(product.getProductContent())
+                .productDiscountRate(product.getProductDiscountRate())
+                .productUnitPrice(product.getProductUnitPrice())
                 .build();
     }
 }
