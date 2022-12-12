@@ -17,15 +17,15 @@
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                             <div class="carousel-indicators">
                                 <button type="button" th:each="idx, i : *{productImg}"
-                                        data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${i.index}" class="active"
+                                        data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${i.index}"
+                                        class="active"
                                         aria-current="true" th:aria-label="|@{Slide+${i.index}}|"></button>
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item" th:each="img : *{productImg}">
-                                    <img th:src="|@{/Users/seonghyeon/Desktop/test/{path}(path=${img.storeFileName})}|"
-                                         width="400" height="400"
-                                         style="min-height: 400px; min-width: 400px"
-                                         class="d-block w-auto" alt="...">
+                                    <img th:src="|@{/product/images/{filename}(filename=${img.storeFileName})}|"
+                                         style="max-width: 100%; height: auto; vertical-align: bottom;"
+                                         class="d-block w-auto" id="carousel-img" alt="...">
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button"
@@ -86,18 +86,24 @@
                                    autocomplete="off">
                         </div>
                         <div style="display:table-cell;vertical-align:top;" class="col-3">
-                            <button id="plus" class="btn-sm-square" style="height: 1rem" type="button">△</button>
-                            <button id="minus" class="btn-sm-square" style="height: 1rem" type="button">▽</button>
+                            <button id="plus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem"
+                                    type="button">△
+                            </button>
+                            <button id="minus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem"
+                                    type="button">▽
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="col-8">
                     <div class="m-lg-2 d-flex flex-row">
                         <div class="col-6 d-grid">
-                            <button id="addCart" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
+                            <button id="addCart" class="btn btn-info ms-3" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
                         <div class="col-6 d-grid">
-                            <button id="addBuy" class="btn-info ms-3" style="height:2rem" th:onclick="'javascript:checkout()'">바로구매</button>
+                            <button id="addBuy" class="btn btn-info ms-3" style="height:2rem"
+                                    th:onclick="'javascript:checkout()'">바로구매
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -137,18 +143,26 @@
                 </tbody>
             </table>
         </div>
-        <hr class="">
+        <hr>
         <div class="d-flex flex-row my-3" style="position: sticky; top: 5rem;">
             <div class="btn-group col-12">
-                <a role="button" class="btn text-dark col-3" style="background-color: white"> 상품상세</a>
-                <button class="btn text-dark col-3" style="background-color: white"> 상품평()</button>
-                <button class="btn text-dark col-3" style="background-color: white"> 상품문의</button>
-                <button class="btn text-dark col-3" style="background-color: white"> 배송/교환/반품</button>
+                <button onclick="productDetail_scroll_move()" class="btn text-dark col-3"
+                        style="background-color: white"> 상품상세
+                </button>
+                <button onclick="review_scroll_move()" class="btn text-dark col-3" style="background-color: white">
+                    상품평([[${reviews.size}]])
+                </button>
+                <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"
+                        style="background-color: white"> 상품문의
+                </button>
+                <button onclick="shipping_scroll_move()" class="btn text-dark col-3"
+                        style="background-color: white"> 배송/교환/반품
+                </button>
             </div>
         </div>
         <hr class="mb-5">
         <div class="d-flex flex-row">
-            <div class="row mb-4">
+            <div class="row mb-4" id="productDetail">
                 <h4>상품상세</h4>
             </div>
         </div>
@@ -166,10 +180,10 @@
     <hr class="mb-4 mt-4">
     <div class="d-flex flex-row">
         <div class="btn-group col-12">
-            <button class="btn text-dark col-3"> 상품상세</button>
-            <button class="btn text-dark col-3"> 상품평()</button>
-            <button class="btn text-dark col-3"> 상품문의</button>
-            <button class="btn text-dark col-3"> 배송/교환/반품</button>
+            <button onclick="productDetail_scroll_move()" class="btn text-dark col-3"> 상품상세</button>
+            <button onclick="review_scroll_move()" class="btn text-dark col-3"> 상품평()</button>
+            <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"> 상품문의</button>
+            <button onclick="shipping_scroll_move()" class="btn text-dark col-3"> 배송/교환/반품</button>
         </div>
     </div>
     <hr class="mb-4 mt-4">
@@ -177,7 +191,7 @@
         <div>
             <div class="d-flex flex-row p-3">
                 <div class="d-flex flex-column flex-fill">
-                    <div class="row mb-4">
+                    <div class="row mb-4" id="reviews">
                         <h4>상품평</h4>
                     </div>
                     <form enctype="multipart/form-data" method="post"
@@ -238,12 +252,12 @@
         <div>
             <div class="d-flex flex-row pb-3 px-3">
                 <div class="d-flex flex-column flex-fill">
-                    <article class="row justify-content-start" th:each="review : ${reviews}">
+                    <article id="review" class="row justify-content-start" th:each="review : ${reviews}">
                         <div class="col-1">
                             <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                         </div>
                         <div class="col-1 me-2">
-                            <h6 th:text="${review.member.memberId}">작성자</h6>
+                            <h6 th:text="${review.member.memberId}" id="memberId">작성자</h6>
                             <h6 style="font-size: 0.5rem" class="text-secondary mt-1"
                                 th:text="${#temporals.format(review.reviewDate,'yyyy-MM-dd')}">2000.00.00</h6>
                         </div>
@@ -256,19 +270,21 @@
                                 <a class="my_star" value="5">★</a>
                             <p>
                         </div>
-                        <div class="col-7" id="ppp" th:value="${review.reviewImg}">
+                        <div class="col-7" th:value="${review.reviewImg}">
                             <img th:each="reviewImage : ${review.reviewImg}"
-                                 th:src="|@{/Users/oh/Desktop/test/file/{path}(path=${reviewImage.storeFileName})}|"
+                                 th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
                                  width="100" height="100"
-                                 class="img" id="osh">
+                                 class="reviewImage" id="reviewImage">
                             <div class="modal" id="modal">
                                 <span class="close">&times;</span>
                                 <img class="modal_content" id="modal_content">
                             </div>
-                            </img>
                         </div>
                         <div class="col text-end">
-                            <a href="#">신고</a>
+                            <button type="button" class="btn btn-outline-primary" id="addMemberReport"
+                                    data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
+                                    title="신고">신고
+                            </button>
                         </div>
                         <div class="d-flex mt-2">
                             <div class="me-2">
@@ -286,9 +302,9 @@
                         </div>
                         <hr class="my-4">
                     </article>
-                    <div id="tagArea">
+                    <article id="tagArea" class="row justify-content-start">
 
-                    </div>
+                    </article>
                     <th:block
                             th:if="${reviews.hasNext()}">
                         <a role="button" onclick="moreReview()" class="m-lg-1 fs-5 text-center" id="moreReview"
@@ -302,7 +318,7 @@
             <div>
                 <div class="d-flex flex-fill">
                     <div class="d-flex mb-4 col">
-                        <div class="col-11">
+                        <div class="col-11" id="productInquiry">
                             <h4>상품문의</h4>
                         </div>
                         <div class="col-1 text-end">
@@ -369,7 +385,11 @@
                                         <p class="m-0">판매 부적격 상품 또는 허위과장광고 및 지식재산권을 침해하는 상품의 경우 신고하여 주시기 바랍니다.</p>
                                     </div>
                                     <div class="col-1 text-end">
-                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>
+                                        <button type="button" class="btn btn-outline-primary" id="addProductReport"
+                                                data-bs-toggle="modal" data-bs-target="#addProductReportModal"
+                                                title="신고하기">신고하기
+                                        </button>
+                                        <!--                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>-->
                                     </div>
                                 </div>
                             </div>
@@ -382,7 +402,7 @@
         <hr class="my-4">
         <div class="d-flex flex-row p-3">
             <div>
-                <div class="d-flex flex-fill">
+                <div class="d-flex flex-fill" id="shipping">
                     <h4>배송/교환/반품</h4>
                 </div>
             </div>
@@ -604,7 +624,6 @@
 </div>
 <!-- Footer End -->
 
-
 <!-- Copyright Start -->
 <div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
     <div class="container ">
@@ -615,13 +634,101 @@
         </div>
     </div>
 </div>
-</body>
+
+<!-- 모달 동작 안함 -->
+<!-- 상품 신고 Modal -->
+<div class="modal" id="addProductReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">상품신고</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>신고 사유를 선택해 주세요</h6>
+                <select class="form-select" aria-label="Default select example" id="reportProductReason"
+                        name="reportProductReason">
+                    <option value="">신고사유</option>
+                    <option value="불량품 다수">불량품 다수</option>
+                    <option value="유해물질">유해물질</option>
+                    <option value="기타 사유">기타 사유</option>
+                </select>
+                <hr>
+                <h6>구체적인 사유를 작성해 주세요</h6>
+                <textarea class="form-control" name="reportProductReasonDetail" rows="3"
+                          placeholder="구체적인 신고 사유 입력"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="reportProductBTN">신고하기
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 회원 신고 Modal -->
+<div class="modal" id="addMemberReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">회원신고</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>신고 사유를 선택해 주세요</h6>
+                <select class="form-select" aria-label="Default select example" id="reportMemberReason">
+                    <option value="">신고사유</option>
+                    <option value="회원비난/비하">회원비난/비하</option>
+                    <option value="욕설/비속어">욕설/비속어</option>
+                    <option value="불쾌감 조성">불쾌감 조성</option>
+                    <option value="이용방해 행위">이용방해 행위</option>
+                    <option value="타인권리 침해">타인권리 침해</option>
+                    <option value="특정집단 차별">특정집단 차별</option>
+                    <option value="기타 사유">기타 사유</option>
+                </select>
+                <hr>
+                <h6>구체적인 사유를 작성해 주세요</h6>
+                <textarea class="form-control" rows="3" name="reportMemberReasonDetail"
+                          placeholder="구체적인 신고 사유 입력"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="reportMemberBTN">신고하기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/js/reportJS.js"></script>
 
 
-<script th:inline="javascript">
+<script th:inline="javascript" type="text/javascript">
+
+    let totalPage = 10;
+
+    function review_scroll_move() {
+        let offset = $("#reviews").offset();
+        $("html, body").animate({scrollTop: offset.top});
+    };
+
+    function shipping_scroll_move() {
+        let offset = $("#shipping").offset();
+        $("html, body").animate({scrollTop: offset.top});
+    };
+
+    function productInquiry_scroll_move() {
+        let offset = $("#productInquiry").offset();
+        $("html, body").animate({scrollTop: offset.top});
+    };
+
+    function productDetail_scroll_move() {
+        let offset = $("#productDetail").offset();
+        $("html, body").animate({scrollTop: offset.top});
+    };
+
     $('.carousel-inner > div:nth-child(1)').addClass('active');
     $('.carousel-indicators > button:nth-child(1)').addClass('active');
 
@@ -636,29 +743,29 @@
                 img.height = 100;
                 document.querySelector("div #myform").appendChild(img);
             };
-
-            console.log(image);
             reader.readAsDataURL(image);
         }
     }
 
-    var size = $('p[class = star]').length;
-    for (var i = 0; i < size; i++) {
-        $('p[class = star]').eq(i).attr('id', "star" + i);
+    $(document).ready(function () {
+        var size = $('p[class = star]').length;
+        for (var i = 0; i < size; i++) {
+            $('p[class = star]').eq(i).attr('id', "star" + i);
 
-        $("#star" + i).find(".my_star").filter(function (k, v) {
-            return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
-        });
-    }
+            $("#star" + i).find(".my_star").filter(function (k, v) {
+                return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+            });
+        }
+    })
 
-    var imgSize = $('img[class = img]').length;
+    var imgSize = $('img[class = reviewImage]').length;
     for (var q = 0; q < imgSize; q++) {
-        $('img[class = img]').eq(q).attr('id', "osh" + q);
+        $('img[class = reviewImage]').eq(q).attr('id', "reviewImage" + q);
         $('img[class = modal_content]').eq(q).attr('id', "modal_content" + q);
         $('div[class = modal]').eq(q).attr('id', "modal" + q);
 
         const modal = document.querySelector("#modal" + q);
-        const img = document.querySelector("#osh" + q);
+        const img = document.querySelector("#reviewImage" + q);
         const modal_img = document.querySelector("#modal_content" + q);
         const span = document.querySelector(".close");
 
@@ -672,59 +779,141 @@
         modal.addEventListener('click', () => {
             modalDisplay("none");
         });
-    }
 
-    function modalDisplay(text) {
-        modal.style.display = text;
-    }
-
-
-    let total = 10;
-
-    function moreReview() {
-        let data = '';
-        let nextPage = (total / 10);
-        let productId = [[${productId}]];
-        let url = '/product/moreReview?productId=' + productId + '&page=' + nextPage;
-        $.getJSON(url,
-            function (result) {
-                data = result;
-console.log(data)
-                // $.each(data.toto,function (idx,el){
-                // })
-                $('#tagArea').append(toHtml(data))
-            })
-    }
-
-
-    total += 10;
-    if (data.total < 10) {
-        //TODO
-    }
-
-    function toHtml(data) {
-        for (num = 0; num < 10; num++) {
-            let tagArea = document.getElementById('tagArea');
-            let new_pTag = document.createElement('p');
-            // document.getElementById('tagArea').appendChild(new_pTag)
-
-            new_pTag.setAttribute('class', 'pTag');
-            new_pTag.innerHTML = data.data
-
-            tagArea.appendChild(new_pTag);
-
+        function modalDisplay(text) {
+            modal.style.display = text;
         }
     }
 
 
+    function moreReview() {
+        let nextPage = (totalPage / 10);
+        let data = '';
+        let productId = [[${productId}]];
+        let url = '/product/moreReview?productId=' + productId + '&page=' + nextPage;
+        $.getJSON(url,
+            function (result) {
+                console.log(result.length)
+                $.each(result, function (idx, el) {
+                    let reviewHtml =
+                        `<div class="col-1">
+                            <img src="/img/petSnack.jpg" class="img-fluid">
+                        </div>
+                        <div class="col-1 me-2">
+                            <h6>${result[idx].reviewMember}</h6>
+                            <h6 style="font-size: 0.5rem" class="text-secondary mt-1">${result[idx].reviewDate}</h6>
+                        </div>
+                        <div class="col-2" style="position: center">
+                            <p class="star" id="moreRating">
+                                <a class="my_star" value="1">★</a>
+                                <a class="my_star" value="2">★</a>
+                                <a class="my_star" value="3">★</a>
+                                <a class="my_star" value="4">★</a>
+                                <a class="my_star" value="5">★</a>
+                            </p>
+                        </div>
+                        <div class="col-7" id="imgArea${idx}">
 
+                        </div>
+                        <div class="col text-end">
+                            <a href="#">신고</a>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <div class="me-2">
+                                <h6>상품명</h6>
+                            </div>
+                            <div class="col-3">
+                                <h6 class="opacity-75">${result[idx].reviewProduct}</h6>
+                            </div>
+                        </div>
+                        <div class="review_comment">
+                            <div class="review_content">
+                                <div class="contentStr">
+                                ${result[idx].reviewContent}
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4">`;
+                    $('#tagArea:last').append(reviewHtml);
+
+                    $.each(result[idx].reviewImg, function (index) {
+                        let moreReviewImg = document.createElement('img');
+                        moreReviewImg.width = 100;
+                        moreReviewImg.height = 100;
+                        moreReviewImg.setAttribute('class', 'moreReviewImg');
+                        moreReviewImg.setAttribute('id', 'moreReviewImg');
+                        moreReviewImg.src = '/product/images/' + result[idx].reviewImg[index].storeFileName;
+                        $('#imgArea' + idx).append(moreReviewImg);
+                    })
+
+                    $('#moreRating').attr('value', result[idx].reviewRating);
+                    $('#moreReviewProduct').text(result[idx].reviewProduct);
+                    $('#moreReview').attr('id', 'moreReview' + idx);
+                    var size = $('p[class = star]').length;
+                    for (var i = 0; i < size; i++) {
+                        $('p[class = star]').eq(i).attr('id', "moreRating" + i);
+
+                        $("#moreRating" + i).find(".my_star").filter(function (k, v) {
+                            return $(v).attr("value") <= $("#moreRating" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
+                        });
+                    }
+                })
+                let moreReviewModal = document.createElement('div');
+                moreReviewModal.setAttribute('id', 'modal');
+                moreReviewModal.setAttribute('class', 'modal');
+                $('.imgArea').append(moreReviewModal);
+                let modalClose = document.createElement('span');
+                modalClose.setAttribute('class', 'close');
+                modalClose.textContent = '×'
+                $('.imgArea').append(modalClose);
+                let modalImg = document.createElement('img');
+                modalImg.setAttribute('class', 'modal_content');
+                modalImg.setAttribute('id', 'modal_content');
+                $('.imgArea').append(modalImg);
+
+                var imageSize = $('img[class = moreReviewImg]').length;
+                for (var q = 0; q < imageSize; q++) {
+                    $('img[class = moreReviewImg]').eq(q).attr('id', "moreReviewImg" + q);
+                    $('img[class = modal_content]').eq(q).attr('id', "modal_content" + q);
+                    $('div[class = modal]').eq(q).attr('id', "modal" + q);
+
+                    const modal = document.querySelector("#modal" + q);
+                    const img = document.querySelector("#moreReviewImg" + q);
+                    const modal_img = document.querySelector("#modal_content" + q);
+                    const span = document.querySelector(".close");
+
+                    img.addEventListener('click', () => {
+                        modalDisplay("block");
+                        modal_img.src = img.src;
+                    });
+                    span.addEventListener('click', () => {
+                        modalDisplay("none");
+                    });
+                    modal.addEventListener('click', () => {
+                        modalDisplay("none");
+                    });
+
+                    function modalDisplay(text) {
+                        modal.style.display = text;
+                    }
+                }
+                if (result.length == 0) {
+                    let noMoreReview =
+                        `<div><h6 class="m-lg-1 fs-5 text-center">더 이상 리뷰가 존재하지 않습니다.</h6></div>`;
+                    $('#moreReview').hide();
+                    $('#tagArea:last').append(noMoreReview);
+                }
+            }
+        )
+        totalPage += 10;
+    }
 
 </script>
 <script th:inline="javascript">
 
     const btnMinus = $('#minus');
     const btnPlus = $('#plus');
-    const quantity =$('#quantity');
+    const quantity = $('#quantity');
 
     $(btnMinus).click(function () {
         var $input = $(this).parents().eq(2).find(quantity);
@@ -745,8 +934,9 @@ console.log(data)
     var urlCart = "/cart/add";
     var urlBuy = "/buy/addByProduct";
     var productId = $("#productId").val();
-    var quantityVal  = $("#quantity").val();
-    var param = {"product": productId, "quantity":quantityVal};
+    var quantityVal = $("#quantity").val();
+    var param = {"product": productId, "quantity": quantityVal};
+
     function addCart() {
         alert("실행");
         console.log("product : " + productId);
@@ -756,8 +946,8 @@ console.log(data)
             type: "POST",
             data: JSON.stringify(param),
             dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
+            contentType: "application/json",
+            charset: "UTF-8",
             success: function (data) {
                 alert("장바구니에 상품이 추가 되었음!! ")
             },
@@ -766,17 +956,19 @@ console.log(data)
             }
         });
     }
+
     var product = $("#productId").text();
-    var param2 = {"buyProduct": productId, "buyQuantity":quantityVal};
-    function checkout(){
+    var param2 = {"buyProduct": productId, "buyQuantity": quantityVal};
+
+    function checkout() {
         alert("실행");
         $.ajax({
             url: "/direct/checkout",
             type: "POST",
             data: JSON.stringify(param2),
             dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
+            contentType: "application/json",
+            charset: "UTF-8",
             success: function (data) {
                 // location.href="http://localhost:8088/direct/checkout/"+[[product]];
             },

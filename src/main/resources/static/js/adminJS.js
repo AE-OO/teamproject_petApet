@@ -4,6 +4,7 @@ $(document).ready(function () {
     movePage();
     setOutOfStock()
 
+    //faq 삭제 버튼 클릭
     $(".deleteFAQ").click(function () {
         var id = $(this).attr("id");
 
@@ -13,13 +14,14 @@ $(document).ready(function () {
                 url: "/admin/deleteFAQ/" + id,
                 type: "get",
                 success() {
-                    location.href="/admin/adminPage";
+                    location.href = "/admin/adminPage";
                 }
             })
         }
     });
 
-    $(".communityModal").click(function(){
+    //커뮤니티 관리 부분의 버튼 클릭 시 모달 뜨게
+    $(".communityModal").click(function () {
         var communityId = $(this).attr("id");
 
         $(".communityDelete").empty();
@@ -33,24 +35,24 @@ $(document).ready(function () {
         $("#confirmCommunityDeleteModal").modal('show');
     });
 
-    $(".confirmCommunityDelete").click(function(){
-       var communityId = $(this).attr("id");
-       console.log(communityId);
+    //게시글 삭제 버튼 클릭
+    $(".confirmCommunityDelete").click(function () {
+        var communityId = $(this).attr("id");
+        console.log(communityId);
 
-       $.ajax({
-           url: "/admin/deleteCommunity/" + communityId,
-           type: "get",
-           success(){
+        $.ajax({
+            url: "/admin/deleteCommunity/" + communityId,
+            type: "get",
+            success() {
                 $("#" + communityId).empty();
-               // location.href="/admin/adminPage";
-           }, error(){
-               $("#" + communityId).empty();
-               // location.href="/admin/adminPage";
-           }
-       })
+            }, error() {
+                $("#" + communityId).empty();
+            }
+        })
     });
 
-    $(".memberModal").click(function(){
+    //회원관리 부분의 버튼 클릭시 모달 뜨게
+    $(".memberModal").click(function () {
         var memberId = $(this).attr("id");
 
         $(".memberDelete").empty();
@@ -65,35 +67,37 @@ $(document).ready(function () {
         $("#confirmMemberDeleteModal").modal('show');
     });
 
-    $(".confirmDisabledMember").click(function(){
-       var memberId = $(this).attr("id");
-       console.log(memberId);
+    //회원 정지 버튼 클릭
+    $(".confirmDisabledMember").click(function () {
+        var memberId = $(this).attr("id");
+        console.log(memberId);
 
-       $.ajax({
-           url: "/admin/disabledMember/" + memberId,
-           type: "get",
-           success() {
-               location.reload();
-           }
-       })
+        $.ajax({
+            url: "/admin/disabledMember/" + memberId,
+            type: "get",
+            success() {
+                location.reload();
+            }
+        })
     });
 
-    $(".confirmMemberDelete").click(function(){
-       var memberId = $(this).attr("id");
-       console.log(memberId);
+    //회원 강제탈퇴 버튼 클릭
+    $(".confirmMemberDelete").click(function () {
+        var memberId = $(this).attr("id");
+        console.log(memberId);
 
-       $.ajax({
-           url: "/admin/deleteMember/" + memberId,
-           type: "get",
-           success() {
-               location.reload();
-           }, error(){
-               location.reload();
-           }
-       })
+        $.ajax({
+            url: "/admin/deleteMember/" + memberId,
+            type: "get",
+            success() {
+                location.reload();
+            }, error() {
+                location.reload();
+            }
+        })
     });
 
-    $(".setProductStatus").click(function(){
+    $(".setProductStatus").click(function () {
         var productId = $(this).attr("value");
         var selectedStatus = $(this).parent().parent().find("select[name=productStatus]").val();
         var productStock = $(this).parent().parent().find("input[name=productStock]").val();
@@ -101,68 +105,102 @@ $(document).ready(function () {
         $.ajax({
             url: "/admin/updateProductStatus/" + productId,
             type: "get",
-            data: {status : selectedStatus, stock : productStock},
-            success(){
-                location.href="/admin/adminPage";
+            data: {status: selectedStatus, stock: productStock},
+            success() {
+                location.href = "/admin/adminPage";
             }
         })
     });
 
-    $(".acceptCommunityReportBtn").click(function(){
-        var reportId = $(this).parent().parent().find("td[id=communityReportId]").text();
-        var communityId = $(this).parent().parent().find("td[id=communityId]").text();
+    //신고 승인 버튼 클릭
+    $("#acceptReportBtn").click(function () {
+        console.log($("#modalTargetId").val());
 
+        if ($("#modalTargetType").val() === "community") {
+            $.ajax({
+                url: "/admin/acceptCommunityReport/" + $("#modalReportId").val(),
+                data: {communityId: $("#modalTargetId").val()},
+                type: "get",
+                success() {
+                    location.reload();
+                }
+            })
+        } else if ($("#modalTargetType").val() === "product") {
+            $.ajax({
+                url: "/admin/acceptProductReport/" + $("#modalReportId").val(),
+                data: {productId: $("#modalTargetId").val()},
+                type: "get",
+                success() {
+                    location.reload();
+                }
+            })
+        } else {
+            $.ajax({
+                url: "/admin/acceptMemberReport/" + $("#modalReportId").val(),
+                data: {memberId: $("#modalTargetId").val()},
+                type: "get",
+                success() {
+                    location.reload();
+                }
+            })
+        }
+    });
+
+    //신고 반려 버튼 클릭
+    $("#cancelReportBtn").click(function () {
         $.ajax({
-            url: "/admin/acceptCommunityReport/" + reportId,
-            data: {communityId : communityId},
-            type: "get",
-            success(){
+            url: "/admin/refuseReport/" + $("#modalReportId").val(),
+            type: "post",
+            success() {
                 location.reload();
             }
         })
     });
 
-    $(".acceptMemberReportBtn").click(function(){
-       var reportId = $(this).parent().parent().find("td[id=memberReportId]").text();
-       var memberId = $(this).parent().parent().find("td[id=memberId]").text();
-
+    $("#acceptCompanyJoinBtn").click(function(){
        $.ajax({
-           url: "/admin/acceptMemberReport/" + reportId,
-           data: {memberId : memberId},
-           type: "get",
+           url: "/acceptJoinCompany/" + $("#modalCompanyId").val(),
+           type: "post",
            success(){
-               location.reload();
+                location.reload();
            }
        })
     });
 
-    $(".acceptProductReportBtn").click(function(){
-        var reportId = $(this).parent().parent().find("td[id=productReportId]").text();
-        var productId = $(this).parent().parent().find("td[id=productId]").text();
-
+    $("#refuseCompanyJoinBtn").click(function(){
         $.ajax({
-            url: "/admin/acceptProductReport/" + reportId,
-            data: {productId : productId},
-            type: "get",
+            url: "/email/sendRefuseReason",
+            type: "post",
+            data: {companyId : $("#modalCompanyId").val(), reason : $("#refuseReasonJoinCompany option:selected").val()},
             success(){
-                location.reload();
+                alert("메일을 전송했습니다.");
+                $.ajax({
+                    url: "/refuseJoinCompany/" + $("#modalCompanyId").val(),
+                    type: "post",
+                    success(){
+                        location.reload();
+                    }
+                })
             }
         })
-    });
+    })
 })
 
-function reportColor(){
-    if($("#report").text() >= 3)
+//신고수가 3 이상이 되면 글씨 빨갛게 바꾸기 - 동작안함
+function reportColor() {
+    if ($("#report").text() >= 3) {
         $("#report").attr("class", "text-danger");
+    }
 }
 
-function setOutOfStock(){
+
+function setOutOfStock() {
     var size = $("input[name=productStock]").length;
     var productIdList = [];
 
-    if(size > 0){
-        for(i = 0; i < size; i++){
-            if($("input[name=productStock]").eq(i).val() === '0'){
+    if (size > 0) {
+        for (i = 0; i < size; i++) {
+            if ($("input[name=productStock]").eq(i).val() === '0') {
                 productIdList.push(i);
             }
         }
@@ -170,7 +208,7 @@ function setOutOfStock(){
         $.ajax({
             url: "/admin/setOutOfStock",
             type: "get",
-            data: {productIdList : productIdList},
+            data: {productIdList: productIdList},
             success: function () {
             }
         })
@@ -178,42 +216,92 @@ function setOutOfStock(){
 }
 
 //스크롤 위치를 따라 이동하는 사이드바 구현
-function moveSideBar(){
+function moveSideBar() {
     $('.float_sidebar').css('position', 'relative').css('z-index', '1');
 
-    $(window).scroll(function(){
+    $(window).scroll(function () {
         yPosition = $(window).scrollTop();  //스크롤의 현재 위치
         if (yPosition < 0) {
             yPosition = 0;
         }
-        $('.float_sidebar').animate({"top":yPosition }, {duration: 700, easing: 'linear', queue:false});
+        $('.float_sidebar').animate({"top": yPosition}, {duration: 700, easing: 'linear', queue: false});
     });
 }
 
 //페이지 내 이동 구현
-function movePage(){
-    $('#goInquiryManage').click(function(){
+function movePage() {
+    $('#goInquiryManage').click(function () {
         var offset = $('#inquiryManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 
-    $('#goReportManage').click(function(){
+    $('#goReportManage').click(function () {
         var offset = $('#reportManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 
-    $('#goProductManage').click(function(){
+    $('#goProductManage').click(function () {
         var offset = $('#productManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 
-    $('#goCommunityManage').click(function(){
+    $('#goCommunityManage').click(function () {
         var offset = $('#communityManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
     });
 
-    $('#goMemberManage').click(function(){
+    $('#goMemberManage').click(function () {
         var offset = $('#memberManage').offset();
-        $('html').animate({scrollTop : offset.top}, 400);
+        $('html').animate({scrollTop: offset.top}, 400);
+    });
+}
+
+//신고사유 모달
+function getReportReason(targetId, type) {
+    $.getJSON("/admin/getReportReason/" + targetId + "/" + type, function (data) {
+        //클릭한 승인버튼에 맞는 신고 사유를 모달에 출력함 (이하 2줄)
+        $("#reportReason").val(data.report.reportReason);
+        $("#reportDetailReason").text(data.report.reportReasonDetail);
+
+        //히든 값으로 리포트아이디, 타입, 신고대상의 아이디를 모달에 넘겨줌 (이하 8줄)
+        $("#modalReportId").val(data.report.reportId);
+        $("#modalTargetType").val(type);
+
+        if (type === "product" || type === "community") {
+            $("#modalTargetId").val(data.report.targetLongId);
+        } else {
+            $("#modalTargetId").val(data.report.targetStringId);
+        }
+    });
+}
+
+//사업자 정보 불러오는 모달
+function getCompanyInfo(companyId){
+    $.getJSON("/getCompanyInfo/" + companyId, function(data){
+        $("#modalCompanyName").val(data.companyName);
+        $("#modalCompanyId").val(data.companyId);
+        $("#modalCompanyPhoneNum").val(data.companyPhoneNum);
+        $("#modalCompanyEmail").val(data.companyEmail);
+        $("#modalCompanyNumber").val(data.companyNumber);
+
+        //사업자 번호 상태확인
+        var number = {
+            "b_no": [data.companyNumber] //사업자 번호 받아옴
+        };
+
+        $.ajax({
+            url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=svcYNFjOh38o5jqJ7WAjnGxrQbGB7iFHkuLaWMdiulZa61RK3DpXgaFdClE%2F6xNkMEusenNBIBj5%2BoFIDCGiiw%3D%3D",
+            type: "POST",
+            data: JSON.stringify(number),
+            dataType: "JSON",
+            contentType: "application/json",
+            accept: "application/json",
+            success: function(result) {
+                $("#modalCompanyNumberConfirm").val(result.data[0].tax_type);  //국세청에 등록되어있는 사업자번호인지 확인
+            },
+            error: function(result) {
+                console.log(result.responseText);
+            }
+        });
     });
 }

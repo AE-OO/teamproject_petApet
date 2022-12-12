@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService{
@@ -87,5 +90,22 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public void deleteCompany(String companyId) {companyRepository.deleteById(companyId);}
+
+    //22.11.25 박채원 추가
+    @Override
+    public List<CompanyDTO> getCompanyList() {
+        List<Company> result = companyRepository.getCompaniesByActivatedIsFalse();
+        return result.stream().map(company -> CompanyDTO.getListFromEntity(company)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void acceptJoinCompany(String companyId) {
+        companyRepository.acceptJoinCompany(companyId);
+    }
+
+    @Override
+    public void refuseJoinCompany(String companyId) {
+        companyRepository.deleteById(companyId);
+    }
 
 }

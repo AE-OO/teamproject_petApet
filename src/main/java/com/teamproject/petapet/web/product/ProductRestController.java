@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.product;
 
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.product.ReviewRepository;
+import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -16,9 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -42,7 +42,7 @@ public class ProductRestController {
         try {
             InputStream fileStream = multipartFile.getInputStream();
             org.apache.commons.io.FileUtils.copyInputStreamToFile(fileStream, targetFile);
-            jsonObject.append("url", saveUrl + savedFileName);// 저장할 내부 폴더명 + 파일명
+            jsonObject.append("url", "/product/images/" + savedFileName);// 저장할 내부 폴더명 + 파일명
             jsonObject.append("responseCode", "success");
 
         } catch (IOException e) {
@@ -55,25 +55,19 @@ public class ProductRestController {
     }
 
     @GetMapping("/moreReview")
-    public List<Review> loadMoreReviewSlice(@RequestParam("productId") Long productId,
+    public List<ReviewDTO> loadMoreReviewSlice(@RequestParam("productId") Long productId,
                                             @RequestParam("page") Integer page) {
-        log.info("loadMoreReviewSlice start");
-        log.info("productId={}", productId);
-        log.info("page={}", page);
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(page, 10, sort);
-        JSONObject jsonObject = new JSONObject();
-        Slice<Review> test = reviewRepository.test(productId, pageable);
-        log.info("size={}", test.getContent().size());
-        List<Review> content = test.getContent();
-        content.forEach(i -> {
-            jsonObject.append("toto", i);
-            log.info("result={}", i.getReviewId());
-        });
-//IntStream.rangeClosed(0,9).forEach(i->{
-//    jsonObject.append("toto",content.get(i));
-//});
-        return content;
+        Slice<Review> requestMoreReview = reviewRepository.requestMoreReview(productId, pageable);
+        return requestMoreReview.stream().map(m -> ReviewDTO.builder().reviewTitle(m.getReviewTitle())
+                .reviewContent(m.getReviewContent())
+                .reviewDate(m.getReviewDate())
+                .reviewRating(m.getReviewRating())
+                .reviewMember(m.getMember().getMemberId())
+                .reviewProduct(m.getProduct().getProductName())
+                .reviewImg(m.getReviewImg())
+                .build()).collect(Collectors.toList());
 
     }
 }

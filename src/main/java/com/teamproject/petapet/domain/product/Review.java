@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
+import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -53,4 +54,15 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
+
+    public ReviewDTO toReviewDTO(Review review){
+        return ReviewDTO.builder().reviewImg(review.getReviewImg())
+                .reviewRating(review.getReviewRating())
+                .reviewDate(review.getReviewDate())
+                .reviewContent(review.getReviewContent())
+                .reviewTitle(review.getReviewTitle())
+                .reviewMember(review.getMember().getMemberId())
+                .reviewProduct(review.getProduct().getProductName())
+                .build();
+    }
 }

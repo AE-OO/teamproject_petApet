@@ -3,7 +3,7 @@ $(document).ready(function () {
         var reportProductDTO = {
             reportReason : $("#reportProductReason option:selected").val(),
             reportReasonDetail : $("textarea[name=reportProductReasonDetail]").val(),
-            productId : $("input[name=productId]").val()
+            productId : $("#productId").val()
         }
 
         $.ajax({
@@ -20,10 +20,11 @@ $(document).ready(function () {
     });
 
     $("#reportMemberBTN").click(function(){
+        //리뷰 여러개일때 잘 동작하는지 확인하기
         var reportMemberDTO = {
             reportReason : $("#reportMemberReason option:selected").val(),
             reportReasonDetail : $("textarea[name=reportMemberReasonDetail]").val(),
-            memberId : $("input[name=memberId]").val()
+            memberId : $("#memberId").text()
         }
 
         $.ajax({
