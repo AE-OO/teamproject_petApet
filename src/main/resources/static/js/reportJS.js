@@ -33,7 +33,6 @@ $(document).ready(function () {
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 if(result === 'success'){
-
                     alert("회원을 신고하였습니다.");
                 }
             }
