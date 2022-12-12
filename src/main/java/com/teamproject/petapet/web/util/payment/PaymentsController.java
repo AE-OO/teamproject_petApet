@@ -47,7 +47,7 @@ public class PaymentsController {
     public String getPayment2(@PathVariable("idx") Long productId, Model model,
                               Principal principal, HttpServletRequest request, HttpSession httpSession){
         Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
-        String loginMember = checkMember(principal, request, httpSession);
+        String loginMember = checkMember(principal);
         Member member = memberService.findOne(loginMember);
         model.addAttribute("product", product);
         model.addAttribute("member", member);
@@ -57,7 +57,7 @@ public class PaymentsController {
     @ResponseBody
     @RequestMapping(value = "/direct/checkout/{idx}", method = { RequestMethod.POST }, produces = "application/json")
     public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId, Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) {
-        String loginMember = checkMember(principal, request, httpSession);
+        String loginMember = checkMember(principal);
         Long getProduct = vo.getBuyProduct();
         Member member = memberService.findOne(loginMember);
         Product product = productService.findOne(getProduct).orElseThrow(NoSuchElementException::new);
@@ -71,7 +71,7 @@ public class PaymentsController {
     @ResponseBody
     @RequestMapping(value = "/checkout", method = { RequestMethod.POST }, produces = "application/json")
     public void buySuccess(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
-        String loginMember = checkMember(principal, request, httpSession);
+        String loginMember = checkMember(principal);
         Buy buy = new Buy(
                 vo.getBuyAddress(),
                 memberService.findOne(loginMember),
@@ -88,7 +88,7 @@ public class PaymentsController {
     @ResponseBody
     @RequestMapping(value = "/checkout2", method = { RequestMethod.POST }, produces = "application/json")
     public void buySuccess2(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
-        String loginMember = checkMember(principal, request, httpSession);
+        String loginMember = checkMember(principal);
         Buy buy = new Buy(
                 vo.getBuyAddress(),
                 memberService.findOne(loginMember),
@@ -101,11 +101,8 @@ public class PaymentsController {
         log.info("메일 전송 완료");
     }
 
-    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
-        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
-        HttpSession session = request.getSession(false);
-        Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        return loginMemberSession.getMemberId();
+    private String checkMember(Principal principal) {
+        return memberService.findOne(principal.getName()).getMemberId();
     }
 
 }

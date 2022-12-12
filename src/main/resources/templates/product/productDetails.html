@@ -87,15 +87,17 @@
                 </div>
                 <div class="row m-lg-3 col-6">
                     <h6>판매자</h6>
-                    <h6 th:text="*{productStock}">재고</h6>
+                    <h6 th:text="*{productStock}" id="remainStock">재고</h6>
+                    <th:block th:if="*{productStock <= 10}">
+                    <h6 class="text-secondary" th:text="|*재고가 *{productStock}개 남았습니다*|"></h6>
+                    </th:block>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
             <div class="d-flex flex-row m-lg-3">
                 <div class="col-4">
                     <div class="m-lg-2 d-flex">
-                        <div class="col-9">
-                            <!-- 추가 -->
+                        <div class="col-9" id="quantityInputBox">
                             <input id="productId" type="hidden" th:value="*{productId}"/>
                             <input id="quantity" type="text" style="height: 100%" class="col-12" value="1" maxlength="6"
                                    autocomplete="off">
@@ -164,7 +166,7 @@
                         style="background-color: white"> 상품상세
                 </button>
                 <button onclick="review_scroll_move()" class="btn text-dark col-3" style="background-color: white">
-                    상품평([[${countReview}]])
+                    상품평([[${findProduct.productReviewCount}]])
                 </button>
                 <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"
                         style="background-color: white"> 상품문의
@@ -195,7 +197,7 @@
     <div class="d-flex flex-row">
         <div class="btn-group col-12">
             <button onclick="productDetail_scroll_move()" class="btn text-dark col-3"> 상품상세</button>
-            <button onclick="review_scroll_move()" class="btn text-dark col-3"> 상품평([[${countReview}]])</button>
+            <button onclick="review_scroll_move()" class="btn text-dark col-3">상품평([[${findProduct.productReviewCount}]])</button>
             <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"> 상품문의</button>
             <button onclick="shipping_scroll_move()" class="btn text-dark col-3"> 배송/교환/반품</button>
         </div>
@@ -270,6 +272,7 @@
         <div>
             <div class="d-flex flex-row pb-3 px-3">
                 <div class="d-flex flex-column flex-fill">
+                    <th:block th:if="${!reviews.hasContent()}">등록된 상품평이 없습니다.</th:block>
                     <article id="review" class="row justify-content-start" th:each="review : ${reviews}">
                         <div class="col-1">
                             <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
@@ -950,8 +953,17 @@
 
     $(btnPlus).click(function () {
         var $input = $(this).parents().eq(2).find(quantity);
-        $input.val(parseInt($input.val()) + 1);
-        $input.change();
+        let remainStock = $('#remainStock').text();
+        let quantityVal = $("#quantity").val();
+        if (parseInt(quantityVal) < parseInt(remainStock)){
+            $input.val(parseInt($input.val()) + 1);
+            $input.change();
+        } else{
+            const excessQuantityHtml = `
+            <h6 class="text-secondary osh">재고가 부족합니다</h6>`;
+            $('.osh').remove()
+            $('#quantityInputBox').append(excessQuantityHtml);
+        }
         console.log("더하기 >>", $input.val());
     });
 
