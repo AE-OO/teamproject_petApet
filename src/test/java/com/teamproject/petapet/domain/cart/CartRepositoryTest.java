@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -49,10 +50,7 @@ class CartRepositoryTest {
     void test1(){
         String dd = "memberA";
         List<Cart> cartByMember1 = cartRepository.findCartByMember(dd);
-        cartByMember1.forEach(i->{
-            System.out.println("i.getCartId() = " + i.getCartId());
-            
-        });
+        cartByMember1.forEach(i-> System.out.println("i.getCartId() = " + i.getCartId()));
     }
 
     @Test
@@ -60,7 +58,7 @@ class CartRepositoryTest {
         String member = "memberA";
         Member memberA = memberService.findOne(member);
         Long product = 1L;
-        Product product1 = productService.findOne(product);
+        Product product1 = productService.findOne(product).orElseThrow(NoSuchElementException::new);
         Cart cart = new Cart(1L,memberA,product1,1L);
         cartRepository.save(cart);
 

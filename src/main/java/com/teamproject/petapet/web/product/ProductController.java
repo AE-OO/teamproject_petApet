@@ -73,16 +73,19 @@ public class ProductController {
     @GetMapping
     public String getProductList(@RequestParam(value = "category", defaultValue = "all") String category,
                                  @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-                                 @RequestParam(value = "size", defaultValue = "4", required = false) Integer size,
+                                 @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
                                  @RequestParam(value = "sortType", defaultValue = "productId", required = false) String sortType,
                                  @RequestParam(value = "searchContent", defaultValue = "false", required = false) String content,
-                                 @RequestParam(value = "rating", defaultValue = "0", required = false)  Long starRating,
+                                 @RequestParam(value = "isPriceRange", defaultValue = "false", required = false) String isPriceRange,
+                                 @RequestParam(value = "minPrice",defaultValue = "", required = false) String minPrice,
+                                 @RequestParam(value = "maxPrice",defaultValue = "", required = false) String maxPrice,
+                                 @RequestParam(value = "rating", defaultValue = "0", required = false) Long starRating,
                                  Model model, Principal principal) {
         Sort sort = getSort(sortType);
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         String property = Objects.requireNonNull(pageable.getSort().get().findFirst().orElse(null)).getProperty();
         ProductType productType = getProductType(category);
-        Page<Product> resultPage = productService.findPage(category, productType, property, content, starRating, pageable);
+        Page<Product> resultPage = productService.findPage(category, productType, property, content, starRating,minPrice,maxPrice,isPriceRange, pageable);
         Page<ProductListDTO> productListDTO = getProductListDTO(principal, resultPage);
 
         model.addAttribute("productList", productListDTO);
@@ -93,6 +96,9 @@ public class ProductController {
         model.addAttribute("starRating", starRating);
         model.addAttribute("sortType", sortType);
         model.addAttribute("searchContent", content);
+        model.addAttribute("isPriceRange", isPriceRange);
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("maxPrice", maxPrice);
         return "product/productList";
     }
 

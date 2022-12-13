@@ -103,6 +103,7 @@
                         <div class="col-6 m-lg-1">
                             <input type="number" th:field="*{productStock}" min="100" max="9999"
                                    class="col-8" id="productStock"
+                                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                    name="productStock" placeholder="재고" required>
                             <span class="validity"></span>
                             <h6 class="text-secondary" id="stockMessage"></h6>

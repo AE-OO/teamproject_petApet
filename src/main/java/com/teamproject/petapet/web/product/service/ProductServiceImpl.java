@@ -46,8 +46,6 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-
-
     @Override
     public Page<Product> getProductPage(Pageable pageable) {
         return productRepository.findAll(pageable);
@@ -108,11 +106,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findPage(String category,ProductType productType, String sortType,String content, Long starRating,Pageable pageable) {
+    public Page<Product> findPage(String category,ProductType productType, String sortType,String content, Long starRating, String minPrice, String maxPrice,String isPriceRange,Pageable pageable) {
         List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, sortType);
         List<Product> productList = jpaQueryFactory.select(product)
                 .from(product)
-                .where(isCategory(productType, category),isContent(content), isRating(starRating))
+                .where(isCategory(productType, category),isContent(content), isRating(starRating), isPriceRange(minPrice,maxPrice,isPriceRange))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(orders.toArray(OrderSpecifier[]::new))
@@ -144,6 +142,15 @@ public class ProductServiceImpl implements ProductService {
     private BooleanExpression isRating(Long rating) {
         if (rating != 0) {
             return product.productRating.goe(rating);
+        }
+        return null;
+    }
+
+    private BooleanExpression isPriceRange(String minPrice, String maxPrice, String isRange) {
+        if (isRange.equals("true")) {
+        Long parsedMinPrice = minPrice.equals("") ? null : Long.parseLong(minPrice);
+        Long parsedMaxPrice = maxPrice.equals("") ? null : Long.parseLong(maxPrice);
+            return product.productPrice.between(parsedMinPrice,parsedMaxPrice);
         }
         return null;
     }
