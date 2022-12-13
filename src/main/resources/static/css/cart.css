@@ -16,7 +16,7 @@ body {
 #pap-left-menu{
     position: fixed;
     display: block;
-    top: 0;
+    top: 80px;
     left: 0;
     width: 150px;
     float: left;
@@ -346,6 +346,7 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
 }
 
 #container{
+    top: 80px;
     position: relative;
     min-width: 980px;
     overflow: hidden;
@@ -447,7 +448,7 @@ a {
 }
 
 .title--1r0ibGcdKC .link_cart--3pmIi7AT5e {
-    padding: 15px;
+    /*padding: 15px;*/
     margin: 0;
     font-size: 20px;
     line-height: 20px;

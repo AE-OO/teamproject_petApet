@@ -21,8 +21,9 @@ public class EmailService {
 
     private final BuyService buyService;
 
+
     public void sendEmailMessage(String email, Long buyId) throws Exception {
-//        String code = createCode(); // 인증코드 생성
+//        String code = createCode(); // <- 인증코드 생성
         Buy buy = buyService.findById(buyId); // 결제메일 맵핑
 
         MimeMessage message = javaMailSender.createMimeMessage();
