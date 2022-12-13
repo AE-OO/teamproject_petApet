@@ -31,16 +31,11 @@ public class CartController {
     /**
      * 회원 장바구니
      * @param principal
-     * @param request
-     * @param httpSession
-     * @param model
      * @return
      * 추가할것 - 로그인한 회원 일치 검증 에러처리
      */
     @GetMapping()
     public String mycart(Principal principal,
-                         HttpServletRequest request,
-                         HttpSession httpSession,
                          Model model){
 
         if(principal != null) {
@@ -59,13 +54,11 @@ public class CartController {
     // 상품 페이지 -> 장바구니 담기
     @ResponseBody
     @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
-    public void productToCart(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
-
-        String loginMember = checkMember(principal);
+    public void productToCart(@RequestBody CartVO vo, Principal principal){
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
-                memberService.findOne(loginMember),
+                memberService.findOne(checkMember(principal)),
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
 
@@ -73,15 +66,14 @@ public class CartController {
 
     }
 
+    // 구매완료 목록 -> 장바구니 재담기 (재구매)
     @ResponseBody
     @RequestMapping(value = "/buyToCart", method = { RequestMethod.POST }, produces = "application/json")
-    public void buyToCart(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
-
-        String loginMember = checkMember(principal);
+    public void buyToCart(@RequestBody CartVO vo, Principal principal){
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
-                memberService.findOne(loginMember),
+                memberService.findOne(checkMember(principal)),
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
 
@@ -89,6 +81,7 @@ public class CartController {
 
     }
 
+    // 상품 개별삭제
     @ResponseBody
     @RequestMapping(value = "/removeOne" , method = { RequestMethod.POST }, produces = "application/json")
     public void removeCartOne(@RequestBody CartVO vo){
@@ -96,25 +89,24 @@ public class CartController {
         cartService.removeCartOne(vo.getCartId());
     }
 
+    // 상품 전체삭제 - 미완
     @ResponseBody
     @RequestMapping(value = "/removeAll", method = {RequestMethod.POST} , produces = "application/json")
-    public void removeCartAll(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
-        String loginMember = checkMember(principal);
+    public void removeCartAll(@RequestBody CartVO vo, Principal principal){
         cartService.removeCartAll(vo.getMemberId());
     }
 
+    // 개별 결제하기
     @ResponseBody
     @RequestMapping(value = "checkout", method = {RequestMethod.POST} , produces = "application/json")
-    public void checkoutOne(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
-        String loginMember = checkMember(principal);
+    public void checkoutOne(@RequestBody CartVO vo, Principal principal){
         cartService.removeCartAll(vo.getMemberId());
     }
 
-
+    // 다중 구매 - 미완
 
     private String checkMember(Principal principal) {
         return memberService.findOne(principal.getName()).getMemberId();
     }
-
 
 }

@@ -34,15 +34,13 @@ public class BuyController {
     private final ProductService productService;
 
 
-    // 나의 주문 목록
+    // 주문 기본 페이지
     @GetMapping()
     public String myBuy(Principal principal,
-                         HttpServletRequest request,
-                         HttpSession httpSession,
                          Model model){
 
         if(principal != null) {
-            String loginMember = checkMember(principal, request, httpSession);
+            String loginMember = checkMember(principal);
 
             List<Buy> buyList = buyService.findAll(loginMember);
             model.addAttribute("buyList", buyList);
@@ -52,12 +50,12 @@ public class BuyController {
         return "login";
     }
 
+    // 상품페이지 -> 주문 (다이렉트 주문)
     @ResponseBody
     @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
-    public void productToBuy(@RequestBody BuyVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
+    public void productToBuy(@RequestBody BuyVO vo, Principal principal){
 
-        String loginMember = checkMember(principal, request, httpSession);
-        Member member = memberService.findOne(loginMember);
+        Member member = memberService.findOne(checkMember(principal));
         log.info("member ={} ", member);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
@@ -71,12 +69,12 @@ public class BuyController {
 
     }
 
+    // 장바구니 -> 주문
     @ResponseBody
     @RequestMapping(value = "/addByCart", method = { RequestMethod.POST }, produces = "application/json")
-    public void cartToBuy(@RequestBody BuyVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession) {
+    public void cartToBuy(@RequestBody BuyVO vo, Principal principal) {
 
-        String loginMember = checkMember(principal, request, httpSession);
-        Member member = memberService.findOne(loginMember);
+        Member member = memberService.findOne(checkMember(principal));
         log.info("member ={} ", member);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
@@ -91,10 +89,8 @@ public class BuyController {
     }
 
 
-    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
-        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
-        HttpSession session = request.getSession(false);
-        Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        return loginMemberSession.getMemberId();
+    private String checkMember(Principal principal) {
+        return memberService.findOne(principal.getName()).getMemberId();
     }
+
 }
