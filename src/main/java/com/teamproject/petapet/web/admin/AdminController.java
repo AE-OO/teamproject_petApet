@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.admin;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
+import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.service.MemberService;
@@ -39,13 +40,13 @@ public class AdminController {
     @GetMapping("/adminPage")
     public String adminPage(Model model){
 
-        model.addAttribute("FAQ", inquiredService.getFAQ());
+        model.addAttribute("notice", communityService.getNotice());
         model.addAttribute("otherInquiry", inquiredService.getOtherInquiries());
         model.addAttribute("communityReport", reportService.getReportCommunityList());
         model.addAttribute("memberReport", reportService.getReportMemberList());
         model.addAttribute("productReport", reportService.getReportProductList());
         model.addAttribute("product", productService.getProductList());
-        model.addAttribute("community", communityService.getProductList());
+        model.addAttribute("community", communityService.getCommunityList());
         model.addAttribute("member", memberService.getMemberList());
         model.addAttribute("company", companyService.getCompanyList());
 
@@ -74,31 +75,28 @@ public class AdminController {
         return "/admin/registerNotice";
     }
 
-    //여기부터
     @PostMapping("/registerNotice") 
-    public String registerNotice(InquiredFAQDTO inquiredFAQDTO){  //여기 수정하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        inquiredService.registerFAQ(inquiredFAQDTO);
+    public String registerNotice(CommunityRequestDTO.registerNotice registerNotice){
+        communityService.registerNotice(registerNotice);
         return "redirect:/admin/adminPage";
     }
 
-    @GetMapping("/updateFAQForm/{FAQId}")
-    public String getOneFAQ(@PathVariable("FAQId") Long FAQId, Model model){
-        model.addAttribute("FAQInfo",inquiredService.getOneFAQ(FAQId));
-        return "/admin/updateFAQ";
+    @GetMapping("/updateNoticeForm/{noticeId}")
+    public String getOneFAQ(@PathVariable("noticeId") Long noticeId, Model model){
+        model.addAttribute("noticeInfo",communityService.getOneNotice(noticeId));
+        return "/admin/updateNotice";
     }
 
-    @PostMapping("/updateFAQ")
-    public String updateFAQ(InquiredFAQDTO inquiredFAQDTO){
-        inquiredService.updateFAQ(inquiredFAQDTO);
+    @PostMapping("/updateNotice")
+    public String updateFAQ(CommunityRequestDTO.registerNotice registerNotice){
+        communityService.updateNotice(registerNotice);
         return "redirect:/admin/adminPage";
     }
 
-    @GetMapping("/deleteFAQ/{FAQId}")
-    public String deleteFAQ(@PathVariable("FAQId") Long FAQId){
-        inquiredService.deleteFAQ(FAQId);
-        return "redirect:/admin/adminPage";
+    @GetMapping("/deleteNotice/{noticeId}")
+    public void deleteFAQ(@PathVariable("noticeId") Long noticeId){
+        communityService.deleteNotice(noticeId);
     }
-    //여기까지 faq를 notice로 수정하기
 
     @GetMapping("/registerProduct")
     public String registerProductForm(){

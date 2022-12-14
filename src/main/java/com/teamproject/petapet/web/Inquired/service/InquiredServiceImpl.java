@@ -48,39 +48,7 @@ public class InquiredServiceImpl implements InquiredService{
     }
 
     @Override
-    public List<Inquired> getFAQ() {
-        return inquiredRepository.getFAQ();
-    }
-
-    @Override
     public List<Inquired> getOtherInquiries() {
         return inquiredRepository.getOtherInquiries();
-    }
-
-    @Override
-    public void registerFAQ(InquiredFAQDTO inquiredFAQDTO) {
-        log.info("========== FAQ 등록 ==========");
-        Inquired inquired = dtoToEntity(inquiredFAQDTO);
-        inquiredRepository.save(inquired);
-    }
-
-    @Override
-    public InquiredFAQDTO getOneFAQ(Long FAQId) {
-        Inquired inquired = inquiredRepository.getOne(FAQId);
-        InquiredFAQDTO inquiredFAQDTO = entityToDTO(inquired);
-        return inquiredFAQDTO;
-    }
-
-    @Override
-    public void updateFAQ(InquiredFAQDTO inquiredFAQDTO) {
-        log.info("========== FAQ 수정 ==========");
-        Inquired inquired = dtoToEntity(inquiredFAQDTO);
-        inquiredRepository.updateFAQ(inquired.getInquiredTitle(), inquired.getInquiredContent(), inquired.getInquiredId());
-    }
-
-    @Override
-    public void deleteFAQ(Long FAQId) {
-        log.info("========== FAQ 삭제 ==========");
-        inquiredRepository.deleteById(FAQId);
     }
 }

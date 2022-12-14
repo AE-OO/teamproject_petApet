@@ -23,36 +23,5 @@ public interface InquiredService {
 
     // 관리자 - VIEW
     Inquired findOne(Long id);
-
-    List<Inquired> getFAQ();
     List<Inquired> getOtherInquiries();
-    void registerFAQ(InquiredFAQDTO inquiredFAQDTO);
-    InquiredFAQDTO getOneFAQ(Long FAQId);
-    void updateFAQ(InquiredFAQDTO inquiredFAQDTO);
-    void deleteFAQ(Long FAQId);
-    default InquiredFAQDTO entityToDTO(Inquired inquired){
-        InquiredFAQDTO inquiredFAQDTO = InquiredFAQDTO.builder()
-                .inquiredId(inquired.getInquiredId())
-                .inquiredTitle(inquired.getInquiredTitle())
-                .inquiredContent(inquired.getInquiredContent())
-                .inquiredCategory(inquired.getInquiredCategory())
-                .memberId(inquired.getMember().getMemberId())
-                .build();
-
-        return inquiredFAQDTO;
-    }
-
-    default Inquired dtoToEntity(InquiredFAQDTO inquiredFAQDTO){
-        Member member = Member.builder().memberId("admin").build();
-
-        Inquired inquired = Inquired.builder()
-                .inquiredId(inquiredFAQDTO.getInquiredId())
-                .inquiredTitle(inquiredFAQDTO.getInquiredTitle())
-                .inquiredContent(inquiredFAQDTO.getInquiredContent())
-                .inquiredCategory("FAQ")
-                .member(member)
-                .build();
-
-        return inquired;
-    }
 }
