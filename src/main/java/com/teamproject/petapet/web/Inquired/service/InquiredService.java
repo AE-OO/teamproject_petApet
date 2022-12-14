@@ -2,8 +2,6 @@ package com.teamproject.petapet.web.Inquired.service;
 
 
 import com.teamproject.petapet.domain.inquired.Inquired;
-import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 
 import java.util.List;
 

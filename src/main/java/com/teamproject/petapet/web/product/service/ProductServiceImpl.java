@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +26,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public List<Product> getProductList() {
-        return productRepository.findAll();
+    public List<Product> getProductList(String companyId) {   //jackson에서 overflowerror남
+        return productRepository.findByCompanyCompanyId(companyId);
     }
 
     @Override

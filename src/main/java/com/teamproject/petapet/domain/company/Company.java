@@ -1,14 +1,13 @@
 package com.teamproject.petapet.domain.company;
 
 import com.teamproject.petapet.domain.member.Authority;
+import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -17,6 +16,7 @@ import static javax.persistence.CascadeType.ALL;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "product")
 @Getter
 public class Company {
 
@@ -44,6 +44,9 @@ public class Company {
     //활성화 컬럼
     @Column(nullable = false)
     private boolean activated;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
+    private List<Product> product;
 
     @OneToMany(mappedBy = "company", cascade = ALL, orphanRemoval = true)
     @Builder.Default

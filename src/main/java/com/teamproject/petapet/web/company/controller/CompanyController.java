@@ -112,4 +112,9 @@ public class CompanyController {
         return "redirect:/company/info";
     }
 
+    @GetMapping("/company/manageProduct")
+    public String manageProduct(){
+        return "/companyPage/manageProduct";
+    }
+
 }

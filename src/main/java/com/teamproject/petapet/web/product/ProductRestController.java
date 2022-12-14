@@ -11,11 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,5 +87,10 @@ public class ProductRestController {
         return getProductMainPageListDTOS(productList);
     }
 
+    //22.12.15 박채원 추가 - 이하 1개 메소드(사업자 마이페이지 구현 위함)
+    @GetMapping("/manageProduct")
+    public ResponseEntity<List<Product>> getProductList(HttpSession session){  //overflow 에러
+        return new ResponseEntity<>(productService.getProductList("*company111"), HttpStatus.OK);
+    }
 
 }

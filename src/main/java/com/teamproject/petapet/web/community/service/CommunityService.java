@@ -1,8 +1,6 @@
 package com.teamproject.petapet.web.community.service;
 
 import com.teamproject.petapet.domain.community.Community;
-import com.teamproject.petapet.domain.inquired.Inquired;
-import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import com.teamproject.petapet.web.community.dto.CommunityDTO;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 

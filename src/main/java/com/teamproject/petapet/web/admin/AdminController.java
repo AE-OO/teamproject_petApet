@@ -1,7 +1,6 @@
 package com.teamproject.petapet.web.admin;
 
 import com.teamproject.petapet.domain.inquired.Inquired;
-import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
@@ -45,7 +44,6 @@ public class AdminController {
         model.addAttribute("communityReport", reportService.getReportCommunityList());
         model.addAttribute("memberReport", reportService.getReportMemberList());
         model.addAttribute("productReport", reportService.getReportProductList());
-        model.addAttribute("product", productService.getProductList());
         model.addAttribute("community", communityService.getCommunityList());
         model.addAttribute("member", memberService.getMemberList());
         model.addAttribute("company", companyService.getCompanyList());

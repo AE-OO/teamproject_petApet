@@ -2,11 +2,9 @@ package com.teamproject.petapet.web.Inquired.service;
 
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.inquired.InquiredRepository;
-import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
