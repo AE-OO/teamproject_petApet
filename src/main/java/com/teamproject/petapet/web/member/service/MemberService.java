@@ -25,6 +25,8 @@ public interface MemberService {
     Member findOne(String memberId);
 
     boolean duplicateCheckMemberId(String memberId);
+    boolean duplicateCheckMemberEmail(String memberEmail);
+    boolean duplicateCheckMemberPhoneNum(String memberPhoneNum);
     Map<String, String> validateHandling(BindingResult bindingResult);
     MemberDTO memberInfo(String memberId);
 
@@ -37,6 +39,8 @@ public interface MemberService {
     String findMemberId (MemberRequestDTO.FindMemberIdDTO findMemberIdDTO);
 
     String findMemberPw (MemberRequestDTO.FindMemberPwDTO findMemberPwDTO);
+
+    String findEmail(String memberId);
 
 
 }

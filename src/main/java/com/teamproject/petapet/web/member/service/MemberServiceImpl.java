@@ -41,7 +41,6 @@ public class MemberServiceImpl implements MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
 
-
     @Override
     public List<Member> getMemberList() {
         return memberRepository.findAll(Sort.by(Sort.Direction.DESC, "memberReport"));
@@ -89,7 +88,6 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(memberId).get();
     }
 
-
     @Transactional
     @Override
     public TokenDTO login(MemberRequestDTO.LoginDTO loginDTO) {
@@ -110,6 +108,16 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(readOnly = true)
     @Override
     public boolean duplicateCheckMemberId(String memberId) {return memberRepository.existsById(memberId);}
+
+    @Override
+    public boolean duplicateCheckMemberEmail(String memberEmail) {
+        return memberRepository.existsByMemberEmail(memberEmail);
+    }
+
+    @Override
+    public boolean duplicateCheckMemberPhoneNum(String memberPhoneNum) {
+        return memberRepository.existsByMemberPhoneNum(memberPhoneNum);
+    }
 
 
     //유효성 검사
@@ -174,11 +182,8 @@ public class MemberServiceImpl implements MemberService {
                 .build().getMemberId();
     }
 
-//    @Override
-//    public boolean findMemberPw(MemberRequestDTO.FindMemberPwDTO findMemberPwDTO) {
-//        return memberRepository.existsMemberByMemberIdAndMemberNameAndMemberPhoneNum(
-//                findMemberPwDTO.getMemberId(),findMemberPwDTO.getMemberName(),findMemberPwDTO.getMemberPhoneNum());
-//    }
+    @Override
+    public String findEmail(String memberId) {return memberRepository.findEmail(memberId);}
 
 
 }

@@ -6,14 +6,12 @@ import com.teamproject.petapet.web.member.dto.TokenDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -113,6 +111,8 @@ public class MemberController {
     @PostMapping("/findMemberPw")
     public String findMemberPw(@Valid MemberRequestDTO.FindMemberPwDTO findMemberPwDTO,BindingResult bindingResult,Model model){
         if (bindingResult.hasErrors()) {
+            System.out.println(findMemberPwDTO.toString());
+
             Map<String, String> validateResult = memberService.validateHandling(bindingResult);
             for (String key : validateResult.keySet()) {
                 model.addAttribute(key, validateResult.get(key));

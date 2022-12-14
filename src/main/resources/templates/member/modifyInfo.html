@@ -5,6 +5,12 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/member/modifyInfo.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css">
+
+    <!-- js -->
+<!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+    <script src="https://fengyuanchen.github.io/cropper/js/cropper.js"></script>
 
 </head>
 <body>
@@ -26,6 +32,75 @@
                                 <div class="mx-auto">
                                     <form action="/member/modifyInfo" method="post">
                                         <div class="row">
+                                            <!-- 프로필 이미지 변경하는 부분(시작) -->
+<!--                                            <div class="col-12">-->
+<!--                                                <div class="card text-center">-->
+<!--                                                    <div class="form-group">-->
+<!--                                                        <input id="image" type="hidden" class="form-control"/>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="card-header">-->
+<!--                                                        프로필 이미지-->
+<!--                                                    </div>-->
+<!--                                                    <div id="current-profile-image" class="mt-3">-->
+<!--                                                        <svg class="rounded"-->
+<!--                                                             width="125" height="125"></svg>-->
+<!--                                                        <img class="rounded"-->
+<!--                                                             width="125" height="125" alt="name" ]/>-->
+<!--                                                    </div>-->
+<!--                                                    <div id="new-profile-image" class="mt-3"></div>-->
+<!--                                                    <div class="card-body">-->
+<!--                                                        <div class="input-group">-->
+<!--                                                            <input type="file" class="form-control" id="profile-image-file">-->
+<!--                                                        </div>-->
+<!--                                                        <div id="new-profile-image-control" class="mt-3 d-grid gap-2">-->
+<!--                                                            <button class="btn btn-outline-primary" type="button" id="cut-button">자르기</button>-->
+<!--                                                            <button class="btn btn-outline-success" type="button" id="confirm-button">확인</button>-->
+<!--                                                            <button class="btn btn-outline-warning" type="button" id="reset-button">취소</button>-->
+<!--                                                        </div>-->
+<!--                                                        <div id="cropped-new-profile-image" class="mt-3"></div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+                                            <!-- 프로필 이미지 변경하는 부분(끝) -->
+
+                                            <!-- memberImg start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+<!--                                                    <label class="myinfo-p col-3">프로필 이미지</label>-->
+                                                    <div class="px-3 py-2 ">
+<!--                                                    <img class="rounded-circle" width="125" height="125" src="/img/profile.jpg">-->
+                                                    <img class="rounded-circle border border-1" width="150" height="150" src="/img/profile.jpg">
+                                                    </div>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Dropdown button
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="dropdown">
+                                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Dropdown link
+                                                        </a>
+
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                        </ul>
+                                                    </div>
+
+
+                                                    <div class="position-absolute rounded-2  px-2 py-1 left-0 top -0 border">
+                                                        <p>test</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberImg end-->
 
                                             <!-- memberId start -->
                                             <div class="col-12">
@@ -124,17 +199,17 @@
                                                     <label for="input-year" class="myinfo-p col-3">생년월일</label>
                                                     <div class="col-9 px-0">
                                                         <input type="text" id="input-year" name="memberBirthday"
-                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               class="form-control d-inline-block w-32 px-3 py-2"
                                                                maxlength="4"
                                                                th:value="${memberDTO.memberBirthday.get(0)}"
                                                                onblur="checkMemberBirthday()" placeholder="년(4자)">
                                                         <input type="text" id="input-month" name="memberBirthday"
-                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               class="form-control d-inline-block w-32 px-3 py-2"
                                                                maxlength="2"
                                                                th:value="${memberDTO.memberBirthday.get(1)}"
                                                                onblur="checkMemberBirthday()" placeholder="월">
                                                         <input type="text" id="input-day"
-                                                               class="form-control d-inline-block w-32-5 px-3 py-2"
+                                                               class="form-control d-inline-block w-32 px-3 py-2"
                                                                maxlength="2" name="memberBirthday"
                                                                th:value="${memberDTO.memberBirthday.get(2)}"
                                                                onblur="checkMemberBirthday()" placeholder="일">
@@ -147,7 +222,6 @@
                                             <!-- memberAddress-->
                                             <div class="col-12">
                                                 <div class="row g-2 mb-2 px-1">
-
                                                     <label class="myinfo-p col-3">주소</label>
                                                     <div class="px-0 col-9">
                                                         <div class="row g-2 pe-1 mb-2">
@@ -300,7 +374,130 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+<!--<script>-->
+<!--    function profileImageUpload(pageUserId, principalId) {-->
+<!--        //-->
+<!--        //-->
+<!--        // if(pageUserId != principalId){-->
+<!--        //     alert("프로필 사진을 수정할 수 없는 유저입니다.");-->
+<!--        //     return;-->
+<!--        // }-->
 
+<!--        $("#userProfileImageInput").click();-->
+
+<!--        $("#userProfileImageInput").on("change", (e) => {-->
+<!--            let f = e.target.files[0];-->
+
+<!--            if (!f.type.match("image.*")) {-->
+<!--                alert("이미지를 등록해야 합니다.");-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // 서버에 이미지를 전송-->
+<!--            let profileImageForm = $("#userProfileImageForm")[0];-->
+
+
+<!--            // FormData 객체를 이용하면 form 태그의 필드와 그 값을 나타내는 일련의 key/value 쌍을 담을 수 있다.-->
+<!--            let formData = new FormData(profileImageForm);-->
+
+<!--            $.ajax({-->
+<!--                type: "put",-->
+<!--                url: `/api/user/profileImage/${principalId}`,-->
+<!--                data: formData,-->
+<!--                contentType: false, // 필수 : x-www-form-urlencoded로 파싱되는 것을 방지-->
+<!--                processData: false,  // 필수: contentType을 false로 줬을 때 QueryString 자동 설정됨. 해제-->
+<!--                enctype: "multipart/form-data",-->
+<!--                dataType: "text"-->
+<!--            }).done(res=>{-->
+<!--                alert(res);-->
+<!--                location.href = `/user/profile/${principalId}`;-->
+<!--            }).fail(error=>{-->
+<!--                alert(error.responseText);-->
+<!--            });-->
+
+
+<!--        });-->
+<!--    }-->
+<!--</script>-->
+
+<!-- 프로필 이미지 잘라내기 스크립트(시작) -->
+<!--<link href="/node_modules/cropper/dist/cropper.min.css" rel="stylesheet"/>-->
+<!--<script src="/node_modules/cropper/dist/cropper.min.js"></script>-->
+<!--<script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>-->
+<script type="application/javascript">
+    $(function () {
+        cropper = '';
+        let $confirmBtn = $("#confirm-button");
+        let $resetBtn = $("#reset-button");
+        let $cutBtn = $("#cut-button");
+        let $newProfileImage = $("#new-profile-image");
+        let $currentProfileImage = $("#current-profile-image");
+        let $resultImage = $("#cropped-new-profile-image");
+        let $profileImage = $("#image");
+
+        // $newProfileImage.hide();
+        // $cutBtn.hide();
+        // $resetBtn.hide();
+        // $confirmBtn.hide();
+
+        $("#profile-image-file").change(function (e) {
+            if (e.target.files.length === 1) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    if (e.target.result) {
+                        let img = document.createElement("img");
+                        img.id = 'new-profile';
+                        img.src = e.target.result;
+                        img.width = 250;
+
+                        $newProfileImage.html(img);
+                        $newProfileImage.show();
+                        $currentProfileImage.hide();
+
+                        let $newImage = $(img);
+                        $newImage.cropper({aspectRatio: 1});
+                        cropper = $newImage.data('cropper');
+
+                        // $cutBtn.show();
+                        // $confirmBtn.hide();
+                        // $resetBtn.show();
+                    }
+                };
+
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        $resetBtn.click(function () {
+            $currentProfileImage.show();
+            $newProfileImage.hide();
+            $resultImage.hide();
+            $resetBtn.hide();
+            $cutBtn.hide();
+            $confirmBtn.hide();
+            $profileImage.val('');
+        });
+
+        $cutBtn.click(function () {
+            let dataUrl = cropper.getCroppedCanvas().toDataURL();
+            let newImage = document.createElement("img");
+            newImage.id = "cropped-new-profile-image";
+            newImage.src = dataUrl;
+            newImage.width = 125;
+            $resultImage.html(newImage);
+            $resultImage.show();
+            $confirmBtn.show();
+
+            $confirmBtn.click(function () {
+                $newProfileImage.html(newImage);
+                $cutBtn.hide();
+                $confirmBtn.hide();
+                $profileImage.val(dataUrl);
+            });
+        });
+    });
+</script>
+<!-- 프로필 이미지 잘라내기 스크립트(끝) -->
 </body>
 
 </html>

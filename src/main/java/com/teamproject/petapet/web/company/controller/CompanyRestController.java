@@ -20,6 +20,14 @@ public class CompanyRestController {
     boolean duplicateCheckCompanyId(@RequestParam String companyId) {
         return companyService.duplicateCheckCompanyId(companyId);
     }
+    @PostMapping("/checkCompanyEmail")
+    boolean duplicateCheckCompanyEmail(@RequestParam String companyEmail) {
+        return companyService.duplicateCheckCompanyEmail(companyEmail);
+    }
+    @PostMapping("/checkCompanyPhoneNum")
+    boolean duplicateCheckCompanyPhoneNum(@RequestParam String companyPhoneNum) {
+        return companyService.duplicateCheckCompanyPhoneNum(companyPhoneNum);
+    }
 
     //비밀번호 확인용
     @PostMapping("/checkCompanyPw")

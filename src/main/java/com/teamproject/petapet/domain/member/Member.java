@@ -51,15 +51,18 @@ public class Member{
     @Column(length = 45)
     private String memberAddress;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false, unique = true)
     private String memberPhoneNum;
 
     @Column(length = 45, nullable = false)
     private String memberName;
 
 //    temp by jo
-    @Column
+    @Column(nullable = false, unique = true)
     private String memberEmail;
+
+    @Column
+    private String memberImg;
 
     @CreationTimestamp
     @Column(updatable = false)

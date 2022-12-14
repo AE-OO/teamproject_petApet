@@ -45,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public int emailSend(String email, String memberId) {
+    public int memberEmailSend(String memberId) {
         String password = getTempPassword();
         memberService.updateMemberPw(memberId, password);
 
@@ -63,7 +63,7 @@ public class EmailServiceImpl implements EmailService {
         msg += "</td></tr></tbody></table></div>";
 
         EmailDTO emailDTO = EmailDTO.builder()
-                .address(email)
+                .address(memberService.findEmail(memberId))
                 .title("petApet 임시비밀번호 안내 이메일입니다.")
                 .message(msg)
                 .build();
@@ -84,7 +84,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public int emailSend(String companyId) {
+    public int companyEmailSend(String companyId) {
         String password = getTempPassword();
         companyService.updateCompanyPw("*"+companyId, password);
 

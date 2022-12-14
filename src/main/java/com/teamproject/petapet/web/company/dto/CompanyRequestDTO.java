@@ -113,7 +113,6 @@ public  class CompanyRequestDTO {
         private String companyName;
 
         @NotBlank(message = "사업자 번호는 필수 입력값입니다.")
-        @DuplicateCompanyNumber
         private String companyNumber;
     }
 

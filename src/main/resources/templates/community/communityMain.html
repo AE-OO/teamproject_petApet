@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 커뮤니티</title>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/member/modifyInfo.js"></script>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css">
+
+    <!-- js -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://fengyuanchen.github.io/cropper/js/cropper.js"></script>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<!-- start feature1 -->
+<div class="container-xxl ">
+        <div class="container py-7">
+<!--            <div class="row">-->
+                <div class="col-12">
+                    <h2 class="text-uppercase">Community</h2>
+                    <h5 class="mt-4 mb-5 text-primary">국가 기술 자격증에 대해 자유롭게 이야기 나누는 공간입니다</h5>
+                    <div class="pull-left">
+                    </div>
+                    <div class="dropdown pull-right">
+                        <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown"
+                                id="dropdownBtn">
+                            말머리<i class="fa fa-chevron-down mx-1"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="#">dropdown item 1</a></li>
+                            <li class="dropdown-item"><a href="#">dropdown item 2</a></li>
+                            <li class="dropdown-item"><a href="#">dropdown item 3</a></li>
+                        </ul>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th class="col-md-1">번호</th>
+                            <th>제목</th>
+                            <th class="col-md-2">글쓴이</th>
+                            <th class="col-md-2">작성일</th>
+                            <th class="col-md-1">조회</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                        </tr>
+                        <tr>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                        </tr>
+                        <tr>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                        </tr>
+                        <tr>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                        </tr>
+                        <tr>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                            <td>ddddd</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button id="writeBtn" class="btn btn-danger float-start" style="margin:20px 0;">글쓰기</button>
+<!--                        <ul class="pagination justify-content-center">-->
+<!--                            <li class="page-item">-->
+<!--                                <a class="page-link" href="#" aria-label="Previous">-->
+<!--                                    <span aria-hidden="true">&laquo;</span>-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                            <li class="page-item">-->
+<!--                                <a class="page-link" href="#" aria-label="Next">-->
+<!--                                    <span aria-hidden="true">&raquo;</span>-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item" disabled="true"><a class="page-link" href="#"  aria-disabled="true" >...</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                        <button class="btn btn-primary float-end" style="margin:20px 0;">내글보기</button>
+
+                    <div class="row mt-3">
+                        <div class="col-2 mx-auto me-1 px-0">
+                            <select class="form-control2">
+                                <option selected>제목+내용</option>
+                                <option>글제목</option>
+                                <option>글작성자</option>
+                            </select>
+                        </div>
+                        <div class="col-3 mx-1 px-0">
+                            <input type="text" class="form-control2">
+                        </div>
+                        <div class="col-1 mx-auto ms-1 px-0">
+                            <button class="btn btn-primary"><i class="fa fa-search m-0"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--        </div>-->
+</div>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+
+</body>
+
+</html>

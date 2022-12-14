@@ -40,6 +40,11 @@ public class MemberRequestDTO {
                 message="생년월일을 다시 확인해주세요.")
         private String memberBirthday;
 
+        @NotBlank(message = "이메일은 필수 입력값입니다.")
+        @Pattern(regexp = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$",
+                message = "형식에 맞게 이메일 주소를 입력해주세요.")
+        private String memberEmail;
+
         @NotBlank(message = "주소는 필수 입력값입니다.")
         private String memberAddress;
 
@@ -67,6 +72,7 @@ public class MemberRequestDTO {
                     .memberGender(memberGender)
                     .memberAddress(memberAddress)
                     .memberBirthday(Date.valueOf(memberBirthday.replace(",","-")))
+                    .memberEmail(memberEmail)
                     .memberName(memberName)
                     .memberPhoneNum(memberPhoneNum)
                     .activated(true)

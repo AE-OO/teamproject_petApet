@@ -30,6 +30,16 @@ public class CompanyServiceImpl implements CompanyService{
     public boolean duplicateCheckCompanyId(String companyId) {
         return companyRepository.existsById("*"+companyId);
     }
+
+    @Override
+    public boolean duplicateCheckCompanyEmail(String companyEmail) {
+        return companyRepository.existsByCompanyEmail(companyEmail);}
+
+    @Override
+    public boolean duplicateCheckCompanyPhoneNum(String companyPhoneNum) {
+        return companyRepository.existsByCompanyPhoneNum(companyPhoneNum);
+    }
+
     @Override
     public boolean checkCompanyPw(String companyId, String companyPw) {
         return passwordEncoder.matches(companyPw, companyRepository.findCompanyPw(companyId));
@@ -64,8 +74,8 @@ public class CompanyServiceImpl implements CompanyService{
                                 "*"+findCompanyPwDTO.getCompanyId(),
                                 findCompanyPwDTO.getCompanyName(),
                                 findCompanyPwDTO.getCompanyNumber())
-                        .orElse("0").replace("*",""))
-                .build().getCompanyId();
+                        .orElse("0"))
+                .build().getCompanyId().replace("*","");
     }
 
     @Override

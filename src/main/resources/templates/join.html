@@ -111,6 +111,18 @@
                         </div>
                         <!-- memberBirthday end -->
 
+                        <!-- memberEmail start -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" id="input-memberEmail" name="memberEmail" class="form-control"
+                                       th:value="${joinDTO.memberEmail}" placeholder="email">
+                                <label for="input-memberEmail">이메일<span class="text-danger">*</span></label>
+                            </div>
+                            <p id="feedback-memberEmail" class="text-start text-danger ps-2 my-1"
+                               th:text="${valid_memberEmail}"/>
+                        </div>
+                        <!--memberEmail end-->
+
                         <!-- memberAddress-->
                         <div class="col-12">
                             <div class="row g-2 mb-2 px-1">

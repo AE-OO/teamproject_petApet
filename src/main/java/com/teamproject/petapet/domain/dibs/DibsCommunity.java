@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.dibs;
 
+import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
@@ -15,18 +16,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude = {"member", "product"})
+@ToString(exclude = {"member", "community"})
 public class DibsCommunity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long dibsCommunityId;
 
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
     @OneToOne
-    @JoinColumn(name = "productId", nullable = false)
-    private Product product;
+    @JoinColumn(name = "communityId", nullable = false)
+    private Community community;
 }

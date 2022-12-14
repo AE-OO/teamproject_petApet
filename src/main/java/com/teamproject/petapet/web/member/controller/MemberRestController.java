@@ -30,6 +30,16 @@ public class MemberRestController {
         return memberService.checkMemberPw(principal.getName(),memberPw);
     }
 
+    @PostMapping("/checkEmail")
+    boolean checkMemberEmail(@RequestParam String memberEmail){
+        return memberService.duplicateCheckMemberEmail(memberEmail);
+    }
+
+    @PostMapping("/checkPhoneNum")
+    boolean checkMemberPhoneNum(@RequestParam String memberPhoneNum){
+        return memberService.duplicateCheckMemberPhoneNum(memberPhoneNum);
+    }
+
     //인증번호 확인용
     @PostMapping("/checkSmsConfirmNum")
     boolean checkSmsConfirmNum(@RequestParam String smsConfirmNum, HttpSession session){

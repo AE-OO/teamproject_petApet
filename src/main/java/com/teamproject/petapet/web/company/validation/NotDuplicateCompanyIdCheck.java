@@ -18,6 +18,6 @@ public class NotDuplicateCompanyIdCheck implements ConstraintValidator<NotDuplic
 
     @Override
     public boolean isValid(String companyId, ConstraintValidatorContext context) {
-        return !companyRepository.existsById(companyId);
+        return !companyRepository.existsById("*"+companyId);
     }
 }
