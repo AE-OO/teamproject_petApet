@@ -31,9 +31,9 @@ class BuyRepositoryTest {
 //            long memberNum = (long) (Math.random() * 30) + 1;
 //
 //            Product product = Product.builder().productId(productId).build();
-//            Member member = Member.builder().memberId("memberId" + memberNum).build();
+//            DuplicateMember member = DuplicateMember.builder().memberId("memberId" + memberNum).build();
 //
-//            Buy buy = Buy.builder().buyAddress("Address....").member(member).product(product).build();
+//            Buy buy = Buy.builder().buyAddress("AddressNotBlank....").member(member).product(product).build();
 //
 //            buyRepository.save(buy);
 //        });
@@ -41,7 +41,7 @@ class BuyRepositoryTest {
 
 //    @Test
 //    void 저장(){
-//        Member memberA = memberService.findOne("memberA");
+//        DuplicateMember memberA = memberService.findOne("memberA");
 //        Product one = productService.findOne(1L);
 //        Buy buy = new Buy("addr",
 //                memberA,

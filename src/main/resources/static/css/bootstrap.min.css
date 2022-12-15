@@ -9473,6 +9473,12 @@ textarea.form-control-lg {
   border-color: rgba(var(--bs-white-rgb), var(--bs-border-opacity)) !important;
 }
 
+.border-black {
+  --bs-border-opacity: 1;
+  border-color: rgba(var(--bs-black-rgb), var(--bs-border-opacity)) !important;
+}
+
+
 .border-1 {
   --bs-border-width: 1px;
 }
@@ -13217,6 +13223,7 @@ ps-7 {
   color: #ff7851;
 }
 .btn-outline-dark {
+  background-color: white;
   color: #343a40;
 }
 .btn-outline-light {

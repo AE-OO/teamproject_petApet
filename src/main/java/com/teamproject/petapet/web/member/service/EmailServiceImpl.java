@@ -18,12 +18,9 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
     private final MemberService memberService;
-
     private final CompanyService companyService;
-
     @Value("${spring.mail.username}")
     private String adminEmail;
-
 
     @Override
     public String getTempPassword() {

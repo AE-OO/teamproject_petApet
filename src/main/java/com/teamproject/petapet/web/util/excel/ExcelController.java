@@ -88,7 +88,7 @@ public class ExcelController {
     }
 
 
-    // Member DB -> Excel
+    // DuplicateMember DB -> Excel
     @GetMapping("/excel1")
     public ResponseEntity<InputStreamResource> downloadExcel(HttpServletResponse response) throws IOException {
 

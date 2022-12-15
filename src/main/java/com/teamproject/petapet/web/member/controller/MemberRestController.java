@@ -2,12 +2,22 @@ package com.teamproject.petapet.web.member.controller;
 
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
+import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.*;
 import java.security.Principal;
+import java.util.UUID;
 
 /**
  * 장사론 22.10.19 작성
@@ -16,7 +26,11 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class MemberRestController {
 
+    @Value("${editor.img.save.url}")
+    private String saveUrl;
+
     private final MemberService memberService;
+    private final FileService fileService;
 
     //아이디 중복검사
     @PostMapping("/checkId")
@@ -55,6 +69,16 @@ public class MemberRestController {
             return memberService.updateMemberPw(principal.getName(), updateMemberPwDTO.getNewMemberPw());
         }
         return 0;
+    }
+
+    @PostMapping("/updateMemberImg")
+    void updateMemberImg(Principal principal,@RequestParam String originalMemberImg,@RequestParam MultipartFile memberImg) throws IOException {
+        System.out.println("aaaaaa");
+        System.out.println(originalMemberImg);
+        System.out.println(fileService.storeFile(memberImg).toString());
+//        if(memberService.getOriginalMemberImg(principal.getName()) != null){
+//        fileService.deleteFile(memberService.getOriginalMemberImg(principal.getName()));
+//           }
     }
 
 }

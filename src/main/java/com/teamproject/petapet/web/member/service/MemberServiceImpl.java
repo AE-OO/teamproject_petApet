@@ -7,6 +7,8 @@ import com.teamproject.petapet.jwt.JwtTokenProvider;
 import com.teamproject.petapet.web.member.validatiion.PasswordEquals;
 import com.teamproject.petapet.web.member.dto.*;
 
+import com.teamproject.petapet.web.product.fileupload.FileService;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -21,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +122,6 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.existsByMemberPhoneNum(memberPhoneNum);
     }
 
-
     //유효성 검사
     @Override
     public Map<String, String> validateHandling(BindingResult bindingResult) {
@@ -148,15 +150,15 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean checkMemberPw(String memberId, String memberPw) {
-        return passwordEncoder.matches(memberPw, memberRepository.findMemberPw(memberId));
+        return passwordEncoder.matches(memberPw, memberRepository.findById(memberId).get().getMemberPw());
     }
 
     @Transactional
     @Override
-    public void updateMemberInfo(String memberId, MemberRequestDTO.UpdateMemberInfo updateMemberInfo) {
+    public void updateMemberInfo(String memberId, MemberRequestDTO.UpdateMemberInfo updateMemberInfo){
         Member member = updateMemberInfo.toEntity();
         memberRepository.updateMember(memberId, member.getMemberBirthday(),member.getMemberPhoneNum(),
-                member.getMemberGender(),member.getMemberAddress());
+                member.getMemberGender(),member.getMemberAddress(),member.getMemberEmail());
     }
 
     @Override
@@ -183,8 +185,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String findEmail(String memberId) {return memberRepository.findEmail(memberId);}
+    public String findEmail(String memberId) {return memberRepository.findById(memberId).get().getMemberEmail();}
 
+    @Override
+    public String getOriginalMemberImg(String memberId) {
+        return memberRepository.findById(memberId).get().getMemberImg();
+    }
 
 }
 

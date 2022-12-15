@@ -4,18 +4,31 @@ import com.teamproject.petapet.jwt.JwtAuthenticationFilter;
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
+import com.teamproject.petapet.web.product.fileupload.FileService;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +41,7 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+    private final FileService fileService;
 
     //회원가입
     @GetMapping("/join")
@@ -111,8 +125,6 @@ public class MemberController {
     @PostMapping("/findMemberPw")
     public String findMemberPw(@Valid MemberRequestDTO.FindMemberPwDTO findMemberPwDTO,BindingResult bindingResult,Model model){
         if (bindingResult.hasErrors()) {
-            System.out.println(findMemberPwDTO.toString());
-
             Map<String, String> validateResult = memberService.validateHandling(bindingResult);
             for (String key : validateResult.keySet()) {
                 model.addAttribute(key, validateResult.get(key));
@@ -135,7 +147,7 @@ public class MemberController {
 
     @PostMapping("/member/modifyInfo")
     public String modifyInfo(Principal principal, @Valid MemberRequestDTO.UpdateMemberInfo updateMemberInfo,
-                             BindingResult bindingResult){
+                             BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             return "redirect:/member/checkInfo";
         }
@@ -157,5 +169,14 @@ public class MemberController {
         return "redirect:/";
     }
 
+    @GetMapping(value = "/image/{memberImg}")
+    public ResponseEntity<Resource> downloadImageV2(@PathVariable String memberImg) throws IOException {
+        String fullPath = fileService.getFullPath(memberImg);
+        MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(fullPath)));
+        UrlResource resource = new UrlResource("file:" + fullPath);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
+                .body(resource);
+    }
 
 }

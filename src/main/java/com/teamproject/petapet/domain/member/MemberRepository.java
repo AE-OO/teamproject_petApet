@@ -37,8 +37,8 @@ public interface MemberRepository extends JpaRepository<Member, String> {
             "on b.age = age.age", nativeQuery = true)
     List<Integer> getAgeList();
 
-    @Query("select m.memberPw from Member m where m.memberId = :memberId")
-    String findMemberPw(String memberId);
+//    @Query("select m.memberPw from Member m where m.memberId = :memberId")
+//    String findMemberPw(String memberId);
 
     @Modifying
     @Transactional
@@ -48,9 +48,10 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Modifying
     @Transactional
     @Query("update Member m " +
-            "set m.memberBirthday=:memberBirthday, m.memberPhoneNum=:memberPhoneNum," +
-            "m.memberGender=:memberGender, m.memberAddress=:memberAddress where m.memberId =:memberId")
-    void updateMember(String memberId, Date memberBirthday, String memberPhoneNum, String memberGender, String memberAddress);
+            "set m.memberBirthday=:memberBirthday, m.memberPhoneNum=:memberPhoneNum, m.memberGender=:memberGender," +
+            "m.memberAddress=:memberAddress, m.memberEmail=:memberEmail where m.memberId =:memberId")
+    void updateMember(String memberId, Date memberBirthday, String memberPhoneNum, String memberGender,
+                      String memberAddress, String memberEmail);
 
     @Modifying
     @Transactional
@@ -60,16 +61,11 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query("select m.memberId from Member m where m.memberName=:memberName and m.memberPhoneNum=:memberPhoneNum")
     Optional<String> findMemberId(String memberName, String memberPhoneNum);
 
-    boolean existsMemberByMemberIdAndMemberNameAndMemberPhoneNum(String memberId, String memberName, String memberPhoneNum);
-
     @Query("select m.memberId from Member m where m.memberId=:memberId and m.memberName=:memberName and m.memberPhoneNum=:memberPhoneNum")
     Optional<String> existMemberId(String memberId, String memberName, String memberPhoneNum);
 
     boolean existsByMemberPhoneNum(String memberPhoneNum);
-
     boolean existsByMemberEmail(String memberEmail);
 
-    @Query("select m.memberEmail from Member m where m.memberId = :memberId")
-    String findEmail(String memberId);
 
 }

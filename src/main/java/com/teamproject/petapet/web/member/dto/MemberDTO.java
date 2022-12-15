@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
 
 import javax.persistence.Column;

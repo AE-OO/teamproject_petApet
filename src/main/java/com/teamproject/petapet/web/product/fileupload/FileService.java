@@ -8,6 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -53,5 +56,19 @@ public class FileService implements WebMvcConfigurer {
     private String extractExt(String originalFilename) {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
+    }
+
+    /**
+     * 22.12.15 장사론 추가
+     * 프로필 이미지 교체 시 기존에 있는 이미지 삭제
+     */
+    public void deleteFile(String storeFileName) {
+        try {
+            Files.delete(Path.of(getFullPath(storeFileName)));
+        } catch (NoSuchFileException e) {
+            System.out.println("삭제하려는 파일/디렉토리가 없습니다");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

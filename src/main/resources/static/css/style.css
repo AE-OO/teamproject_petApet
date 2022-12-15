@@ -613,6 +613,9 @@ ul,li{
     color: var(--bs-gray-700);
 }
 
+.join .dropdown-item:hover{
+    color:#fff;
+}
 
 /* Sidebar */
 .sidebar {

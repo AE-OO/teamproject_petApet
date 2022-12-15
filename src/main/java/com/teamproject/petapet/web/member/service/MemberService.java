@@ -2,8 +2,10 @@ package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.member.dto.*;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import org.springframework.validation.BindingResult;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,8 @@ public interface MemberService {
     String findMemberPw (MemberRequestDTO.FindMemberPwDTO findMemberPwDTO);
 
     String findEmail(String memberId);
+
+    String getOriginalMemberImg(String memberId);
 
 
 }

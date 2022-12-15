@@ -9,6 +9,7 @@ import com.teamproject.petapet.domain.dibs.DibsProduct;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.report.Report;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -61,6 +62,9 @@ public class Member{
     @Column(nullable = false, unique = true)
     private String memberEmail;
 
+//    @ElementCollection
+//    @CollectionTable(name = "MemberImg", joinColumns = @JoinColumn(name = "memberImgId", referencedColumnName = "memberId"))
+//    private List<UploadFile> memberImg;
     @Column
     private String memberImg;
 
@@ -119,7 +123,4 @@ public class Member{
     public void addAuthority(Authority authority) {
         authorities.add(authority);
     }
-
-
-
 }
