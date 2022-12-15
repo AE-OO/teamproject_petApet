@@ -1,34 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
-  <title>petApet - 상품관리</title>
-  <script src="/js/companyPage/manageProduct.js"></script>
-  <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <title>petApet - 상품관리</title>
+    <script src="/js/companyPage/manageProduct.js"></script>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <!-- manageProduct Start -->
 <div class="container-xxl px-0 mx-0">
-  <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
-  <div class="container py-7" style="right:0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row">
+            <h2><b>MY 상품관리</b></h2>
+            <hr>
+        </div>
+        <div class="row mb-3">
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>전체상품 월별 판매량</b></h5>
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>상품별 판매량</b></h5>
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-5">
+                            <h5 class="card-title mb-0" style="float: left;"><b>전체상품관리</b></h5>
+                            <a th:href="@{/product/insert}">
+                                <button type="button" class="btn btn-primary btn-sm" style="float: right;">
+                                    상품등록
+                                </button>
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover text-center">
+                                <thead>
+                                <tr>
+                                    <th class="pl-0  pb-2 border-bottom">상품번호</th>
+                                    <th class="border-bottom pb-2">상품명</th>
+                                    <th class="border-bottom pb-2">분류</th>
+                                    <th class="border-bottom pb-2">가격</th>
+                                    <th class="border-bottom pb-2">재고</th>
+                                    <th class="border-bottom pb-2">판매상황</th>
+                                    <th class="border-bottom pb-2">총판매량</th>
+                                    <th class="border-bottom pb-2">신고수</th>
+                                </tr>
+                                </thead>
+                                <tbody class="productData">
 
-  </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- manageProduct End -->
 
 <!-- Modal start -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header py-5">
-        <h5 class="modal-title mx-auto " id="staticBackdropLabel"></h5>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">확인</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header py-5">
+                <h5 class="modal-title mx-auto " id="staticBackdropLabel"></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <!--Modal end-->
 
