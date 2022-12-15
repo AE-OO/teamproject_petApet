@@ -46,5 +46,9 @@ public interface MemberService {
 
     String getOriginalMemberImg(String memberId);
 
+    void updateMemberImg(String memberId, String memberImg);
+
+    void deleteMemberImg(String memberId);
+
 
 }

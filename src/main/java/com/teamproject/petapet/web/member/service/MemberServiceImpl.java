@@ -192,6 +192,16 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(memberId).get().getMemberImg();
     }
 
+    @Override
+    public void updateMemberImg(String memberId, String memberImg) {
+        Member member = Member.builder().memberId(memberId).memberImg(memberImg).build();
+        memberRepository.updateMemberImg(member.getMemberId(),member.getMemberImg());
+    }
+
+    @Override
+    public void deleteMemberImg(String memberId) {memberRepository.deleteMemberImg(memberId);}
+
+
 }
 
 

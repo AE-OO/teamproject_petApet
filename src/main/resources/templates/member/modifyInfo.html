@@ -6,61 +6,9 @@
     <script src="/js/member/modifyInfo.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
     <script th:inline="javaScript">
-        const basicProfilePath = "/img/profile.jpg";
         let originalMemberEmail = [[${memberDTO.memberEmail}]];
         let originalMemberPhoneNum = [[${memberDTO.memberPhoneNum}]]
         let memberImg = [[${memberDTO.memberImg}]];
-
-        function setThumbnail(event) {
-            let from = Array.from(event.target.files);
-            $('#thumbnailImg').empty();
-            $.each(from, function (idx, el) {
-                let reader = new FileReader();
-                reader.onload = function (event) {
-                    let img = $("#profileImg");
-                    img.attr("src", event.target.result);
-                };
-                reader.readAsDataURL(el);
-            });
-            updateProfile();
-            // $("#basicA").show();
-        }
-        let selectProfile = () => {
-            $("#inputFile").click();
-        }
-        let selectBasicProfile = () => {
-            let img = $("#profileImg");
-            img.attr("src", basicProfilePath);
-            alert($("#inputFile").val(''));
-            // $("#basicA").hide();
-        }
-
-        let updateProfile = () =>{
-            let newMemberImg = $('input[name="memberImg"]').get(0).files[0];
-            let formData = new FormData();
-            formData.append('originalMemberImg', memberImg);
-            formData.append('memberImg', newMemberImg);
-            $.ajax({
-                type: "POST",
-                url: "/updateMemberImg",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
-                    // if (check) {
-                    //     mEmailFeedback().text("이미 가입된 이메일 주소입니다. 다른 이메일을 입력하여 주세요.");
-                    //     return checkResult = false;
-                    // } else {//조건에 맞을 때
-                    //     mEmailFeedback().text("");
-                    //     return checkResult = true;
-                    // }
-                },
-                error: function () {
-                    console.log("통신 오류");
-                    window.location = "member/checkInfo";
-                }
-            });
-        }
     </script>
 </head>
 <body>
@@ -81,10 +29,8 @@
                             <div class="row g-5">
                                 <div class="mx-auto">
                                     <form action="/member/modifyInfo" id="test" method="post" enctype="multipart/form-data">
-                                        <input type="file" id="inputFile" name="memberImg"
-                                               class="form-control visually-hidden"
-                                               accept=".gif, .jpg, .png"
-                                               onchange="setThumbnail(event);">
+                                        <input type="file" id="inputFile" class="form-control visually-hidden"
+                                               accept=".gif, .jpg, .png" onchange="setThumbnail(event);">
                                         <div class="row">
                                             <!-- memberImg start -->
                                             <div class="col-12">

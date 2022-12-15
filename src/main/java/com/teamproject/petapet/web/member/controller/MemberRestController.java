@@ -40,23 +40,23 @@ public class MemberRestController {
 
     //비밀번호 확인용
     @PostMapping("/checkPw")
-    boolean checkMemberPw(Principal principal, @RequestParam String memberPw){
-        return memberService.checkMemberPw(principal.getName(),memberPw);
+    boolean checkMemberPw(Principal principal, @RequestParam String memberPw) {
+        return memberService.checkMemberPw(principal.getName(), memberPw);
     }
 
     @PostMapping("/checkEmail")
-    boolean checkMemberEmail(@RequestParam String memberEmail){
+    boolean checkMemberEmail(@RequestParam String memberEmail) {
         return memberService.duplicateCheckMemberEmail(memberEmail);
     }
 
     @PostMapping("/checkPhoneNum")
-    boolean checkMemberPhoneNum(@RequestParam String memberPhoneNum){
+    boolean checkMemberPhoneNum(@RequestParam String memberPhoneNum) {
         return memberService.duplicateCheckMemberPhoneNum(memberPhoneNum);
     }
 
     //인증번호 확인용
     @PostMapping("/checkSmsConfirmNum")
-    boolean checkSmsConfirmNum(@RequestParam String smsConfirmNum, HttpSession session){
+    boolean checkSmsConfirmNum(@RequestParam String smsConfirmNum, HttpSession session) {
         if (session.getAttribute("smsConfirmNum") != null) {
             return session.getAttribute("smsConfirmNum").toString().equals(smsConfirmNum);
         }
@@ -64,21 +64,21 @@ public class MemberRestController {
     }
 
     @PostMapping("/updateMemberPw")
-    int updateMemberPw(Principal principal,@Valid @RequestBody MemberRequestDTO.UpdateMemberPwDTO updateMemberPwDTO){
-        if(!memberService.checkMemberPw(principal.getName(),updateMemberPwDTO.getNewMemberPw())) {
+    int updateMemberPw(Principal principal, @Valid @RequestBody MemberRequestDTO.UpdateMemberPwDTO updateMemberPwDTO) {
+        if (!memberService.checkMemberPw(principal.getName(), updateMemberPwDTO.getNewMemberPw())) {
             return memberService.updateMemberPw(principal.getName(), updateMemberPwDTO.getNewMemberPw());
         }
         return 0;
     }
 
     @PostMapping("/updateMemberImg")
-    void updateMemberImg(Principal principal,@RequestParam String originalMemberImg,@RequestParam MultipartFile memberImg) throws IOException {
-        System.out.println("aaaaaa");
-        System.out.println(originalMemberImg);
-        System.out.println(fileService.storeFile(memberImg).toString());
-//        if(memberService.getOriginalMemberImg(principal.getName()) != null){
-//        fileService.deleteFile(memberService.getOriginalMemberImg(principal.getName()));
-//           }
+    void updateMemberImg(Principal principal,@RequestParam(required = false) MultipartFile memberImg) throws IOException {
+        fileService.deleteFile(memberService.getOriginalMemberImg(principal.getName()));
+        if (memberImg == null) {
+            memberService.deleteMemberImg(principal.getName());
+        }else {
+            memberService.updateMemberImg(principal.getName(), fileService.storeFile(memberImg).getStoreFileName());
+        }
     }
 
 }

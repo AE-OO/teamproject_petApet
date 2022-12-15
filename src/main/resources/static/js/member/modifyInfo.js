@@ -414,7 +414,55 @@ function checkMemberEmail() {
     }
 }
 
+function setThumbnail(event) {
+    let from = Array.from(event.target.files);
+    $('#thumbnailImg').empty();
+    $.each(from, function (idx, el) {
+        let reader = new FileReader();
+        reader.onload = function (event) {
+            let img = $("#profileImg");
+            img.attr("src", event.target.result);
+        };
+        reader.readAsDataURL(el);
+    });
+    updateProfile();
+    $("#basicA").show();
+}
+let selectProfile = () => {
+    $("#inputFile").click();
+}
+let selectBasicProfile = () => {
+    let img = $("#profileImg");
+    img.attr("src", "/img/profile.jpg");
+    $('#inputFile').val('');
+    updateProfile();
+    $("#basicA").hide();
+}
+
+let updateProfile = () =>{
+    let newMemberImg = $('#inputFile').get(0).files[0];
+    let formData = new FormData();
+    // formData.append('originalMemberImg', memberImg);
+    formData.append('memberImg', newMemberImg);
+    $.ajax({
+        type: "POST",
+        url: "/updateMemberImg",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function () {
+            // alert("수정완");
+        },
+        error: function () {
+            console.log("통신 오류");
+            window.location = "member/checkInfo";
+        }
+    });
+}
 $(document).ready(function () {
+    if(memberImg === "0"){
+        $("#basicA").hide();
+    }
     $("#updateMemberPwBtn").click(function () {
         $("#updateMemberPw").modal('show');
     })
@@ -479,17 +527,6 @@ $(document).ready(function () {
             $("#input-memberPhoneNum").attr("readonly", false);
         }
     });
-
-    // let basicProfileChange = () => {
-    //     if ($("#inputFile").val('') === '') {
-    //         $("#basicA").hide();
-    //     }
-    //     ;
-    //     if ($("#inputFile").val('') !== '') {
-    //         $("#basicA").show();
-    //     }
-    //     ;
-    // }
 
     // 회원정보 수정버튼 - 모든 조건이 만족할 때 submit됨
     $("#modifyBtn").click(function () {

@@ -67,5 +67,14 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     boolean existsByMemberPhoneNum(String memberPhoneNum);
     boolean existsByMemberEmail(String memberEmail);
 
+    @Modifying
+    @Transactional
+    @Query("update Member m set m.memberImg=:memberImg where m.memberId=:memberId")
+    void updateMemberImg(String memberId, String memberImg);
+
+    @Modifying
+    @Transactional
+    @Query("update Member m set m.memberImg=null where m.memberId=:memberId")
+    void deleteMemberImg(String memberId);
 
 }

@@ -147,7 +147,7 @@ public class MemberController {
 
     @PostMapping("/member/modifyInfo")
     public String modifyInfo(Principal principal, @Valid MemberRequestDTO.UpdateMemberInfo updateMemberInfo,
-                             BindingResult bindingResult) throws IOException {
+                             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "redirect:/member/checkInfo";
         }
