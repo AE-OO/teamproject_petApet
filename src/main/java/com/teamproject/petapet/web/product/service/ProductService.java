@@ -2,9 +2,9 @@ package com.teamproject.petapet.web.product.service;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 
 public interface ProductService {
-    List<Product> getProductList(String companyId);
+    List<ProductDTO> getProductList(String companyId);
 
     Page<Product> getProductPage(Pageable pageable);
 

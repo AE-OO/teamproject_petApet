@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -74,6 +75,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Cart> cart;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "companyId")
     private Company company;

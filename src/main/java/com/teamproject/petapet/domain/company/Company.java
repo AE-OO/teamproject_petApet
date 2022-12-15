@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.company;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.teamproject.petapet.domain.member.Authority;
 import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
@@ -45,6 +46,7 @@ public class Company {
     @Column(nullable = false)
     private boolean activated;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
     private List<Product> product;
 

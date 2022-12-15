@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.product.service;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import lombok.RequiredArgsConstructor;
 
 import com.teamproject.petapet.domain.product.ProductType;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.09 작성
@@ -26,8 +28,10 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public List<Product> getProductList(String companyId) {   //jackson에서 overflowerror남
-        return productRepository.findByCompanyCompanyId(companyId);
+    public List<ProductDTO> getProductList(String companyId) {
+        List<Product> productList = productRepository.findAllByCompany_CompanyId(companyId);
+        List<ProductDTO> productDTOList = productList.stream().map(list -> ProductDTO.fromEntityForManageProduct(list)).collect(Collectors.toList());
+        return productDTOList;
     }
 
     @Override

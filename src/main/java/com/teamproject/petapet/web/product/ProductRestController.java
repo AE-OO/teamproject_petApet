@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.product;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.product.repository.ReviewRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -88,9 +90,9 @@ public class ProductRestController {
     }
 
     //22.12.15 박채원 추가 - 이하 1개 메소드(사업자 마이페이지 구현 위함)
-    @GetMapping("/manageProduct")
-    public ResponseEntity<List<Product>> getProductList(HttpSession session){  //overflow 에러
-        return new ResponseEntity<>(productService.getProductList("*company111"), HttpStatus.OK);
+    @GetMapping(value = "/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProductDTO>> getProductList(HttpSession session){
+        return new ResponseEntity<>(productService.getProductList("*company111"), HttpStatus.OK);  //세션에 로그인 정보가 어떻게 들어가있는지 확인하기
     }
 
 }
