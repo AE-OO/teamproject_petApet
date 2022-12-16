@@ -15,4 +15,7 @@ public interface BuyService {
     Buy addBuy(Buy buy);
 
     boolean existsByBuyAndMember(Long buyId, String memberId);
+
+    //박채원 22.12.16 추가
+    List<Integer> getTotalSalesPerMonth(String companyId);
 }

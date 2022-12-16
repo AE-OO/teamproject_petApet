@@ -97,4 +97,11 @@ public class BuyController {
         Member loginMemberSession = (Member) session.getAttribute("loginMember");
         return loginMemberSession.getMemberId();
     }
+
+    @ResponseBody
+    @GetMapping("/getTotalSalesPerMonth")
+    private List<Integer> getTotalSalesPerMonth(){
+        String companyId = "*company111";   //수정하기
+        return buyService.getTotalSalesPerMonth(companyId);
+    }
 }

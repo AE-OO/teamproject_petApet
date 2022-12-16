@@ -3,6 +3,8 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 상품관리</title>
     <script src="/js/companyPage/manageProduct.js"></script>
+    <script src="/js/chart/manageProductChart.js"></script>
+    <script src="/vendors/chart.js/Chart.min.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
 </head>
 <body>
@@ -19,16 +21,16 @@
             <div class="col-lg-6 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><b>전체상품 월별 판매량</b></h5>
-                        <canvas id="pieChart"></canvas>
+                        <h5 class="card-title mb-3"><b>전체상품 월별 판매량</b></h5>
+                        <canvas id="totalSalesPerMonthChart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><b>상품별 판매량</b></h5>
-                        <canvas id="barChart"></canvas>
+                        <h5 class="card-title mb-3"><b>상품별 판매량</b></h5>
+                        <canvas id="productSalesChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -80,18 +82,18 @@
                                 <div class="card">
                                     <div class="card-body" id="detailChart">
                                         <h5 class="card-title"><b>월별 판매량</b></h5>
-                                        <canvas id="barChart"></canvas>
+                                        <canvas id="detailSalesPerMonthChart"></canvas>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-5 grid-margin stretch-card">
-                                <h5 class="mb-2">재고관리</h5>
+                            <div class="col-lg-5 grid-margin stretch-card mt-3">
+                                <h5 class="mb-2"><b>재고관리</b></h5>
                                 <input type="hidden" id="detailProductId">
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" id="detailStock">
                                     <button class="btn btn-primary" type="button" id="detailStockBTN">상품재고반영</button>
                                 </div>
-                                <h5 class="mb-2">판매상황관리</h5>
+                                <h5 class="mb-2"><b>판매상황관리</b></h5>
                                 <div class="input-group mb-3">
                                     <select class="form-select" id="detailStatus">
                                         <option value="판매중">판매중</option>
@@ -138,6 +140,5 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
-
 </body>
 </html>

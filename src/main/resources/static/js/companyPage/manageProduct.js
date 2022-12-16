@@ -32,7 +32,7 @@ function getProductList(){
         var list = '';
         if(result.length > 0){
             $.each(result, function(idx, product) {
-                list = `<tr id="productData`+ idx +`" onclick="showProductDetailInfo(`+ product.productId + `,'` + product.productName + `',` + product.productStock + `,'` + product.productStatus + `')">
+                list += `<tr id="productData`+ idx +`" onclick="showProductDetailInfo(`+ product.productId + `,'` + product.productName + `',` + product.productStock + `,'` + product.productStatus + `')">
                                     <td class="pl-0" id="productId">`+ product.productId +`</td>
                                     <td><a th:href="#">` + product.productName + `</a></td>
                                     <td>` + product.productDiv + `</td>
@@ -42,12 +42,12 @@ function getProductList(){
                                     <td>0</td>
                                     <td>` + product.productReport + `</td>
                                 </tr>`;
-
-                $(".productData").html(list);   //수정하기
             })
         }else{
             $("#noData").text("등록된 상품이 없습니다.");
         }
+
+        $(".productData").html(list);
     })
 }
 
