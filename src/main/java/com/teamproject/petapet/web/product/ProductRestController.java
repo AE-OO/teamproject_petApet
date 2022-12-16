@@ -89,10 +89,20 @@ public class ProductRestController {
         return getProductMainPageListDTOS(productList);
     }
 
-    //22.12.15 박채원 추가 - 이하 1개 메소드(사업자 마이페이지 구현 위함)
+    //22.12.15 박채원 추가 - 이하 3개 메소드(사업자 마이페이지 구현 위함)
     @GetMapping(value = "/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProductDTO>> getProductList(HttpSession session){
         return new ResponseEntity<>(productService.getProductList("*company111"), HttpStatus.OK);  //세션에 로그인 정보가 어떻게 들어가있는지 확인하기
+    }
+
+    @PostMapping("/updateStock/{productId}")
+    public void updateStock(@PathVariable("productId") Long productId, @RequestParam("productStock") Long productStock){
+        productService.updateProductInfo("stock", productId, productStock, null);
+    }
+
+    @PostMapping("/updateStatus/{productId}")
+    public void updateStatus(@PathVariable("productId") Long productId, @RequestParam("productStatus") String productStatus){
+        productService.updateProductInfo("status", productId, null, productStatus);
     }
 
 }

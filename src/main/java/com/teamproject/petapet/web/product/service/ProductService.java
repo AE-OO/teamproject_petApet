@@ -22,6 +22,7 @@ public interface ProductService {
 
     void updateProductStatus(String selectStatus, Long productStock, Long productId);
 
+    void updateProductInfo(String type, Long productId, Long productStock, String productStatus);
     Page<Product> findAllByProductDiv(ProductType productType,Pageable pageable);
 
     void updateProductStatusOutOfStock(List<String> productId);

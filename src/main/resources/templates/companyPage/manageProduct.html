@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-md-12 stretch-card grid-margin">
                 <div class="card">
                     <div class="card-body">
@@ -60,9 +60,56 @@
                                 </tr>
                                 </thead>
                                 <tbody class="productData">
-
                                 </tbody>
                             </table>
+                            <div class="text-center" id="noData"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h5 class="card-title mb-0 float-left"><b id="detailName"></b></h5>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-7 grid-margin stretch-card">
+                                <div class="card">
+                                    <div class="card-body" id="detailChart">
+                                        <h5 class="card-title"><b>월별 판매량</b></h5>
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 grid-margin stretch-card">
+                                <h5 class="mb-2">재고관리</h5>
+                                <input type="hidden" id="detailProductId">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="detailStock">
+                                    <button class="btn btn-primary" type="button" id="detailStockBTN">상품재고반영</button>
+                                </div>
+                                <h5 class="mb-2">판매상황관리</h5>
+                                <div class="input-group mb-3">
+                                    <select class="form-select" id="detailStatus">
+                                        <option value="판매중">판매중</option>
+                                        <option value="판매중지">판매중지</option>
+                                        <option value="재고없음">재고없음</option>
+                                        <option value="단종">단종</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="button" id="detailStatusBTN">판매상황반영</button>
+                                </div>
+                                <div class="float-end">
+                                    <button type="button" class="btn btn-primary" id="productUpdateBTN">
+                                        상품수정
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="productDeleteBTN">
+                                        상품삭제
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

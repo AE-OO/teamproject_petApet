@@ -47,6 +47,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void updateProductStatus(String selectStatus, Long productStock, Long productId) {
         productRepository.updateProductStatus(selectStatus, productStock, productId);
+
+    }
+
+    @Override
+    public void updateProductInfo(String type, Long productId, Long productStock, String productStatus) {
+        if(type.equals("stock")){
+            productRepository.updateProductStock(productStock, productId);
+        }else if(type.equals("status")){
+            productRepository.updateProductStatus(productStatus, productId);
+        }
     }
 
     @Override
