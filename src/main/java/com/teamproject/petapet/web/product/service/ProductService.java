@@ -5,9 +5,9 @@ import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 
 public interface ProductService {
-    List<Product> getProductList();
+    List<ProductDTO> getProductList(String companyId);
 
     Page<Product> getProductPage(Pageable pageable);
 
@@ -25,6 +25,7 @@ public interface ProductService {
 
     void updateProductStatus(String selectStatus, Long productStock, Long productId);
 
+    void updateProductInfo(String type, Long productId, Long productStock, String productStatus);
     Page<Product> findAllByProductDiv(ProductType productType,Pageable pageable);
     void updateProductReviewCount(Long productId, Long reviewCount);
     void updateProductStatusOutOfStock(List<String> productId);

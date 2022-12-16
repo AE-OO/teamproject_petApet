@@ -1,15 +1,12 @@
 package com.teamproject.petapet.web.admin;
 
 import com.teamproject.petapet.domain.inquired.Inquired;
-import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
-import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
+import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
-import com.teamproject.petapet.web.report.dto.ReportProductDTO;
 import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
 import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +39,12 @@ public class AdminController {
     @GetMapping("/adminPage")
     public String adminPage(Model model){
 
-        model.addAttribute("FAQ", inquiredService.getFAQ());
+        model.addAttribute("notice", communityService.getNotice());
         model.addAttribute("otherInquiry", inquiredService.getOtherInquiries());
         model.addAttribute("communityReport", reportService.getReportCommunityList());
         model.addAttribute("memberReport", reportService.getReportMemberList());
         model.addAttribute("productReport", reportService.getReportProductList());
-        model.addAttribute("product", productService.getProductList());
-        model.addAttribute("community", communityService.getProductList());
+        model.addAttribute("community", communityService.getCommunityList());
         model.addAttribute("member", memberService.getMemberList());
         model.addAttribute("company", companyService.getCompanyList());
 
@@ -73,33 +68,32 @@ public class AdminController {
 //        return "redirect:/admin/adminPage";
 //    }
 
-    @GetMapping("/registerFAQ")
-    public String registerFAQForm(){
-        return "/admin/registerFAQ";
+    @GetMapping("/registerNotice")
+    public String registerNoticeForm(){
+        return "/admin/registerNotice";
     }
 
-    @PostMapping("/registerFAQ")
-    public String registerFAQ(InquiredFAQDTO inquiredFAQDTO){
-        inquiredService.registerFAQ(inquiredFAQDTO);
+    @PostMapping("/registerNotice") 
+    public String registerNotice(CommunityRequestDTO.registerNotice registerNotice){
+        communityService.registerNotice(registerNotice);
         return "redirect:/admin/adminPage";
     }
 
-    @GetMapping("/updateFAQForm/{FAQId}")
-    public String getOneFAQ(@PathVariable("FAQId") Long FAQId, Model model){
-        model.addAttribute("FAQInfo",inquiredService.getOneFAQ(FAQId));
-        return "/admin/updateFAQ";
+    @GetMapping("/updateNoticeForm/{noticeId}")
+    public String getOneFAQ(@PathVariable("noticeId") Long noticeId, Model model){
+        model.addAttribute("noticeInfo",communityService.getOneNotice(noticeId));
+        return "/admin/updateNotice";
     }
 
-    @PostMapping("/updateFAQ")
-    public String updateFAQ(InquiredFAQDTO inquiredFAQDTO){
-        inquiredService.updateFAQ(inquiredFAQDTO);
+    @PostMapping("/updateNotice")
+    public String updateFAQ(CommunityRequestDTO.registerNotice registerNotice){
+        communityService.updateNotice(registerNotice);
         return "redirect:/admin/adminPage";
     }
 
-    @GetMapping("/deleteFAQ/{FAQId}")
-    public String deleteFAQ(@PathVariable("FAQId") Long FAQId){
-        inquiredService.deleteFAQ(FAQId);
-        return "redirect:/admin/adminPage";
+    @GetMapping("/deleteNotice/{noticeId}")
+    public void deleteFAQ(@PathVariable("noticeId") Long noticeId){
+        communityService.deleteNotice(noticeId);
     }
 
     @GetMapping("/registerProduct")

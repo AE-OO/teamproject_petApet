@@ -13,6 +13,7 @@
             <div class="portfolio-container">
                 <div class="portfolio-item">
                     <div class="portfolio">
+
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                             <div class="carousel-indicators">
                                 <button type="button" th:each="idx, i : *{productImg}"
@@ -413,7 +414,7 @@
                         </div>
                         <div class="col text-end">
                             <th:block th:if="${#authentication.name != review.member.memberId}">
-                            <button type="button" class="btn btn-outline-primary" id="addMemberReport"
+                            <button type="button" class="btn btn-outline-primary" id="addMemberReport" th:onclick="sendMemberId([[${review.member.memberId}]])"
                                     data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
                                     title="신고">신고
                             </button>
@@ -794,6 +795,7 @@
             </div>
             <div class="modal-body">
                 <h6>신고 사유를 선택해 주세요</h6>
+                <input type="hidden" id="modalMemberId">
                 <select class="form-select" aria-label="Default select example" id="reportMemberReason">
                     <option value="">신고사유</option>
                     <option value="회원비난/비하">회원비난/비하</option>

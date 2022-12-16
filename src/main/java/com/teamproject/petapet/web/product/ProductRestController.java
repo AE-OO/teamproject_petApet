@@ -4,6 +4,8 @@ import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
+import com.teamproject.petapet.domain.product.repository.ReviewRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
 import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
@@ -15,11 +17,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -121,6 +127,21 @@ public class ProductRestController {
         reviewImg.remove(new UploadFile(attrAlt,substringSrc));
         File targetFile = new File(saveUrl + substringSrc);
         boolean delete = targetFile.delete();
+    }
+    //22.12.15 박채원 추가 - 이하 3개 메소드(사업자 마이페이지 구현 위함)
+    @GetMapping(value = "/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProductDTO>> getProductList(HttpSession session){
+        return new ResponseEntity<>(productService.getProductList("*company111"), HttpStatus.OK);  //세션에 로그인 정보가 어떻게 들어가있는지 확인하기
+    }
+
+    @PostMapping("/updateStock/{productId}")
+    public void updateStock(@PathVariable("productId") Long productId, @RequestParam("productStock") Long productStock){
+        productService.updateProductInfo("stock", productId, productStock, null);
+    }
+
+    @PostMapping("/updateStatus/{productId}")
+    public void updateStatus(@PathVariable("productId") Long productId, @RequestParam("productStatus") String productStatus){
+        productService.updateProductInfo("status", productId, null, productStatus);
     }
 
 }
