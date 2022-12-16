@@ -222,7 +222,7 @@
                                         <h5 sec:authentication="name"></h5>
                                     <h6 style="font-size: 0.5rem" class="text-secondary mt-1" th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
                                 </div>
-                                <div id="myform" class="col-9">
+                                <div class="col-9 myform">
                                     <fieldset class="p-1 col">
                                         <input type="radio" name="reviewRating" id="rate1" value="5"><label
                                             for="rate1">★</label>
@@ -276,18 +276,18 @@
                                     <h5 sec:authentication="name"></h5>
                                     <h6 style="font-size: 0.5rem" class="text-secondary mt-1" th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
                                 </div>
-                                <div id="myform" class="col-2">
+                                <div class="col-2 myform">
                                     <fieldset class="p-1 col">
-                                        <input type="radio" name="reviewRating" id="rate1" value="5"><label
-                                            for="rate1">★</label>
-                                        <input type="radio" name="reviewRating" id="rate2" value="4"><label
-                                            for="rate2">★</label>
-                                        <input type="radio" name="reviewRating" id="rate3" value="3"><label
-                                            for="rate3">★</label>
-                                        <input type="radio" name="reviewRating" id="rate4" value="2"><label
-                                            for="rate4">★</label>
-                                        <input type="radio" name="reviewRating" id="rate5" value="1"><label
-                                            for="rate5">★</label>
+                                        <input type="radio" name="reviewRating" id="rate6" value="5"><label
+                                            for="rate6">★</label>
+                                        <input type="radio" name="reviewRating" id="rate7" value="4"><label
+                                            for="rate7">★</label>
+                                        <input type="radio" name="reviewRating" id="rate8" value="3"><label
+                                            for="rate8">★</label>
+                                        <input type="radio" name="reviewRating" id="rate9" value="2"><label
+                                            for="rate9">★</label>
+                                        <input type="radio" name="reviewRating" id="rate10" value="1"><label
+                                            for="rate10">★</label>
                                     </fieldset>
                                 </div>
                                         <div class="col-7 myReviewImg">
@@ -895,7 +895,8 @@
             .then(data => {
 
             })
-
+        let productType = [[${productType}]];
+        window.location.href = '/product/'+productType+'/'+productId+'/details';
     }
     function addDibs(id) {
         $.ajax({
@@ -952,7 +953,7 @@
                 img.setAttribute("src", event.target.result);
                 img.width = 100;
                 img.height = 100;
-                document.querySelector("div #myform").appendChild(img);
+                document.querySelector("div .myform").appendChild(img);
             };
             reader.readAsDataURL(image);
         }

@@ -187,7 +187,7 @@ public class ProductController {
 
         Review review = Review.builder().reviewTitle(reviewInsertDTO.getReviewTitle())
                 .reviewRating(reviewInsertDTO.getReviewRating())
-//                .reviewRating(reviewInsertDTO.getReviewRating())
+                .reviewRating(reviewInsertDTO.getReviewRating())
                 .reviewContent(reviewInsertDTO.getReviewContent())
                 .reviewImg(uploadFiles)
                 .reviewDate(LocalDateTime.now())
