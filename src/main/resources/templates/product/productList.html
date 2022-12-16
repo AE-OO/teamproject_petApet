@@ -254,7 +254,7 @@
                                 <div class="portfolio-text" style="opacity: 1;">
                                     <h1 class="text-start rounded ms-2">
                                         <a style="text-decoration: none;" class="text-dark fs-5"
-                                           th:href="|@{/product/{productType}/{productId}/details(productType=${category},productId=${product.productId})}|"
+                                           th:href="|@{/product/{productType}/{productId}/details(productType=${product.getProductDiv().name().toLowerCase()},productId=${product.productId})}|"
                                            th:text="${product.productName}"></a>
                                     </h1>
                                     <div class="d-flex flex-row">

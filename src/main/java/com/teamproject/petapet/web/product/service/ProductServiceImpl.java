@@ -110,7 +110,11 @@ public class ProductServiceImpl implements ProductService {
         List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, sortType);
         List<Product> productList = jpaQueryFactory.select(product)
                 .from(product)
-                .where(isCategory(productType, category),isContent(content), isRating(starRating), isPriceRange(minPrice,maxPrice,isPriceRange))
+                .where(isCategory(productType, category),
+                        isContent(content),
+                        isRating(starRating),
+                        isPriceRange(minPrice,maxPrice,isPriceRange),
+                        product.productStatus.eq("판매중"))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(orders.toArray(OrderSpecifier[]::new))

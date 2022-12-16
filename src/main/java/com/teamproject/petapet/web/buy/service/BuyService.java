@@ -14,5 +14,5 @@ public interface BuyService {
     // ->
     Buy addBuy(Buy buy);
 
-    boolean existsByBuyAndMember(Long buyId, String memberId);
+    boolean existsByPurchaseHistory(Long buyId, String memberId);
 }

@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.product.productdtos;
 
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,4 +13,6 @@ public class ReviewInsertDTO {
     private String reviewContent;
     private Long reviewRating;
     private List<MultipartFile> reviewImg;
+    private List<String> storeFileName;
+    private List<String> uploadFileName;
 }

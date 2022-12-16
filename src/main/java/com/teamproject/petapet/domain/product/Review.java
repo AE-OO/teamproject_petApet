@@ -7,6 +7,7 @@ import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@DynamicUpdate
 @ToString(exclude = {"member", "product","reviewImg"})
 @EntityListeners(value = {AuditingEntityListener.class})
 
@@ -64,5 +66,13 @@ public class Review {
                 .reviewMember(review.getMember().getMemberId())
                 .reviewProduct(review.getProduct().getProductName())
                 .build();
+    }
+
+    public void updateReview(String reviewTitle, String reviewContent, LocalDateTime reviewDate, Long reviewRating, List<UploadFile> reviewImg) {
+        this.reviewTitle = reviewTitle;
+        this.reviewContent = reviewContent;
+        this.reviewDate = reviewDate;
+        this.reviewRating = reviewRating;
+        this.reviewImg = reviewImg;
     }
 }

@@ -8,6 +8,10 @@
     text-align: right;
 }
 
+#myform div legend {
+    text-align: right;
+}
+
 #myform input[type=radio] {
     display: none;
 }

@@ -210,18 +210,16 @@
                     <div class="row mb-4" id="reviews">
                         <h4>상품평</h4>
                     </div>
-                    <th:block sec:authorize="isAuthenticated()" th:if="${existsByBuyAndMember}">
+                    <th:block sec:authorize="isAuthenticated()" th:if="${existsByPurchaseHistory && !existByReviewHistory}">
+                        <h5>상품평 작성</h5>
                         <form enctype="multipart/form-data" method="post"
                               th:action="@{/product/{productId}/reviewInsert(productId=${productId},requestURI = ${#request.requestURI})}">
-                            <!--                          th:action="|@{/product/{productId}/reviewInsert(productId=${productId})}|">-->
                             <article class="row justify-content-start">
                                 <div class="col-1">
                                     <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                                 </div>
                                 <div class="col-1 mt-2">
-                                    <th:block sec:authorize="isAuthenticated()">
                                         <h5 sec:authentication="name"></h5>
-                                    </th:block>
                                     <h6 style="font-size: 0.5rem" class="text-secondary mt-1" th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
                                 </div>
                                 <div id="myform" class="col-9">
@@ -246,7 +244,7 @@
                                 <div class="d-flex flex-row my-2">
                                     <div class="col d-flex">
                                         <h6 class="mt-1 me-5">제목</h6>
-                                        <input class="ms-2 flex-fill" type="text" name="reviewTitle" id="productName">
+                                        <input class="ms-2 flex-fill" type="text" name="reviewTitle">
                                     </div>
                                 </div>
                                 <div class="d-flex flex-row">
@@ -265,6 +263,118 @@
                                 <hr class="my-4">
                             </article>
                         </form>
+                    </th:block>
+                    <th:block sec:authorize="isAuthenticated()" th:if="${existsByPurchaseHistory && existByReviewHistory}">
+                        <h5>내가 작성한 상품평</h5>
+                        <form enctype="multipart/form-data" method="post" id="myReviewForm" style="display: none"
+                              th:action="@{/product/{productId}/reviewInsert(productId=${productId},requestURI = ${#request.requestURI})}">
+                            <article class="row justify-content-start">
+                                <div class="col-1">
+                                    <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
+                                </div>
+                                <div class="col-1 mt-2">
+                                    <h5 sec:authentication="name"></h5>
+                                    <h6 style="font-size: 0.5rem" class="text-secondary mt-1" th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
+                                </div>
+                                <div id="myform" class="col-2">
+                                    <fieldset class="p-1 col">
+                                        <input type="radio" name="reviewRating" id="rate1" value="5"><label
+                                            for="rate1">★</label>
+                                        <input type="radio" name="reviewRating" id="rate2" value="4"><label
+                                            for="rate2">★</label>
+                                        <input type="radio" name="reviewRating" id="rate3" value="3"><label
+                                            for="rate3">★</label>
+                                        <input type="radio" name="reviewRating" id="rate4" value="2"><label
+                                            for="rate4">★</label>
+                                        <input type="radio" name="reviewRating" id="rate5" value="1"><label
+                                            for="rate5">★</label>
+                                    </fieldset>
+                                </div>
+                                        <div class="col-7 myReviewImg">
+                                            <th:block th:each="reviewImage, i : ${existReview.reviewImg}">
+                                                <button type="button" class="btn btn-sm btn-link" th:id="|${'osh'}${i.index}|"  onclick="deleteReviewImg(this.id)" style="position: absolute;">X</button>
+                                        <img
+                                             th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
+                                             width="100" height="100" th:alt="${reviewImage.uploadFileName}"
+                                             class="reviewImage" id="reviewImage" >
+                                            </th:block>
+                                    </div>
+                                <div class="col-1 text-end">
+                                    <button role="button" type="button" onclick="updateReview()"
+                                            class="btn btn-sm btn-secondary">수정
+                                    </button>
+                                </div>
+                                <div class="d-flex flex-row my-2">
+                                    <div class="col d-flex">
+                                        <h6 class="mt-1 me-5">제목</h6>
+                                        <input class="ms-2 flex-fill" type="text" name="reviewTitle" th:value="${existReview.reviewTitle}">
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row">
+                                    <label for="image"><h6 class="mt-1 me-2">이미지 첨부</h6></label>
+                                    <input class="flex-fill mb-2" type="file"
+                                           id="image" accept="image/*"
+                                           onchange="setThumbnail(event);"
+                                           multiple name="reviewImg">
+                                </div>
+                                <div class="">
+                                    <div class="d-flex">
+                                <textarea name="reviewContent" class="d-flex flex-fill" th:text="${existReview.reviewContent}"
+                                          style="resize: none; min-height: 10rem"></textarea>
+
+                                    </div>
+                                </div>
+                                <hr class="my-4">
+                            </article>
+                        </form>
+                        <article class="row justify-content-start myReview">
+                            <div class="col-1">
+                                <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
+                            </div>
+                            <div class="col-1 me-2">
+                                <h6 sec:authentication="name">작성자</h6>
+                                <h6 style="font-size: 0.5rem" class="text-secondary mt-1"
+                                    th:text="${#temporals.format(existReview.reviewDate,'yyyy-MM-dd')}">2000.00.00</h6>
+                            </div>
+                            <div class="col-2" style="position: center">
+                                <p th:class="star" th:value="${existReview.reviewRating}">
+                                    <a class="my_star" value="1">★</a>
+                                    <a class="my_star" value="2">★</a>
+                                    <a class="my_star" value="3">★</a>
+                                    <a class="my_star" value="4">★</a>
+                                    <a class="my_star" value="5">★</a>
+                                <p>
+                            </div>
+                            <div class="col-7">
+                                <img th:each="reviewImage : ${existReview.reviewImg}"
+                                     th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
+                                     width="100" height="100"
+                                     class="reviewImage" id="reviewImage">
+                                <div class="modal" id="modal">
+                                    <span class="close">&times;</span>
+                                    <img class="modal_content" id="modal_content">
+                                </div>
+                            </div>
+                            <div class="col text-end">
+                                <button type="button" class="btn btn-outline-secondary" th:text="수정" onclick="updateReviewForm()" id="reviewUpdateBtn">
+                                </button>
+                            </div>
+                            <div class="d-flex mt-2">
+                                <div class="me-2">
+                                    <h6>상품명</h6>
+                                </div>
+                                <div class="col-3">
+                                    <h6 th:text="*{productName}" class="opacity-75"></h6>
+                                </div>
+                            </div>
+                            <div class="review_comment">
+                                <div class="review_content">
+                                    <div class="contentStr" th:text="${existReview.reviewContent}">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                        </article>
                     </th:block>
                 </div>
             </div>
@@ -302,10 +412,12 @@
                             </div>
                         </div>
                         <div class="col text-end">
+                            <th:block th:if="${#authentication.name != review.member.memberId}">
                             <button type="button" class="btn btn-outline-primary" id="addMemberReport"
                                     data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
                                     title="신고">신고
                             </button>
+                            </th:block>
                         </div>
                         <div class="d-flex mt-2">
                             <div class="me-2">
@@ -713,7 +825,78 @@
 <script th:inline="javascript" type="text/javascript">
 
     let totalPage = 10;
+  function updateReviewForm() {
+      $('.myReview').remove();
+      $('#myReviewForm').attr('style','display: ');
 
+  }
+  function deleteReviewImg(id) {
+      let productId = $("#productId").val();
+      let $this = $('#'+id);
+      let next = $this.next(1);
+      let attrSrc = next.attr('src');
+      let attrAlt = next.attr('alt');
+      let pos = attrSrc.lastIndexOf("/");
+      let substringSrc = attrSrc.substring(pos+1);
+      console.log(substringSrc)
+      console.log(attrAlt)
+      fetch('/product/deleteReviewImg?productId='+productId, {
+          method: 'POST',
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              substringSrc: substringSrc,
+              attrAlt: attrAlt,
+          }),
+      })
+          .then(response => {
+              // return response.json();
+          })
+          .then(data => {
+
+          })
+      next.remove()
+      $this.remove()
+  }
+    async function updateReview() {
+        let productId = $("#productId").val();
+        let storeFileNameArr = new Array();
+        let uploadFileNameArr = new Array();
+        let myReviewImgSize = $('.myReviewImg img[class=reviewImage]').length;
+        for(var i = 0; i < myReviewImgSize; i++){
+            let src = $('.myReviewImg img[id=reviewImage'+i+']').attr('src');
+            let uploadFileName = $('.myReviewImg img[id=reviewImage'+i+']').attr('alt');
+            let pos = src.lastIndexOf("/");
+            let storeFileName = src.substring(pos+1);
+            storeFileNameArr.push(storeFileName);
+            uploadFileNameArr.push(uploadFileName);
+        }
+        $('#appendTarget').empty();
+        console.log(storeFileNameArr)
+        console.log(uploadFileNameArr)
+        let formData = new FormData(document.getElementById("myReviewForm"));
+        for (var o = 0; o < storeFileNameArr.length; o++){
+            formData.append('storeFileName',storeFileNameArr[o])
+            formData.append('uploadFileName',uploadFileNameArr[o])
+            formData.append('uploadFile','UploadFile(uploadFileName='+uploadFileNameArr[o]+', storeFileName='+storeFileNameArr[o]+') ')
+        }
+        fetch('/product/updateReview?productId='+productId, {
+            method: 'POST',
+            // headers: {
+            //     "Content-Type": "multipart/form-data",
+            //     "Content-Type": "application/json",
+            // },
+            body: formData,
+        })
+            .then(response => {
+                // return response.json();
+            })
+            .then(data => {
+
+            })
+
+    }
     function addDibs(id) {
         $.ajax({
             type: 'post',           // 타입 (get, post, put 등등)
@@ -788,6 +971,7 @@
     })
 
     var imgSize = $('img[class = reviewImage]').length;
+
     for (var q = 0; q < imgSize; q++) {
         $('img[class = reviewImage]').eq(q).attr('id', "reviewImage" + q);
         $('img[class = modal_content]').eq(q).attr('id', "modal_content" + q);
@@ -1013,6 +1197,8 @@
             }
         });
     }
+
+
 
 </script>
 

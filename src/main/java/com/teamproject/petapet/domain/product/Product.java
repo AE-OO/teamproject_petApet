@@ -7,6 +7,7 @@ import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 @ToString
 @Getter
 @DynamicInsert
+@DynamicUpdate
 public class Product {
 
     @Id
