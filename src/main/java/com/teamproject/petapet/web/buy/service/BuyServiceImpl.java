@@ -46,4 +46,14 @@ public class BuyServiceImpl implements BuyService {
         return buyRepository.getTotalSalesPerMonth(companyId);
     }
 
+    @Override
+    public List<Integer> getProductSales(String companyId) {
+        return buyRepository.getProductSales(companyId);
+    }
+
+    @Override
+    public List<Integer> getDetailSalesPerMonth(Long productId) {
+        return buyRepository.getDetailSalesPerMonth(productId);
+    }
+
 }
