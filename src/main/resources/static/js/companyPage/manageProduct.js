@@ -139,7 +139,7 @@ function showProductDetailInfo(productId, productName, productStock, productStat
     }
 }
 
-//월별 판매량 차트의 x축 표시하기 위함
+//월별 판매량 차트의 x축 날짜를 표시하기 위함
 function getFormatDate(date , subNum){
     var year = date.getFullYear();
     var month = (1 + date.getMonth());
