@@ -38,6 +38,7 @@ import static com.teamproject.petapet.domain.product.QProduct.product;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
@@ -46,13 +47,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> getProductList(String companyId) {
         List<Product> productList = productRepository.findAllByCompany_CompanyId(companyId);
-        List<ProductDTO> productDTOList = productList.stream().map(list -> ProductDTO.fromEntityForManageProduct(list)).collect(Collectors.toList());
-        return productDTOList;
+        return productList.stream().map(ProductDTO::fromEntityForManageProduct).collect(Collectors.toList());
     }
 
     @Override
     public Page<Product> getProductPage(Pageable pageable) {
-        return productRepository.findAll(pageable);
+        return productRepository.findAllByProductStatus(pageable, "판매중");
     }
 
     @Override
@@ -143,6 +143,21 @@ public class ProductServiceImpl implements ProductService {
         productRepository.addProductReport(productId);
     }
 
+    @Override
+    public void updateCounterView(Long productId) {
+        jpaQueryFactory.update(product)
+                .set(product.productViewCount,product.productViewCount.add(1))
+                .where(product.productId.eq(productId))
+                .execute();
+    }
+
+    @Override
+    public void updateCounterSell(Long productId) {
+        jpaQueryFactory.update(product)
+                .set(product.productSellCount,product.productSellCount.add(1))
+                .where(product.productId.eq(productId))
+                .execute();
+    }
 
     private BooleanExpression isContent(String content) {
         if (StringUtils.hasText(content) && !content.equals("false")) {

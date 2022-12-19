@@ -4,7 +4,6 @@ import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,6 +29,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("update Product p set p.productStatus =:productStatus where p.productId =:productId")
     void updateProductStatus(String productStatus, Long productId);
     List<Product> findAllByCompany_CompanyId(String companyId);
+    Page<Product> findAllByProductStatus(Pageable pageable, String status);
     Page<Product> findAllByProductDiv(ProductType productType, Pageable pageable);
     Page<Product> findAllByProductNameContainsAndProductDiv(String productName, ProductType productType, Pageable pageable);
     @Modifying
@@ -39,7 +39,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select a from Product a,Review b where a.productId=:id and b.product.productId=:id")
     Optional<Product> findProductWithReview(@Param("id") Long id);
 
-    @Query("select p from Product p order by p.review.size desc")
+    @Query("select p from Product p where p.productStatus='판매중' order by p.review.size desc")
     Page<Product> findAllOrderByReviewCount(Pageable pageable);
 
     @Modifying

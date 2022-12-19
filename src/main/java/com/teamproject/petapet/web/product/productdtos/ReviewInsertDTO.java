@@ -1,6 +1,5 @@
 package com.teamproject.petapet.web.product.productdtos;
 
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

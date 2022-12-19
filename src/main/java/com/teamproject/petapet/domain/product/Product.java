@@ -72,8 +72,14 @@ public class Product {
     private Long productReport;
 
     //foreign 키는 Counter 테이블에서 갖지만 Product 테이블에서도 연관관계를 작성해 준 이유는 oneToOne 연관관계는 단방향 관계를 지원하지 않기 때문
-    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Counter counter;
+//    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+//    private Counter counter;
+
+    @Column(columnDefinition = "bigint(5) default 0")
+    private Long productViewCount;
+
+    @Column(columnDefinition = "bigint(5) default 0")
+    private Long productSellCount;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> review;

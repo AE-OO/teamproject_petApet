@@ -355,7 +355,11 @@
                                             class="reviewImage"></a>
                             </div>
                             <div class="col text-end">
-                                <button type="button" class="btn btn-outline-secondary" th:text="수정" onclick="updateReviewForm()" id="reviewUpdateBtn">
+                                <button type="button" class="btn btn-outline-secondary mb-1" th:text="수정"
+                                        onclick="updateReviewForm()"id="reviewUpdateBtn">
+                                </button>
+                                <button type="button" class="btn btn-danger" th:text="삭제"
+                                        id="reviewDeleteBtn">
                                 </button>
                             </div>
                             <div class="d-flex mt-2">
@@ -836,6 +840,26 @@
       $('.myReview').remove();
       $('#myReviewForm').attr('style','display: ');
   }
+
+  $('#reviewDeleteBtn').click(function () {
+      {
+          fetch('/product/deleteReview', {
+              method: 'POST',
+              headers: {
+                  "Content-Type": "application/text",
+              },
+              body: productId,
+          })
+              .then(response => {
+                  // return response.json();
+              })
+              .then(data => {
+
+              })
+      }
+      let productType = [[${productType}]];
+      window.location.href = '/product/'+productType+'/'+productId+'/details';
+  })
   $('.reviewImgModalBtn').click(function (){
       let imgSrc = $(this).children(1).attr('src');
       let $modalImage = $('.modalImage');
@@ -891,8 +915,6 @@
             uploadFileNameArr.push(uploadFileName);
         }
         $('#appendTarget').empty();
-        console.log(storeFileNameArr)
-        console.log(uploadFileNameArr)
         let formData = new FormData(document.getElementById("myReviewForm"));
         for (var o = 0; o < storeFileNameArr.length; o++){
             formData.append('storeFileName',storeFileNameArr[o])

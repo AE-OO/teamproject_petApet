@@ -1,6 +1,5 @@
 package com.teamproject.petapet.web.product;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
@@ -19,8 +18,6 @@ import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import com.teamproject.petapet.web.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.*;
@@ -42,9 +39,6 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @Slf4j
@@ -58,8 +52,6 @@ public class ProductController {
     private final ReviewService reviewService;
     private final DibsProductService dibsProductService;
     private final BuyService buyService;
-    private final JPAQueryFactory jpaQueryFactory;
-
     @GetMapping("/main")
     public String productMainPage() {
         return "/product/productMainPage";
@@ -78,7 +70,7 @@ public class ProductController {
                                  Model model, Principal principal) {
         Sort sort = getSort(sortType);
         Pageable pageable = PageRequest.of(page - 1, size, sort);
-        String property = Objects.requireNonNull(pageable.getSort().get().findFirst().orElse(null)).getProperty();
+        String property = pageable.getSort().get().findFirst().orElseThrow(NoSuchElementException::new).getProperty();
         ProductType productType = getProductType(category);
         Page<Product> resultPage = productService.findPage(category, productType, property, content, starRating,minPrice,maxPrice,isPriceRange, pageable);
         Page<ProductListDTO> productListDTO = getProductListDTO(principal, resultPage);
@@ -157,19 +149,22 @@ public class ProductController {
         Slice<Review> reviews = reviewService.requestMoreReview(productId, pageable);
         model.addAttribute("findProduct", productDetailDTO);
         model.addAttribute("reviews", reviews);
+
         if (principal != null) {
             boolean existsDibsProduct = dibsProductService.existsDibsProduct(findProduct, memberService.findOne(principal.getName()));
             model.addAttribute("existsDibsProduct", existsDibsProduct);
+            log.info("existsDibsProduct = {}", existsDibsProduct);
             boolean existsByPurchaseHistory = buyService.existsByPurchaseHistory(productId, principal.getName());
             model.addAttribute("existsByPurchaseHistory", existsByPurchaseHistory);
             boolean existByReviewHistory = reviewService.existByReviewHistory(productId, principal.getName());
             model.addAttribute("existByReviewHistory", existByReviewHistory);
             if (existByReviewHistory){
-            Review existReview = reviewService.findOne(productId, principal.getName()).orElse(null);
+            Review existReview = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
             ReviewDTO reviewDTO = Review.toReviewDTO(existReview);
             model.addAttribute("existReview", reviewDTO);
             }
         }
+        productService.updateCounterView(productId);
         return "/product/productDetails";
     }
 

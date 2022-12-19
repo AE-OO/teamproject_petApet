@@ -3,16 +3,11 @@ package com.teamproject.petapet.web.product.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.product.repository.ReviewRepository;
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
-import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static com.teamproject.petapet.domain.product.QReview.review;
@@ -40,6 +35,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public void deleteReview(Long reviewId) {
+        reviewRepository.deleteById(reviewId);
+    }
+
+    @Override
     public Slice<Review> requestMoreReview(Long id, Pageable pageable) {
         return reviewRepository.requestMoreReview(id, pageable);
     }
@@ -54,7 +54,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Optional<Review> findOne(Long productId, String memberId) {
+    public Optional<Review> findOneByMemId(Long productId, String memberId) {
         return jpaQueryFactory.select(review)
                 .from(review)
                 .where(review.product.productId.eq(productId), review.member.memberId.eq(memberId))

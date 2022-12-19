@@ -173,11 +173,11 @@
             </div>
             <div style="flex: 0 0 80%; max-width: 80%;">
                 <div class="d-flex">
-                    <div class="col-5">
+                    <div class="col-6">
                         <div class="btn-group form-check form-check-inline" role="group"
                              aria-label="Basic radio toggle button group">
                             <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="productId"
-                                   autocomplete="off" checked>
+                                   autocomplete="off">
                             <label class="btn btn-outline-primary"
                                    th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productId,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
                                    for="btnradio1">최신순</label>
@@ -200,14 +200,20 @@
                                    th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productReviewCount,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
                                    for="btnradio4">리뷰순</label>
 
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="productRating"
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5"
+                                   value="productSellCount" autocomplete="off">
+                            <label class="btn btn-outline-primary"
+                                   th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productSellCount,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
+                                   for="btnradio5">판매순</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio6" value="productRating"
                                    autocomplete="off">
                             <label class="btn btn-outline-primary"
                                    th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productRating,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
-                                   for="btnradio5">평점순</label>
+                                   for="btnradio6">평점순</label>
                         </div>
                     </div>
-                    <div class="col-5" id="filter">
+                    <div class="col-4" id="filter">
 
                     </div>
                     <div class="d-flex justify-content-end col-2">
@@ -435,11 +441,14 @@
         const sortType = urlSearchParams.get('sortType');
         const productCategory = urlSearchParams.get('category');
         const pageNumber = urlSearchParams.get('page');
-
+        if (sortType === null || sortType === ''){
+        $("input:radio[name ='btnradio']:input[value=productId]").attr("checked", true);
+        } else {
         $("input:radio[name ='btnradio']:input[value=" + sortType + "]").attr("checked", true);
-        $("ul[id = 'portfolio-flters'] li[value=" + productCategory + ']').attr("class", 'mx-2 active');
+        }
         $("ul[id = 'paginationBox'] li[value=" + pageNumber + ']').attr("class", 'page-item active');
-    }
+        $("ul[id = 'portfolio-flters'] li[value=" + productCategory + ']').attr("class", 'mx-2 active');
+        }
 
     function focusSearchBar() {
         $('#searchBar').focus();

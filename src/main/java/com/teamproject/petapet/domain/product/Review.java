@@ -1,7 +1,5 @@
 package com.teamproject.petapet.domain.product;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;

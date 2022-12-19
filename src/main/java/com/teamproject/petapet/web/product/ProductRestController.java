@@ -4,7 +4,6 @@ import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
-import com.teamproject.petapet.domain.product.repository.ReviewRepository;
 import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
 import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
@@ -13,7 +12,6 @@ import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
@@ -34,7 +32,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO.getProductMainPageListDTOS;
 import static com.teamproject.petapet.web.product.reviewdto.ReviewDTO.getCollect;
@@ -101,7 +98,7 @@ public class ProductRestController {
 
     @PostMapping("/updateReview")
     public void updateReview(@ModelAttribute ReviewInsertDTO reviewInsertDTO, @RequestParam("productId") Long productId, Principal principal) throws IOException {
-        Review review = reviewService.findOne(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
+        Review review = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
         List<UploadFile> storeFiles = fileService.storeFiles(reviewInsertDTO.getReviewImg());
         ArrayList<UploadFile> uploadFiles = new ArrayList<>();
         List<UploadFile> reviewImg = review.getReviewImg();
@@ -119,7 +116,7 @@ public class ProductRestController {
     }
     @PostMapping("/deleteReviewImg")
     public void deleteReviewImg(@RequestBody String imgData,@RequestParam("productId")Long productId, Principal principal){
-        Review review = reviewService.findOne(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
+        Review review = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
         List<UploadFile> reviewImg = review.getReviewImg();
         JSONObject jsonObject = new JSONObject(imgData);
         String substringSrc = jsonObject.optString("substringSrc");
@@ -127,6 +124,11 @@ public class ProductRestController {
         reviewImg.remove(new UploadFile(attrAlt,substringSrc));
         File targetFile = new File(saveUrl + substringSrc);
         boolean delete = targetFile.delete();
+    }
+    @PostMapping("/deleteReview")
+    public void deleteReview(@RequestBody String productId, Principal principal){
+        Review review = reviewService.findOneByMemId(Long.parseLong(productId), principal.getName()).orElseThrow(NoSuchElementException::new);
+        reviewService.deleteReview(review.getReviewId());
     }
     //22.12.15 박채원 추가 - 이하 3개 메소드(사업자 마이페이지 구현 위함)
     @GetMapping(value = "/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
