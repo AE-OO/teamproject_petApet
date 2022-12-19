@@ -1747,15 +1747,15 @@ progress {
   }
 }
 .table {
-  --bs-table-color: var(--bs-body-color);
+  --bs-table-color: var(--bs-gray-700);
   --bs-table-bg: transparent;
-  --bs-table-border-color: rgba(0, 0, 0, 0.05);
+  --bs-table-border-color: var(--bs-gray-300);
   --bs-table-accent-bg: transparent;
   --bs-table-striped-color: var(--bs-body-color);
   --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
   --bs-table-active-color: var(--bs-body-color);
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
-  --bs-table-hover-color: var(--bs-body-color);
+  --bs-table-hover-color: var(--bs-gray-700);
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
   width: 100%;
   margin-bottom: 1rem;
@@ -1774,6 +1774,21 @@ progress {
 }
 .table > thead {
   vertical-align: bottom;
+  border-top: 2px solid #eceeef;
+  border-bottom:2px solid #eceeef;
+}
+
+.table > tbody > tr > td > a{
+  color : var(--bs-gray-700);
+}
+
+.table > tbody > tr > td > a > strong{
+  color : var(--bs-gray-500);
+}
+
+.table > tbody > tr > td > a:hover{
+  color : var(--bs-gray-700);
+  text-decoration: underline;
 }
 
 .table-group-divider {
@@ -6689,23 +6704,23 @@ textarea.form-control-lg {
   --bs-pagination-padding-x: 0.75rem;
   --bs-pagination-padding-y: 0.375rem;
   --bs-pagination-font-size: 1rem;
-  --bs-pagination-color: #fff;
-  --bs-pagination-bg: #78c2ad;
+  --bs-pagination-color: #78c2ad;
+  --bs-pagination-bg: #fff;
   --bs-pagination-border-width: 1px;
-  --bs-pagination-border-color: #78c2ad;
+  --bs-pagination-border-color: var(--bs-gray-300);
   --bs-pagination-border-radius: 0.4rem;
-  --bs-pagination-hover-color: #fff;
-  --bs-pagination-hover-bg: #f3969a;
-  --bs-pagination-hover-border-color: #f3969a;
+  --bs-pagination-hover-color: #78c2ad;
+  --bs-pagination-hover-bg: var(--bs-gray-200);
+  --bs-pagination-hover-border-color: var(--bs-gray-300);
   --bs-pagination-focus-color: var(--bs-link-hover-color);
   --bs-pagination-focus-bg: #f7f7f9;
   --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(120, 194, 173, 0.25);
   --bs-pagination-active-color: #fff;
-  --bs-pagination-active-bg: #f3969a;
-  --bs-pagination-active-border-color: #f3969a;
-  --bs-pagination-disabled-color: #fff;
-  --bs-pagination-disabled-bg: #cce8e0;
-  --bs-pagination-disabled-border-color: #cce8e0;
+  --bs-pagination-active-bg: #78c2ad;
+  --bs-pagination-active-border-color: #78c2ad;
+  --bs-pagination-disabled-color: #888;
+  --bs-pagination-disabled-bg: #fff;
+  --bs-pagination-disabled-border-color: var(--bs-gray-300);
   display: flex;
   padding-left: 0;
   list-style: none;
@@ -6797,6 +6812,26 @@ textarea.form-control-lg {
   vertical-align: baseline;
   border-radius: var(--bs-badge-border-radius);
 }
+
+.badge2 {
+  --bs-badge-padding-x: 0.65em;
+  --bs-badge-padding-y2: 0.25em;
+  --bs-badge-font-size: 0.75em;
+  --bs-badge-font-weight: 700;
+  --bs-
+  display: inline-block;
+  padding: var(--bs-badge-padding-y2) var(--bs-badge-padding-x);
+  font-size: var(--bs-badge-font-size);
+  font-weight: var(--bs-badge-font-weight);
+  line-height: 1;
+  color: var(--bs-danger);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 10px;
+  border:1px solid var(--bs-gray-400)
+}
+
 .badge:empty {
   display: none;
 }
@@ -9917,6 +9952,10 @@ textarea.form-control-lg {
   margin-top: 3rem !important;
 }
 
+.mt-6 {
+  margin-top: 4.5rem !important;
+}
+
 .mt-auto {
   margin-top: auto !important;
 }
@@ -10143,6 +10182,15 @@ textarea.form-control-lg {
   padding-top: 6rem !important;
 }
 
+.pt-8 {
+  padding-top: 7.5rem !important;
+}
+
+.pt-9 {
+  padding-top: 9rem !important;
+}
+
+
 
 .pe-0 {
   padding-right: 0 !important;
@@ -10190,6 +10238,10 @@ textarea.form-control-lg {
 
 .pb-5 {
   padding-bottom: 3rem !important;
+}
+
+.pb-7 {
+  padding-bottom: 6rem !important;
 }
 
 .ps-0 {
@@ -10425,6 +10477,11 @@ ps-7 {
   color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
 }
 
+.text-lightbGray {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-gray-500), var(--bs-text-opacity)) !important;
+}
+
 .text-body {
   --bs-text-opacity: 1;
   color: rgba(var(--bs-body-color-rgb), var(--bs-text-opacity)) !important;
@@ -10499,6 +10556,11 @@ ps-7 {
 .bg-light {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.bg-lightGray {
+  --bs-bg-opacity: 1;
+  background-color: rgba(0,0,0,0.05) !important;
 }
 
 .bg-dark {

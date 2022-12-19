@@ -62,9 +62,6 @@ public class Member{
     @Column(nullable = false, unique = true)
     private String memberEmail;
 
-//    @ElementCollection
-//    @CollectionTable(name = "MemberImg", joinColumns = @JoinColumn(name = "memberImgId", referencedColumnName = "memberId"))
-//    private List<UploadFile> memberImg;
     @Column
     private String memberImg;
 

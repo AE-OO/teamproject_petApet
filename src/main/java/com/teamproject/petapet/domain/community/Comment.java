@@ -32,6 +32,14 @@ public class Comment {
     @Column(updatable = false)
     private LocalDateTime commentDate;
 
+    //비밀댓글
+    @Column(nullable = false)
+    private boolean commentSecret;
+
+    //댓글 이미지...
+    @Column
+    private String commentImg;
+
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;
