@@ -87,15 +87,17 @@
                 </div>
                 <div class="row m-lg-3 col-6">
                     <h6>판매자</h6>
-                    <h6 th:text="*{productStock}">재고</h6>
+                    <h6 th:text="*{productStock}" id="remainStock">재고</h6>
+                    <th:block th:if="*{productStock <= 10}">
+                    <h6 class="text-secondary" th:text="|*재고가 *{productStock}개 남았습니다*|"></h6>
+                    </th:block>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
             <div class="d-flex flex-row m-lg-3">
                 <div class="col-4">
                     <div class="m-lg-2 d-flex">
-                        <div class="col-9">
-                            <!-- 추가 -->
+                        <div class="col-9" id="quantityInputBox">
                             <input id="productId" type="hidden" th:value="*{productId}"/>
                             <input id="quantity" type="text" style="height: 100%" class="col-12" value="1" maxlength="6"
                                    autocomplete="off">
@@ -951,8 +953,17 @@
 
     $(btnPlus).click(function () {
         var $input = $(this).parents().eq(2).find(quantity);
-        $input.val(parseInt($input.val()) + 1);
-        $input.change();
+        let remainStock = $('#remainStock').text();
+        let quantityVal = $("#quantity").val();
+        if (parseInt(quantityVal) < parseInt(remainStock)){
+            $input.val(parseInt($input.val()) + 1);
+            $input.change();
+        } else{
+            const excessQuantityHtml = `
+            <h6 class="text-secondary osh">재고가 부족합니다</h6>`;
+            $('.osh').remove()
+            $('#quantityInputBox').append(excessQuantityHtml);
+        }
         console.log("더하기 >>", $input.val());
     });
 
