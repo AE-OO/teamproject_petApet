@@ -31,6 +31,12 @@ public class CartServiceImpl implements CartService{
         return cartRepository.findById(cartId).get();
     }
 
+    // 주문 수정 - 미완
+    @Override
+    public void updateQuantity(Long cartId, Long quantity) {
+        cartRepository.updateQuantity(cartId,quantity);
+    }
+
     @Override
     public void removeCartOne(Long cartId) {
         cartRepository.deleteById(cartId);

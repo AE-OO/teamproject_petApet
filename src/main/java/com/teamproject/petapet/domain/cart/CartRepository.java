@@ -14,4 +14,9 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findCartByMember(@Param("memberId") String memberId);
 
     void deleteAllByMember(@Param("memberId") String memberId);
+
+    // 미완
+    @Modifying
+    @Query("update Cart c set c.quantity =: qauntity where c.cartId =: cartId")
+    void updateQuantity( @Param("cartId") Long cartId, @Param("quantity") Long quantity);
 }

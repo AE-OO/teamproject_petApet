@@ -37,8 +37,10 @@ public class PaymentsController {
     @GetMapping("/cart/checkout/{idx}")
     public String getPayment1(@PathVariable("idx") Long cartId, Model model){
         Cart cart = cartService.findOne(cartId);
+
         model.addAttribute("cart", cart);
-        log.info("뷰 완료!!");
+        log.info("장바구니 -> 결제 페이지 실행!!");
+        log.info("");
         return "mypage/cartCheckout";
     }
 

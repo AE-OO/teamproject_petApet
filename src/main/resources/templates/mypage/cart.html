@@ -277,9 +277,17 @@
                                                                             class="num--1hENWZ6Uv8">무료</span></em></div>
                                                                 </div>
                                                                 <div class="m_only--3xDkIw7vDP"></div>
-                                                                <div class="order_buttons--2Fb79h6uWq"><button
-                                                                        type="button">찜하기</button><button type="button"><span
-                                                                        class="none_280--1-kFXWiEW1">주문</span>수정</button><button
+                                                                <div class="order_buttons--2Fb79h6uWq">
+                                                                    <button type="button">찜하기</button>
+                                                                    <form th:action="@{/cart/updateCart}" method="post" th:object="${CartDTO}">
+                                                                        <input type="hidden" name="" t/>
+                                                                    </form>
+                                                                    <button type="button">
+                                                                        <a th:href="@{/cart/updateCart}">
+                                                                            <span class="none_280--1-kFXWiEW1">주문</span>수정
+                                                                        </a>
+                                                                    </button>
+                                                                    <button
                                                                         type="button" class="btn_order--4bpIwtdOmc">주문<span
                                                                         class="none_280--1-kFXWiEW1">하기</span></button>
                                                                 </div>
