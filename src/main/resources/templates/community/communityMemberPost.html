@@ -63,32 +63,6 @@
             $(".selectPage").click(function () {
                 goPost($(this).text().trim()-1, $("#pageSize").text(), mainCategory.toLowerCase().trim())
             })
-            $("#myPostBtn").click(function (){
-                // let form = document.createElement('form');
-                // let memberId;
-                // pageNum = document.createElement('input');
-                // pageNum.setAttribute('type', 'hidden');
-                // pageNum.setAttribute('name', 'pageNum');
-                // pageNum.setAttribute('value', value1);
-                // let pageSize;
-                // pageSize = document.createElement('input');
-                // pageSize.setAttribute('type', 'hidden');
-                // pageSize.setAttribute('name', 'pageSize');
-                // pageSize.setAttribute('value', value2);
-                // let category;
-                // category = document.createElement('input');
-                // category.setAttribute('type', 'hidden');
-                // category.setAttribute('name', 'communityCategory');
-                // category.setAttribute('value', value3);
-                // form.appendChild(pageNum);
-                // form.appendChild(pageSize);
-                // form.appendChild(category);
-                // form.setAttribute('method', 'post');
-                // form.setAttribute('action', '/community');
-                // document.body.appendChild(form);
-                // form.submit();
-                window.location="/community/update";
-            });
         });
     </script>
 </head>
@@ -171,9 +145,9 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="mt-4" sec:authorize="hasAnyRole('MEMBER','ADMIN')">
+                <div class="mt-4">
                     <button id="writeBtn" class="btn btn-danger float-start">글쓰기</button>
-                    <button id="myPostBtn" class="btn btn-primary float-end" >내글보기</button>
+                    <button class="btn btn-primary float-end">내글보기</button>
                     <div aria-label="Page navigation">
                         <ul id="pageNum" class="pagination justify-content-center">
                             <li id="prevPage" th:class="${community.isFirst()}? 'page-item disabled':'page-item'">

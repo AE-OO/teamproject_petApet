@@ -1103,3 +1103,52 @@ ul,li{
         margin-left: 70px;
     }
 }
+
+/*community*/
+.community-menu {
+    display: inline-block;
+    background: var(--bs-gray-200);
+    padding: 10px 15px;
+}
+
+.community-menu li{
+    display: inline-block;
+    font-weight: 500;
+    color: var(--bs-cyan);
+    cursor: pointer;
+    transition: .5s;
+    border-bottom: 2px solid transparent;
+}
+
+/*.community-menu li:hover{*/
+/*    color: #5ca6b5;*/
+/*    border-color: #5ca6b5;*/
+/*}*/
+
+.community-menu li.active > a {
+    color: var(--dark);
+    font-weight: 700;
+    text-decoration:underline;
+}
+
+.form-control2 {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.5;
+    /*color:var(--bs-gray);*/
+    background-color: #fff;
+    background-clip: padding-box;
+    border: none;
+    appearance: none;
+}
+
+
+.form-control2:focus {
+    color: var(--bs-gray-900);
+    background-color: #fff;
+    outline: 0;
+}
+

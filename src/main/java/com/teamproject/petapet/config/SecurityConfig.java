@@ -51,10 +51,10 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 //인증 없이 접근 가능
-                //해당 url은 관리자만 접근 가능
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")
-                .antMatchers("/company/**").hasAnyRole("COMPANY","ADMIN")
+                .antMatchers("/member/**","/community/insert","/community/update").hasAnyRole("MEMBER","ADMIN")
+                .antMatchers("/company/**","/member").hasAnyRole("COMPANY","ADMIN")
+//                .antMatchers("/community/insert").authenticated()
                 .antMatchers("/login","/join","/sms/send","/companyJoin").permitAll()
                 .antMatchers("/product/**","/community/**").permitAll()
                 .antMatchers("/").permitAll()

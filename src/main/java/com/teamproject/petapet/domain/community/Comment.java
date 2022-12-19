@@ -1,7 +1,9 @@
 package com.teamproject.petapet.domain.community;
 
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.web.community.converter.EmptyStringToNullConverter;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,7 +21,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString(exclude = {"member", "community"})
 @EntityListeners(value = {AuditingEntityListener.class})
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +30,18 @@ public class Comment {
     @Column(columnDefinition = "text not null")
     private String commentContent;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime commentDate;
+    //비밀댓글
+    @Column(length = 1)
+    @ColumnDefault("N")
+    @Convert(converter = EmptyStringToNullConverter.class)
+    private String commentSecret;
+
+    //댓글 이미지...
+    @Column
+    private String commentImg;
+
+    @Column
+    private Long replyId;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
