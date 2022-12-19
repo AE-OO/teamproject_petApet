@@ -1,5 +1,11 @@
 $(document).ready(function() {
     getInquiredList();
+
+    //문의 세부사항의 X 버튼 클릭 시
+    $("#closeDetailInfoBTN").click(function(){
+        //세부사항 정보를 다시 안보이게 함
+        $("#inquiryDetailInfo").css("display","none");
+    })
 });
 
 //회사 마이페이지에 문의 내역 리스트 출력
