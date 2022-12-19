@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -91,8 +92,8 @@ public class ProductRestController {
 
     //22.12.15 박채원 추가 - 이하 3개 메소드(사업자 마이페이지 구현 위함)
     @GetMapping(value = "/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ProductDTO>> getProductList(HttpSession session){
-        return new ResponseEntity<>(productService.getProductList("*company111"), HttpStatus.OK);  //세션에 로그인 정보가 어떻게 들어가있는지 확인하기
+    public ResponseEntity<List<ProductDTO>> getProductList(Principal principal){
+        return new ResponseEntity<>(productService.getProductList(principal.getName()), HttpStatus.OK);
     }
 
     @PostMapping("/updateStock/{productId}")

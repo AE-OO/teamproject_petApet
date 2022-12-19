@@ -43,6 +43,9 @@ public class Inquired {
     @Column(length = 45, nullable = false)
     private String inquiredCategory;
 
+    @Column(length = 200)
+    private String answer;
+
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;

@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.Inquired.service;
 
 
 import com.teamproject.petapet.domain.inquired.Inquired;
+import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface InquiredService {
     // 관리자 - VIEW
     Inquired findOne(Long id);
     List<Inquired> getOtherInquiries();
+
+    //회사 Mypage
+    List<InquiryDTO> getCompanyPageInquiryList(String companyId);
 }

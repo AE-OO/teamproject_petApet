@@ -101,16 +101,14 @@ public class BuyController {
     //박채원 22.12.16 추가 (이하 3개 메소드)
     @ResponseBody
     @GetMapping("/getTotalSalesPerMonth")
-    public List<Integer> getTotalSalesPerMonth(){
-        String companyId = "*company111";   //수정하기
-        return buyService.getTotalSalesPerMonth(companyId);
+    public List<Integer> getTotalSalesPerMonth(Principal principal){
+        return buyService.getTotalSalesPerMonth(principal.getName());
     }
     
     @ResponseBody
     @GetMapping("/getProductSales")
-    public List<Integer> getProductSales(){
-        String companyId = "*company111";  //수정하기
-        return buyService.getProductSales(companyId);
+    public List<Integer> getProductSales(Principal principal){
+        return buyService.getProductSales(principal.getName());
     }
 
     @ResponseBody

@@ -1,29 +1,32 @@
 $(document).ready(function() {
-    getProductList();
-    
+    getInquiredList();
 });
 
 //회사 마이페이지에 문의 내역 리스트 출력
-function getProductList(){
-    $.getJSON('/product/manageProduct', function(result){
+function getInquiredList(){
+    $.getJSON('/inquiry/manageInquiry', function(result){
         var list = '';
         if(result.length > 0){
-            $.each(result, function(idx, product) {
-                list += `<tr id="productData`+ idx +`" onclick="showProductDetailInfo(`+ product.productId + `,'` + product.productName + `',` + product.productStock + `,'` + product.productStatus + `')">
-                                    <td class="pl-0" id="productId">`+ product.productId +`</td>
-                                    <td><a th:href="#">` + product.productName + `</a></td>
-                                    <td>` + product.productDiv + `</td>
-                                    <td>` + product.productPrice + `</td>
-                                    <td>` + product.productStock + `</td>
-                                    <td>` + product.productStatus + `</td>
-                                    <td>0</td>
-                                    <td>` + product.productReport + `</td>
+            $.each(result, function(idx, inquiry) {
+                console.log(result);
+                list += `<tr id="inquiryData`+ idx +`" onclick="showProductDetailInfo()">
+                                    <td class="pl-0" id="inquiryId">`+ inquiry.inquiredId +`</td>
+                                    <td>` + inquiry.inquiredCategory + `</td>
+                                    <td>` + inquiry.inquiredTitle + `</td>
+                                    <td>` + inquiry.memberId + `</td>
+                                    <td>` + inquiry.inquiredDate + `</td>
+                                    <td><label class="btn btn-secondary btn-sm" th:if="${inquiry.checked === 'false'}">미답</label>
+                                    <label class="btn btn-primary btn-sm" th:unless="${inquiry.checked  === 'false'}">답변완료</label></td>
                                 </tr>`;
             })
         }else{
-            $("#noData").text("등록된 상품이 없습니다.");
+            $("#noData").text("문의 내역이 없습니다.");
         }
 
-        $(".productData").html(list);
+        $(".inquiryData").html(list);
     })
+}
+
+function showProductDetailInfo(){
+    $("#inquiryDetailInfo").css("display","");
 }

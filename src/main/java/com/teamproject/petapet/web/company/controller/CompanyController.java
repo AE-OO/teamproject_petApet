@@ -7,6 +7,7 @@ import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -112,9 +113,15 @@ public class CompanyController {
         return "redirect:/company/info";
     }
 
+    // 박채원 22.12.15 추가 (이하 2개 메소드)
     @GetMapping("/company/manageProduct")
     public String manageProduct(){
         return "/companyPage/manageProduct";
+    }
+
+    @GetMapping("/company/manageInquiry")
+    public String manageInquiry(){
+        return "/companyPage/manageInquiry";
     }
 
 }

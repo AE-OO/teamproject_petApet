@@ -54,7 +54,7 @@ public class SecurityConfig {
                 //해당 url은 관리자만 접근 가능
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")
-                .antMatchers("/company/**").hasAnyRole("COMPANY","ADMIN")
+                .antMatchers("/company/**","/inquiry/manageInquiry").hasAnyRole("COMPANY","ADMIN")
                 .antMatchers("/login","/join","/sms/send","/companyJoin").permitAll()
                 .antMatchers("/product/**").permitAll()
                 .antMatchers("/").permitAll()
