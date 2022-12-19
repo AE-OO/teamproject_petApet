@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.cart;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.web.cart.dto.CartDTO;
 import com.teamproject.petapet.web.cart.dto.CartVO;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +81,17 @@ public class CartController {
 
         cartService.addCart(cart);
 
+    }
+
+    // 장바구니 -> 주문수정 (수량) 미완
+    @RequestMapping( value = "/updateCart", method = RequestMethod.POST, produces = "application/json")
+    private String updateQuan(@RequestBody CartDTO cartDTO){
+        log.info("=> 주문수정 실행");
+        cartService.updateQuantity(cartDTO.getCartId(), cartDTO.getQuantity());
+        log.info("CartId ={}", cartDTO.getCartId());
+        log.info("Quantity ={}" ,cartDTO.getQuantity());
+        log.info("=> 주문수정 완료");
+        return "redirect:/mypage/cart";
     }
 
     // 상품 개별삭제

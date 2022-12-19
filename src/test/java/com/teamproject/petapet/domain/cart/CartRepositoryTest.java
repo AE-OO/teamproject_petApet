@@ -60,9 +60,9 @@ class CartRepositoryTest {
         String member = "memberA";
         Member memberA = memberService.findOne(member);
         Long product = 1L;
-        Product product1 = productService.findOne(product);
-        Cart cart = new Cart(1L,memberA,product1,1L);
-        cartRepository.save(cart);
+//        Product product1 = productService.findOne(product);
+//        Cart cart = new Cart(1L,memberA,product1,1L);
+//        cartRepository.save(cart);
 
     }
 

@@ -69,7 +69,7 @@ public class PaymentsController {
     }
 
 
-    // mail 전송 1
+    // 결제 완료 mail 전송 1
     @ResponseBody
     @RequestMapping(value = "/checkout", method = { RequestMethod.POST }, produces = "application/json")
     public void buySuccess(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {
@@ -86,7 +86,7 @@ public class PaymentsController {
         log.info("메일 전송 완료");
     }
 
-    // mail 전송 2
+    // 결제완료 mail 전송 2
     @ResponseBody
     @RequestMapping(value = "/checkout2", method = { RequestMethod.POST }, produces = "application/json")
     public void buySuccess2(@RequestBody PaymentVO vo,Principal principal, HttpServletRequest request, HttpSession httpSession, Model model) throws Exception {

@@ -8,6 +8,7 @@ import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
+import com.teamproject.petapet.web.util.email.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,8 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/inquiry")
-public class InquiredController {
+public class
+InquiredController {
 
     private final InquiredService inquiredService;
 
@@ -37,31 +39,29 @@ public class InquiredController {
 
     private final FileService fileService;
 
+    private final EmailService emailService;
+
     public final String INQUIRED_CATEGORY1 = "문의";
+
 
     @GetMapping()
     public String getMyInquiry(@ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
-                          Principal principal, HttpServletRequest request,
-                          HttpSession httpSession, Model model){
-        String loginMember = checkMember(principal, request, httpSession);
+                          Principal principal, Model model){
+        String loginMember = checkMember(principal);
         List<Inquired> myInquiry = inquiredService.getMyInquired(loginMember);
         model.addAttribute("myInquiry", myInquiry);
         return "mypage/inquiry";
     }
 
-//    @GetMapping
-//    public String dd(){
-//        return "mypage/inquiry";
-//    }
-
+    // 회원이 문의 하는 기능
     @PostMapping("/submit")
     public String inquirySubmit(@Validated
                                   @ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
-                                   Principal principal, HttpServletRequest request, HttpSession httpSession) throws IOException {
+                                   Principal principal) throws IOException {
         log.info("실행");
 //        List<MultipartFile> inquiredImg = inquiredSubmitDTO.getInquiredImg();
 //        List<UploadFile> uploadFiles = fileService.storeFiles(inquiredImg);
-        String login = checkMember(principal, request, httpSession);
+        String login = checkMember(principal);
         Member loginMember = memberService.findOne(login);
 
 
@@ -76,15 +76,22 @@ public class InquiredController {
 
         inquiredService.inquiredSubmit(inquired);
 
-        return "redirect:/";
+        return "redirect:/mypage/inquiry";
     }
 
-
-    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
-        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
-        HttpSession session = request.getSession(false);
-        Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        String loginMember = loginMemberSession.getMemberId();
-        return loginMember;
+    // 관리자가 답변하는 기능 - 완료
+    @PostMapping("/answer")
+    private String setAnswer(@ModelAttribute("adminDTO") InquiredSubmitDTO.AdminDTO adminDTO) throws Exception {
+        inquiredService.replyAnswer(adminDTO.getInquiredId(), adminDTO.getAnswer());
+        log.info("=> 답변 승인 완료");
+        Inquired inquired = inquiredService.findOne(adminDTO.getInquiredId());
+        emailService.sendEmailMessage2(inquired.getEmail(), inquired.getInquiredId());
+        log.info("=> 메일 송신 승인");
+        return "redirect:";
     }
+
+    private String checkMember(Principal principal) {
+        return memberService.findOne(principal.getName()).getMemberId();
+    }
+
 }

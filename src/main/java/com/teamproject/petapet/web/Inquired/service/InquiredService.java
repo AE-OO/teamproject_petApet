@@ -4,6 +4,7 @@ package com.teamproject.petapet.web.Inquired.service;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
+import com.teamproject.petapet.web.Inquired.dto.InquiredSubmitDTO;
 
 import java.util.List;
 
@@ -30,6 +31,8 @@ public interface InquiredService {
     InquiredFAQDTO getOneFAQ(Long FAQId);
     void updateFAQ(InquiredFAQDTO inquiredFAQDTO);
     void deleteFAQ(Long FAQId);
+
+    void replyAnswer(Long inquiredId, String answer);
     default InquiredFAQDTO entityToDTO(Inquired inquired){
         InquiredFAQDTO inquiredFAQDTO = InquiredFAQDTO.builder()
                 .inquiredId(inquired.getInquiredId())

@@ -107,7 +107,7 @@
                         <div class="card-body">
                             <h4 class="card-title">문의 내역</h4>
                             <div style="height: 20px;"></div>
-                            <form class="form-sample" th:method="post" th:action="@{/admin/{idx}/edit(idx=${inquiredList.inquiredId})}" th:object="${inquiredList}">
+                            <form class="form-sample" th:method="post" th:action="@{/inquiry/answer}" th:object="${inquiredList}">
 <!--                                th:method="post" th:action="@{/admin/updateCheck}"-->
                                 <div class="row">
                                     <div class="col-md-6">
@@ -164,6 +164,11 @@
                                 <div class="form-group">
                                     <label for="exampleTextarea1">&nbsp;&nbsp;&nbsp;&nbsp;문의 내용</label>
                                     <textarea class="form-control" id="exampleTextarea1" rows="10" th:text="*{inquiredContent}" readonly></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" name="inquiredId" th:value="*{inquiredId}">
+                                    <label for="exampleTextarea1">&nbsp;&nbsp;&nbsp;&nbsp;답변 승인 내용</label>
+                                    <textarea class="form-control" id="exampleTextarea2" name="answer" rows="10" th:value="*{answer}"></textarea>
                                 </div>
                                 <button class="btn btn-primary mr-2" type="submit" >승인하기</button>
                                 <a href="../index.html">
