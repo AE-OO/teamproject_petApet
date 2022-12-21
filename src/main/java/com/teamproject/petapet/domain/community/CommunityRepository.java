@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 박채원 22.10.01 작성
  */
@@ -16,6 +18,14 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Transactional
     @Query("update Community c set c.communityReport = c.communityReport + 1 where c.communityId =:communityId")
     void addCommunityReport(Long communityId);
+
+    @Query("select c from Community c where c.communityCategory = '공지사항'")
+    public List<Community> getNotice();
+
+    @Modifying
+    @Transactional
+    @Query("update Community c set c.communityTitle =:title, c.communityContent =:content where c.communityId =:noticeId")
+    public void updateNotice(String title, String content, Long noticeId);
 
     @Query(value = "select count(*) from Community c where date_format(communityDate,'%Y-%m-%d') = curdate()", nativeQuery = true)
     Long countTodayCommunity();

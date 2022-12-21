@@ -59,12 +59,6 @@ public class InquiredServiceImpl implements InquiredService{
     }
 
     @Override
-    public void deleteFAQ(Long FAQId) {
-        log.info("========== FAQ 삭제 ==========");
-        inquiredRepository.deleteById(FAQId);
-    }
-
-    @Override
     public void replyAnswer(Long inquiredId, String answer) {
         inquiredRepository.replyAnswer(inquiredId, answer);
     }

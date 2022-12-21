@@ -73,7 +73,7 @@ public class AdminController {
         return "/admin/registerNotice";
     }
 
-    @PostMapping("/registerNotice") 
+    @PostMapping("/registerNotice")
     public String registerNotice(CommunityRequestDTO.registerNotice registerNotice){
         communityService.registerNotice(registerNotice);
         return "redirect:/admin/adminPage";

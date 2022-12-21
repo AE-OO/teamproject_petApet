@@ -2,11 +2,14 @@ package com.teamproject.petapet.web.product;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
-import com.teamproject.petapet.domain.product.repository.ReviewRepository;
+import com.teamproject.petapet.web.product.fileupload.FileService;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
+import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
+import com.teamproject.petapet.web.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -29,9 +32,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.security.Principal;
-import java.util.List;
-import java.util.UUID;
 
 import static com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO.getProductMainPageListDTOS;
 import static com.teamproject.petapet.web.product.reviewdto.ReviewDTO.getCollect;
@@ -45,8 +45,9 @@ public class ProductRestController {
 
     @Value("${editor.img.save.url}")
     private String saveUrl;
-    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
     private final ProductService productService;
+    private final FileService fileService;
 
     @PostMapping(value = "/image", produces = "application/json; charset=utf8")
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
@@ -76,7 +77,7 @@ public class ProductRestController {
 
         Sort sort = Sort.by("reviewId").descending();
         Pageable pageable = PageRequest.of(page, 10, sort);
-        Slice<Review> requestMoreReview = reviewRepository.requestMoreReview(productId, pageable);
+        Slice<Review> requestMoreReview = reviewService.requestMoreReview(productId, pageable);
 
         return getCollect(requestMoreReview);
 
