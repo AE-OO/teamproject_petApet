@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.product.service;
 
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -17,7 +18,7 @@ import java.util.Optional;
  */
 
 public interface ProductService {
-    List<Product> getProductList();
+    List<ProductDTO> getProductList(String companyId);
 
     Page<Product> getProductPage(Pageable pageable);
 
@@ -34,11 +35,15 @@ public interface ProductService {
 
     Optional<Product> findOne(Long id);
 
-    Optional<Product> productSave(ProductInsertDTO productInsertDTO,List<UploadFile> uploadFiles);
+    Optional<Product> productSave(ProductInsertDTO productInsertDTO,List<UploadFile> uploadFiles, Company company);
 
     Optional<Product> findProductWithReview(Long id);
 
-    Page<Product> findPage(String category,ProductType productType, String sortType,String searchContent,Long starRating, Pageable pageable);
+    void updateCounterView(Long productId);
+
+    void updateCounterSell(Long productId);
+
+    Page<Product> findPage(String category,ProductType productType, String sortType,String searchContent,Long starRating,String minPrice, String maxPrice,String isPriceRange, Pageable pageable);
     void addProductReport(Long productId);
 }
 

@@ -6,6 +6,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -38,14 +39,16 @@ import static com.teamproject.petapet.domain.product.QProduct.product;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Product> getProductList() {
-        return productRepository.findAll();
+    public List<ProductDTO> getProductList(String companyId) {
+        List<Product> productList = productRepository.findAllByCompany_CompanyId(companyId);
+        return productList.stream().map(ProductDTO::fromEntityForManageProduct).collect(Collectors.toList());
     }
 
 
@@ -103,10 +106,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> productSave(ProductInsertDTO insertDTO,List<UploadFile> uploadFiles) {
+    public Optional<Product> productSave(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, Company company) {
         ProductType productDiv = ProductType.valueOf(insertDTO.getProductDiv());
 
-        Product product = Product.ConvertToEntityByInsertDTO(insertDTO, uploadFiles, productDiv);
+        Product product = Product.ConvertToEntityByInsertDTO(insertDTO, uploadFiles, productDiv, company);
 
         Product savedProduct = productRepository.save(product);
 
@@ -120,11 +123,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findPage(String category,ProductType productType, String sortType,String content, Long starRating,Pageable pageable) {
+    public Page<Product> findPage(String category,ProductType productType, String sortType,String content, Long starRating, String minPrice, String maxPrice,String isPriceRange,Pageable pageable) {
         List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, sortType);
         List<Product> productList = jpaQueryFactory.select(product)
                 .from(product)
-                .where(isCategory(productType, category),isContent(content), isRating(starRating))
+                .where(isCategory(productType, category),
+                        isContent(content),
+                        isRating(starRating),
+                        isPriceRange(minPrice,maxPrice,isPriceRange),
+                        product.productStatus.eq("판매중"))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(orders.toArray(OrderSpecifier[]::new))
@@ -138,6 +145,21 @@ public class ProductServiceImpl implements ProductService {
         productRepository.addProductReport(productId);
     }
 
+    @Override
+    public void updateCounterView(Long productId) {
+        jpaQueryFactory.update(product)
+                .set(product.productViewCount,product.productViewCount.add(1))
+                .where(product.productId.eq(productId))
+                .execute();
+    }
+
+    @Override
+    public void updateCounterSell(Long productId) {
+        jpaQueryFactory.update(product)
+                .set(product.productSellCount,product.productSellCount.add(1))
+                .where(product.productId.eq(productId))
+                .execute();
+    }
 
     private BooleanExpression isContent(String content) {
         if (StringUtils.hasText(content) && !content.equals("false")) {
@@ -155,6 +177,15 @@ public class ProductServiceImpl implements ProductService {
     private BooleanExpression isRating(Long rating) {
         if (rating != 0) {
             return product.productRating.goe(rating);
+        }
+        return null;
+    }
+
+    private BooleanExpression isPriceRange(String minPrice, String maxPrice, String isRange) {
+        if (isRange.equals("true")) {
+        Long parsedMinPrice = minPrice.equals("") ? null : Long.parseLong(minPrice);
+        Long parsedMaxPrice = maxPrice.equals("") ? null : Long.parseLong(maxPrice);
+            return product.productPrice.between(parsedMinPrice,parsedMaxPrice);
         }
         return null;
     }
