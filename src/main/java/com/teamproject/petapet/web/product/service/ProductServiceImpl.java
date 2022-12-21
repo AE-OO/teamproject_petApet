@@ -10,6 +10,7 @@ import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import lombok.RequiredArgsConstructor;
 
 import com.teamproject.petapet.domain.product.ProductType;
@@ -27,6 +28,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.teamproject.petapet.domain.product.QProduct.product;
 
@@ -61,6 +63,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void updateProductStatus(String selectStatus, Long productStock, Long productId) {
         productRepository.updateProductStatus(selectStatus, productStock, productId);
+
+    }
+
+    @Override
+    public void updateProductInfo(String type, Long productId, Long productStock, String productStatus) {
+        if(type.equals("stock")){
+            productRepository.updateProductStock(productStock, productId);
+        }else if(type.equals("status")){
+            productRepository.updateProductStatus(productStatus, productId);
+        }
     }
 
     @Override

@@ -5,13 +5,13 @@ $(document).ready(function () {
     setOutOfStock()
 
     //faq 삭제 버튼 클릭
-    $(".deleteFAQ").click(function () {
+    $(".deleteNotice").click(function () {
         var id = $(this).attr("id");
 
         var returnConfirm = confirm("삭제하시겠습니까?");
         if (returnConfirm) {
             $.ajax({
-                url: "/admin/deleteFAQ/" + id,
+                url: "/admin/deleteNotice/" + id,
                 type: "get",
                 success() {
                     location.href = "/admin/adminPage";

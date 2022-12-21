@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -19,6 +20,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("update Product p set p.productStatus =:selectStatus, p.productStock =:productStock where p.productId =:productId")
     void updateProductStatus(@Param("selectStatus") String selectStatus, @Param("productStock") Long productStock, @Param("productId") Long productId);
 
+    @Modifying
+    @Transactional
+    @Query("update Product p set p.productStock =:productStock where p.productId =:productId")
+    void updateProductStock(Long productStock, Long productId);
+
+    @Modifying
+    @Transactional
+    @Query("update Product p set p.productStatus =:productStatus where p.productId =:productId")
+    void updateProductStatus(String productStatus, Long productId);
+    List<Product> findAllByCompany_CompanyId(String companyId);
     Page<Product> findAllByProductDiv(ProductType productType, Pageable pageable);
     Page<Product> findAllByProductNameContainsAndProductDiv(String productName, ProductType productType, Pageable pageable);
     @Modifying
