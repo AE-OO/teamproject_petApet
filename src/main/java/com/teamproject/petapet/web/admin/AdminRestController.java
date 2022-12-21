@@ -75,8 +75,7 @@ public class AdminRestController {
 
     @GetMapping(value = "/getMemberList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<MemberDTO>> getMemberList() {
-//        return new ResponseEntity<>(memberService.getMemberList(), HttpStatus.OK);
-        return new ResponseEntity<>(memberService.getMemberListForAdmin(), HttpStatus.OK);
+        return new ResponseEntity<>(memberService.getMemberList(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getCompanyJoinAcceptList", produces = MediaType.APPLICATION_JSON_VALUE)

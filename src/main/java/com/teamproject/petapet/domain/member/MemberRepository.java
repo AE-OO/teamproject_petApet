@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, String> {
-//    @Query("select m.memberId, m.memberName, m.memberGender, m.memberJoinDate, m.memberReport from Member m")
-//    List<Member> getMemberList();
 
     @Modifying
     @Transactional

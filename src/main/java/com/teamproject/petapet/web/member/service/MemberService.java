@@ -14,7 +14,6 @@ import java.util.Map;
 
 public interface MemberService {
     List<MemberDTO> getMemberList();
-    List<MemberDTO> getMemberListForAdmin();
     void deleteMember(String memberId);
     void addMemberReport(String memberId);
     void updateMemberStopDate(String memberId);
