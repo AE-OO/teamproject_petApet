@@ -5,6 +5,7 @@ import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor
+@Log4j2
 public class CompanyRestController {
     private final CompanyService companyService;
 

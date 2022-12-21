@@ -143,4 +143,16 @@ public class AdminRestController {
         reportService.refuseReport(reportId);
     }
 
+    //커뮤니티 강제 삭제
+    @GetMapping("/deleteCommunity/{communityId}")
+    public void deleteCommunity(@PathVariable("communityId") Long communityId){
+        communityService.deleteCommunity(communityId);
+    }
+
+    //공지사항 삭제
+    @GetMapping("/deleteNotice/{noticeId}")
+    public void deleteFAQ(@PathVariable("noticeId") Long noticeId){
+        communityService.deleteNotice(noticeId);
+    }
+
 }

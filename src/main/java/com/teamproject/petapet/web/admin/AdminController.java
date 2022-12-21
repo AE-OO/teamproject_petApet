@@ -75,11 +75,6 @@ public class AdminController {
         return "redirect:/admin/adminPage";
     }
 
-    //공지사항 삭제
-    @GetMapping("/deleteNotice/{noticeId}")
-    public void deleteFAQ(@PathVariable("noticeId") Long noticeId){
-        communityService.deleteNotice(noticeId);
-    }
 
 //    @GetMapping("/registerProduct")
 //    public String registerProductForm(){
@@ -96,12 +91,6 @@ public class AdminController {
 //    public void updateProductStatus(@RequestParam Map<String, Object> map, @PathVariable("productId") Long productId){
 //        productService.updateProductStatus((String)map.get("status"), Long.valueOf((String) map.get("stock")), productId);
 //    }
-
-    //커뮤니티 강제 삭제
-    @GetMapping("/deleteCommunity/{communityId}")
-    public void deleteCommunity(@PathVariable("communityId") Long communityId){
-        communityService.deleteCommunity(communityId);
-    }
 
     //회원 강제탈퇴 기능 구현
     @GetMapping("/deleteMember/{memberId}")

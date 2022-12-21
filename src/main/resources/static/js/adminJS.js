@@ -5,7 +5,7 @@ $(document).ready(function () {
     setOutOfStock()
 
     //공지사항 삭제 버튼 클릭
-    $(".deleteNotice").click(function () {
+    $(document).on("click",".deleteNotice",function(){
         var id = $(this).attr("id");
 
         var returnConfirm = confirm("삭제하시겠습니까?");
@@ -14,14 +14,14 @@ $(document).ready(function () {
                 url: "/admin/deleteNotice/" + id,
                 type: "get",
                 success() {
-                    location.href = "/admin/adminPage";
+                    getNoticeList();
                 }
             })
         }
     });
 
     //커뮤니티 관리 부분의 버튼 클릭 시 모달 뜨게
-    $(".communityModal").click(function () {
+    $(document).on("click", ".communityModal", function(){
         var communityId = $(this).attr("id");
 
         $(".communityDelete").empty();
@@ -44,15 +44,13 @@ $(document).ready(function () {
             url: "/admin/deleteCommunity/" + communityId,
             type: "get",
             success() {
-                $("#" + communityId).empty();
-            }, error() {
-                $("#" + communityId).empty();
+                getCommunityList();
             }
         })
     });
 
     //회원관리 부분의 버튼 클릭시 모달 뜨게
-    $(".memberModal").click(function () {
+    $(document).on("click", ".memberModal", function(){
         var memberId = $(this).attr("id");
 
         $(".memberDelete").empty();
@@ -60,12 +58,12 @@ $(document).ready(function () {
         var modalBody = '';
         modalBody += '아이디<br/>';
         modalBody += '<div style="color: red">' + memberId + '</div>';
-        modalBody += '을(를) 삭제하겠습니까?<br/>확인을 누르면 삭제됩니다.<br/>';
+        modalBody += '을(를) 정지 또는 강제 탈퇴하겠습니까?<br/>확인을 누르면 처리됩니다.<br/>';
         $(".memberDelete").append(modalBody);
         $(".confirmDisabledMember").attr("id", memberId);
         $(".confirmMemberDelete").attr("id", memberId);
         $("#confirmMemberDeleteModal").modal('show');
-    });
+    })
 
     //회원 정지 버튼 클릭
     $(".confirmDisabledMember").click(function () {
@@ -76,7 +74,7 @@ $(document).ready(function () {
             url: "/admin/disabledMember/" + memberId,
             type: "get",
             success() {
-                location.reload();
+                getMemberList();
             }
         })
     });
@@ -90,9 +88,9 @@ $(document).ready(function () {
             url: "/admin/deleteMember/" + memberId,
             type: "get",
             success() {
-                location.reload();
+                getMemberList();
             }, error() {
-                location.reload();
+                getMemberList();
             }
         })
     });
@@ -114,15 +112,14 @@ $(document).ready(function () {
 
     //신고 승인 버튼 클릭
     $("#acceptReportBtn").click(function () {
-        console.log($("#modalTargetId").val());
-
         if ($("#modalTargetType").val() === "community") {
             $.ajax({
                 url: "/admin/acceptCommunityReport/" + $("#modalReportId").val(),
                 data: {communityId: $("#modalTargetId").val()},
                 type: "get",
                 success() {
-                    location.reload();
+                    getCommunityReportList();
+                    getCommunityList();
                 }
             })
         } else if ($("#modalTargetType").val() === "product") {
@@ -131,7 +128,7 @@ $(document).ready(function () {
                 data: {productId: $("#modalTargetId").val()},
                 type: "get",
                 success() {
-                    location.reload();
+                    getProductReportList();
                 }
             })
         } else {
@@ -140,7 +137,8 @@ $(document).ready(function () {
                 data: {memberId: $("#modalTargetId").val()},
                 type: "get",
                 success() {
-                    location.reload();
+                    getMemberReportList();
+                    getMemberList();
                 }
             })
         }
@@ -152,7 +150,9 @@ $(document).ready(function () {
             url: "/admin/refuseReport/" + $("#modalReportId").val(),
             type: "post",
             success() {
-                location.reload();
+                getProductReportList();
+                getMemberReportList();
+                getProductReportList();
             }
         })
     });
@@ -163,7 +163,7 @@ $(document).ready(function () {
            url: "/acceptJoinCompany/" + $("#modalCompanyId").val(),
            type: "post",
            success(){
-                location.reload();
+                getCompanyJoinAcceptList();
            }
        })
     });
@@ -180,7 +180,7 @@ $(document).ready(function () {
                     url: "/refuseJoinCompany/" + $("#modalCompanyId").val(),
                     type: "post",
                     success(){
-                        location.reload();
+                        getCompanyJoinAcceptList();
                     }
                 })
             }
@@ -188,10 +188,8 @@ $(document).ready(function () {
     })
 })
 
+//처음 adminPage화면 로딩할 때 데이터 가져가는 메소드
 function loadingFirst(){
-    console.log("이거실행");
-    reportColor();
-
     getNoticeList();
     getOtherInquiryList();
     getCommunityReportList();
@@ -200,6 +198,8 @@ function loadingFirst(){
     getCompanyJoinAcceptList();
     getCommunityList();
     getMemberList();
+
+    reportColor();
 }
 
 //공지사항 리스트 출력
@@ -210,17 +210,17 @@ function getNoticeList() {
             $.each(result, function(idx, notice) {
                 list += `<tr>
                                             <td class="pl-0">${notice.communityId}</td>
-                                            <td><a th:href="@{/admin/updateNoticeForm/{noticeId}(noticeId = ${notice.communityId})}">${notice.communityTitle}</a>
+                                            <td><a href="/admin/updateNoticeForm/${notice.communityId}">${notice.communityTitle}</a>
                                             </td>
                                             <td>
-                                                <a th:href="@{/admin/updateNoticeForm/{noticeId}(noticeId = ${notice.communityId})}">
+                                                <a href="/admin/updateNoticeForm/${notice.communityId}">
                                                     <button class="btn btn-success btn-sm updateFAQ" type="button">수정
                                                     </button>
                                                 </a>
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm deleteNotice" type="button"
-                                                        th:id="${notice.communityId}">삭제
+                                                        id="${notice.communityId}">삭제
                                                 </button>
                                             </td>
                                         </tr>`;
@@ -239,7 +239,7 @@ function getOtherInquiryList(){
             $.each(result, function(idx, other) {
                 list += `<tr>
                                             <td class="pl-0">${other.inquiredId}</td>
-                                            <td><a href="#" th:href="@{/admin/{idx}/edit(idx=${other.inquiredId})}">${other.inquiredTitle}</a>
+                                            <td><a href="/admin/${other.inquiredId}/edit">${other.inquiredTitle}</a>
                                             </td>
                                             <td>${other.inquiredCategory}</td>
                                             <td><label class="badge badge-danger"
@@ -264,7 +264,7 @@ function getCommunityReportList(){
                                             <td>${communityReport.reportReason}</td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm" id="showCommunityReportModal"
-                                                        th:onclick="getReportReason(${communityReport.reportId}, 'community');"
+                                                        onclick="getReportReason(${communityReport.reportId}, 'community');"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#confirmReportModal"
                                                         type="button">승인
@@ -290,7 +290,7 @@ function getMemberReportList(){
                                             <td>${memberReport.reportReason}</td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm" id="showMemberReportModal"
-                                                        th:onclick="getReportReason(${memberReport.reportId}, 'member');"
+                                                        onclick="getReportReason(${memberReport.reportId}, 'member');"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#confirmReportModal"
                                                         type="button">승인
@@ -316,7 +316,7 @@ function getProductReportList(){
                                             <td>${productReport.reportReason}</td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm" id="showProductReportModal"
-                                                        th:onclick="getReportReason(${productReport.reportId}, 'product');"
+                                                        onclick="getReportReason(${productReport.reportId}, 'product');"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#confirmReportModal"
                                                         type="button">승인
@@ -342,7 +342,7 @@ function getCompanyJoinAcceptList(){
                                             <td>${company.companyNumber}</td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm"
-                                                        th:onclick="getCompanyInfo(${company.companyId})"
+                                                        onclick="getCompanyInfo('${company.companyId}')"
                                                         id="showCompanyInfoModal"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#confirmCompanyInfoModal"
@@ -374,7 +374,7 @@ function getCommunityList(){
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-danger btn-sm communityModal" type="button"
-                                                            th:id="${community.communityId}">게시글 삭제
+                                                            id="${community.communityId}">게시글 삭제
                                                     </button>
                                                 </td>
                                             </tr>
@@ -389,7 +389,6 @@ function getCommunityList(){
 //전체 회원 리스트 출력
 function getMemberList(){
     $.getJSON('/admin/getMemberList', function(result){
-        console.log(result);
         var list = '';
         if(result.length > 0){
             $.each(result, function(idx, member) {
@@ -402,7 +401,7 @@ function getMemberList(){
                                             <td class="text-success" id="report">${member.memberReport}</td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm memberModal" type="button"
-                                                        th:id="${member.memberId}">회원탈퇴/정지
+                                                        id="${member.memberId}">회원탈퇴/정지
                                                 </button>
                                             </td>
                                         </tr>`;
