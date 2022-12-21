@@ -1,4 +1,4 @@
-package com.teamproject.petapet.web.product.productdtos;
+package com.teamproject.petapet.web.product.reviewdto;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;

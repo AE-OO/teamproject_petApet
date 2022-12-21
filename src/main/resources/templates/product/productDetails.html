@@ -86,7 +86,7 @@
                     <h6>재고</h6>
                 </div>
                 <div class="row m-lg-3 col-6">
-                    <h6>판매자</h6>
+                    <h6 th:text="*{productSeller}">판매자</h6>
                     <h6 th:text="*{productStock}" id="remainStock">재고</h6>
                     <th:block th:if="*{productStock <= 10}">
                     <h6 class="text-secondary" th:text="|*재고가 *{productStock}개 남았습니다*|"></h6>
@@ -297,7 +297,7 @@
                                                     <img
                                                             th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
                                                             width="100" height="100" th:alt="${reviewImage.uploadFileName}"
-                                                            class="reviewImage"></a>
+                                                            class="reviewImage" th:id="|${'reviewImage'}${i.index}|"></a>
                                             </th:block>
                                     </div>
                                 <div class="col-1 text-end">

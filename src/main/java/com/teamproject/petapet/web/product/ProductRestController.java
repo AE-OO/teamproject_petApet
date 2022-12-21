@@ -6,7 +6,7 @@ import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
-import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
+import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.service.ReviewService;

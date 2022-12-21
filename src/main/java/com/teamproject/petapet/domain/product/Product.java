@@ -22,7 +22,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "company")
+@ToString(exclude = {"company, review, cart"})
 @Getter
 @DynamicInsert
 @DynamicUpdate
@@ -101,7 +101,7 @@ public class Product {
         this.productDiv = productDiv;
         this.productContent = productContent;
         this.productDiscountRate = productDiscountRate;
-        this.productUnitPrice= productUnitPrice;
+        this.productUnitPrice = productUnitPrice;
     }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {
@@ -111,6 +111,7 @@ public class Product {
                 .productStock(product.getProductStock())
                 .productRating(product.getProductRating())
                 .productName(product.getProductName())
+                .productSeller(product.getCompany().getCompanyName())
                 .productContent(product.getProductContent())
                 .productDiscountRate(product.getProductDiscountRate())
                 .productUnitPrice(product.getProductUnitPrice())
@@ -118,14 +119,15 @@ public class Product {
                 .build();
     }
 
-    public static Product ConvertToEntityByInsertDTO(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, ProductType productDiv) {
-       return Product.builder()
+    public static Product ConvertToEntityByInsertDTO(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, ProductType productDiv, Company company) {
+        return Product.builder()
                 .productName(insertDTO.getProductName())
                 .productPrice(insertDTO.getProductPrice())
                 .productStock(insertDTO.getProductStock())
                 .productImg(uploadFiles)
                 .productStatus("판매중")
                 .productDiv(productDiv)
+                .company(company)
                 .productContent(insertDTO.getProductContent())
                 .productDiscountRate(insertDTO.getProductDiscountRate())
                 .productUnitPrice(insertDTO.getProductUnitPrice())

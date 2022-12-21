@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragment/heade :: head(productInsert)}">
     <meta charset="UTF-8">
     <title>Title</title>
@@ -79,7 +79,7 @@
                             </h6>
                         </div>
                         <div class="col-6 m-lg-1">
-                            <input style="border: none; color: #347a5e" th:field="*{productPrice}" name="productPrice" id="finalPrice">
+                            <input style="border: none; color: #347a5e" th:field="*{productPrice}" name="productPrice" id="finalPrice" readonly>
                         </div>
                     </div>
                 </div>
@@ -87,9 +87,10 @@
                     <div class="d-flex flex-row col">
                         <div class="col-6 m-lg-1">
                             <h6>판매자</h6>
+                                <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productSeller}"/>
                         </div>
                         <div class="col-6 m-lg-1">
-                            <h6>테스트판매</h6>
+                            <input type="text" readonly style="border: none;" th:field="*{productSeller}" name="productSeller" th:value="${#authentication.name}">
                         </div>
                     </div>
                 </div>
@@ -217,6 +218,11 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
+
+    $(document).ready(function () {
+        let newVar = [[${#authentication.name}]];
+        let val = $('#productSeller').val(newVar);
+    })
 
     function setThumbnail(event) {
             let from = Array.from(event.target.files);

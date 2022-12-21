@@ -6,6 +6,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -103,10 +104,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> productSave(ProductInsertDTO insertDTO,List<UploadFile> uploadFiles) {
+    public Optional<Product> productSave(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, Company company) {
         ProductType productDiv = ProductType.valueOf(insertDTO.getProductDiv());
 
-        Product product = Product.ConvertToEntityByInsertDTO(insertDTO, uploadFiles, productDiv);
+        Product product = Product.ConvertToEntityByInsertDTO(insertDTO, uploadFiles, productDiv, company);
 
         Product savedProduct = productRepository.save(product);
 
@@ -134,7 +135,6 @@ public class ProductServiceImpl implements ProductService {
                 .orderBy(orders.toArray(OrderSpecifier[]::new))
                 .fetch();
         long count = productRepository.count();
-//        int count = productList.size();
         return new PageImpl<>(productList, pageable, count);
     }
 

@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.product.service;
 
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -33,7 +34,7 @@ public interface ProductService {
 
     Optional<Product> findOne(Long id);
 
-    Optional<Product> productSave(ProductInsertDTO productInsertDTO,List<UploadFile> uploadFiles);
+    Optional<Product> productSave(ProductInsertDTO productInsertDTO,List<UploadFile> uploadFiles, Company company);
 
     Optional<Product> findProductWithReview(Long id);
 

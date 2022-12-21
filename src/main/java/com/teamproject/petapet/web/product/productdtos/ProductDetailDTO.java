@@ -14,6 +14,7 @@ public class ProductDetailDTO {
     private String productContent;
     private List<UploadFile> productImg;
     private String productName;
+    private String productSeller;
     private Long productPrice;
     private Long productRating;
     private Long productStock;

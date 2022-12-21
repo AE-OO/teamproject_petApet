@@ -1,10 +1,12 @@
 package com.teamproject.petapet.web.company.service;
 
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CompanyService {
     boolean duplicateCheckCompanyId(String companyId);
@@ -24,8 +26,8 @@ public interface CompanyService {
     void acceptJoinCompany(String companyId);
     void refuseJoinCompany(String companyId);
 
-
-
+    // 22.12.21 오성훈. 상품 등록 시 영속성객체가 필요해서 추가
+    Optional<Company> findById(String companyId);
 
 
 

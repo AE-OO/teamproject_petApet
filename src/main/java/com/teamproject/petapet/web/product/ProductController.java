@@ -1,15 +1,17 @@
 package com.teamproject.petapet.web.product;
 
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.web.buy.service.BuyService;
+import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.dibs.service.DibsProductService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
-import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
+import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
@@ -52,6 +54,7 @@ public class ProductController {
     private final ReviewService reviewService;
     private final DibsProductService dibsProductService;
     private final BuyService buyService;
+    private final CompanyService companyService;
     @GetMapping("/main")
     public String productMainPage() {
         return "/product/productMainPage";
@@ -105,27 +108,35 @@ public class ProductController {
     }
 
     @PostMapping("/insert")
-    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult) throws IOException {
+    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult,Principal principal) throws IOException {
 
         if (productInsertDTO.getProductImg().get(0).isEmpty()) {
             bindingResult.addError(new FieldError("productInsertDTO", "productImg", "1장 이상의 사진을 올려주세요"));
+        }
+
+        if (!productInsertDTO.getProductSeller().equals(principal.getName())){
+            bindingResult.addError(new FieldError("productInsertDTO", "productSeller", "판매자명이 잘못됐습니다."));
         }
 
         if (bindingResult.hasErrors()) {
             return "/product/productInsertForm";
         }
 
+        Company company = companyService.findById(principal.getName()).orElseThrow(NoSuchElementException::new);
+
         List<MultipartFile> productImg = productInsertDTO.getProductImg();
         List<UploadFile> uploadFiles = fileService.storeFiles(productImg);
 
-        Product savedProduct = productService.productSave(productInsertDTO, uploadFiles)
+        Product savedProduct = productService.productSave(productInsertDTO, uploadFiles, company)
                 .orElseThrow(NoSuchElementException::new);
 
-        String redirectURL = "/product/" +
-                savedProduct.getProductDiv().name().toLowerCase() + "/" +
-                savedProduct.getProductId() + "/" + "details";
+        log.info("savedProduct={}",savedProduct);
+//        String redirectURL = "/product/" +
+//                savedProduct.getProductDiv().name().toLowerCase() + "/" +
+//                savedProduct.getProductId() + "/" + "details";
 
-        return "redirect:" + redirectURL;
+//        return "redirect:" + redirectURL;
+        return "redirect:/product";
     }
 
     @GetMapping(value = "/images/{filename}")
@@ -153,7 +164,6 @@ public class ProductController {
         if (principal != null) {
             boolean existsDibsProduct = dibsProductService.existsDibsProduct(findProduct, memberService.findOne(principal.getName()));
             model.addAttribute("existsDibsProduct", existsDibsProduct);
-            log.info("existsDibsProduct = {}", existsDibsProduct);
             boolean existsByPurchaseHistory = buyService.existsByPurchaseHistory(productId, principal.getName());
             model.addAttribute("existsByPurchaseHistory", existsByPurchaseHistory);
             boolean existByReviewHistory = reviewService.existByReviewHistory(productId, principal.getName());
