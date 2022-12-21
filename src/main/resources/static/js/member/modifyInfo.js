@@ -10,6 +10,7 @@ memberPostCode = () => $("#sample6_postcode").val();
 memberExtraAddress = () => $("#sample6_extraAddress").val();
 memberAddress = () => $("#sample6_address").val();
 memberPhoneNum = () => $("#input-memberPhoneNum").val();
+memberEmail = () => $("#input-memberEmail").val();
 smsConfirmNum = () => $("#input-smsConfirmNum");
 
 //error 메세지 (input 밑에 있는 p태그) 전역으로 사용하기위해 function 선언함
@@ -18,6 +19,7 @@ mNewPwFeedback = () => $("#feedback-newMemberPw");
 mNewPwFeedback2 = () => $("#feedback-newMemberPw2");
 mBirthFeedback = () => $("#feedback-memberBirthday");
 mPhoneNumFeedback = () => $("#feedback-memberPhoneNum");
+mEmailFeedback = () => $("#feedback-memberEmail");
 mAddrFeedback = () => $("#feedback-memberAddress");
 smsConfirmNumFeedback = () => $("#feedback-smsConfirmNum");
 smsConfirmNumFeedback2 = () => $("#feedback-smsConfirmNum2");
@@ -28,6 +30,7 @@ const mPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])
 const mPhoneumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
 //숫자 정규식 (길이 상관 없이 숫자만 입력)
 const numRegExp = /^[0-9]+$/;
+const mEmailRegExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 
 //현재 비밀번호 체크
 function checkOriginalMemberPw() {
@@ -105,16 +108,40 @@ function checkMemberPhoneNum() {
         $("#smsBtn").attr("disabled", true);
         mPhoneNumFeedback().text("휴대폰 번호를 입력해주세요.");
         return false;
-    }
-    if (!(mPhoneumRegExp.test(memberPhoneNum()))) {
+    }else if(!(mPhoneumRegExp.test(memberPhoneNum()))) {
         mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
         $("#smsBtn").attr("disabled", true);
         return false;
+    }else if(memberPhoneNum() == originalMemberPhoneNum){
+        mPhoneNumFeedback().text("");
+        $("#smsBtn").attr("disabled", false);
+        return true;
+    }else{
+        $.ajax({
+            type: "POST",
+            url: "/checkPhoneNum",
+            data: {
+                memberPhoneNum: memberPhoneNum(),
+            },
+            dataType: "json",
+            success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
+                if (check) {
+                    mPhoneNumFeedback().text("이미 가입된 휴대폰 번호입니다.");
+                    $("#smsBtn").attr("disabled", true);
+                    return checkResult = false;
+                } else {//조건에 맞을 때
+                    mPhoneNumFeedback().text("");
+                    $("#smsBtn").attr("disabled", false);
+                    return checkResult = true;
+                }
+            },
+            error: function () {
+                console.log("통신 오류");
+                window.location = "member/checkInfo";
+            }
+        });
+        return checkResult;
     }
-    mPhoneNumFeedback().text("");
-    $("#smsBtn").attr("disabled", false);
-    return true;
-
 }
 
 //인증시간 변수
@@ -186,7 +213,7 @@ function sendBtnClick() {
     //     },
     //     error: function () {
     //         alert("인증번호 발송 실패");
-    //         location.href="/join"
+    //         location.href="/member/checkInfo"
     //     }
     // });
 
@@ -342,7 +369,6 @@ function checkMemberAddress() {
     if (memberPostCode() === null || memberPostCode() === "") { //값이 없을 때
         mAddrFeedback().text("필수 정보입니다.");
         return false;
-
     } else if (memberDetailAddress() === "") {
         mAddrFeedback().text("상세 주소를 입력해주세요.");
         return false;
@@ -352,7 +378,91 @@ function checkMemberAddress() {
     }
 }
 
+function checkMemberEmail() {
+    if (memberEmail() === null || memberEmail() === "") { //값이 없을 때
+        mEmailFeedback().text("필수 정보입니다.");
+        return false;
+    } else if (!(mEmailRegExp.test(memberEmail()))) { //정규식에 맞지 않을 때
+        mEmailFeedback().text("이메일을 올바르게 입력해주세요. (예: petapet@pet.com)");
+        return false;
+    } else if (memberEmail() === originalMemberEmail) {
+        mEmailFeedback().text("");
+        return true;
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/checkEmail",
+            data: {
+                memberEmail: memberEmail(),
+            },
+            dataType: "json",
+            success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
+                if (check) {
+                    mEmailFeedback().text("이미 가입된 이메일 주소입니다. 다른 이메일을 입력하여 주세요.");
+                    return checkResult = false;
+                } else {//조건에 맞을 때
+                    mEmailFeedback().text("");
+                    return checkResult = true;
+                }
+            },
+            error: function () {
+                console.log("통신 오류");
+                window.location = "/member/checkInfo";
+            }
+        });
+        return checkResult;
+    }
+}
+
+function setThumbnail(event) {
+    let from = Array.from(event.target.files);
+    $('#thumbnailImg').empty();
+    $.each(from, function (idx, el) {
+        let reader = new FileReader();
+        reader.onload = function (event) {
+            let img = $("#profileImg");
+            img.attr("src", event.target.result);
+        };
+        reader.readAsDataURL(el);
+    });
+    updateProfile();
+    $("#basicA").show();
+}
+let selectProfile = () => {
+    $("#inputFile").click();
+}
+let selectBasicProfile = () => {
+    let img = $("#profileImg");
+    img.attr("src", "/img/profile.jpg");
+    $('#inputFile').val('');
+    updateProfile();
+    $("#basicA").hide();
+}
+
+let updateProfile = () =>{
+    let newMemberImg = $('#inputFile').get(0).files[0];
+    let formData = new FormData();
+    // formData.append('originalMemberImg', memberImg);
+    formData.append('memberImg', newMemberImg);
+    $.ajax({
+        type: "POST",
+        url: "/updateMemberImg",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function () {
+            // alert("수정완");
+        },
+        error: function () {
+            console.log("통신 오류");
+            window.location = "member/checkInfo";
+        }
+    });
+}
 $(document).ready(function () {
+    if(memberImg === "0"){
+        $("#basicA").hide();
+    }
     $("#updateMemberPwBtn").click(function () {
         $("#updateMemberPw").modal('show');
     })
@@ -422,30 +532,34 @@ $(document).ready(function () {
     $("#modifyBtn").click(function () {
         if (memberPostCode() === null || memberPostCode() === "") { //값이 없을 때
             mAddrFeedback().text("필수 정보입니다.");
-
         } else if (memberDetailAddress() === "") {
             mAddrFeedback().text("상세 주소를 입력해주세요.");
+        }
+
+        if (memberEmail() === null || memberEmail() === "") { //값이 없을 때
+            mEmailFeedback().text("필수 정보입니다.");
         }
 
         if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
             mPhoneNumFeedback().text("인증이 필요합니다.");
         }
+
         if (!checkMemberBirthday()) {
             mBirthFeedback().text("필수 정보입니다.");
         }
-
-        // alert(checkMemberBirthday()+"///"+checkMemberAddress()+"///"+checkMemberPhoneNum()+"///")
-        if (checkMemberBirthday() && checkMemberAddress() && checkMemberPhoneNum()) {
-            alert("수정이 완료되었습니다.");
-            $("#modifyBtn").attr("type", "submit");
-        }
         if (smsConfirmNum().val().length > 0) {
-            if (checkMemberBirthday() && checkMemberAddress() && checkMemberPhoneNum() && checkSmsConfirmNum()) {
+            if (checkMemberBirthday() && checkMemberAddress() && checkMemberPhoneNum() && checkSmsConfirmNum() && checkMemberEmail()) {
                 alert("수정이 완료되었습니다.");
                 $("#modifyBtn").attr("type", "submit");
             }
+            return;
         }
 
+        // alert(checkMemberBirthday()+"///"+checkMemberAddress()+"///"+checkMemberPhoneNum()+"///")
+        if (checkMemberBirthday() && checkMemberAddress() && checkMemberPhoneNum() && checkMemberEmail()) {
+            alert("수정이 완료되었습니다.");
+            $("#modifyBtn").attr("type", "submit");
+        }
     });
 
     // 회원탈퇴 버튼

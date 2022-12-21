@@ -5,7 +5,11 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/member/modifyInfo.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
-
+    <script th:inline="javaScript">
+        let originalMemberEmail = [[${memberDTO.memberEmail}]];
+        let originalMemberPhoneNum = [[${memberDTO.memberPhoneNum}]]
+        let memberImg = [[${memberDTO.memberImg}]];
+    </script>
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
@@ -24,8 +28,38 @@
                         <div class="container join">
                             <div class="row g-5">
                                 <div class="mx-auto">
-                                    <form action="/member/modifyInfo" method="post">
+                                    <form action="/member/modifyInfo" id="test" method="post" enctype="multipart/form-data">
+                                        <input type="file" id="inputFile" class="form-control visually-hidden"
+                                               accept=".gif, .jpg, .png" onchange="setThumbnail(event);">
                                         <div class="row">
+                                            <!-- memberImg start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <div class="px-3 py-2 ">
+                                                        <img id="profileImg" class="rounded-circle border border-1"
+                                                             th:src="${memberDTO.memberImg}==0? '/img/profile.jpg':'/image/'+${memberDTO.memberImg}"
+                                                             src="/img/profile.jpg" width="175" height="175" style="object-fit: cover;">
+                                                        <div class="dropdown col-5 mx-auto">
+                                                            <button class="position-absolute btn btn-outline-dark btn-sm"
+                                                                    type="button"
+                                                                    style="bottom:10px; right:13px;"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="bi bi-pencil-fill me-2"></i>Edit
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item"
+                                                                       href="javascript:selectProfile()">사진 선택...</a>
+                                                                </li>
+                                                                <li><a class="dropdown-item" id="basicA"
+                                                                       href="javascript:selectBasicProfile()">기본 이미지로
+                                                                    변경</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberImg end-->
 
                                             <!-- memberId start -->
                                             <div class="col-12">
@@ -63,6 +97,21 @@
                                                 </div>
                                             </div>
                                             <!-- memberName end -->
+
+                                            <!-- memberEmail start -->
+                                            <div class="col-12">
+                                                <div class="row g-2 mb-4 px-1">
+                                                    <label for="input-memberEmail" class="myinfo-p col-3">이메일</label>
+                                                    <div class="px-0 col-9">
+                                                    <input type="text" id="input-memberEmail" name ="memberEmail"
+                                                           class="form-control mb-2 px-3 py-2"
+                                                           th:value="${memberDTO.memberEmail}" onblur="checkMemberEmail()">
+                                                    <p id="feedback-memberEmail"
+                                                       class="text-start text-danger small ps-2 my-1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- memberEmail end -->
 
                                             <!-- memberPhoneNum start -->
                                             <div class="col-12">
@@ -138,7 +187,8 @@
                                                                maxlength="2" name="memberBirthday"
                                                                th:value="${memberDTO.memberBirthday.get(2)}"
                                                                onblur="checkMemberBirthday()" placeholder="일">
-                                                        <p id="feedback-memberBirthday" class="text-start text-danger small ps-2 my-1"/>
+                                                        <p id="feedback-memberBirthday"
+                                                           class="text-start text-danger small ps-2 my-1"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -147,7 +197,6 @@
                                             <!-- memberAddress-->
                                             <div class="col-12">
                                                 <div class="row g-2 mb-2 px-1">
-
                                                     <label class="myinfo-p col-3">주소</label>
                                                     <div class="px-0 col-9">
                                                         <div class="row g-2 pe-1 mb-2">
@@ -300,7 +349,6 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
-
 </body>
 
 </html>

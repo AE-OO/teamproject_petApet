@@ -31,7 +31,7 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long communityId;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 75, nullable = false)
     private String communityTitle;
 
     @Column(columnDefinition = "TEXT NOT NULL")
@@ -39,6 +39,9 @@ public class Community {
 
     @Column(length = 45, nullable = false)
     private String communityCategory;
+
+    @Column(length = 20)
+    private String communitySubCategory;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -50,6 +53,9 @@ public class Community {
 
     @Column(columnDefinition = "bigint(3) default 0")
     private Long communityReport;
+
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int viewCount;
 
     @ManyToOne
     @JoinColumn(name = "memberId")

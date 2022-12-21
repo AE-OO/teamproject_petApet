@@ -30,13 +30,13 @@ public class Company {
     @Column(length = 45, nullable = false)
     private String companyName;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false, unique = true)
     private String companyEmail;
 
     @Column(length = 45, nullable = false)
     private String companyNumber;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false, unique = true)
     private String companyPhoneNum;
 
     @Column(updatable = false)

@@ -4,6 +4,10 @@
     <title>petApet - 사업자 정보 수정</title>
     <script src="/js/company/modifyCompanyInfo.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <script th:inline="javaScript">
+        let originalCompanyEmail = [[${companyDTO.CompanyEmail}]];
+        let originalCompanyPhoneNum = [[${companyDTO.CompanyPhoneNum}]]
+    </script>
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
@@ -81,7 +85,7 @@
                                                     <input type="text" id="input-companyEmail"
                                                            class="form-control px-3 py-2" name="companyEmail"
                                                            th:value="${companyDTO.companyEmail}"
-                                                           onkeyup="checkCompanyEmail()">
+                                                           onblur="checkCompanyEmail()">
                                                     <p id="feedback-companyEmail"
                                                        class="text-start text-danger small ps-2 my-1"/>
                                                     </div>
