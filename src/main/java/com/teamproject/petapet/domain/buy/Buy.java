@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.buy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
@@ -32,6 +33,7 @@ public class Buy {
     @Column(length = 45, nullable = false)
     private String buyAddress;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;

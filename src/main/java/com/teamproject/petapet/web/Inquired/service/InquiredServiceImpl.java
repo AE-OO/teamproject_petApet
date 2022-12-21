@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class InquiredServiceImpl implements InquiredService{
+public class InquiredServiceImpl implements InquiredService {
 
     private final InquiredRepository inquiredRepository;
 
@@ -48,8 +48,9 @@ public class InquiredServiceImpl implements InquiredService{
     }
 
     @Override
-    public List<Inquired> getOtherInquiries() {
-        return inquiredRepository.getOtherInquiries();
+    public List<InquiryDTO> getOtherInquiries() {
+        List<Inquired> inquiredList = inquiredRepository.getOtherInquiries();
+        return inquiredList.stream().map(list -> InquiryDTO.fromEntityForOtherInquiry(list)).collect(Collectors.toList());
     }
 
     @Override

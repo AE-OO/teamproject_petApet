@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    reportColor();
+    loadingFirst();
     moveSideBar();
     movePage();
     setOutOfStock()
 
-    //faq 삭제 버튼 클릭
+    //공지사항 삭제 버튼 클릭
     $(".deleteNotice").click(function () {
         var id = $(this).attr("id");
 
@@ -97,20 +97,20 @@ $(document).ready(function () {
         })
     });
 
-    $(".setProductStatus").click(function () {
-        var productId = $(this).attr("value");
-        var selectedStatus = $(this).parent().parent().find("select[name=productStatus]").val();
-        var productStock = $(this).parent().parent().find("input[name=productStock]").val();
-
-        $.ajax({
-            url: "/admin/updateProductStatus/" + productId,
-            type: "get",
-            data: {status: selectedStatus, stock: productStock},
-            success() {
-                location.href = "/admin/adminPage";
-            }
-        })
-    });
+    // $(".setProductStatus").click(function () {
+    //     var productId = $(this).attr("value");
+    //     var selectedStatus = $(this).parent().parent().find("select[name=productStatus]").val();
+    //     var productStock = $(this).parent().parent().find("input[name=productStock]").val();
+    //
+    //     $.ajax({
+    //         url: "/admin/updateProductStatus/" + productId,
+    //         type: "get",
+    //         data: {status: selectedStatus, stock: productStock},
+    //         success() {
+    //             location.href = "/admin/adminPage";
+    //         }
+    //     })
+    // });
 
     //신고 승인 버튼 클릭
     $("#acceptReportBtn").click(function () {
@@ -157,6 +157,7 @@ $(document).ready(function () {
         })
     });
 
+    //회사 가입 승인 버튼 클릭
     $("#acceptCompanyJoinBtn").click(function(){
        $.ajax({
            url: "/acceptJoinCompany/" + $("#modalCompanyId").val(),
@@ -167,6 +168,7 @@ $(document).ready(function () {
        })
     });
 
+    //회사 가입 거절 버튼 클릭
     $("#refuseCompanyJoinBtn").click(function(){
         $.ajax({
             url: "/email/sendRefuseReason",
@@ -186,14 +188,239 @@ $(document).ready(function () {
     })
 })
 
-//신고수가 3 이상이 되면 글씨 빨갛게 바꾸기 - 동작안함
+function loadingFirst(){
+    console.log("이거실행");
+    reportColor();
+
+    getNoticeList();
+    getOtherInquiryList();
+    getCommunityReportList();
+    getMemberReportList();
+    getProductReportList();
+    getCompanyJoinAcceptList();
+    getCommunityList();
+    getMemberList();
+}
+
+//공지사항 리스트 출력
+function getNoticeList() {
+    $.getJSON('/admin/getNoticeList', function(result){
+        var list = '';
+        if(result.length > 0){
+            $.each(result, function(idx, notice) {
+                list += `<tr>
+                                            <td class="pl-0">${notice.communityId}</td>
+                                            <td><a th:href="@{/admin/updateNoticeForm/{noticeId}(noticeId = ${notice.communityId})}">${notice.communityTitle}</a>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{/admin/updateNoticeForm/{noticeId}(noticeId = ${notice.communityId})}">
+                                                    <button class="btn btn-success btn-sm updateFAQ" type="button">수정
+                                                    </button>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm deleteNotice" type="button"
+                                                        th:id="${notice.communityId}">삭제
+                                                </button>
+                                            </td>
+                                        </tr>`;
+            })
+        }
+
+        $(".noticeList").html(list);
+    })
+}
+
+//문의내역 리스트 출력
+function getOtherInquiryList(){
+    $.getJSON('/admin/getOtherInquiryList', function(result){
+        var list = '';
+        if(result.length > 0){
+            $.each(result, function(idx, other) {
+                list += `<tr>
+                                            <td class="pl-0">${other.inquiredId}</td>
+                                            <td><a href="#" th:href="@{/admin/{idx}/edit(idx=${other.inquiredId})}">${other.inquiredTitle}</a>
+                                            </td>
+                                            <td>${other.inquiredCategory}</td>
+                                            <td><label class="badge badge-danger"
+                                                       th:text="${other.checked} ?'답변완료':'답변대기'">미답</label></td>
+                                        </tr>`;
+            })
+        }
+
+        $(".otherList").html(list);
+    })
+}
+    
+//커뮤니티 신고 리스트 출력
+function getCommunityReportList(){
+    $.getJSON('/admin/getCommunityReportList', function(result){
+        var list = '';
+        if(result.length > 0){
+            $.each(result, function(idx, communityReport) {
+                list += `<tr>
+                                            <td class="pl-0" id="communityReportId">${communityReport.reportId}</td>
+                                            <td id="communityId">${communityReport.communityId}</td>
+                                            <td>${communityReport.reportReason}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" id="showCommunityReportModal"
+                                                        th:onclick="getReportReason(${communityReport.reportId}, 'community');"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmReportModal"
+                                                        type="button">승인
+                                                </button>
+                                            </td>
+                                        </tr>`;
+            })
+        }
+
+        $(".communityReport").html(list);
+    })
+}
+    
+//회원 신고 리스트 출력
+function getMemberReportList(){
+    $.getJSON('/admin/getMemberReportList', function(result){
+        var list = '';
+        if(result.length > 0){
+            $.each(result, function(idx, memberReport) {
+                list += `<tr>
+                                            <td class="pl-0" id="memberReportId">${memberReport.reportId}</td>
+                                            <td id="memberId">${memberReport.memberId}</td>
+                                            <td>${memberReport.reportReason}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" id="showMemberReportModal"
+                                                        th:onclick="getReportReason(${memberReport.reportId}, 'member');"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmReportModal"
+                                                        type="button">승인
+                                                </button>
+                                            </td>
+                                        </tr>`;
+            })
+        }
+
+        $(".memberReport").html(list);
+    })
+}
+
+//상품 신고 리스트 출력
+function getProductReportList(){
+    $.getJSON('/admin/getProductReportList', function(result){
+        var list = '';
+        if(result.length > 0){
+            $.each(result, function(idx, productReport) {
+                list += `<tr>
+                                            <td class="pl-0" id="productReportId">${productReport.reportId}</td>
+                                            <td id="productId">${productReport.productId}</td>
+                                            <td>${productReport.reportReason}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" id="showProductReportModal"
+                                                        th:onclick="getReportReason(${productReport.reportId}, 'product');"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmReportModal"
+                                                        type="button">승인
+                                                </button>
+                                            </td>
+                                        </tr>`;
+            })
+        }
+
+        $(".productReport").html(list);
+    })
+}
+
+//사업자 회원 가입 승인 리스트 출력
+function getCompanyJoinAcceptList(){
+    $.getJSON('/admin/getCompanyJoinAcceptList', function(result){
+        var list = '';
+        if(result.length > 0){
+            $.each(result, function(idx, company) {
+                list += `<tr>
+                                            <td>`+ idx + `</td>
+                                            <td>${company.companyName}</td>
+                                            <td>${company.companyNumber}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm"
+                                                        th:onclick="getCompanyInfo(${company.companyId})"
+                                                        id="showCompanyInfoModal"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmCompanyInfoModal"
+                                                        type="button">승인
+                                                </button>
+                                            </td>
+                                        </tr>`;
+            })
+        }
+
+        $(".companyJoinAccept").html(list);
+    })
+}
+
+//전체 커뮤니티 리스트 출력
+function getCommunityList(){
+    $.getJSON('/admin/getCommunityList', function(result){
+        var list = '';
+        if(result.length > 0){
+            $.each(result, function(idx, community) {
+                list += `<div>
+                                            <tr th:id="${community.communityId}">
+                                                <td>${community.communityId}</td>
+                                                <td><a href="#">${community.communityTitle}</a></td>
+                                                <td>${community.memberId}</td>
+                                                <td>${community.communityCategory}</td>
+                                                <td>${community.communityDate}</td>
+                                                <td class="text-success" id="report">${community.communityReport}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm communityModal" type="button"
+                                                            th:id="${community.communityId}">게시글 삭제
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </div>`;
+            })
+        }
+
+        $(".wholeCommunityData").html(list);
+    })
+}
+
+//전체 회원 리스트 출력
+function getMemberList(){
+    $.getJSON('/admin/getMemberList', function(result){
+        console.log(result);
+        var list = '';
+        if(result.length > 0){
+            $.each(result, function(idx, member) {
+                list += `<tr>
+                                            <td>` + idx + `</td>
+                                            <td>${member.memberId}</td>
+                                            <td>${member.memberName}</td>
+                                            <td>${member.memberGender}</td>
+                                            <td>${member.memberJoinDate}</td>
+                                            <td class="text-success" id="report">${member.memberReport}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm memberModal" type="button"
+                                                        th:id="${member.memberId}">회원탈퇴/정지
+                                                </button>
+                                            </td>
+                                        </tr>`;
+            })
+        }
+
+        $(".wholeMemberData").html(list);
+    })
+}
+
+//신고수가 3 이상이 되면 글씨 빨갛게 바꾸기
 function reportColor() {
     if ($("#report").text() >= 3) {
         $("#report").attr("class", "text-danger");
     }
 }
 
-
+//재고 0인 상품 판매상태를 재고없음으로 바꿈
 function setOutOfStock() {
     var size = $("input[name=productStock]").length;
     var productIdList = [];
@@ -290,7 +517,7 @@ function getCompanyInfo(companyId){
         };
 
         $.ajax({
-            url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=svcYNFjOh38o5jqJ7WAjnGxrQbGB7iFHkuLaWMdiulZa61RK3DpXgaFdClE%2F6xNkMEusenNBIBj5%2BoFIDCGiiw%3D%3D",
+            url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=svcYNFjOh38o5jqJ7WAjnGxrQbGB7iFHkuLaWMdiulZa61RK3DpXgaFdClE%2F6xNkMEusenNBIBj5%2BoFIDCGiiw%3D%3D",  //내가 발급받은 사용 key 번호
             type: "POST",
             data: JSON.stringify(number),
             dataType: "JSON",

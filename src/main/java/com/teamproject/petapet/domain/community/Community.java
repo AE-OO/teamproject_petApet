@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.community;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.report.Report;
 import lombok.*;
@@ -51,6 +52,7 @@ public class Community {
     @Column(columnDefinition = "bigint(3) default 0")
     private Long communityReport;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;

@@ -92,7 +92,7 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public List<CompanyDTO> getCompanyList() {
         List<Company> result = companyRepository.getCompaniesByActivatedIsFalse();
-        return result.stream().map(company -> CompanyDTO.getListFromEntity(company)).collect(Collectors.toList());
+        return result.stream().map(company -> CompanyDTO.fromEntityForJoinAccept(company)).collect(Collectors.toList());
     }
 
     @Override

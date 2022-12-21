@@ -24,7 +24,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
     @Query("select CASE WHEN COUNT(b) > 0 THEN true ELSE false END from Buy b where b.product.productId=:buyId and exists (select m from Member m where m.memberId=:memberId)")
     boolean existsByBuyIdAndMember(@Param("buyId") Long buyId, @Param("memberId") String memberId);
 
-    //박채원 22.12.16 추가
+    //박채원 22.12.16 추가 (이하 3개 메소드)
     @Query(value = "with recursive T as (\n" +
             "\tselect max(date_sub(buyDate, interval 5 month)) as startMonth from buy \n" +
             "\tunion all\n" +

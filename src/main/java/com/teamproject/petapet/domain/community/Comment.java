@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.community;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,6 +33,7 @@ public class Comment {
     @Column(updatable = false)
     private LocalDateTime commentDate;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;

@@ -28,7 +28,7 @@ public class CompanyDTO {
      * 22.11.25 박채원 추가
      * admin페이지에 사업체 가입 승인 리스트 출력시 사용
      */
-    public static CompanyDTO getListFromEntity(Company company){
+    public static CompanyDTO fromEntityForJoinAccept(Company company){
         return CompanyDTO.builder()
                 .companyId(company.getCompanyId())
                 .companyName(company.getCompanyName())

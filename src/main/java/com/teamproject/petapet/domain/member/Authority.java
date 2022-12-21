@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.company.Company;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,10 +25,12 @@ public class Authority implements GrantedAuthority {
     @Column(name = "authorityId")
     private Long id;
 
+    @JsonBackReference
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "memberId")
     private Member member;
 
+    @JsonBackReference
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "companyId")
     private Company company;

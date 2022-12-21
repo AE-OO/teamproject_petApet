@@ -181,23 +181,7 @@
                                             <th class="border-bottom pb-2">삭제</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="notice : ${notice}">
-                                            <td class="pl-0">[[${notice.communityId}]]</td>
-                                            <td><a th:href="@{/admin/updateNoticeForm/{noticeId}(noticeId = ${notice.communityId})}">[[${notice.communityTitle}]]</a>
-                                            </td>
-                                            <td>
-                                                <a th:href="@{/admin/updateNoticeForm/{noticeId}(noticeId = ${notice.communityId})}">
-                                                    <button class="btn btn-success btn-sm updateFAQ" type="button">수정
-                                                    </button>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm deleteNotice" type="button"
-                                                        th:id="${notice.communityId}">삭제
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        <tbody class="noticeList">
                                         </tbody>
                                     </table>
                                 </div>
@@ -218,15 +202,7 @@
                                             <th class="border-bottom pb-2">답변여부</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="Other : ${otherInquiry}">
-                                            <td class="pl-0">[[${Other.inquiredId}]]</td>
-                                            <td><a href="#" th:href="|@{/admin/{idx}/edit(idx=${Other.inquiredId})}|">[[${Other.inquiredTitle}]]</a>
-                                            </td>
-                                            <td>[[${Other.inquiredCategory}]]</td>
-                                            <td><label class="badge badge-danger"
-                                                       th:text="${Other.checked} ?'답변완료':'답변대기'">미답</label></td>
-                                        </tr>
+                                        <tbody class="otherList">
                                         </tbody>
                                     </table>
                                 </div>
@@ -251,20 +227,7 @@
                                             <th class="border-bottom pb-2">승인</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="communityReport : ${communityReport}">
-                                            <td class="pl-0" id="communityReportId">[[${communityReport.reportId}]]</td>
-                                            <td id="communityId">[[${communityReport.community.communityId}]]</td>
-                                            <td>[[${communityReport.reportReason}]]</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" id="showCommunityReportModal"
-                                                        th:onclick="getReportReason([[${communityReport.reportId}]], 'community');"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirmReportModal"
-                                                        type="button">승인
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        <tbody class="communityReport">
                                         </tbody>
                                     </table>
                                 </div>
@@ -287,20 +250,7 @@
                                             <th class="border-bottom pb-2">승인</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="memberReport : ${memberReport}">
-                                            <td class="pl-0" id="memberReportId">[[${memberReport.reportId}]]</td>
-                                            <td id="memberId">[[${memberReport.member.memberId}]]</td>
-                                            <td>[[${memberReport.reportReason}]]</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" id="showMemberReportModal"
-                                                        th:onclick="getReportReason([[${memberReport.reportId}]], 'member');"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirmReportModal"
-                                                        type="button">승인
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        <tbody class="memberReport">
                                         </tbody>
                                     </table>
                                 </div>
@@ -325,20 +275,7 @@
                                             <th class="border-bottom pb-2">승인</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="productReport : ${productReport}">
-                                            <td class="pl-0" id="productReportId">[[${productReport.reportId}]]</td>
-                                            <td id="productId">[[${productReport.product.productId}]]</td>
-                                            <td>[[${productReport.reportReason}]]</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" id="showProductReportModal"
-                                                        th:onclick="getReportReason([[${productReport.reportId}]], 'product');"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirmReportModal"
-                                                        type="button">승인
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        <tbody class="productReport">
                                         </tbody>
                                     </table>
                                 </div>
@@ -361,21 +298,7 @@
                                             <th class="border-bottom pb-2">승인</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="company, i : ${company}" id="${company.companyId}">
-                                            <td th:scope="row">[[${i.count}]]</td>
-                                            <td>[[${company.companyName}]]</td>
-                                            <td>[[${company.companyNumber}]]</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm"
-                                                        th:onclick="getCompanyInfo([[${company.companyId}]])"
-                                                        id="showCompanyInfoModal"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirmCompanyInfoModal"
-                                                        type="button">승인
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        <tbody class="companyJoinAccept">
                                         </tbody>
                                     </table>
                                 </div>
@@ -401,23 +324,7 @@
                                             <th>삭제</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <div th:each="community : ${community}">
-                                            <tr th:id="${community.communityId}">
-                                                <td>[[${community.communityId}]]</td>
-                                                <td><a href="#">[[${community.communityTitle}]]</a></td>
-                                                <td>[[${community.member.memberId}]]</td>
-                                                <td>[[${community.communityCategory}]]</td>
-                                                <td>[[${#temporals.format(community.communityDate,'yyyy/MM/dd')}]]</td>
-                                                <td class="text-success" id="report">[[${community.communityReport}]]
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-danger btn-sm communityModal" type="button"
-                                                            th:id="${community.communityId}">게시글 삭제
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </div>
+                                        <tbody class="wholeCommunityData">
                                         </tbody>
                                     </table>
                                 </div>
@@ -443,20 +350,7 @@
                                             <th>정지/탈퇴</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="member, i : ${member}">
-                                            <td th:scope="row">[[${i.count}]]</td>
-                                            <td>[[${member.memberId}]]</td>
-                                            <td>[[${member.memberName}]]</td>
-                                            <td>[[${member.memberGender}]]</td>
-                                            <td>[[${#temporals.format(member.memberJoinDate,'yyyy/MM/dd')}]]</td>
-                                            <td class="text-success" id="report">[[${member.memberReport}]]</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm memberModal" type="button"
-                                                        th:id="${member.memberId}">회원탈퇴/정지
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        <tbody class="wholeMemberData">
                                         </tbody>
                                     </table>
                                 </div>

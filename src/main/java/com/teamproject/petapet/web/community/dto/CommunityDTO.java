@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 박채원 22.12.14 작성
@@ -18,7 +19,7 @@ public class CommunityDTO {
     private String communityContent;
     private String communityCategory;
     private Long communityReport;
-    private Date communityDate;
+    private String communityDate;
     private String memberId;
 
     public static CommunityDTO fromEntityForNotice(Community community){
@@ -26,6 +27,17 @@ public class CommunityDTO {
                 .communityId(community.getCommunityId())
                 .communityTitle(community.getCommunityTitle())
                 .communityContent(community.getCommunityContent())
+                .build();
+    }
+
+    public static CommunityDTO fromEntityForCommunityListOfAdminPage(Community community){
+        return CommunityDTO.builder()
+                .communityId(community.getCommunityId())
+                .communityTitle(community.getCommunityTitle())
+                .memberId(community.getMember().getMemberId())
+                .communityCategory(community.getCommunityCategory())
+                .communityDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(community.getCommunityDate()))
+                .communityReport(community.getCommunityReport())
                 .build();
     }
 }

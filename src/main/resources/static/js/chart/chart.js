@@ -358,8 +358,7 @@ $(function() {
 function getGenderList(){
     var genderJson = {};
     var genderArray = [];
-    console.log("성별 실행");
-    
+
     $.ajax({
         url: "/admin/getGenderList",
         type: "get",
@@ -380,7 +379,6 @@ function getGenderList(){
 function getAgeList(){
     var ageJson = {};
     var ageArray = [];
-    console.log("나잇대 실행");
 
     $.ajax({
         url: "/admin/getAgeList",

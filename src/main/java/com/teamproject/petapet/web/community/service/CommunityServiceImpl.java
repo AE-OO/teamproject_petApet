@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.09 작성
@@ -19,18 +20,20 @@ import java.util.List;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class CommunityServiceImpl implements CommunityService{
+public class CommunityServiceImpl implements CommunityService {
 
     private final CommunityRepository communityRepository;
 
     @Override
-    public List<Community> getCommunityList() {
-        return communityRepository.findAll(Sort.by(Sort.Direction.DESC,"communityReport"));
+    public List<CommunityDTO> getCommunityList() {
+        List<Community> communityList = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "communityReport"));
+        return communityList.stream().map(list -> CommunityDTO.fromEntityForCommunityListOfAdminPage(list)).collect(Collectors.toList());
     }
 
     @Override
     public void deleteCommunity(Long communityId) {
-        communityRepository.deleteById(communityId);    }
+        communityRepository.deleteById(communityId);
+    }
 
     @Override
     public void addCommunityReport(Long communityId) {
@@ -38,14 +41,14 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
     @Override
-    public List<Community> getNotice() {
-        return communityRepository.getNotice();
+    public List<CommunityDTO> getNotice() {
+        List<Community> communityList = communityRepository.getNotice();
+        return communityList.stream().map(list -> CommunityDTO.fromEntityForNotice(list)).collect(Collectors.toList());
     }
 
     @Override
     public void registerNotice(CommunityRequestDTO.registerNotice registerNotice) {
         log.info("========== 공지사항 등록 ==========");
-        log.info(registerNotice);
         Community community = registerNotice.toEntity();
         communityRepository.save(community);
     }

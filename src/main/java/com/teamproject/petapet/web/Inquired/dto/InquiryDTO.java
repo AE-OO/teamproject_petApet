@@ -30,4 +30,13 @@ public class InquiryDTO {
                 .checked(inquired.isChecked())
                 .build();
     }
+
+    public static InquiryDTO fromEntityForOtherInquiry(Inquired inquired){
+        return InquiryDTO.builder()
+                .inquiredId(inquired.getInquiredId())
+                .inquiredTitle(inquired.getInquiredTitle())
+                .inquiredCategory(inquired.getInquiredCategory())
+                .checked(inquired.isChecked())
+                .build();
+    }
 }

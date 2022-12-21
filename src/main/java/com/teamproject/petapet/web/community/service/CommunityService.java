@@ -11,10 +11,10 @@ import java.util.List;
  */
 
 public interface CommunityService {
-    List<Community> getCommunityList();
+    List<CommunityDTO> getCommunityList();
     void deleteCommunity(Long communityId);
     void addCommunityReport(Long communityId);
-    List<Community> getNotice();
+    List<CommunityDTO> getNotice();
     void registerNotice(CommunityRequestDTO.registerNotice registerNotice);
     CommunityDTO getOneNotice(Long noticeId);
     void updateNotice(CommunityRequestDTO.registerNotice registerNotice);
