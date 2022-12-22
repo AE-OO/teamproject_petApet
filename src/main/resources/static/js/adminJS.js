@@ -5,7 +5,7 @@ $(document).ready(function () {
     setOutOfStock()
 
     //공지사항 삭제 버튼 클릭
-    $(document).on("click",".deleteNotice",function(){
+    $(document).on("click", ".deleteNotice", function () {
         var id = $(this).attr("id");
 
         var returnConfirm = confirm("삭제하시겠습니까?");
@@ -21,7 +21,7 @@ $(document).ready(function () {
     });
 
     //커뮤니티 관리 부분의 버튼 클릭 시 모달 뜨게
-    $(document).on("click", ".communityModal", function(){
+    $(document).on("click", ".communityModal", function () {
         var communityId = $(this).attr("id");
 
         $(".communityDelete").empty();
@@ -50,7 +50,7 @@ $(document).ready(function () {
     });
 
     //회원관리 부분의 버튼 클릭시 모달 뜨게
-    $(document).on("click", ".memberModal", function(){
+    $(document).on("click", ".memberModal", function () {
         var memberId = $(this).attr("id");
 
         $(".memberDelete").empty();
@@ -158,28 +158,28 @@ $(document).ready(function () {
     });
 
     //회사 가입 승인 버튼 클릭
-    $("#acceptCompanyJoinBtn").click(function(){
-       $.ajax({
-           url: "/acceptJoinCompany/" + $("#modalCompanyId").val(),
-           type: "post",
-           success(){
+    $("#acceptCompanyJoinBtn").click(function () {
+        $.ajax({
+            url: "/acceptJoinCompany/" + $("#modalCompanyId").val(),
+            type: "post",
+            success() {
                 getCompanyJoinAcceptList();
-           }
-       })
+            }
+        })
     });
 
     //회사 가입 거절 버튼 클릭
-    $("#refuseCompanyJoinBtn").click(function(){
+    $("#refuseCompanyJoinBtn").click(function () {
         $.ajax({
             url: "/email/sendRefuseReason",
             type: "post",
-            data: {companyId : $("#modalCompanyId").val(), reason : $("#refuseReasonJoinCompany option:selected").val()},
-            success(){
+            data: {companyId: $("#modalCompanyId").val(), reason: $("#refuseReasonJoinCompany option:selected").val()},
+            success() {
                 alert("메일을 전송했습니다.");
                 $.ajax({
                     url: "/refuseJoinCompany/" + $("#modalCompanyId").val(),
                     type: "post",
-                    success(){
+                    success() {
                         getCompanyJoinAcceptList();
                     }
                 })
@@ -189,7 +189,7 @@ $(document).ready(function () {
 })
 
 //처음 adminPage화면 로딩할 때 데이터 가져가는 메소드
-function loadingFirst(){
+function loadingFirst() {
     getNoticeList();
     getOtherInquiryList();
     getCommunityReportList();
@@ -204,10 +204,10 @@ function loadingFirst(){
 
 //공지사항 리스트 출력
 function getNoticeList() {
-    $.getJSON('/admin/getNoticeList', function(result){
+    $.getJSON('/admin/getNoticeList', function (result) {
         var list = '';
-        if(result.length > 0){
-            $.each(result, function(idx, notice) {
+        if (result.length > 0) {
+            $.each(result, function (idx, notice) {
                 list += `<tr>
                                             <td class="pl-0">${notice.communityId}</td>
                                             <td><a href="/admin/updateNoticeForm/${notice.communityId}">${notice.communityTitle}</a>
@@ -232,32 +232,38 @@ function getNoticeList() {
 }
 
 //문의내역 리스트 출력
-function getOtherInquiryList(){
-    $.getJSON('/admin/getOtherInquiryList', function(result){
+function getOtherInquiryList() {
+    $.getJSON('/admin/getOtherInquiryList', function (result) {
         var list = '';
-        if(result.length > 0){
-            $.each(result, function(idx, other) {
+        if (result.length > 0) {
+            $.each(result, function (idx, other) {
                 list += `<tr>
                                             <td class="pl-0">${other.inquiredId}</td>
                                             <td><a href="/admin/${other.inquiredId}/edit">${other.inquiredTitle}</a>
                                             </td>
                                             <td>${other.inquiredCategory}</td>
-                                            <td><label class="badge badge-danger"
-                                                       th:text="${other.checked} ?'답변완료':'답변대기'">미답</label></td>
-                                        </tr>`;
+                                            <td>`;
+
+                if(other.checked == 0){
+                    list += `<label class="badge badge-danger">답변대기</label>`;
+                }else if(other.checked == 1){
+                    list += `<label class="badge badge-primary">답변완료</label>`;
+                }
+
+                list += `</td> </tr>`;
             })
         }
 
         $(".otherList").html(list);
     })
 }
-    
+
 //커뮤니티 신고 리스트 출력
-function getCommunityReportList(){
-    $.getJSON('/admin/getCommunityReportList', function(result){
+function getCommunityReportList() {
+    $.getJSON('/admin/getCommunityReportList', function (result) {
         var list = '';
-        if(result.length > 0){
-            $.each(result, function(idx, communityReport) {
+        if (result.length > 0) {
+            $.each(result, function (idx, communityReport) {
                 list += `<tr>
                                             <td class="pl-0" id="communityReportId">${communityReport.reportId}</td>
                                             <td id="communityId">${communityReport.communityId}</td>
@@ -277,13 +283,13 @@ function getCommunityReportList(){
         $(".communityReport").html(list);
     })
 }
-    
+
 //회원 신고 리스트 출력
-function getMemberReportList(){
-    $.getJSON('/admin/getMemberReportList', function(result){
+function getMemberReportList() {
+    $.getJSON('/admin/getMemberReportList', function (result) {
         var list = '';
-        if(result.length > 0){
-            $.each(result, function(idx, memberReport) {
+        if (result.length > 0) {
+            $.each(result, function (idx, memberReport) {
                 list += `<tr>
                                             <td class="pl-0" id="memberReportId">${memberReport.reportId}</td>
                                             <td id="memberId">${memberReport.memberId}</td>
@@ -305,11 +311,11 @@ function getMemberReportList(){
 }
 
 //상품 신고 리스트 출력
-function getProductReportList(){
-    $.getJSON('/admin/getProductReportList', function(result){
+function getProductReportList() {
+    $.getJSON('/admin/getProductReportList', function (result) {
         var list = '';
-        if(result.length > 0){
-            $.each(result, function(idx, productReport) {
+        if (result.length > 0) {
+            $.each(result, function (idx, productReport) {
                 list += `<tr>
                                             <td class="pl-0" id="productReportId">${productReport.reportId}</td>
                                             <td id="productId">${productReport.productId}</td>
@@ -331,13 +337,13 @@ function getProductReportList(){
 }
 
 //사업자 회원 가입 승인 리스트 출력
-function getCompanyJoinAcceptList(){
-    $.getJSON('/admin/getCompanyJoinAcceptList', function(result){
+function getCompanyJoinAcceptList() {
+    $.getJSON('/admin/getCompanyJoinAcceptList', function (result) {
         var list = '';
-        if(result.length > 0){
-            $.each(result, function(idx, company) {
+        if (result.length > 0) {
+            $.each(result, function (idx, company) {
                 list += `<tr>
-                                            <td>`+ idx + `</td>
+                                            <td>` + idx + `</td>
                                             <td>${company.companyName}</td>
                                             <td>${company.companyNumber}</td>
                                             <td>
@@ -358,11 +364,11 @@ function getCompanyJoinAcceptList(){
 }
 
 //전체 커뮤니티 리스트 출력
-function getCommunityList(){
-    $.getJSON('/admin/getCommunityList', function(result){
+function getCommunityList() {
+    $.getJSON('/admin/getCommunityList', function (result) {
         var list = '';
-        if(result.length > 0){
-            $.each(result, function(idx, community) {
+        if (result.length > 0) {
+            $.each(result, function (idx, community) {
                 list += `<div>
                                             <tr th:id="${community.communityId}">
                                                 <td>${community.communityId}</td>
@@ -387,11 +393,11 @@ function getCommunityList(){
 }
 
 //전체 회원 리스트 출력
-function getMemberList(){
-    $.getJSON('/admin/getMemberList', function(result){
+function getMemberList() {
+    $.getJSON('/admin/getMemberList', function (result) {
         var list = '';
-        if(result.length > 0){
-            $.each(result, function(idx, member) {
+        if (result.length > 0) {
+            $.each(result, function (idx, member) {
                 list += `<tr>
                                             <td>` + idx + `</td>
                                             <td>${member.memberId}</td>
@@ -502,8 +508,8 @@ function getReportReason(targetId, type) {
 }
 
 //사업자 정보 불러오는 모달
-function getCompanyInfo(companyId){
-    $.getJSON("/getCompanyInfo/" + companyId, function(data){
+function getCompanyInfo(companyId) {
+    $.getJSON("/getCompanyInfo/" + companyId, function (data) {
         $("#modalCompanyName").val(data.companyName);
         $("#modalCompanyId").val(data.companyId);
         $("#modalCompanyPhoneNum").val(data.companyPhoneNum);
@@ -522,10 +528,10 @@ function getCompanyInfo(companyId){
             dataType: "JSON",
             contentType: "application/json",
             accept: "application/json",
-            success: function(result) {
+            success: function (result) {
                 $("#modalCompanyNumberConfirm").val(result.data[0].tax_type);  //국세청에 등록되어있는 사업자번호인지 확인
             },
-            error: function(result) {
+            error: function (result) {
                 console.log(result.responseText);
             }
         });

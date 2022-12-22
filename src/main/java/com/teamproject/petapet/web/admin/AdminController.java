@@ -24,7 +24,6 @@ public class AdminController {
 
     private final InquiredService inquiredService;
     private final CommunityService communityService;
-    private final MemberService memberService;
 
     @GetMapping("/adminPage")
     public String adminPage(){
@@ -91,10 +90,4 @@ public class AdminController {
 //    public void updateProductStatus(@RequestParam Map<String, Object> map, @PathVariable("productId") Long productId){
 //        productService.updateProductStatus((String)map.get("status"), Long.valueOf((String) map.get("stock")), productId);
 //    }
-
-    //회원 강제탈퇴 기능 구현
-    @GetMapping("/deleteMember/{memberId}")
-    public void deleteMember(@PathVariable("memberId") String memberId){
-        memberService.deleteMember(memberId);
-    }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
-    <title>petApet - 상품관리</title>
+    <title>petApet - 문의관리</title>
     <script src="/js/companyPage/manageInquiry.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
 </head>
@@ -24,7 +24,7 @@
                                     <h5 class="card-title mb-0" style="float: left;"><b>전체 문의 관리</b></h5>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table table-hover text-center">
+                                    <table class="table table-hover text-center" id="inquiryTable">
                                         <thead>
                                         <tr>
                                             <th class="pl-0  pb-2 border-bottom">문의번호</th>
@@ -68,29 +68,35 @@
                                             <!--                                        <div class="card">-->
                                             <!--                                            <div class="card-body" id="detailChart">-->
                                             <div class="input-group input-group mb-3">
-                                                <span class="input-group-text">제목</span>
+                                                <span class="input-group-text">&nbsp;&nbsp;&nbsp;제목&nbsp;&nbsp;&nbsp;</span>
                                                 <input type="text" class="form-control"
                                                        aria-label="Sizing example input"
-                                                       aria-describedby="inputGroup-sizing-sm" readonly>
+                                                       aria-describedby="inputGroup-sizing-sm" id="detailTitle" readonly>
                                             </div>
                                             <div class="input-group input-group mb-3">
-                                                <span class="input-group-text">작성자</span>
+                                                <span class="input-group-text">&nbsp;작성자&nbsp;&nbsp;</span>
                                                 <input type="text" class="form-control"
                                                        aria-label="Sizing example input"
-                                                       aria-describedby="inputGroup-sizing-sm" readonly>
+                                                       aria-describedby="inputGroup-sizing-sm" id="detailWriter" readonly>
+                                            </div>
+                                            <div class="input-group input-group mb-3">
+                                                <span class="input-group-text">문의분류</span>
+                                                <input type="text" class="form-control"
+                                                       aria-label="Sizing example input"
+                                                       aria-describedby="inputGroup-sizing-sm" id="detailCategory" readonly>
                                             </div>
                                             <div class="input-group input-group mb-3">
                                                 <span class="input-group-text">문의일시</span>
                                                 <input type="text" class="form-control"
                                                        aria-label="Sizing example input"
-                                                       aria-describedby="inputGroup-sizing-sm" readonly>
+                                                       aria-describedby="inputGroup-sizing-sm" id="detailDate" readonly>
                                             </div>
                                             <!--                                            </div>-->
                                             <!--                                        </div>-->
                                         </div>
                                         <div class="mb-3">
-                                            <label for="inquiredContent" class="form-label">문의내용</label>
-                                            <textarea class="form-control" id="inquiredContent" rows="5" readonly></textarea>
+                                            <label for="detailContent" class="form-label">문의내용</label>
+                                            <textarea class="form-control" id="detailContent" rows="5" readonly></textarea>
                                         </div>
                                     </div>
                                 </div>

@@ -83,6 +83,7 @@ public class AdminRestController {
         return new ResponseEntity<>(companyService.getCompanyList(), HttpStatus.OK);
     }
 
+
     //회원 정지 기능 구현
     @GetMapping("/disabledMember/{memberId}")
     public void disabledMember(@PathVariable("memberId") String memberId) {
@@ -110,6 +111,7 @@ public class AdminRestController {
         reportService.setResponseStatusCommunity(reportId);
     }
 
+
     //admin 페이지 상단 그래프 표시 (이하 2개 메소드)
     //성별 통계
     @GetMapping("/getGenderList")
@@ -122,6 +124,7 @@ public class AdminRestController {
     public List<Integer> getAgeList() {
         return memberService.getAgeList();
     }
+
 
     //상품 재고가 0이 되었을 때 판매상태를 바꿈
     @GetMapping("/setOutOfStock")
@@ -153,6 +156,12 @@ public class AdminRestController {
     @GetMapping("/deleteNotice/{noticeId}")
     public void deleteFAQ(@PathVariable("noticeId") Long noticeId){
         communityService.deleteNotice(noticeId);
+    }
+
+    //회원 강제탈퇴 기능 구현
+    @GetMapping("/deleteMember/{memberId}")
+    public void deleteMember(@PathVariable("memberId") String memberId){
+        memberService.deleteMember(memberId);
     }
 
 }

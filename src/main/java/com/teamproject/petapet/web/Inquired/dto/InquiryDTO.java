@@ -18,6 +18,7 @@ public class InquiryDTO {
     private String inquiredTitle;
     private String memberId;
     private String inquiredDate;
+    private String inquiredContent;
     private boolean checked;
 
     public static InquiryDTO fromEntityForManageInquiry(Inquired inquired){
@@ -27,6 +28,7 @@ public class InquiryDTO {
                 .inquiredTitle(inquired.getInquiredTitle())
                 .memberId(inquired.getMember().getMemberId())
                 .inquiredDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(inquired.getInquiredDate()))
+                .inquiredContent(inquired.getInquiredContent())
                 .checked(inquired.isChecked())
                 .build();
     }

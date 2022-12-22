@@ -126,7 +126,60 @@ $(function() {
             options: doughnutPieOptions
         });
     }
-
+    
+    //테이블의 행 클릭했을 때 나오는 세부사항 안의 그래프
+    $("#productTable").on("click", "tr", function(){
+        var detailSalesPerMonth = {
+            labels: [
+                //오늘 날짜에서 6개월 전까지의 데이터를 표시함
+                getFormatDate(date, 5),
+                getFormatDate(date, 4),
+                getFormatDate(date, 3),
+                getFormatDate(date, 2),
+                getFormatDate(date, 1),
+                getFormatDate(date, 0)
+            ],
+            datasets: [{
+                label: '# of Votes',
+                data: [
+                    getDetailSalesPerMonth()[0].val,
+                    getDetailSalesPerMonth()[1].val,
+                    getDetailSalesPerMonth()[2].val,
+                    getDetailSalesPerMonth()[3].val,
+                    getDetailSalesPerMonth()[4].val,
+                    getDetailSalesPerMonth()[5].val
+                ],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1,
+                fill: false
+            }]
+        };
+        
+        // 사업자 마이페이지의 세부사항 월별 판매량 차트
+        if ($("#detailSalesPerMonthChart").length) {
+            var barChartCanvas = $("#detailSalesPerMonthChart").get(0).getContext("2d");
+            var barChart = new Chart(barChartCanvas, {
+                type: 'bar',
+                data: detailSalesPerMonth,
+                options: options
+            });
+        }
+    })
 });
 
 //월별 판매량 차트의 x축 표시하기 위함
@@ -184,5 +237,27 @@ function getProductSales(){
             });
         }
     })
+    return salesArray;
+}
+
+//DB에서 세부사항 월별 판매량 데이터 가져오기
+function getDetailSalesPerMonth(){
+    var salesJson = {};
+    var salesArray = [];
+
+    $.ajax({
+        url: "/buy/getDetailSalesPerMonth/" + $("#detailProductId").val(),
+        type: "get",
+        async: false,
+        dataType: "json",
+        success(data) {
+            $.each(data, function(key, value){
+                salesJson.id = key;
+                salesJson.val = value;
+                salesArray.push({...salesJson});
+            });
+        }
+    })
+
     return salesArray;
 }
