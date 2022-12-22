@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 커뮤니티</title>
+    <link>
+    <script>
+        const test = {
+            거래 : ['나눔합니다','팝니다','삽니다'],
+            추천 : ['용품','동물병원','기타'],
+            일상 : ['강아지','고양이','소동물']
+        }
+
+        category = (value) => {
+            $("#category").text($(value).text());
+            getSubCategoryList($(value).text());
+            $("input[name=communityCategory]").val($(value).text());
+        }
+        subCategory = (value) => {
+            $("#subCategory").text($(value).text());
+            if($(value).text() === '말머리없음'){
+                $("input[name=communitySubCategory]").val('');
+                return;
+            }
+            $("input[name=communitySubCategory]").val($(value).text());
+        }
+        getSubCategoryList = (key) => {
+            $("#subCategory").text('말머리없음');
+            let subCategoryHtml = '<li><a class="dropdown-item" href="#" onclick="subCategory(this)">말머리없음</a></li>';
+            const list = test[key];
+            for (let i = 0; i < list.length; i++) {
+                subCategoryHtml += '<li><a class="dropdown-item" href="#" onclick="subCategory(this)">'+list[i]+'</a></li>';
+            }
+            $('#subCategoryList').html(subCategoryHtml);
+        }
+    </script>
+
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<hr class="mt-5">
+<div class="container-xxl">
+    <div class="container p-5">
+        <div class="text-center mb-4">
+            <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
+            <h1 class="display-5 mb-3">Pet Community</h1>
+            <!--            <hr class="mt-0 mb-3"/>-->
+            <p class="text-danger" th:text="${error}"></p>
+        </div>
+        <form th:action="@{/community/insert}" method="post">
+            <input type="hidden" name="communityCategory">
+            <input type="hidden" name="communitySubCategory">
+        <div class="col-12 p-3 border border-bottom-0">
+            <div class="dropdown float-start">
+                <a id="category" class="btn btn-link dropdown-toggle" href="#" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    주제
+                </a>
+                <ul class="dropdown-menu" style="min-width: auto;">
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="category(this)">거래</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="category(this)">추천</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="category(this)">일상</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="dropdown float-start">
+                <a id="subCategory" class="btn btn-link dropdown-toggle " href="#" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    말머리없음
+                </a>
+                <ul id="subCategoryList" class="dropdown-menu" style="min-width: auto;" >
+                </ul>
+            </div>
+            <input type="text" name="communityTitle"
+                    class="form-control2" placeholder="제목을 입력하세요" maxlength="75">
+            <hr class="my-0"/>
+        </div>
+        <div class="col-12">
+            <textarea id="communityContent" name="communityContent"></textarea>
+        </div>
+        <div class="text-center mt-3">
+            <input type="button" id="cancelBtn" class="btn btn-primary" value="취소"/>
+            <input type="button" id="submitBtn" class="btn btn-danger" value="등록"/>
+        </div>
+        </form>
+    </div>
+</div>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    $(document).ready(function () {
+        $('#communityContent').summernote({
+            tabsize: 2,
+            fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+            toolbar: [
+                ['font', ['fontname', 'fontsize', 'fontsizeunit']],
+                ['fontstyle', ['bold', 'italic', 'underline', 'strikethrough', 'forecolor', 'backcolor', 'superscript', 'subscript', 'clear']],
+                ['style', ['style']],
+                ['paragraph', ['paragraph', 'height', 'ul', 'ol']],
+                ['insert', ['table', 'hr', 'link', 'picture', 'video']],
+                ['codeview'],
+            ],
+            minHeight: 500,
+            maxHeight: null,
+            focus: true,
+            resize: false,
+            callbacks: {
+                onImageUpload: function (files, editor, welEditable) {
+                    //             // 파일 업로드(다중업로드를 위해 반복문 사용)
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        uploadSummernoteImageFile(files[i],
+                            this);
+                    }
+                }
+            }
+        })
+
+    });
+
+    function uploadSummernoteImageFile(file, el) {
+        data = new FormData();
+        data.append("file", file);
+        $.ajax({
+            data: data,
+            type: "POST",
+            url: "/product/image",
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (data) {
+                console.log(data)
+                $(el).summernote('editor.insertImage', data.url);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        // getSubCategoryList();
+        $("#cancelBtn").click(function () {
+            window.location="/community"
+        })
+        $("#submitBtn").click(function (){
+            $("#submitBtn").attr("type", "submit");
+        })
+
+    })
+</script>
+<style>
+    .note-editor.note-frame .note-editing-area .note-editable {
+        padding: 2em;
+    }
+    .note-editor.note-frame .note-editing-area .note-editable>p {
+        margin-bottom: 0;
+    }
+    .note-modal-content{
+        height:300px;
+    }
+</style>
+</body>
+</html>

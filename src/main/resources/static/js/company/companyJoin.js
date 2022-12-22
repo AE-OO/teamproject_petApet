@@ -301,17 +301,39 @@ $(document).ready(function () {
     });
 
     $("#input-companyEmail").blur(function () {
-        textDanger(cEmailFeedback());
         if (companyEmail() === null || companyEmail() === "") { //값이 없을 때
+            textDanger(cEmailFeedback());
             cEmailFeedback().text("필수 정보입니다.");
             return companyEmailResult = false;
         } else if (!(cEmailRegExp.test(companyEmail()))) { //정규식에 맞지 않을 때
-            cEmailFeedback().text("이메일주소를 정확하게 입력해주세요. (예: petapet@pet.com) ");
+            textDanger(cEmailFeedback());
+            cEmailFeedback().text("이메일을 올바르게 입력해주세요. (예: petapet@pet.com)");
             return companyEmailResult = false;
-        } else { // 조건에 맞을 때
-            textInfo(cEmailFeedback());
-            cEmailFeedback().text("OK");
-            return companyEmailResult = true;
+        } else {
+            //ajax 아이디 중복 확인
+            $.ajax({
+                type: "POST",
+                url: "/checkCompanyEmail",
+                data: {
+                    companyEmail: companyEmail(),
+                },
+                dataType: "json",
+                success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
+                    if (check) { // 아이디 이미 존재
+                        textDanger(cEmailFeedback());
+                        cEmailFeedback().text("이미 가입된 이메일 주소입니다. 다른 이메일을 입력하여 주세요.");
+                        return companyEmailResult = false;
+                    } else {//조건에 맞을 때
+                        textInfo(cEmailFeedback());
+                        cEmailFeedback().text("OK");
+                        return companyEmailResult = true;
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/companyJoin";
+                }
+            });
         }
     });
 
@@ -325,8 +347,27 @@ $(document).ready(function () {
             cPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
             return companyPhoneNumResult = false;
         } else {
-            cPhoneNumFeedback().text("");
-            return companyPhoneNumResult = true;
+            $.ajax({
+                type: "POST",
+                url: "/checkCompanyPhoneNum",
+                data: {
+                    companyPhoneNum: companyPhoneNum(),
+                },
+                dataType: "json",
+                success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
+                    if (check) {
+                        cPhoneNumFeedback().text("이미 가입된 휴대폰 번호입니다.");
+                        return companyPhoneNumResult = false;
+                    } else {//조건에 맞을 때
+                        cPhoneNumFeedback().text("");
+                        return companyPhoneNumResult = true;
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/companyJoin";
+                }
+            })
         }
     });
 
@@ -342,7 +383,26 @@ $(document).ready(function () {
         } else if (!(cPhoneNumRegExp.test(companyPhoneNum()))) { //정규식에 맞지 않을 때
             cPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
         } else {
-            sendBtnClick();
+            $.ajax({
+                type: "POST",
+                url: "/checkCompanyPhoneNum",
+                data: {
+                    companyPhoneNum: companyPhoneNum(),
+                },
+                dataType: "json",
+                success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
+                    if (check) {
+                        cPhoneNumFeedback().text("이미 가입된 휴대폰 번호입니다.");
+                    } else {//조건에 맞을 때
+                        cPhoneNumFeedback().text("");
+                        sendBtnClick();
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/companyJoin";
+                }
+            })
         }
     });
 

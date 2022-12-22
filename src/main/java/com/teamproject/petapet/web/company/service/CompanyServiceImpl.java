@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +31,16 @@ public class CompanyServiceImpl implements CompanyService{
     public boolean duplicateCheckCompanyId(String companyId) {
         return companyRepository.existsById("*"+companyId);
     }
+
+    @Override
+    public boolean duplicateCheckCompanyEmail(String companyEmail) {
+        return companyRepository.existsByCompanyEmail(companyEmail);}
+
+    @Override
+    public boolean duplicateCheckCompanyPhoneNum(String companyPhoneNum) {
+        return companyRepository.existsByCompanyPhoneNum(companyPhoneNum);
+    }
+
     @Override
     public boolean checkCompanyPw(String companyId, String companyPw) {
         return passwordEncoder.matches(companyPw, companyRepository.findCompanyPw(companyId));
@@ -64,8 +75,8 @@ public class CompanyServiceImpl implements CompanyService{
                                 "*"+findCompanyPwDTO.getCompanyId(),
                                 findCompanyPwDTO.getCompanyName(),
                                 findCompanyPwDTO.getCompanyNumber())
-                        .orElse("0").replace("*",""))
-                .build().getCompanyId();
+                        .orElse("0"))
+                .build().getCompanyId().replace("*","");
     }
 
     @Override
@@ -88,6 +99,9 @@ public class CompanyServiceImpl implements CompanyService{
         companyRepository.updateCompany(companyId, company.getCompanyEmail(),company.getCompanyPhoneNum());
     }
 
+    @Override
+    public void deleteCompany(String companyId) {companyRepository.deleteById(companyId);}
+
     //22.11.25 박채원 추가
     @Override
     public List<CompanyDTO> getCompanyList() {
@@ -103,6 +117,11 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public void refuseJoinCompany(String companyId) {
         companyRepository.deleteById(companyId);
+    }
+
+    @Override
+    public Optional<Company> findById(String companyId) {
+        return companyRepository.findById(companyId);
     }
 
 }

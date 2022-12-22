@@ -1,12 +1,14 @@
 package com.teamproject.petapet.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.cart.Cart;
-import com.teamproject.petapet.domain.report.Report;
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,9 +22,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"company, review, cart"})
 @Getter
 @DynamicInsert
+@DynamicUpdate
 public class Product {
 
     @Id
@@ -69,14 +72,25 @@ public class Product {
     private Long productReport;
 
     //foreign 키는 Counter 테이블에서 갖지만 Product 테이블에서도 연관관계를 작성해 준 이유는 oneToOne 연관관계는 단방향 관계를 지원하지 않기 때문
-    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Counter counter;
+//    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+//    private Counter counter;
+
+    @Column(columnDefinition = "bigint(5) default 0")
+    private Long productViewCount;
+
+    @Column(columnDefinition = "bigint(5) default 0")
+    private Long productSellCount;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> review;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Cart> cart;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "companyId")
+    private Company company;
 
     public Product(String productName, Long productPrice, Long productStock, List<UploadFile> productImg, String productStatus, ProductType productDiv, String productContent, Long productDiscountRate, Long productUnitPrice) {
         this.productName = productName;
@@ -87,7 +101,7 @@ public class Product {
         this.productDiv = productDiv;
         this.productContent = productContent;
         this.productDiscountRate = productDiscountRate;
-        this.productUnitPrice= productUnitPrice;
+        this.productUnitPrice = productUnitPrice;
     }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {
@@ -97,6 +111,7 @@ public class Product {
                 .productStock(product.getProductStock())
                 .productRating(product.getProductRating())
                 .productName(product.getProductName())
+                .productSeller(product.getCompany().getCompanyName())
                 .productContent(product.getProductContent())
                 .productDiscountRate(product.getProductDiscountRate())
                 .productUnitPrice(product.getProductUnitPrice())
@@ -104,14 +119,15 @@ public class Product {
                 .build();
     }
 
-    public static Product ConvertToEntityByInsertDTO(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, ProductType productDiv) {
-       return Product.builder()
+    public static Product ConvertToEntityByInsertDTO(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, ProductType productDiv, Company company) {
+        return Product.builder()
                 .productName(insertDTO.getProductName())
                 .productPrice(insertDTO.getProductPrice())
                 .productStock(insertDTO.getProductStock())
                 .productImg(uploadFiles)
                 .productStatus("판매중")
                 .productDiv(productDiv)
+                .company(company)
                 .productContent(insertDTO.getProductContent())
                 .productDiscountRate(insertDTO.getProductDiscountRate())
                 .productUnitPrice(insertDTO.getProductUnitPrice())

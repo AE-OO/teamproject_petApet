@@ -24,7 +24,7 @@ class DibsCommunityRepositoryTest {
             Product product = Product.builder().productId(productId).build();
             Member member = Member.builder().memberId("memberId" + memberNum).build();
 
-            DibsCommunity dIbsCommunity = DibsCommunity.builder().member(member).product(product).build();
+            DibsCommunity dIbsCommunity = DibsCommunity.builder().member(member).build();
 
             dibsCommunityRepository.save(dIbsCommunity);
         });

@@ -37,8 +37,23 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public boolean existsByBuyAndMember(Long buyId, String memberId) {
+    public boolean existsByPurchaseHistory(Long buyId, String memberId) {
         return buyRepository.existsByBuyIdAndMember(buyId, memberId);
+    }
+
+    @Override
+    public List<Integer> getTotalSalesPerMonth(String companyId) {
+        return buyRepository.getTotalSalesPerMonth(companyId);
+    }
+
+    @Override
+    public List<Integer> getProductSales(String companyId) {
+        return buyRepository.getProductSales(companyId);
+    }
+
+    @Override
+    public List<Integer> getDetailSalesPerMonth(Long productId) {
+        return buyRepository.getDetailSalesPerMonth(productId);
     }
 
 }

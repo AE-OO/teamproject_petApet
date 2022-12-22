@@ -1,19 +1,21 @@
 package com.teamproject.petapet.web.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamproject.petapet.domain.member.Authority;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.member.validatiion.DuplicateMemberId;
-import com.teamproject.petapet.web.member.validatiion.PasswordEquals;
-import com.teamproject.petapet.web.member.validatiion.NotDuplicateMemberId;
-import com.teamproject.petapet.web.member.validatiion.SmsConfirmNum;
+import com.teamproject.petapet.web.member.validatiion.*;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class MemberRequestDTO {
@@ -40,12 +42,20 @@ public class MemberRequestDTO {
                 message="생년월일을 다시 확인해주세요.")
         private String memberBirthday;
 
-        @NotBlank(message = "주소는 필수 입력값입니다.")
+        @NotBlank(message = "이메일은 필수 입력값입니다.")
+        @Pattern(regexp = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$",
+                message = "형식에 맞게 이메일 주소를 입력해주세요.")
+        @NotDuplicateMemberEmail
+        private String memberEmail;
+
+//        @NotBlank(message = "주소는 필수 입력값입니다.")
+        @AddressNotBlank
         private String memberAddress;
 
         @Pattern(regexp = "^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$",
                 message = "형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요." )
         @NotBlank(message = "인증이 필요합니다.")
+        @NotDuplicateMemberPhoneNum
         private String memberPhoneNum;
 
         @Pattern(regexp = "^[가-힣]{2,6}$", message = "한글을 사용하세요. (특수기호, 공백 사용 불가)")
@@ -67,6 +77,7 @@ public class MemberRequestDTO {
                     .memberGender(memberGender)
                     .memberAddress(memberAddress)
                     .memberBirthday(Date.valueOf(memberBirthday.replace(",","-")))
+                    .memberEmail(memberEmail)
                     .memberName(memberName)
                     .memberPhoneNum(memberPhoneNum)
                     .activated(true)
@@ -107,7 +118,7 @@ public class MemberRequestDTO {
         @NotBlank
         @Pattern(regexp = "^(19[0-9][0-9]|20\\d{2}),([1-9]|0[1-9]|1[0-2]),(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])$")
         private String memberBirthday;
-        @NotBlank
+        @AddressNotBlank
         private String memberAddress;
         @Pattern(regexp = "^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$")
         @NotBlank
@@ -115,6 +126,11 @@ public class MemberRequestDTO {
         private String memberGender;
         @SmsConfirmNum //custom validation
         private String smsConfirmNum; //문자 인증번호 확인용
+//        private MultipartFile memberImg;
+        @NotBlank(message = "이메일은 필수 입력값입니다.")
+        @Pattern(regexp = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$",
+                message = "형식에 맞게 이메일 주소를 입력해주세요.")
+        private String memberEmail;
 
         public Member toEntity(){
             Member member = Member.builder()
@@ -122,6 +138,7 @@ public class MemberRequestDTO {
                     .memberAddress(memberAddress)
                     .memberBirthday(Date.valueOf(memberBirthday.replace(",","-")))
                     .memberPhoneNum(memberPhoneNum)
+                    .memberEmail(memberEmail)
                     .build();
             return member;
         }
@@ -159,6 +176,5 @@ public class MemberRequestDTO {
         @NotBlank(message="인증번호는 필수 입력값입니다.")
         private String smsConfirmNum;
     }
-
 
 }

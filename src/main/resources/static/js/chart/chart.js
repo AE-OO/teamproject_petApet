@@ -37,6 +37,7 @@ $(function() {
             fill: false
         }]
     };
+
     var multiLineData = {
         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
         datasets: [{
@@ -269,7 +270,7 @@ $(function() {
             }]
         }
     }
-    // Get context with jQuery - using jQuery's .get() method.
+    // 관리자 페이지의 나잇대별 통계 차트
     if ($("#barChart").length) {
         var barChartCanvas = $("#barChart").get(0).getContext("2d");
         // This will get the first returned node in the jQuery collection.
@@ -357,6 +358,8 @@ $(function() {
 function getGenderList(){
     var genderJson = {};
     var genderArray = [];
+    console.log("성별 실행");
+    
     $.ajax({
         url: "/admin/getGenderList",
         type: "get",
@@ -377,6 +380,7 @@ function getGenderList(){
 function getAgeList(){
     var ageJson = {};
     var ageArray = [];
+    console.log("나잇대 실행");
 
     $.ajax({
         url: "/admin/getAgeList",
@@ -393,4 +397,3 @@ function getAgeList(){
     })
     return ageArray;
 }
-

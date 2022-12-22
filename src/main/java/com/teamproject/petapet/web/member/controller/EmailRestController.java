@@ -13,15 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmailRestController {
     private final EmailService emailService;
     @PostMapping("/send")
-    int emailSend(@RequestParam String email, @RequestParam String memberId){
-        return emailService.emailSend(email,memberId);
-    }
-
+    int memberEmailSend(@RequestParam String memberId){return emailService.memberEmailSend(memberId);}
     @PostMapping("/sendCompany")
-    int emailSend(@RequestParam String companyId){
-        return emailService.emailSend(companyId);
+    int companyEmailSend(@RequestParam String companyId){
+        return emailService.companyEmailSend(companyId);
     }
-
     @PostMapping("/sendRefuseReason")
     int sendRefuseReason(@RequestParam String companyId, @RequestParam String reason){
         return emailService.refuseReasonSend(companyId, reason);
