@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.community;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,14 +33,7 @@ public class Comment {
     @Column(updatable = false)
     private LocalDateTime commentDate;
 
-    //비밀댓글
-    @Column(nullable = false)
-    private boolean commentSecret;
-
-    //댓글 이미지...
-    @Column
-    private String commentImg;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;

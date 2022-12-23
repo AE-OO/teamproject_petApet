@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.community;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.report.Report;
 import lombok.*;
@@ -31,7 +32,7 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long communityId;
 
-    @Column(length = 75, nullable = false)
+    @Column(length = 45, nullable = false)
     private String communityTitle;
 
     @Column(columnDefinition = "TEXT NOT NULL")
@@ -39,9 +40,6 @@ public class Community {
 
     @Column(length = 45, nullable = false)
     private String communityCategory;
-
-    @Column(length = 20)
-    private String communitySubCategory;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -54,9 +52,7 @@ public class Community {
     @Column(columnDefinition = "bigint(3) default 0")
     private Long communityReport;
 
-    @Column(columnDefinition = "int default 0", nullable = false)
-    private int viewCount;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;
