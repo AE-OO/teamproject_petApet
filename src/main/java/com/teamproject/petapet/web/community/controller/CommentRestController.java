@@ -4,9 +4,7 @@ import com.teamproject.petapet.web.community.commentDto.CommentDTO;
 import com.teamproject.petapet.web.community.commentDto.CommentInsertDTO;
 import com.teamproject.petapet.web.community.service.CommentService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

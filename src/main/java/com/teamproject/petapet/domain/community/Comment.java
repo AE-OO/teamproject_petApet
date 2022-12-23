@@ -4,11 +4,9 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.community.converter.EmptyStringToNullConverter;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * 박채원 22.10.02 작성
@@ -42,14 +40,6 @@ public class Comment extends BaseTimeEntity {
 
     @Column
     private Long replyId;
-
-    //비밀댓글
-    @Column(nullable = false)
-    private boolean commentSecret;
-
-    //댓글 이미지...
-    @Column
-    private String commentImg;
 
     @ManyToOne
     @JoinColumn(name = "memberId")

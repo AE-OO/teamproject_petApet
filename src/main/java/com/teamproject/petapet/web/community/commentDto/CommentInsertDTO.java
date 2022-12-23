@@ -6,7 +6,6 @@ import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 

@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @RequiredArgsConstructor
 public class ExceptionAdvice {
 
-//    @ExceptionHandler(NullPointerException.class)
-//    public Object nullException(Exception e) {
-//        System.err.println(e.getClass());
-//        return "redirect:/";
-//    }
+    @ExceptionHandler(NullPointerException.class)
+    public Object nullException(Exception e) {
+        System.err.println(e.getClass());
+        return "redirect:/";
+    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public Object loginException(Exception e,Model model) {

@@ -1,16 +1,12 @@
 package com.teamproject.petapet.domain.community;
 
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.web.community.converter.EmptyStringToNullConverter;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

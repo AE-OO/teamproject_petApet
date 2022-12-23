@@ -1,13 +1,10 @@
 package com.teamproject.petapet.web.community.controller;
 
-
 import com.teamproject.petapet.web.community.communityDto.CommunityInsertDTO;
-import com.teamproject.petapet.web.community.communityDto.CommunityListDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
 import com.teamproject.petapet.web.community.service.CommentService;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
