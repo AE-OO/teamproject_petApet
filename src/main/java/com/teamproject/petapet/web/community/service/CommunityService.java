@@ -1,12 +1,10 @@
 package com.teamproject.petapet.web.community.service;
-
-import com.teamproject.petapet.domain.community.Community;
-import com.teamproject.petapet.web.community.dto.CommunityDTO;
-import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityInsertDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityListDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityPostsDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
+import com.teamproject.petapet.web.community.dto.CommunityDTO;
+import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

@@ -4,20 +4,11 @@ import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
-import com.teamproject.petapet.web.company.service.CompanyService;
-import com.teamproject.petapet.web.member.service.MemberService;
-import com.teamproject.petapet.web.product.service.ProductService;
-import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
-import com.teamproject.petapet.web.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 박채원 22.10.09 작성
