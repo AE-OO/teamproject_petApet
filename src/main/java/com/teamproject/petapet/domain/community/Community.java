@@ -2,14 +2,12 @@ package com.teamproject.petapet.domain.community;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.report.Report;
+import com.teamproject.petapet.web.community.converter.EmptyStringToNullConverter;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,7 +24,7 @@ import java.util.List;
 @ToString(exclude = "member")
 @DynamicInsert
 @EntityListeners(value = {AuditingEntityListener.class})
-public class Community {
+public class Community extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +43,19 @@ public class Community {
     @Column(updatable = false)
     private LocalDateTime communityDate;
 
+    @Column(length = 20)
+    @Convert(converter = EmptyStringToNullConverter.class)
+    private String communitySubCategory;
+
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] communityImg;
 
     @Column(columnDefinition = "bigint(3) default 0")
     private Long communityReport;
+
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int viewCount;
 
     @JsonBackReference
     @ManyToOne

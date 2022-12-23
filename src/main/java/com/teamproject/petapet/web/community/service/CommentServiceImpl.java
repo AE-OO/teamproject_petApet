@@ -2,16 +2,16 @@ package com.teamproject.petapet.web.community.service;
 
 import com.teamproject.petapet.domain.community.Comment;
 import com.teamproject.petapet.domain.community.CommentRepository;
-import com.teamproject.petapet.web.community.dto.CommentDTO;
-import com.teamproject.petapet.web.community.dto.CommentInsertDTO;
+import com.teamproject.petapet.web.community.commentDto.CommentDTO;
+import com.teamproject.petapet.web.community.commentDto.CommentInsertDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,17 +25,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> getCommentList(Long communityId) {
-        Pageable pageable = PageRequest.of(0, 20);
-        return commentRepository.getCommentList(communityId,pageable)
-                .map(c -> CommentDTO.fromEntity(c,dateFormat(c))).toList();
+    public Page<CommentDTO> getCommentPageList(Long communityId, int pageNum) {
+        Pageable pageable = PageRequest.of( pageNum, 20);
+        return commentRepository.getCommentList(communityId,pageable).map(c -> CommentDTO.fromEntity(c,dateFormat(c)));
     }
 
     public String dateFormat(Comment comment){
-        if (comment.getCommentDate().toLocalDate().isBefore(LocalDate.now())) {
-            return comment.getCommentDate().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+        if (comment.getModifiedDate().toLocalDate().isBefore(LocalDate.now())) {
+            return comment.getModifiedDate().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
         } else {
-            return comment.getCommentDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+            return comment.getModifiedDate().format(DateTimeFormatter.ofPattern("HH:mm"));
         }
     }
 }
