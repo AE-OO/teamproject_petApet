@@ -117,6 +117,6 @@ public class CommunityServiceImpl implements CommunityService {
 //        Community community = communityRepository.findById(communityUpdateDTO.getCommunityId()).get();
 //        community.update(communityUpdateDTO.getCommunityTitle(),communityUpdateDTO.getCommunityContent(),
 //                communityUpdateDTO.getCommunityCategory(),communityUpdateDTO.getCommunitySubCategory());
-        communityRepository.save(communityUpdateDTO.toEntity());
+//        communityRepository.save(communityUpdateDTO.toEntity());
     }
 }
