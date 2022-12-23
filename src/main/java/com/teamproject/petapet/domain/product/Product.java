@@ -27,6 +27,7 @@ import java.util.List;
 @Getter
 @DynamicInsert
 @DynamicUpdate
+@EntityListeners(value = {AuditingEntityListener.class})
 public class Product {
 
     @Id

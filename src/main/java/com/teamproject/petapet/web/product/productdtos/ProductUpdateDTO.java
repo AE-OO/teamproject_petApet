@@ -26,6 +26,11 @@ public class ProductUpdateDTO {
     private Long productUnitPrice;
     private String productDiv;
     private String productStatus;
+    private Long productReviewCount;
+    private Long productReport;
+    private Long productViewCount;
+    private Long productRating;
+    private Long productSellCount;
     private List<String> storeFileName;
     private List<String> uploadFileName;
 
@@ -41,6 +46,11 @@ public class ProductUpdateDTO {
                 .productUnitPrice(product.getProductUnitPrice())
                 .productDiv(product.getProductDiv().name())
                 .productStatus(product.getProductStatus())
+                .productReviewCount(product.getProductReviewCount())
+                .productReport(product.getProductReport())
+                .productViewCount(product.getProductViewCount())
+                .productSellCount(product.getProductSellCount())
+                .productRating(product.getProductRating())
                 .build();
     }
 
@@ -56,6 +66,11 @@ public class ProductUpdateDTO {
                 .productPrice(productUpdateDTO.getProductPrice())
                 .productName(productUpdateDTO.getProductName())
                 .productId(productUpdateDTO.getProductId())
+                .productReviewCount(productUpdateDTO.getProductReviewCount())
+                .productReport(productUpdateDTO.getProductReport())
+                .productViewCount(productUpdateDTO.getProductViewCount())
+                .productSellCount(productUpdateDTO.getProductSellCount())
+                .productRating(productUpdateDTO.getProductRating())
                 .company(company)
                 .build();
     }

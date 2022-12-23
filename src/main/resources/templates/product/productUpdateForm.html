@@ -357,10 +357,14 @@
 
     async function updateProduct() {
         let productId = [[${ProductUpdateDTO.productId}]];
+        let productReviewCount = [[${ProductUpdateDTO.productReviewCount}]];
+        let productReport = [[${ProductUpdateDTO.productReport}]];
+        let productViewCount = [[${ProductUpdateDTO.productViewCount}]];
+        let productSellCount = [[${ProductUpdateDTO.productSellCount}]];
+        let productRating = [[${ProductUpdateDTO.getProductRating}]];
         let storeFileNameArr = new Array();
         let uploadFileNameArr = new Array();
         let myProductImg = $('.productImgModalBtn .myProductImg').length;
-        console.log(myProductImg)
         for(var i = 1; i <= myProductImg; i++){
             let src = $('.carousel-inner > div:nth-child('+i+') a img').attr('src');
             let uploadFileName = $('.carousel-inner > div:nth-child('+i+') a img').attr('alt');
@@ -373,8 +377,12 @@
         for (var o = 0; o < storeFileNameArr.length; o++){
             formData.append('storeFileName',storeFileNameArr[o])
             formData.append('uploadFileName',uploadFileNameArr[o])
-            formData.append('uploadFile','UploadFile(uploadFileName='+uploadFileNameArr[o]+', storeFileName='+storeFileNameArr[o]+') ')
         }
+        formData.set('productReviewCount',productReviewCount)
+        formData.append('productReport',productReport)
+        formData.append('productViewCount',productViewCount)
+        formData.append('productSellCount',productSellCount)
+        formData.append('productRating',productRating)
         fetch('/product/update?productId='+productId, {
             method: 'POST',
             // headers: {

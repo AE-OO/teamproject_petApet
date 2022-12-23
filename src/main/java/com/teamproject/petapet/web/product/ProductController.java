@@ -113,9 +113,13 @@ public class ProductController {
     }
 
     @GetMapping("/update")
-    public String productUpdateForm(@ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO, Model model) {
-        Product findProduct = productService.findOne(103L).orElseThrow(NoSuchElementException::new);
+    public String productUpdateForm(@ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO
+                                    ,@RequestParam("productId") Long productId, Model model, Principal principal) {
+        Product findProduct = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         productUpdateDTO = ProductUpdateDTO.convertToProductUpdateDTO(findProduct);
+        if (!principal.getName().equals(findProduct.getCompany().getCompanyId())){
+            return "/error/404";
+        }
         model.addAttribute("ProductUpdateDTO", productUpdateDTO);
         return "/product/productUpdateForm";
     }
