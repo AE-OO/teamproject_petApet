@@ -1,5 +1,10 @@
 
 const card = $('.store_container--382-BRTlye');  // 상품 박스
+const update = $('.store_container--382-BRTlye > .none_280--1-kFXWiEW1'); // 주문 수정
+$(update).click(function(){
+    console.log("클릯됨!")
+    }
+)
 const cards = $('#cards'); // 상품 박스 부모
 const removeCard = $('.product-removal > button'); // 상품 박스 >  삭제 버튼
 const checkbox = $("button[role='checkbox']");
@@ -257,6 +262,30 @@ $(document).ready(function() {
         //     }
         // });
     });
+
+    // 장바구니 찜하기
+    function addDibs(id) {
+        $.ajax({
+            type: 'post',           // 타입 (get, post, put 등등)
+            url: '/product/dibs/add',           // 요청할 서버url
+            async: true,            // 비동기화 여부 (default : true)
+            dataType: 'text',       // 데이터 타입 (html, xml, json, text 등등)
+            data: {"productId": id},
+            success: function (result) { // 결과 성공 콜백함수
+                if (result === 'login') {
+                    location.href = '/login'
+                }
+                if (result === 'duplicate') {
+                    console.log(result)
+                } else {
+                    console.log(result)
+                }
+            },
+            error: function (request, status, error) { // 결과 에러 콜백함수
+                console.log(error)
+            }
+        })
+    }
 
 });
 

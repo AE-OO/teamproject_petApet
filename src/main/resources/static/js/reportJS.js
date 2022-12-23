@@ -13,7 +13,7 @@ $(document).ready(function () {
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 if(result === 'success'){
-                    alert("상품을 신고하였습니다.");
+                    alert("게시글을 신고하였습니다.");
                 }
             }
         })
@@ -59,6 +59,10 @@ $(document).ready(function () {
         })
     });
 })
+
+function sendMemberId(memberId){
+    $("#modalMemberId").val(memberId);
+}
 
 function sendMemberId(memberId){
     $("#modalMemberId").val(memberId);

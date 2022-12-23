@@ -14,6 +14,7 @@ import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
+import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -48,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
+import java.util.stream.IntStream;
 
 @Controller
 @Slf4j
@@ -64,7 +66,6 @@ public class ProductController {
     private final DibsProductService dibsProductService;
     private final BuyService buyService;
     private final CompanyService companyService;
-
     @GetMapping("/main")
     public String productMainPage() {
         return "/product/productMainPage";

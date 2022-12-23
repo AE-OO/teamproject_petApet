@@ -47,9 +47,9 @@
                             <a href="#" class="dropdown-item">Test5</a>
                         </div>
                     </div>
-                    <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
+                    <a th:href="@{/dibs}" href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
                         <i class="fa fa-heart"></i></a>
-                    <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
+                    <a th:href="@{/cart}" href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
                         <i class="fa fa-shopping-bag"></i></a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link nav-link2 me-0 h-100" id="dropdownA" data-bs-toggle="dropdown">
@@ -61,8 +61,8 @@
                             <a href="/admin/adminPage" class="dropdown-item" sec:authorize="hasRole('ADMIN')">관리자</a>
                             <a href="/member/checkInfo" class="dropdown-item" sec:authorize="hasRole('MEMBER')">내 정보</a>
                             <a href="/company/info" class="dropdown-item" sec:authorize="hasRole('COMPANY')">기업 정보</a>
-                            <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
-                            <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
+                            <a th:href="@{/cart}" href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
+                            <a th:href="@{/dibs}" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
                             <a href="/logout" class="dropdown-item" sec:authorize="isAuthenticated()">로그아웃</a>
                         </div>
                     </div>
@@ -70,6 +70,7 @@
             </div>
         </div>
     </header>
+    <script th:src="@{/js/header.js}"></script>
 </th:block>
 </body>
 </html>

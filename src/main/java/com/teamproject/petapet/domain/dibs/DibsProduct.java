@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class DibsProduct {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue()
     private Long dibsProductId;
 
     @ManyToOne

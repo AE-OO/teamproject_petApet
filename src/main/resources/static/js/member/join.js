@@ -6,6 +6,7 @@ memberName = () => $("#input-memberName").val();
 memberYear = () => $("#input-year").val();
 memberMonth = () => $("#select-month").val();
 memberDay = () => $("#input-day").val();
+memberEmail = () => $("#input-memberEmail").val();
 memberDetailAddress = () => $("#sample6_detailAddress").val();
 memberPostCode = () => $("#sample6_postcode").val();
 memberExtraAddress = () => $("#sample6_extraAddress").val();
@@ -20,6 +21,7 @@ mPwFeedback2 = () => $("#feedback-memberPw2");
 mNameFeedback = () => $("#feedback-memberName");
 mBirthFeedback = () => $("#feedback-memberBirthday");
 mPhoneNumFeedback = () => $("#feedback-memberPhoneNum");
+mEmailFeedback = () => $("#feedback-memberEmail");
 mAddrFeedback = () => $("#feedback-memberAddress");
 smsConfirmNumFeedback = () => $("#feedback-smsConfirmPhoneNum");
 
@@ -38,6 +40,7 @@ function chnSelectGender() {
         $("#label-gender").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
     }
 }
+
 function chnSelectMonth() {
     if ($("#select-month option:checked").val() != "") {
         $("#select-month").css("color", "#212529");
@@ -48,6 +51,7 @@ function chnSelectMonth() {
         $("#label-month").css("transform", "scale(0.85) translateY(-0.5rem) translateX(0.15rem)");
     }
 }
+
 //error메세지 text 색상 변경용
 function textInfo(value) {
     if ((value.hasClass("text-info"))) {
@@ -57,6 +61,7 @@ function textInfo(value) {
 
     }
 }
+
 function textDanger(value) {
     if (value.hasClass("text-danger")) {
 
@@ -76,6 +81,8 @@ const mNameRegExp = /^[가-힣]{2,6}$/;
 const mPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
 //숫자 정규식 (길이 상관 없이 숫자만 입력)
 const numRegExp = /^[0-9]+$/;
+//이메일 정규식
+const mEmailRegExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 
 //인증시간 변수
 let timer = null;
@@ -297,6 +304,7 @@ $(document).ready(function () {
     let memberPwResult = false;
     let memberPwResult2 = false;
     let memberNameResult = false;
+    let memberEmailResult = false;
     let memberAddressResult = false;
     let memberPhoneNumResult = false;
 
@@ -398,6 +406,44 @@ $(document).ready(function () {
             return memberNameResult = true;
         }
     });
+
+    // 이메일 체크
+    $("#input-memberEmail").blur(function () {
+        if (memberEmail() === null || memberEmail() === "") { //값이 없을 때
+            textDanger(mEmailFeedback());
+            mEmailFeedback().text("필수 정보입니다.");
+            return memberEmailResult = false;
+        } else if (!(mEmailRegExp.test(memberEmail()))) { //정규식에 맞지 않을 때
+            textDanger(mEmailFeedback());
+            mEmailFeedback().text("이메일을 올바르게 입력해주세요. (예: petapet@pet.com)");
+            return memberEmailResult = false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/checkEmail",
+                data: {
+                    memberEmail: memberEmail(),
+                },
+                dataType: "json",
+                success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
+                    if (check) {
+                        textDanger(mEmailFeedback());
+                        mEmailFeedback().text("이미 가입된 이메일 주소입니다. 다른 이메일을 입력하여 주세요.");
+                        return memberEmailResult = false;
+                    } else {//조건에 맞을 때
+                        textInfo(mEmailFeedback());
+                        mEmailFeedback().text("OK");
+                        return memberEmailResult = true;
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/join";
+                }
+            });
+        }
+    });
+
     // 주소 체크
     $("#sample6_detailAddress").blur(function () {
         textDanger(mAddrFeedback());
@@ -414,7 +460,6 @@ $(document).ready(function () {
             return memberAddressResult = true;
         }
     });
-
     //휴대전화 체크
     $("#input-memberPhoneNum").blur(function () {
         textDanger(mPhoneNumFeedback());
@@ -425,8 +470,27 @@ $(document).ready(function () {
             mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
             return memberPhoneNumResult = false;
         } else {
-            mPhoneNumFeedback().text("");
-            return memberPhoneNumResult = true;
+            $.ajax({
+                type: "POST",
+                url: "/checkPhoneNum",
+                data: {
+                    memberPhoneNum: memberPhoneNum(),
+                },
+                dataType: "json",
+                success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
+                    if (check) {
+                        mPhoneNumFeedback().text("이미 가입된 휴대폰 번호입니다.");
+                        return memberPhoneNumResult = false;
+                    } else {//조건에 맞을 때
+                        mPhoneNumFeedback().text("");
+                        return memberPhoneNumResult = true;
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/join";
+                }
+            })
         }
     });
 
@@ -436,9 +500,6 @@ $(document).ready(function () {
     });
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // 휴대전화 체크 (인증번호 문자포함) - 문자서비스 막아놓음 사용하려면 /////////ajax 주석 살리기 + 테스트 주석처리//////
-    //////////////////////////////////////////////////////////////////////////////////////////////
     $("#smsBtn").click(function () {
         textDanger(mPhoneNumFeedback());
         if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
@@ -446,7 +507,26 @@ $(document).ready(function () {
         } else if (!(mPhoneNumRegExp.test(memberPhoneNum()))) { //정규식에 맞지 않을 때
             mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
         } else {
-            sendBtnClick();
+            $.ajax({
+                type: "POST",
+                url: "/checkPhoneNum",
+                data: {
+                    memberPhoneNum: memberPhoneNum(),
+                },
+                dataType: "json",
+                success: function (check) {
+                    if (check) {
+                        mPhoneNumFeedback().text("이미 가입된 휴대폰 번호입니다.");
+                    } else {
+                        mPhoneNumFeedback().text("");
+                        sendBtnClick();
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/join";
+                }
+            })
         }
     });
 
@@ -464,6 +544,9 @@ $(document).ready(function () {
         if (memberName() === null || memberName() === "") {
             mNameFeedback().text("필수 정보입니다.");
         }
+        if (memberEmail() === null || memberEmail() === "") {
+            mNameFeedback().text("필수 정보입니다.");
+        }
         if (memberPostCode() === null || memberPostCode() === "") { //값이 없을 때
             mAddrFeedback().text("필수 정보입니다.");
 
@@ -478,7 +561,7 @@ $(document).ready(function () {
         //     + "///" + checkMemberBirthday() + "///" + memberAddressResult + "///" + memberPhoneNumResult
         //     + "///" + checkSmsConfirmNum()); //확인용
 
-        if (memberIdResult && memberPwResult && memberPwResult2 && memberNameResult &&
+        if (memberIdResult && memberPwResult && memberPwResult2 && memberNameResult && memberEmailResult &&
             checkMemberBirthday() && memberAddressResult && memberPhoneNumResult && checkSmsConfirmNum()) {
             $("#joinBtn").attr("type", "submit");
         }

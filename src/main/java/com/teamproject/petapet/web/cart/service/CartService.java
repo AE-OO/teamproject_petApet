@@ -13,6 +13,9 @@ public interface CartService {
 
     Cart findOne(Long cartId);
 
+    // 미완
+    void updateQuantity(Long cartId, Long quantity);
+
     void removeCartOne(Long cartId);
 
     void removeCartAll(String memberId);

@@ -16,13 +16,14 @@ public interface InquiredRepository extends JpaRepository<Inquired, Long> {
     @Query("select i from Inquired i where i.inquiredCategory like '%문의'")
     public List<Inquired> getOtherInquiries();
 
+    // 관리자 페이지 - 고객문의 전체 (최근순)
     @Query("select i from Inquired i where i.member.memberId =:memberId order by i.inquiredId desc ")
     List<Inquired> findByMemberId(@Param("memberId") String memberId);
 
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query(value = "update Inquired i set i.checked = true where i.inquiredId =: inquiredId")
-    void setCheck(@Param("inquiredId") Long inquiredId);
-
     List<Inquired> findAllByCompany_CompanyIdOrderByCheckedAscInquiredDate(String companyId);
+
+    // 기업페이지 - 고객문의 승인 (상품문의, 상품주문취소 , 환불 )
+    @Modifying
+    @Query(value = "update Inquired i set i.answer =:answer, i.checked = true where i.inquiredId =:inquiredId")
+    void replyAnswer(@Param("inquiredId") Long inquiredId ,@Param("answer") String answer);
 }

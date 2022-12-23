@@ -1,11 +1,9 @@
 
 @import "reset.css";
 
-
 /* Components */
 
 /* Screens */
-
 
 *{ box-sizing: border-box;
 text-decoration: none;}
@@ -16,6 +14,7 @@ body {
     min-width: 1020px;
     background-color: #ffffff;
     display: block;
+    font-size: 20px;
     font-family: "맑은 고딕", malgun gothic, apple sd gothic neo, "나눔고딕", nanumgothic, "돋움", dotum, sans-serif;
   }
 
@@ -24,6 +23,7 @@ div{
 }
 
 #container{
+  top: 80px;
   position: relative;
   min-width: 980px;
   overflow: hidden;
@@ -49,12 +49,11 @@ div{
 
 #pap-left-menu{
   position: fixed;
+  display: block;
   width: 150px;
   float: left;
-  top: 0;
+  top: 80px;
   left: 0;
-  width: 150px;
-  float: left;
   z-index: 10000;
 }
 
@@ -66,7 +65,7 @@ div{
 .mypage-text{
   height: 122px;
   padding: 1px;
-  background: #5fc8af;
+  background-color: #5fc8af;
   text-align: center;
   box-sizing: border-box;
   display: flex;
@@ -619,7 +618,7 @@ div{
   justify-content: center;
   -webkit-box-align: center;
   align-items: center;
-  z-index: 30;
+  z-index: 20000;
 }
 
 .epHmvE {

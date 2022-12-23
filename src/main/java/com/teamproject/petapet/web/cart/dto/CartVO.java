@@ -15,4 +15,5 @@ public class CartVO {
 
     @NotNull(message = "수량을 입력하세요")
     private Long quantity;
+
 }

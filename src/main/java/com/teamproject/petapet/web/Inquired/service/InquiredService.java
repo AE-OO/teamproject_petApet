@@ -26,4 +26,6 @@ public interface InquiredService {
 
     //회사 Mypage
     List<InquiryDTO> getCompanyPageInquiryList(String companyId);
+
+    void replyAnswer(Long inquiredId, String answer);
 }
