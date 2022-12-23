@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.community.converter.EmptyStringToNullConverter;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ import java.util.List;
 @Getter
 @ToString(exclude = "member")
 @DynamicInsert
+@DynamicUpdate
 @EntityListeners(value = {AuditingEntityListener.class})
 public class Community extends BaseTimeEntity {
 
@@ -58,5 +60,12 @@ public class Community extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
     private List<Comment> comment;
+
+//    public void update(String communityTitle,String communityContent,String communityCategory,String communitySubCategory){
+//        this.communityTitle = communityTitle;
+//        this.communityContent = communityContent;
+//        this.communityCategory = communityCategory;
+//        this.communitySubCategory = communitySubCategory;
+//    }
 
 }

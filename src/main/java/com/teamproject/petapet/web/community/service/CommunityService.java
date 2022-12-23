@@ -26,11 +26,8 @@ public interface CommunityService {
 //    Long countTodayCommunity();
     Long countTodayCommunity(String communityCategory);
     void viewCountPlus(Long communityId);
-
     CommunityPostsDTO loadCommunityPosts(Long communityId);
-
     CommunityUpdateDTO loadCommunityUpdatePost(String memberId, Long communityId);
-
-    void updateCommunity(String memberId,CommunityUpdateDTO CommunityUpdateDTO);
+    void updateCommunity(String memberId,CommunityUpdateDTO communityUpdateDTO);
 
 }

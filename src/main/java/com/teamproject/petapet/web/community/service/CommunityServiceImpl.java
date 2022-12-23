@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -111,7 +112,11 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public void updateCommunity(String memberId, CommunityUpdateDTO CommunityUpdateDTO) {
-        communityRepository.save(CommunityUpdateDTO.toEntity());
+    @Transactional
+    public void updateCommunity(String memberId, CommunityUpdateDTO communityUpdateDTO) {
+//        Community community = communityRepository.findById(communityUpdateDTO.getCommunityId()).get();
+//        community.update(communityUpdateDTO.getCommunityTitle(),communityUpdateDTO.getCommunityContent(),
+//                communityUpdateDTO.getCommunityCategory(),communityUpdateDTO.getCommunitySubCategory());
+        communityRepository.save(communityUpdateDTO.toEntity());
     }
 }
