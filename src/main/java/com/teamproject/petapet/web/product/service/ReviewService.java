@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ReviewService {
 
-    Long countReviewByProduct(Product product);
+    Long countReviewByProduct(Long productId);
 
     void save(Review review);
 
