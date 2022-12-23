@@ -9606,10 +9606,6 @@ textarea.form-control-lg {
   width: auto !important;
 }
 
-.w-fit-content {
-  width: fit-content !important;
-}
-
 .mw-100 {
   max-width: 100% !important;
 }
@@ -10484,7 +10480,7 @@ ps-7 {
 }
 
 .text-lightGray {
-  --bs-text-opacity: 1
+  --bs-text-opacity: 1;
   color: rgba(var(--bs-gray-500), var(--bs-text-opacity)) !important;
 }
 
@@ -13360,11 +13356,4 @@ legend {
 .list-group-item h6,
 .list-group-item .h6 {
   color: inherit;
-}
-
-.zoom-in{
-  cursor: zoom-in;
-}
-.zoom-out{
-  cursor: zoom-out;
 }
