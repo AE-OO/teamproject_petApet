@@ -1,6 +1,5 @@
 package com.teamproject.petapet.web.product.service;
 
-import com.teamproject.petapet.domain.product.Coupon;
 import com.teamproject.petapet.web.product.coupondtos.CouponDTO;
 import org.springframework.data.domain.Page;
 

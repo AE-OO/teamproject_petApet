@@ -16,7 +16,6 @@ public class ProductDetailDTO {
     private String productName;
     private String productSeller;
     private Long productPrice;
-    private Long productRating;
     private Long productStock;
     private Long productDiscountRate;
     private Long productUnitPrice;

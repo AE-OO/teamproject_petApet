@@ -1,6 +1,5 @@
 package com.teamproject.petapet.web.product;
 
-import com.teamproject.petapet.domain.product.Coupon;
 import com.teamproject.petapet.web.product.coupondtos.CouponDTO;
 import com.teamproject.petapet.web.product.service.CouponService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/product")
 public class CouponController {
     private final CouponService couponService;
-    @GetMapping("/coupon")
+//    @GetMapping("/coupon")
     public String tetetet(Model model){
         Page<CouponDTO> couponList = couponService.findCouponList();
         model.addAttribute("couponList",couponList);

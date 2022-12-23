@@ -9,6 +9,7 @@ import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -109,7 +110,6 @@ public class Product {
                 .productImg(product.getProductImg())
                 .productId(product.getProductId())
                 .productStock(product.getProductStock())
-                .productRating(product.getProductRating())
                 .productName(product.getProductName())
                 .productSeller(product.getCompany().getCompanyName())
                 .productContent(product.getProductContent())
@@ -125,7 +125,7 @@ public class Product {
                 .productPrice(insertDTO.getProductPrice())
                 .productStock(insertDTO.getProductStock())
                 .productImg(uploadFiles)
-                .productStatus("판매중")
+                .productStatus(insertDTO.getProductStatus())
                 .productDiv(productDiv)
                 .company(company)
                 .productContent(insertDTO.getProductContent())

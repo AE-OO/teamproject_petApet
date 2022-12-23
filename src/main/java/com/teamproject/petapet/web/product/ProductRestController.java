@@ -123,8 +123,8 @@ public class ProductRestController {
         String substringSrc = jsonObject.optString("substringSrc");
         String attrAlt = jsonObject.optString("attrAlt");
         reviewImg.remove(new UploadFile(attrAlt,substringSrc));
-        File targetFile = new File(saveUrl + substringSrc);
-        boolean delete = targetFile.delete();
+        File targetLocalFile = new File(saveUrl + substringSrc);
+        boolean delete = targetLocalFile.delete();
     }
     @PostMapping("/deleteReview")
     public void deleteReview(@RequestBody String productId, Principal principal){

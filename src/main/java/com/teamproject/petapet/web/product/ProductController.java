@@ -11,6 +11,7 @@ import com.teamproject.petapet.web.dibs.service.DibsProductService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
@@ -20,10 +21,12 @@ import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import com.teamproject.petapet.web.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,13 +37,17 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 
 @Controller
 @Slf4j
@@ -48,6 +55,8 @@ import java.util.NoSuchElementException;
 @RequestMapping("/product")
 public class ProductController {
 
+    @Value("${editor.img.save.url}")
+    private String saveUrl;
     private final ProductService productService;
     private final FileService fileService;
     private final MemberService memberService;
@@ -55,6 +64,7 @@ public class ProductController {
     private final DibsProductService dibsProductService;
     private final BuyService buyService;
     private final CompanyService companyService;
+
     @GetMapping("/main")
     public String productMainPage() {
         return "/product/productMainPage";
@@ -67,15 +77,15 @@ public class ProductController {
                                  @RequestParam(value = "sortType", defaultValue = "productId", required = false) String sortType,
                                  @RequestParam(value = "searchContent", defaultValue = "false", required = false) String content,
                                  @RequestParam(value = "isPriceRange", defaultValue = "false", required = false) String isPriceRange,
-                                 @RequestParam(value = "minPrice",defaultValue = "", required = false) String minPrice,
-                                 @RequestParam(value = "maxPrice",defaultValue = "", required = false) String maxPrice,
+                                 @RequestParam(value = "minPrice", defaultValue = "", required = false) String minPrice,
+                                 @RequestParam(value = "maxPrice", defaultValue = "", required = false) String maxPrice,
                                  @RequestParam(value = "rating", defaultValue = "0", required = false) Long starRating,
                                  Model model, Principal principal) {
         Sort sort = getSort(sortType);
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         String property = pageable.getSort().get().findFirst().orElseThrow(NoSuchElementException::new).getProperty();
         ProductType productType = getProductType(category);
-        Page<Product> resultPage = productService.findPage(category, productType, property, content, starRating,minPrice,maxPrice,isPriceRange, pageable);
+        Page<Product> resultPage = productService.findPage(category, productType, property, content, starRating, minPrice, maxPrice, isPriceRange, pageable);
         Page<ProductListDTO> productListDTO = getProductListDTO(principal, resultPage);
 
         model.addAttribute("productList", productListDTO);
@@ -102,19 +112,71 @@ public class ProductController {
         return sort;
     }
 
+    @GetMapping("/update")
+    public String productUpdateForm(@ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO, Model model) {
+        Product findProduct = productService.findOne(103L).orElseThrow(NoSuchElementException::new);
+        productUpdateDTO = ProductUpdateDTO.convertToProductUpdateDTO(findProduct);
+        model.addAttribute("ProductUpdateDTO", productUpdateDTO);
+        return "/product/productUpdateForm";
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public ResponseEntity<?> productUpdate(@Validated @ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO, BindingResult bindingResult, Principal principal) throws IOException {
+        if (bindingResult.hasGlobalErrors()) {
+        }
+
+        Company company = companyService.findById(principal.getName()).orElseThrow(NoSuchElementException::new);
+        Product findProduct = productService.findOne(productUpdateDTO.getProductId()).orElseThrow(NoSuchElementException::new);
+
+        // 페이지에서 가져온 이미지
+        List<UploadFile> existProductImg = new ArrayList<>();
+        if (productUpdateDTO.getStoreFileName() != null) {
+            IntStream.range(0, productUpdateDTO.getStoreFileName().size()).forEach(i -> {
+                UploadFile uploadFile = new UploadFile(productUpdateDTO.getUploadFileName().get(i), productUpdateDTO.getStoreFileName().get(i));
+                existProductImg.add(uploadFile);
+            });
+        }
+        // 영속성 객체 이미지
+        List<UploadFile> findProductImg = findProduct.getProductImg();
+        if (existProductImg.size() != findProductImg.size()) {
+            findProductImg.removeAll(existProductImg);
+            for (UploadFile uploadFile : findProductImg) {
+                File localFile = new File(saveUrl + uploadFile.getStoreFileName());
+                localFile.delete();
+            }
+        }
+        // 새로 받아 온 이미지
+        List<MultipartFile> productImg = productUpdateDTO.getProductImg();
+        if (!productImg.get(0).isEmpty()) {
+            List<UploadFile> newUploadFiles = fileService.storeFiles(productUpdateDTO.getProductImg());
+            existProductImg.addAll(newUploadFiles);
+        }
+        Product updateProduct = productUpdateDTO.convertToEntityByUpdateDTO(productUpdateDTO, existProductImg, company);
+        productService.saveProduct(updateProduct);
+
+        String redirectURL = "/product/" +
+                updateProduct.getProductDiv().name().toLowerCase() + "/" +
+                updateProduct.getProductId() + "/" + "details";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(redirectURL));
+        return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER);
+    }
+
     @GetMapping("/insert")
     public String productInsertForm(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) {
         return "/product/productInsertForm";
     }
 
     @PostMapping("/insert")
-    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult,Principal principal) throws IOException {
+    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult, Principal principal) throws IOException {
 
         if (productInsertDTO.getProductImg().get(0).isEmpty()) {
             bindingResult.addError(new FieldError("productInsertDTO", "productImg", "1장 이상의 사진을 올려주세요"));
         }
 
-        if (!productInsertDTO.getProductSeller().equals(principal.getName())){
+        if (!productInsertDTO.getProductSeller().equals(principal.getName())) {
             bindingResult.addError(new FieldError("productInsertDTO", "productSeller", "판매자명이 잘못됐습니다."));
         }
 
@@ -127,16 +189,14 @@ public class ProductController {
         List<MultipartFile> productImg = productInsertDTO.getProductImg();
         List<UploadFile> uploadFiles = fileService.storeFiles(productImg);
 
-        Product savedProduct = productService.productSave(productInsertDTO, uploadFiles, company)
+        Product savedProduct = productService.saveProduct(productInsertDTO, uploadFiles, company)
                 .orElseThrow(NoSuchElementException::new);
 
-        log.info("savedProduct={}",savedProduct);
-//        String redirectURL = "/product/" +
-//                savedProduct.getProductDiv().name().toLowerCase() + "/" +
-//                savedProduct.getProductId() + "/" + "details";
+        String redirectURL = "/product/" +
+                savedProduct.getProductDiv().name().toLowerCase() + "/" +
+                savedProduct.getProductId() + "/" + "details";
 
-//        return "redirect:" + redirectURL;
-        return "redirect:/product";
+        return "redirect:" + redirectURL;
     }
 
     @GetMapping(value = "/images/{filename}")
@@ -168,10 +228,10 @@ public class ProductController {
             model.addAttribute("existsByPurchaseHistory", existsByPurchaseHistory);
             boolean existByReviewHistory = reviewService.existByReviewHistory(productId, principal.getName());
             model.addAttribute("existByReviewHistory", existByReviewHistory);
-            if (existByReviewHistory){
-            Review existReview = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
-            ReviewDTO reviewDTO = Review.toReviewDTO(existReview);
-            model.addAttribute("existReview", reviewDTO);
+            if (existByReviewHistory) {
+                Review existReview = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
+                ReviewDTO reviewDTO = Review.toReviewDTO(existReview);
+                model.addAttribute("existReview", reviewDTO);
             }
         }
         productService.updateCounterView(productId);
@@ -242,4 +302,6 @@ public class ProductController {
     }
 
 }
+
+
 

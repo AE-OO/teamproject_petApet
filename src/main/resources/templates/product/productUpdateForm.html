@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragment/heade :: head(productInsert)}">
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,7 +8,7 @@
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <hr class="mt-4">
-<form th:action="@{/product/insert}" method="post" enctype="multipart/form-data" th:object="${ProductInsertDTO}">
+<form th:action="@{/product/update(productId=*{productId})}" id="submitForm" method="post" enctype="multipart/form-data" th:object="${ProductUpdateDTO}">
     <div th:if="${#fields.hasGlobalErrors()}">
         <p class="field-error" th:text="오류입니다">글로벌 오류 메시지</p>
     </div>
@@ -17,15 +18,28 @@
                 <div class="portfolio-container">
                     <div class="portfolio-item">
                         <div class="portfolio">
-                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false">
                                 <div class="carousel-inner" id="thumbnailImg">
-                                    <h5 class="mx-5">업로드 이미지 미리보기</h5>
+                                    <div class="carousel-item" th:each="img, i : ${ProductUpdateDTO.getExistProductImg()}">
+                                        <a class="btn btn-link productImgModalBtn" data-bs-toggle="modal"
+                                           data-bs-target="#productImgModal">
+                                            <img th:src="|@{/product/images/{filename}(filename=${img.storeFileName})}|"
+                                                 style="max-width: 100%; height: auto; max-height: 30rem; vertical-align: bottom;"
+                                                 class="d-block w-auto myProductImg" th:id="|${'carousel-img'}${i.index}|" th:alt="${img.uploadFileName}"></a>
+                                        <div class="d-flex  justify-content-center">
+                                            <a type="button" class="btn btn-outline-danger deleteProductImg"
+                                               style="color: red" th:text="삭제"></a>
+
+                                        </div>
+                                    </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExampleControls" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -50,7 +64,8 @@
                 <div class="d-flex mx-3 col">
                     <div class="col-6 m-lg-1">
                         <h6>할인율
-                            <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productDiscountRate}"/>
+                            <div class="field-error text-secondary" style="font-size: 12px"
+                                 th:errors="*{productDiscountRate}"/>
                         </h6>
                         <input type="number" id="discountRate" min="0" max="99"
                                onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
@@ -61,10 +76,12 @@
                     </div>
                     <div class="col-6 m-lg-1">
                         <h6 class="">판매가
-                            <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productUnitPrice}"/>
+                            <div class="field-error text-secondary" style="font-size: 12px"
+                                 th:errors="*{productUnitPrice}"/>
                         </h6>
-                        <input type="number"  id="productPrice" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
-                               class="col-8" min="1000" max="9999999" th:field="*{productUnitPrice}" placeholder="가격" required>
+                        <input type="number" id="productPrice" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+                               class="col-8" min="1000" max="9999999" th:field="*{productUnitPrice}" placeholder="가격"
+                               required>
                         <span class="validity"></span>
                         <h6 class="text-secondary" id="priceMessage" style="font-size: 12px"></h6>
 
@@ -75,11 +92,13 @@
                     <div class="d-flex flex-row col">
                         <div class="col-6 m-lg-1">
                             <h6>최종판매가
-                                <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productPrice}"/>
+                                <div class="field-error text-secondary" style="font-size: 12px"
+                                     th:errors="*{productPrice}"/>
                             </h6>
                         </div>
                         <div class="col-6 m-lg-1">
-                            <input style="border: none; color: #347a5e" th:field="*{productPrice}" name="productPrice" id="finalPrice" readonly>
+                            <input style="border: none; color: #347a5e" th:field="*{productPrice}" name="productPrice"
+                                   id="finalPrice" readonly>
                         </div>
                     </div>
                 </div>
@@ -87,10 +106,12 @@
                     <div class="d-flex flex-row col">
                         <div class="col-6 m-lg-1">
                             <h6>판매자</h6>
-                                <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productSeller}"/>
+                            <div class="field-error text-secondary" style="font-size: 12px"
+                                 th:errors="*{productSeller}"/>
                         </div>
                         <div class="col-6 m-lg-1">
-                            <input type="text" readonly style="border: none;" th:field="*{productSeller}" name="productSeller" th:value="${#authentication.name}">
+                            <input type="text" readonly style="border: none;" th:field="*{productSeller}"
+                                   name="productSeller" th:value="${#authentication.name}">
                         </div>
                     </div>
                 </div>
@@ -133,7 +154,8 @@
                     </div>
                     <div class="d-flex flex-row col-5 m-lg-1 pe-4">
                         <div class="input-group d-flex flex-row mb-3">
-                            <select type="input" class="form-select form-select-sm" name="productStatus" id="productStatus" required>
+                            <select type="input" class="form-select form-select-sm" th:field="*{productStatus}"
+                                    name="productStatus" id="productStatus" required>
                                 <option value="판매중">판매중</option>
                                 <option value="판매중지">판매중지</option>
                                 <option value="재고없음">재고없음</option>
@@ -153,7 +175,8 @@
                     </div>
                     <div class="d-flex flex-row col-5 m-lg-1 pe-4">
                         <div class="input-group d-flex flex-row mb-3">
-                            <input class="d-flex flex-row" type="hidden" th:field="*{productDiv}" id="productType" value=""
+                            <input class="d-flex flex-row" type="hidden" th:field="*{productDiv}" id="productType"
+                                   value=""
                                    name="productDiv" required>
                             <select type="input" onchange="putValue(this)" class="form-select form-select-sm"
                                     id="inputGroupSelect01" required>
@@ -169,10 +192,9 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-
-
         <hr class="mb-4 mt-4">
 
         <div class="flex-row p-3 mx-3" style="min-height: 10rem">
@@ -188,7 +210,7 @@
         </div>
     </div>
     <div class="d-flex flex-row justify-content-center">
-        <button type="submit" class="btn btn-info col-3 me-3">상품등록</button>
+        <button type="button" class="btn btn-info col-3 me-3" onclick="updateProduct()">상품등록</button>
         <a th:href="@{/product}" class="btn btn-info col-3 ms-3">취소</a>
     </div>
 </form>
@@ -234,65 +256,168 @@
 <hr class="my-4">
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>
-
+<!-- 상품 이미지 Modal -->
+<div class="modal fade" id="productImgModal" tabindex="-1" aria-labelledby="productImgModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="--bs-modal-bg: none; --bs-modal-border-width: 0">
+            <div class="modal-body">
+                <img class="modalImage" style="max-width: 40rem; height: auto;" data-bs-dismiss="modal"
+                     aria-label="Close">
+            </div>
+        </div>
+    </div>
+</div>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
 
-    $(document).ready(function () {
-        let companyId = [[${#authentication.name}]];
-        $('#productSeller').val(companyId);
-        let val = $('#productType').val();
-        if (val !== ""){
-            $('select option[value='+val+']').attr('selected',true);
-        }
+    $('.productImgModalBtn').click(function () {
+        let imgSrc = $(this).children(1).attr('src');
+        let $modalImage = $('.modalImage');
+        $modalImage.attr('src', imgSrc);
     })
 
+    function moreProductImgModalBtn(src) {
+        let $modalImage = $('.modalImage');
+        $modalImage.attr('src', src);
+    }
+
+    $(function setProductType() {
+        let val = $('#productType').val();
+
+        if (val !== "") {
+            $('select option[value=' + val + ']').attr('selected', true);
+        }
+    })
+    $(function setCompanyId() {
+        let companyId = [[${#authentication.name}]];
+        $('#productSeller').val(companyId);
+    })
+    $(function () {
+        $('.carousel-inner > div:nth-child(1)').addClass('active');
+    });
+
     function setThumbnail(event) {
-            let from = Array.from(event.target.files);
-            $('#thumbnailImg').empty();
-        $.each(from,function (idx,el) {
+        let from = Array.from(event.target.files);
+        $.each(from, function (idx, el) {
             const carouselHtml = `<div class="carousel-item" id="addImg${idx}"></div>`;
             $('#thumbnailImg').append(carouselHtml);
 
-
             var reader = new FileReader();
             reader.onload = function (event) {
+                let aTag = document.createElement('a');
+                aTag.setAttribute('class', 'btn btn-link productImgModalBtn');
+                aTag.setAttribute('data-bs-toggle', 'modal');
+                aTag.setAttribute('data-bs-target', '#productImgModal');
+
                 var img = document.createElement("img");
                 img.setAttribute("src", event.target.result);
-                img.setAttribute('style','max-width: 100%; height: auto; max-height: 30rem')
-                document.querySelector("#addImg"+idx).appendChild(img);
+                img.setAttribute('onclick', 'moreProductImgModalBtn(this.src)');
+                img.setAttribute('style', 'max-width: 100%; height: auto; max-height: 30rem')
+
+                aTag.append(img);
+                document.querySelector("#addImg" + idx).appendChild(aTag);
             };
             reader.readAsDataURL(el);
-            $('.carousel-inner > div:nth-child(1)').addClass('active');
         })
     }
+
+    $('.deleteProductImg').click(function () {
+        let productId = [[${ProductUpdateDTO.productId}]];
+        $(this).parent().parent().remove();
+        $('.carousel-inner > div:nth-child(1)').addClass('active');
+        // let $this = $('#'+id);
+        // let next = $this.next(1).children(1);
+        // let attrSrc = next.attr('src');
+        // let attrAlt = next.attr('alt');
+        // let pos = attrSrc.lastIndexOf("/");
+        // let substringSrc = attrSrc.substring(pos+1);
+        // console.log(substringSrc)
+        // console.log(attrAlt)
+        // fetch('/product/deleteReviewImg?productId='+productId, {
+        //     method: 'POST',
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({
+        //         substringSrc: substringSrc,
+        //         attrAlt: attrAlt,
+        //     }),
+        // })
+        //     .then(response => {
+        //         // return response.json();
+        //     })
+        //     .then(data => {
+        //
+        //     })
+        // next.remove()
+        // $this.remove()
+    })
+
+    async function updateProduct() {
+        let productId = [[${ProductUpdateDTO.productId}]];
+        let storeFileNameArr = new Array();
+        let uploadFileNameArr = new Array();
+        let myProductImg = $('.productImgModalBtn .myProductImg').length;
+        console.log(myProductImg)
+        for(var i = 1; i <= myProductImg; i++){
+            let src = $('.carousel-inner > div:nth-child('+i+') a img').attr('src');
+            let uploadFileName = $('.carousel-inner > div:nth-child('+i+') a img').attr('alt');
+            let pos = src.lastIndexOf("/");
+            let storeFileName = src.substring(pos+1);
+            storeFileNameArr.push(storeFileName);
+            uploadFileNameArr.push(uploadFileName);
+        }
+        let formData = new FormData(document.getElementById("submitForm"));
+        for (var o = 0; o < storeFileNameArr.length; o++){
+            formData.append('storeFileName',storeFileNameArr[o])
+            formData.append('uploadFileName',uploadFileNameArr[o])
+            formData.append('uploadFile','UploadFile(uploadFileName='+uploadFileNameArr[o]+', storeFileName='+storeFileNameArr[o]+') ')
+        }
+        fetch('/product/update?productId='+productId, {
+            method: 'POST',
+            // headers: {
+            //     "Content-Type": "multipart/form-data",
+            //     "Content-Type": "application/json",
+            // },
+            body: formData,
+        })
+            .then(response => {
+                location.href = response.url
+                // return response.json();
+            })
+            .then(data => {
+            })
+    }
+
 
     $(document).ready(function () {
         $('#productContent').summernote({
             tabsize: 2,
             placeholder: '내용을 작성하세요',
-            fontSizes: ['8','9','10','11','12','14','18','24','36'],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
             toolbar: [
-                ['font', ['fontname','fontsize','fontsizeunit']],
-                ['fontstyle', ['bold','italic','underline','strikethrough','forecolor','backcolor','superscript','subscript','clear']],
+                ['font', ['fontname', 'fontsize', 'fontsizeunit']],
+                ['fontstyle', ['bold', 'italic', 'underline', 'strikethrough', 'forecolor', 'backcolor', 'superscript', 'subscript', 'clear']],
                 ['style', ['style']],
-                ['paragraph', ['paragraph','height','ul','ol']],
-                ['insert', ['table','hr','link','picture','video']],
+                ['paragraph', ['paragraph', 'height', 'ul', 'ol']],
+                ['insert', ['table', 'hr', 'link', 'picture', 'video']],
                 ['codeview'],
             ],
             minHeight: 500,
             maxHeight: null,
             focus: true,
-            callbacks :{
-                onImageUpload : function(files, editor, welEditable) {
+            callbacks: {
+                onImageUpload: function (files, editor, welEditable) {
                     //             // 파일 업로드(다중업로드를 위해 반복문 사용)
-                                for (var i = files.length - 1; i >= 0; i--) {
-                                    uploadSummernoteImageFile(files[i],
-                                        this);
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        uploadSummernoteImageFile(files[i],
+                            this);
+                    }
+                }
             }
-        }}})
+        })
 
     });
 
@@ -300,52 +425,54 @@
         data = new FormData();
         data.append("file", file);
         $.ajax({
-            data : data,
-            type : "POST",
-            url : "/product/image",
-            contentType : false,
-            enctype : 'multipart/form-data',
-            processData : false,
-            success : function(data) {
+            data: data,
+            type: "POST",
+            url: "/product/image",
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (data) {
                 console.log(data)
-                $(el).summernote('editor.insertImage',data.url);
+                $(el).summernote('editor.insertImage', data.url);
             }
         });
     }
-    $(document).ready(function (){
-        $("#discountRate").on("propertychange change paste input", function() {
+
+    $(document).ready(function () {
+        $("#discountRate").on("propertychange change paste input", function () {
             let price = fnReplace($("#productPrice").val());
             let discountRate = fnReplace($("#discountRate").val());
-            if (discountRate>99){
+            if (discountRate > 99) {
                 $('#disRateMessage').text('0-99까지의 값을 입력하세요');
             } else {
                 $('#disRateMessage').empty();
             }
             $('#finalPrice').val(Math.ceil(price - (price * (discountRate / 100))));
         })
-        $("#productPrice").on("propertychange change paste input", function() {
+        $("#productPrice").on("propertychange change paste input", function () {
             let price = fnReplace($("#productPrice").val());
             let discountRate = fnReplace($("#discountRate").val());
-            if (price>9999999 || price < 1000){
+            if (price > 9999999 || price < 1000) {
                 $('#priceMessage').text('1,000원 이상, 9,999,999원 이하의 금액이여야 합니다');
             } else {
                 $('#priceMessage').empty();
             }
             $('#finalPrice').val(Math.ceil(price - (price * (discountRate / 100))));
         })
-        $("#productStock").on("propertychange change paste input", function() {
+        $("#productStock").on("propertychange change paste input", function () {
             let productStock = fnReplace($("#productStock").val());
-            if (productStock>9999 || productStock<100){
+            if (productStock > 9999 || productStock < 100) {
                 $('#stockMessage').text('100-9999미만의 값을 입력하세요');
             } else {
                 $('#stockMessage').empty();
             }
         })
     })
+
     function fnReplace(val) {
         var ret = 0;
-        if(typeof val != "undefined" && val != null && val != ""){
-            ret = Number(val.replace(/,/gi,''));
+        if (typeof val != "undefined" && val != null && val != "") {
+            ret = Number(val.replace(/,/gi, ''));
         }
         return ret;
     }
