@@ -86,7 +86,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findOne(String memberId) {
-        return memberRepository.findById(memberId).get();
+        return memberRepository.findById(memberId).orElse(null);
     }
 
 

@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.inquired;
 
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
@@ -42,9 +43,16 @@ public class Inquired {
     @Column(length = 45, nullable = false)
     private String inquiredCategory;
 
+    @Column(length = 200)
+    private String answer;
+
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "companyId")
+    private Company company;
 
     @Column
     private String email;

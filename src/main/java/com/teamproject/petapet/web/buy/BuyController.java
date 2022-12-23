@@ -97,4 +97,23 @@ public class BuyController {
         Member loginMemberSession = (Member) session.getAttribute("loginMember");
         return loginMemberSession.getMemberId();
     }
+
+    //박채원 22.12.16 추가 (이하 3개 메소드)
+    @ResponseBody
+    @GetMapping("/getTotalSalesPerMonth")
+    public List<Integer> getTotalSalesPerMonth(Principal principal){
+        return buyService.getTotalSalesPerMonth(principal.getName());
+    }
+    
+    @ResponseBody
+    @GetMapping("/getProductSales")
+    public List<Integer> getProductSales(Principal principal){
+        return buyService.getProductSales(principal.getName());
+    }
+
+    @ResponseBody
+    @GetMapping("/getDetailSalesPerMonth/{productId}")
+    public List<Integer> getDetailSalesPerMonth(@PathVariable("productId") Long productId){
+        return buyService.getDetailSalesPerMonth(productId);
+    }
 }

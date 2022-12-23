@@ -1,13 +1,14 @@
 package com.teamproject.petapet.web.product.service;
 
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
-import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.Optional;
  */
 
 public interface ProductService {
-    List<Product> getProductList();
+    List<ProductDTO> getProductList(String companyId);
 
     Page<Product> getProductPage(Pageable pageable);
 
@@ -25,19 +26,31 @@ public interface ProductService {
 
     void updateProductStatus(String selectStatus, Long productStock, Long productId);
 
-    Page<Product> findAllByProductDiv(ProductType productType,Pageable pageable);
+    void updateProductInfo(String type, Long productId, Long productStock, String productStatus);
+
+    Page<Product> findAllByProductDiv(ProductType productType, Pageable pageable);
+
     void updateProductReviewCount(Long productId, Long reviewCount);
+
     void updateProductStatusOutOfStock(List<String> productId);
 
     void updateProductRating(Long productId);
 
     Optional<Product> findOne(Long id);
 
-    Optional<Product> productSave(ProductInsertDTO productInsertDTO,List<UploadFile> uploadFiles);
+    Optional<Product> saveProduct(ProductInsertDTO productInsertDTO, List<UploadFile> uploadFiles, Company company);
+    Optional<Product> saveProduct(Product product);
+
+    void updateProduct(ProductUpdateDTO productUpdateDTO, List<UploadFile> productImg);
 
     Optional<Product> findProductWithReview(Long id);
 
-    Page<Product> findPage(String category,ProductType productType, String sortType,String searchContent,Long starRating, Pageable pageable);
+    void updateCounterView(Long productId);
+
+    void updateCounterSell(Long productId);
+
+    Page<Product> findPage(String category, ProductType productType, String sortType, String searchContent, Long starRating, String minPrice, String maxPrice, String isPriceRange, Pageable pageable);
+
     void addProductReport(Long productId);
 }
 

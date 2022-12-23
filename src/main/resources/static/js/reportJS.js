@@ -20,11 +20,10 @@ $(document).ready(function () {
     });
 
     $("#reportMemberBTN").click(function(){
-        //리뷰 여러개일때 잘 동작하는지 확인하기
         var reportMemberDTO = {
             reportReason : $("#reportMemberReason option:selected").val(),
             reportReasonDetail : $("textarea[name=reportMemberReasonDetail]").val(),
-            memberId : $("#memberId").text()
+            memberId : $("#modalMemberId").val()
         }
 
         $.ajax({
@@ -54,9 +53,13 @@ $(document).ready(function () {
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 if(result === 'success'){
-                    alert("상품을 신고하였습니다.");
+                    alert("게시글을 신고하였습니다.");
                 }
             }
         })
     });
 })
+
+function sendMemberId(memberId){
+    $("#modalMemberId").val(memberId);
+}
