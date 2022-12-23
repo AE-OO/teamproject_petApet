@@ -2,12 +2,14 @@ package com.teamproject.petapet.domain.inquired;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.member.MemberRepository;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.stream.IntStream;
 
@@ -21,6 +23,17 @@ class InquiredRepositoryTest {
 
     @Autowired
     InquiredService inquiredService;
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Test
+    void test(){
+        Long id = 1l;
+        String asw = "good";
+        inquiredRepository.replyAnswer(id, asw);
+
+    }
 
 //    @Test
     public void insertInquiredDummies(){

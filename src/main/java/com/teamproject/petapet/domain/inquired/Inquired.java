@@ -65,6 +65,11 @@ public class Inquired {
     @CollectionTable(name = "InquiredImg", joinColumns = @JoinColumn(name = "inquiredImgId", referencedColumnName = "inquiredId"))
     private List<UploadFile> inquiredImg;
 
+    @Column
+    private String answer;
+
+    // 회사 추
+
     public Inquired(String inquiredTitle, String inquiredContent, String inquiredCategory, Member member, String email, boolean checked) {
         this.inquiredTitle = inquiredTitle;
         this.inquiredContent = inquiredContent;

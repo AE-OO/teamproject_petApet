@@ -5,12 +5,10 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class CartDTO {
+
+    private Long cartId;
 
     private Product productId;
 
