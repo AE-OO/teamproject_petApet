@@ -57,4 +57,8 @@ public class InquiredServiceImpl implements InquiredService{
         return inquiredList.stream().map(list -> InquiryDTO.fromEntityForManageInquiry(list)).collect(Collectors.toList());
     }
 
+    @Override
+    public void replyAnswer(Long inquiredId, String answer) {
+        inquiredRepository.replyAnswer(inquiredId, answer);
+    }
 }

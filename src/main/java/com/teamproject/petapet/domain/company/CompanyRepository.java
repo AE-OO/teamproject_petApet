@@ -41,4 +41,7 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     @Query("update Company c set c.activated = true, c.companyJoinDate = current_date where c.companyId =:companyId")
     void acceptJoinCompany(String companyId);
 
+    boolean existsByCompanyEmail(String CompanyEmail);
+    boolean existsByCompanyPhoneNum(String CompanyPhoneNum);
+
 }

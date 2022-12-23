@@ -99,7 +99,7 @@ public class BuyController {
     public List<Integer> getTotalSalesPerMonth(Principal principal){
         return buyService.getTotalSalesPerMonth(principal.getName());
     }
-
+    
     @ResponseBody
     @GetMapping("/getProductSales")
     public List<Integer> getProductSales(Principal principal){

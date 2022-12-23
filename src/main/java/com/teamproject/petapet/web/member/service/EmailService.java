@@ -3,8 +3,8 @@ package com.teamproject.petapet.web.member.service;
 public interface EmailService {
 
     String getTempPassword();
-    int emailSend(String email,String memberId);
-    int emailSend(String companyId);
+    int memberEmailSend(String memberId);
+    int companyEmailSend(String companyId);
 
     /**
      * 22.11.25 박채원 추가

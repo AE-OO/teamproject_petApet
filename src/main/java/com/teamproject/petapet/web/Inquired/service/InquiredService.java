@@ -5,6 +5,7 @@ import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.Inquired.dto.InquiredFAQDTO;
+import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface InquiredService {
 
     //회사 Mypage
     List<InquiryDTO> getCompanyPageInquiryList(String companyId);
+
+    void replyAnswer(Long inquiredId, String answer);
 }

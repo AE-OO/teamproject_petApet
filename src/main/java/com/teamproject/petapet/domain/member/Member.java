@@ -9,15 +9,14 @@ import com.teamproject.petapet.domain.dibs.DibsProduct;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.report.Report;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.*;
@@ -53,15 +52,18 @@ public class Member{
     @Column(length = 45)
     private String memberAddress;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false, unique = true)
     private String memberPhoneNum;
 
     @Column(length = 45, nullable = false)
     private String memberName;
 
 //    temp by jo
-    @Column
+    @Column(nullable = false, unique = true)
     private String memberEmail;
+
+    @Column
+    private String memberImg;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -118,7 +120,4 @@ public class Member{
     public void addAuthority(Authority authority) {
         authorities.add(authority);
     }
-
-
-
 }
