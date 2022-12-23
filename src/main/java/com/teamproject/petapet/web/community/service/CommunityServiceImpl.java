@@ -11,6 +11,9 @@ import com.teamproject.petapet.web.community.communityDto.CommunityPostsDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -50,12 +53,6 @@ public class CommunityServiceImpl implements CommunityService {
         return communityList.stream().map(list -> CommunityDTO.fromEntityForNotice(list)).collect(Collectors.toList());
     }
 
-//    @Override
-//    public Page<CommunityListDTO> getCommunityList(int pageNum, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
-//        return communityRepository.findAll(pageable).map(
-//                community -> CommunityListDTO.fromEntity(community, dateFormat(community)));
-//    }
 
     @Override
     public Page<CommunityListDTO> getCommunityList(int pageNum, int pageSize, String communityCategory) {
@@ -133,6 +130,13 @@ public class CommunityServiceImpl implements CommunityService {
         log.info("========== 공지사항 삭제 ==========");
         communityRepository.deleteById(noticeId);
     }
+
+    @Override
+    public void insertCommunity(String memberId, CommunityInsertDTO communityInsertDTO) {
+        communityRepository.save(communityInsertDTO.toEntity(memberId));
+    }
+
+
 
     @Override
     public CommunityUpdateDTO loadCommunityUpdatePost(String memberId, Long communityId) {
