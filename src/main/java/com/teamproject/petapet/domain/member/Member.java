@@ -10,7 +10,6 @@ import com.teamproject.petapet.domain.dibs.DibsProduct;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.report.Report;
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -19,8 +18,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 

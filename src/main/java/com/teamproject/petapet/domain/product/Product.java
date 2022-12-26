@@ -111,7 +111,7 @@ public class Product {
     }
 
     public static Product ConvertToEntityByInsertDTO(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, ProductType productDiv) {
-       return Product.builder()
+        return Product.builder()
                 .productName(insertDTO.getProductName())
                 .productPrice(insertDTO.getProductPrice())
                 .productStock(insertDTO.getProductStock())

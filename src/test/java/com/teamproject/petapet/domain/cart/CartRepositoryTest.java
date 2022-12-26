@@ -1,21 +1,13 @@
 package com.teamproject.petapet.domain.cart;
 
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.member.MemberRepository;
-import com.teamproject.petapet.domain.product.Product;
-import com.teamproject.petapet.web.cart.dto.CartDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
-import com.teamproject.petapet.web.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 

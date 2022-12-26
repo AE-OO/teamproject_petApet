@@ -4,7 +4,6 @@ import com.teamproject.petapet.domain.community.Community;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Date;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -36,7 +35,7 @@ public class CommunityDTO {
                 .communityTitle(community.getCommunityTitle())
                 .memberId(community.getMember().getMemberId())
                 .communityCategory(community.getCommunityCategory())
-                .communityDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(community.getCommunityDate()))
+                .communityDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(community.getCreatedDate()))
                 .communityReport(community.getCommunityReport())
                 .build();
     }

@@ -2,7 +2,6 @@ package com.teamproject.petapet.domain.community;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import com.teamproject.petapet.domain.inquired.Inquired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

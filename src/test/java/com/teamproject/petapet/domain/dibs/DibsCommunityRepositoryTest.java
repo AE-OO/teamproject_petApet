@@ -1,13 +1,8 @@
 package com.teamproject.petapet.domain.dibs;
 
 import com.teamproject.petapet.domain.dibs.repository.DibsCommunityRepository;
-import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.product.Product;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.stream.IntStream;
 
 @SpringBootTest
 class DibsCommunityRepositoryTest {

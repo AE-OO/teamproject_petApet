@@ -1,18 +1,14 @@
 package com.teamproject.petapet.web.company.controller;
 
-import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor

@@ -35,10 +35,11 @@ public class Comment extends BaseTimeEntity {
     @Convert(converter = EmptyStringToNullConverter.class)
     private String commentSecret;
 
-    //댓글 이미지...
+    //댓글 이미지
     @Column
     private String commentImg;
 
+    //대댓글
     @Column
     private Long replyId;
 

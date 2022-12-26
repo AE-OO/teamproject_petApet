@@ -4,7 +4,6 @@ import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
-import com.teamproject.petapet.web.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

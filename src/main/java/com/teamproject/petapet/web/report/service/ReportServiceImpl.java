@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class ReportServicImpl implements ReportService {
+public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
 

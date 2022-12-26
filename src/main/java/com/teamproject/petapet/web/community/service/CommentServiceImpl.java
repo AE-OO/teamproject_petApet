@@ -42,7 +42,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Long commentId) {commentRepository.deleteById(commentId);}
-    public String dateFormat(Comment comment){
+
+    public String dateFormat(Comment comment) {
         if (comment.getModifiedDate().toLocalDate().isBefore(LocalDate.now())) {
             return comment.getModifiedDate().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
         } else {

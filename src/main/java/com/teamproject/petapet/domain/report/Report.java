@@ -6,7 +6,6 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 

@@ -6,7 +6,6 @@ import com.teamproject.petapet.web.community.communityDto.CommunityInsertDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityListDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityPostsDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
-import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.web.community.dto.CommunityDTO;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +37,6 @@ public class CommunityServiceImpl implements CommunityService {
     public List<CommunityDTO> getCommunityList() {
         List<Community> communityList = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "communityReport"));
         return communityList.stream().map(list -> CommunityDTO.fromEntityForCommunityListOfAdminPage(list)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Community> getProductList() {
-        return communityRepository.findAll(Sort.by(Sort.Direction.DESC, "communityReport"));
     }
 
     @Override

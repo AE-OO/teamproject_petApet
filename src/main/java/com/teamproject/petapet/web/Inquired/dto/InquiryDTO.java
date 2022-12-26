@@ -3,8 +3,6 @@ package com.teamproject.petapet.web.Inquired.dto;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Data

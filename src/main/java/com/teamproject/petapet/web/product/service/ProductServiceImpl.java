@@ -7,13 +7,13 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.product.Product;
+import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import lombok.RequiredArgsConstructor;
 
-import com.teamproject.petapet.domain.product.ProductType;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
@@ -119,7 +119,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findPage(String category,ProductType productType, String sortType,String content, Long starRating,Pageable pageable) {
+    public Page<Product> findPage(String category, ProductType productType, String sortType, String content, Long starRating, Pageable pageable) {
         List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, sortType);
         List<Product> productList = jpaQueryFactory.select(product)
                 .from(product)

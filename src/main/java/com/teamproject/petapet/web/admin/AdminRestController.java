@@ -1,9 +1,5 @@
 package com.teamproject.petapet.web.admin;
 
-import com.teamproject.petapet.domain.community.Community;
-import com.teamproject.petapet.domain.inquired.Inquired;
-import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.dto.CommunityDTO;
