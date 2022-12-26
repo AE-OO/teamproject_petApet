@@ -111,6 +111,14 @@ input[type="number"]::-webkit-inner-spin-button {
 
 
 */
+.star .productRating{
+    color: rgba(250, 208, 0, 0.99);
+}
+
+.star .productRating:hover{
+    color: rgba(250, 208, 0, 0.99);
+}
+
 .star a{
     text-decoration: none;
     color: gray;

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 상품관리</title>
+    <script src="/js/companyPage/manageProduct.js"></script>
+    <script src="/js/chart/manageProductChart.js"></script>
+    <script src="/vendors/chart.js/Chart.min.js"></script>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<!-- manageProduct Start -->
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row my-5">
+            <div class="col-10 mx-auto">
+                <div class="row mb-3">
+                    <h4 class="mx-5 mb-3"><i class="bi bi-arrow-left"></i><b>&nbsp MY 상품관리</b></h4>
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3"><b>월별 총판매량</b></h5>
+                                <canvas id="totalSalesPerMonthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3"><b>상품별 판매량 TOP5</b></h5>
+                                <canvas id="productSalesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-5">
+                                    <h5 class="card-title mb-0" style="float: left;"><b>전체상품관리</b></h5>
+                                    <a th:href="@{/product/insert}">
+                                        <button type="button" class="btn btn-primary btn-sm" style="float: right;">
+                                            상품등록
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="table-responsive tableDiv">
+                                    <table class="table table-hover text-center" id="productTable">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">상품번호</th>
+                                            <th class="border-bottom pb-2">상품명</th>
+                                            <th class="border-bottom pb-2">분류</th>
+                                            <th class="border-bottom pb-2">가격</th>
+                                            <th class="border-bottom pb-2">재고</th>
+                                            <th class="border-bottom pb-2">판매상황</th>
+                                            <th class="border-bottom pb-2">총판매량</th>
+                                            <th class="border-bottom pb-2">신고수</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="productData">
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center" id="noData"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="productDetailInfo" style="display: none">
+                    <div class="col-md-12 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <h5 class="card-title mx-2 mb-0 float-left">
+                                        <b id="detailName"></b>
+                                        <button type="button" class="btn-close float-end"
+                                                id="closeDetailInfoBTN"></button>
+                                    </h5>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-7 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body" id="detailChart">
+                                                <h5 class="card-title"><b>월별 판매량</b></h5>
+                                                <canvas id="detailSalesPerMonthChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 grid-margin stretch-card mt-3">
+                                        <h5 class="mb-2"><b>재고관리</b></h5>
+                                        <input type="hidden" id="detailProductId">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" id="detailStock">
+                                            <button class="btn btn-primary" type="button" id="detailStockBTN">상품재고반영
+                                            </button>
+                                        </div>
+                                        <h5 class="mb-2"><b>판매상황관리</b></h5>
+                                        <div class="input-group mb-3">
+                                            <select class="form-select" id="detailStatus">
+                                                <option value="판매중">판매중</option>
+                                                <option value="판매중지">판매중지</option>
+                                                <option value="재고없음">재고없음</option>
+                                                <option value="단종">단종</option>
+                                            </select>
+                                            <button class="btn btn-primary" type="button" id="detailStatusBTN">판매상황반영
+                                            </button>
+                                        </div>
+                                        <div class="float-end">
+                                            <button type="button" class="btn btn-primary" id="productUpdateBTN">
+                                                상품수정
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" id="productDeleteBTN">
+                                                상품삭제
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- manageProduct End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+</body>
+</html>

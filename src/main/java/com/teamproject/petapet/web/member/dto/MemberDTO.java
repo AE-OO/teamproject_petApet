@@ -6,6 +6,7 @@ import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
 
 import javax.persistence.Column;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,6 @@ import java.util.Optional;
  */
 @Data
 @Builder
-//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemberDTO {
 
     private String memberId;
@@ -27,6 +27,8 @@ public class MemberDTO {
     private String memberGender;
     private String memberEmail;
     private String memberImg;
+    private String memberJoinDate;
+    private Long memberReport;
 
     public static MemberDTO fromEntity(Member member) {
         return MemberDTO.builder()
@@ -38,6 +40,17 @@ public class MemberDTO {
                 .memberEmail(member.getMemberEmail())
                 .memberImg(member.getMemberImg()==null?"0":member.getMemberImg())
                 .memberPhoneNum(member.getMemberPhoneNum())
+                .build();
+    }
+
+    //박채원 22.12.21 작성
+    public static MemberDTO fromEntityForMemberListOfAdminPage(Member member){
+        return MemberDTO.builder()
+                .memberId(member.getMemberId())
+                .memberName(member.getMemberName())
+                .memberGender(member.getMemberGender())
+                .memberJoinDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(member.getMemberJoinDate()))
+                .memberReport(member.getMemberReport())
                 .build();
     }
 

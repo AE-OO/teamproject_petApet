@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.community;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.community.converter.EmptyStringToNullConverter;
 import lombok.*;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -54,6 +56,7 @@ public class Community extends BaseTimeEntity {
     @Column(columnDefinition = "int default 0", nullable = false)
     private int viewCount;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;

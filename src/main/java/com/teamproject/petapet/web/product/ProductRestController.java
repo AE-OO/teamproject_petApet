@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.product;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.product.repository.ReviewRepository;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductMainPageListDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
@@ -11,14 +12,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -84,5 +90,20 @@ public class ProductRestController {
         return getProductMainPageListDTOS(productList);
     }
 
+    //22.12.15 박채원 추가 - 이하 3개 메소드(사업자 마이페이지 구현 위함)
+    @GetMapping(value = "/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProductDTO>> getProductList(Principal principal){
+        return new ResponseEntity<>(productService.getProductList(principal.getName()), HttpStatus.OK);
+    }
+
+    @PostMapping("/updateStock/{productId}")
+    public void updateStock(@PathVariable("productId") Long productId, @RequestParam("productStock") Long productStock){
+        productService.updateProductInfo("stock", productId, productStock, null);
+    }
+
+    @PostMapping("/updateStatus/{productId}")
+    public void updateStatus(@PathVariable("productId") Long productId, @RequestParam("productStatus") String productStatus){
+        productService.updateProductInfo("status", productId, null, productStatus);
+    }
 
 }

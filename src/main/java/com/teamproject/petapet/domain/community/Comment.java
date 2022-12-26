@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.community;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.community.converter.EmptyStringToNullConverter;
 import lombok.*;
@@ -41,6 +42,7 @@ public class Comment extends BaseTimeEntity {
     @Column
     private Long replyId;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;

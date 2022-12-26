@@ -24,5 +24,6 @@ public class ProductListDTO {
     private ProductType productDiv;
     private List<UploadFile> productImg;
     private List<Review> review;
+    private Long productReviewCount;
     private boolean duplicateDibsProduct;
 }

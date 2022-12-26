@@ -39,7 +39,7 @@
     <div class="mypage-text">
         <div class="mytext">
                 <span class="tspan">
-                    <span class="wspan">MY PAP</span>
+                    <span class="wspan">MY PAGE</span>
                 </span>
         </div>
     </div>
@@ -47,71 +47,96 @@
         <h2 class="sc-1flepkn-0 gvaWmd">petApet</h2>
         <nav>
             <div class="sc-1liba5b-5 jzNnfi">
-                <div class="sc-1liba5b-6 OvTJQ">MY 쇼핑</div>
+                <div class="sc-1liba5b-6 OvTJQ" sec:authorize="hasRole('MEMBER')">MY 쇼핑</div>
+                <div class="sc-1liba5b-6 OvTJQ" sec:authorize="hasRole('COMPANY')">MY 상품관리</div>
                 <div class="sc-1liba5b-7 gvMCBX">
                     <ul class="sc-1liba5b-8 McnCE">
                         <li id="mc-order-carts-page" class="sc-1liba5b-9 bgmWPR selected">
-                            <a href="/cart" title="장바구니" class="sc-1liba5b-10 eLReSz">
+                            <a href="/cart" title="장바구니" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 장바구니
                             </a>
                         </li>
                         <li id="mc-order-list-page" class="sc-1liba5b-9 bgmWPR selected">
-                            <a th:href="@{/buy}" title="주문목록/배송조회" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a th:href="@{/buy}" title="주문목록/배송조회" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 주문목록/배송조회
                             </a>
                         </li>
                         <li id="mc-cancel-return-page" class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="취소/반품/교환/환불내역" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="취소/반품/교환/환불내역" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 취소/반품/교환/환불내역
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/company/manageProduct}" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('COMPANY')">
+                                전체 상품
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/product/insert}" target="_self" class="sc-1liba5b-10 eLReSz"
+                               sec:authorize="hasRole('COMPANY')">
+                                상품 등록
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="sc-1liba5b-5 jzNnfi">
-                <div class="sc-1liba5b-6 OvTJQ">MY 활동</div>
+                <div class="sc-1liba5b-6 OvTJQ" sec:authorize="hasRole('MEMBER')">MY 활동</div>
+                <div class="sc-1liba5b-6 OvTJQ" sec:authorize="hasRole('COMPANY')">MY 문의관리</div>
                 <div class="sc-1liba5b-7 gvMCBX">
                     <ul class="sc-1liba5b-8 McnCE">
                         <li id="mc-cs-main-page" class="sc-1liba5b-9 bgmWPR">
-                            <a th:href="@{/inquiry}" title="문의하기" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a th:href="@{/inquiry}" title="문의하기" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 문의하기
                             </a>
                         </li>
                         <li id="mc-product-inquiry-list-page" class="sc-1liba5b-9 bgmWPR">
-                            <a th:href="@{/inquiry}" title="문의내역 확인" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a th:href="@{/inquiry}" title="문의내역 확인" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 문의내역 확인
                             </a>
                         </li>
                         <li id="mc-product-review-page" class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="리뷰관리" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="리뷰관리" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 리뷰관리
                             </a>
                         </li>
                         <li id="mc-product-wish-page" class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="찜 리스트" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="찜 리스트" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 찜 리스트
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/company/manageInquiry}" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('COMPANY')">
+                                전체 문의
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="sc-1liba5b-5 jzNnfi">
-                <div class="sc-1liba5b-6 OvTJQ">MY 커뮤니티 활동</div>
+                <div class="sc-1liba5b-6 OvTJQ" sec:authorize="hasRole('MEMBER')">MY 커뮤니티 활동</div>
+                <div class="sc-1liba5b-6 OvTJQ" sec:authorize="hasRole('COMPANY')">MY 매출관리</div>
                 <div class="sc-1liba5b-7 gvMCBX">
                     <ul class="sc-1liba5b-8 McnCE">
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 글 작성
                             </a>
                         </li>
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="글 목록" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="글 목록" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 글 목록
                             </a>
                         </li>
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="쪽지함" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="쪽지함" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 쪽지함
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/company/manageSales}" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('COMPANY')">
+                                전체 매출
                             </a>
                         </li>
                     </ul>

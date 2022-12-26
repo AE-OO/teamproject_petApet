@@ -55,6 +55,8 @@ public class SecurityConfig {
                 .antMatchers("/member/**","/community/insert","/community/update").hasAnyRole("MEMBER","ADMIN")
                 .antMatchers("/company/**","/member").hasAnyRole("COMPANY","ADMIN")
 //                .antMatchers("/community/insert").authenticated()
+                .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")
+                .antMatchers("/company/**","/inquiry/manageInquiry").hasAnyRole("COMPANY","ADMIN")
                 .antMatchers("/login","/join","/sms/send","/companyJoin").permitAll()
                 .antMatchers("/product/**","/community/**").permitAll()
                 .antMatchers("/").permitAll()

@@ -6,6 +6,8 @@ import com.teamproject.petapet.web.community.communityDto.CommunityListDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityPostsDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
 import org.springframework.data.domain.Page;
+import com.teamproject.petapet.web.community.dto.CommunityDTO;
+import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
  */
 
 public interface CommunityService {
-    List<Community> getProductList();
+    List<CommunityDTO> getCommunityList();
     void deleteCommunity(Long communityId);
     void addCommunityReport(Long communityId);
     void insertCommunity(String memberId, CommunityInsertDTO communityInsertDTO);
@@ -27,4 +29,9 @@ public interface CommunityService {
     CommunityUpdateDTO loadCommunityUpdatePost(String memberId, Long communityId);
     void updateCommunity(String memberId,CommunityUpdateDTO communityUpdateDTO);
 
+    List<CommunityDTO> getNotice();
+    void registerNotice(CommunityRequestDTO.registerNotice registerNotice);
+    CommunityDTO getOneNotice(Long noticeId);
+    void updateNotice(CommunityRequestDTO.registerNotice registerNotice);
+    void deleteNotice(Long noticeId);
 }

@@ -7,6 +7,7 @@ import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class CompanyServiceImpl implements CompanyService{
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
@@ -105,7 +107,7 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public List<CompanyDTO> getCompanyList() {
         List<Company> result = companyRepository.getCompaniesByActivatedIsFalse();
-        return result.stream().map(company -> CompanyDTO.getListFromEntity(company)).collect(Collectors.toList());
+        return result.stream().map(company -> CompanyDTO.fromEntityForJoinAccept(company)).collect(Collectors.toList());
     }
 
     @Override

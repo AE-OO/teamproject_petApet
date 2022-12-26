@@ -1,6 +1,8 @@
 package com.teamproject.petapet.domain.dibs;
 
 import com.teamproject.petapet.domain.community.Community;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
@@ -23,6 +25,7 @@ public class DibsCommunity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dibsCommunityId;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
