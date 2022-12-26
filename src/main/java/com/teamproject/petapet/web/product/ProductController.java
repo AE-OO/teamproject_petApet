@@ -30,6 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -52,6 +53,7 @@ import java.util.stream.IntStream;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @RequestMapping("/product")
 public class ProductController {
 
@@ -127,7 +129,17 @@ public class ProductController {
     @PostMapping("/update")
     @ResponseBody
     public ResponseEntity<?> productUpdate(@Validated @ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO, BindingResult bindingResult, Principal principal) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
         if (bindingResult.hasGlobalErrors()) {
+        }
+        if (!productUpdateDTO.getProductSeller().equals(principal.getName())) {
+            bindingResult.addError(new FieldError("productInsertDTO", "productSeller", "판매자명이 잘못됐습니다."));
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("error");
+            headers.setLocation(URI.create("/update?productId="+productUpdateDTO.getProductId()));
+            return new ResponseEntity<>(headers,HttpStatus.BAD_REQUEST);
         }
 
         Company company = companyService.findById(principal.getName()).orElseThrow(NoSuchElementException::new);
@@ -163,7 +175,7 @@ public class ProductController {
                 updateProduct.getProductDiv().name().toLowerCase() + "/" +
                 updateProduct.getProductId() + "/" + "details";
 
-        HttpHeaders headers = new HttpHeaders();
+
         headers.setLocation(URI.create(redirectURL));
         return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER);
     }

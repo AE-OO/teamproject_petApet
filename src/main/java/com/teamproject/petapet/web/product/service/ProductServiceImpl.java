@@ -78,11 +78,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findAllByProductDiv(ProductType productType, Pageable pageable) {
-        return productRepository.findAllByProductDiv(productType, pageable);
-    }
-
-    @Override
     public void updateProductReviewCount(Long productId, Long reviewCount) {
         productRepository.updateProductReviewCount(productId, reviewCount);
     }
@@ -118,28 +113,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> saveProduct(Product product) {
         return Optional.of(productRepository.save(product));
-    }
-
-    @Override
-    public void updateProduct(ProductUpdateDTO productUpdateDTO, List<UploadFile> productImg) {
-        jpaQueryFactory.update(product)
-                .set(product.productName, productUpdateDTO.getProductName())
-                .set(product.productContent, productUpdateDTO.getProductContent())
-                .set(product.productStatus, productUpdateDTO.getProductStatus())
-                .set(product.productDiv, ProductType.valueOf(productUpdateDTO.getProductDiv()))
-                .set(product.productUnitPrice, productUpdateDTO.getProductUnitPrice())
-                .set(product.productPrice, productUpdateDTO.getProductPrice())
-                .set(product.productDiscountRate, productUpdateDTO.getProductDiscountRate())
-                .set(product.productStock, productUpdateDTO.getProductStock())
-                .set(product.productImg, productImg)
-                .where(product.productId.eq(productUpdateDTO.getProductId()))
-                .execute();
-    }
-
-    @Override
-    @Transactional
-    public Optional<Product> findProductWithReview(Long id) {
-        return productRepository.findProductWithReview(id);
     }
 
     @Override

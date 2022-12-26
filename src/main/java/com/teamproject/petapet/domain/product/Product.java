@@ -23,7 +23,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"company, review, cart"})
+@ToString(exclude = {"company", "review", "cart"})
 @Getter
 @DynamicInsert
 @DynamicUpdate

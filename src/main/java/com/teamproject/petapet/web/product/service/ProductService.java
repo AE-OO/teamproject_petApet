@@ -28,8 +28,6 @@ public interface ProductService {
 
     void updateProductInfo(String type, Long productId, Long productStock, String productStatus);
 
-    Page<Product> findAllByProductDiv(ProductType productType, Pageable pageable);
-
     void updateProductReviewCount(Long productId, Long reviewCount);
 
     void updateProductStatusOutOfStock(List<String> productId);
@@ -39,11 +37,9 @@ public interface ProductService {
     Optional<Product> findOne(Long id);
 
     Optional<Product> saveProduct(ProductInsertDTO productInsertDTO, List<UploadFile> uploadFiles, Company company);
+
     Optional<Product> saveProduct(Product product);
 
-    void updateProduct(ProductUpdateDTO productUpdateDTO, List<UploadFile> productImg);
-
-    Optional<Product> findProductWithReview(Long id);
 
     void updateCounterView(Long productId);
 
