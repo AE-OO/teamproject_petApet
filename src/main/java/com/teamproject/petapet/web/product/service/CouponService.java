@@ -5,11 +5,11 @@ import org.springframework.data.domain.Page;
 
 public interface CouponService {
 
-    void addCoupon(CouponDTO couponDTO);
+    void createCoupon(CouponDTO couponDTO);
 
     Page<CouponDTO> findCouponList();
 
     void updateCoupon(Long couponId);
 
-    void activeCoupon(Long couponId);
+    Long activeCoupon();
 }
