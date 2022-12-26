@@ -19,11 +19,8 @@ public interface CommunityService {
     void addCommunityReport(Long communityId);
     void insertCommunity(String memberId, CommunityInsertDTO communityInsertDTO);
 
-//    Page<CommunityListDTO> getCommunityList(int pageNum,int pageSize);
     Page<CommunityListDTO> getCommunityList(int pageNum,int pageSize, String communityCategory);
     Page<CommunityPostsDTO> getCommunityMemberPost(int pageNum,int pageSize, String memberId);
-
-//    Long countTodayCommunity();
     Long countTodayCommunity(String communityCategory);
     void viewCountPlus(Long communityId);
     CommunityPostsDTO loadCommunityPosts(Long communityId);

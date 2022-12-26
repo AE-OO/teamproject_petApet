@@ -171,9 +171,11 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="mt-4" sec:authorize="hasAnyRole('MEMBER','ADMIN')">
-                    <button id="writeBtn" class="btn btn-danger float-start">글쓰기</button>
-                    <button id="myPostBtn" class="btn btn-primary float-end" >내글보기</button>
+                <div class="mt-4">
+                    <div sec:authorize="hasAnyRole('MEMBER','ADMIN')">
+                    <button id="writeBtn" class="btn btn-danger float-start"> 글쓰기</button>
+                    <button id="myPostBtn" class="btn btn-primary float-end">내글보기</button>
+                    </div>
                     <div aria-label="Page navigation">
                         <ul id="pageNum" class="pagination justify-content-center">
                             <li id="prevPage" th:class="${community.isFirst()}? 'page-item disabled':'page-item'">

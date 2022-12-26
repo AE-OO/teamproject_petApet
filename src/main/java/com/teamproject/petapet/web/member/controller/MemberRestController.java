@@ -1,10 +1,18 @@
 package com.teamproject.petapet.web.member.controller;
 
+import com.teamproject.petapet.web.community.commentDto.CommentDTO;
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -72,13 +80,25 @@ public class MemberRestController {
     }
 
     @PostMapping("/updateMemberImg")
-    void updateMemberImg(Principal principal,@RequestParam(required = false) MultipartFile memberImg) throws IOException {
+    void updateMemberImg(Principal principal, @RequestParam(required = false) MultipartFile memberImg) throws IOException {
         fileService.deleteFile(memberService.getOriginalMemberImg(principal.getName()));
         if (memberImg == null) {
             memberService.deleteMemberImg(principal.getName());
-        }else {
+        } else {
             memberService.updateMemberImg(principal.getName(), fileService.storeFile(memberImg).getStoreFileName());
         }
+    }
+
+    //로그인된 아이디,권한 보내기
+    @PostMapping("/getLoginId")
+    public ResponseEntity<String[]> getLoginId(Principal principal) {
+        //로그인 안되어있을 경우 빈값 보냄
+        if(!(principal instanceof Principal)){
+            return new ResponseEntity<>(new String[]{}, HttpStatus.OK);
+        }
+        Object principal2 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal2;
+        return new ResponseEntity<>(new String[]{userDetails.getUsername(), userDetails.getAuthorities().toString()}, HttpStatus.OK);
     }
 
 }

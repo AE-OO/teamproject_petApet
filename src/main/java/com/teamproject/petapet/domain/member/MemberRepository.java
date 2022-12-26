@@ -37,9 +37,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
             "on b.age = age.age", nativeQuery = true)
     List<Integer> getAgeList();
 
-//    @Query("select m.memberPw from Member m where m.memberId = :memberId")
-//    String findMemberPw(String memberId);
-
     @Modifying
     @Transactional
     @Query("update Member m set m.memberPw=:memberPw where m.memberId =:memberId")

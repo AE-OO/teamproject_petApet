@@ -23,7 +23,7 @@ import java.util.List;
 @Getter
 @ToString(exclude = "member")
 @DynamicInsert
-@DynamicUpdate
+//@DynamicUpdate
 @EntityListeners(value = {AuditingEntityListener.class})
 public class Community extends BaseTimeEntity {
 
@@ -61,11 +61,11 @@ public class Community extends BaseTimeEntity {
     @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
     private List<Comment> comment;
 
-//    public void update(String communityTitle,String communityContent,String communityCategory,String communitySubCategory){
-//        this.communityTitle = communityTitle;
-//        this.communityContent = communityContent;
-//        this.communityCategory = communityCategory;
-//        this.communitySubCategory = communitySubCategory;
-//    }
+    public void update(String communityTitle,String communityContent,String communityCategory,String communitySubCategory){
+        this.communityTitle = communityTitle;
+        this.communityContent = communityContent;
+        this.communityCategory = communityCategory;
+        this.communitySubCategory = communitySubCategory;
+    }
 
 }

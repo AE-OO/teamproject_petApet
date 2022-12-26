@@ -24,23 +24,14 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Query(value = "select count(*) from Community c where date_format(modifiedDate,'%Y-%m-%d') = curdate() and communityCategory =:communityCategory",nativeQuery = true)
     Long countTodayCommunity(String communityCategory);
 
-
     @Transactional
     @Modifying
     @Query("update Community c set c.viewCount=c.viewCount+1 where c.communityId=:communityId")
     void viewCountPlus(Long communityId);
 
-//    @Query(value = "select c from Community c where c.communityCategory = :communityCategory "
-//            ,countQuery = "select count(c) FROM Community c WHERE c.communityCategory = :communityCategory")
-//    Page<Community> getCommunityList(String communityCategory, Pageable pageable);
-
     Page<Community> findAllByCommunityCategory(String communityCategory, Pageable pageable);
     Page<Community> findAllByMember(String memberId, Pageable pageable);
-
-    @Query("select c from Community c where c.communityId=:communityId and c.member.memberId=:memberId")
-    Optional<Community> loadupdateCommunityMemberPost (Long communityId, String memberId);
-
-
+    Optional<Community> findByCommunityIdAndMemberMemberId(Long communityId,String memberId);
 
 
 }

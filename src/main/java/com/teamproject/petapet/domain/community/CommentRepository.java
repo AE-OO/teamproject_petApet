@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("select c from Comment c where c.community.communityId=:communityId")
-    Page<Comment> getCommentList(Long communityId, Pageable pageable);
+    Page<Comment> findAllByCommunityCommunityId(Long communityId, Pageable pageable);
+
+    int countCommentByCommunityCommunityId(Long communityId);
 }

@@ -4,6 +4,7 @@ import com.teamproject.petapet.web.community.communityDto.CommunityInsertDTO;
 import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
 import com.teamproject.petapet.web.community.service.CommentService;
 import com.teamproject.petapet.web.community.service.CommunityService;
+import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,8 @@ import java.security.Principal;
 public class CommunityController {
 
     private final CommunityService communityService;
-    private final CommentService commentService;
+
+    private final FileService fileService;
     @GetMapping
     public String communityMain(Model model){
         model.addAttribute("todayPosts",communityService.countTodayCommunity("all"));
@@ -63,6 +65,9 @@ public class CommunityController {
     @PostMapping("/update/result")
     public String update(Principal principal, @Valid CommunityUpdateDTO communityUpdateDTO,
                          BindingResult bindingResult, Model model){
+        if(communityUpdateDTO.getDeleteImg() != null){
+            communityUpdateDTO.getDeleteImg().forEach(img -> fileService.deleteFile(img));
+        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("error", "내용을 다 채우세요");
             return "community/communityUpdate";
@@ -72,10 +77,9 @@ public class CommunityController {
     }
 
     @GetMapping("/{communityId}")
-    public String posts(@PathVariable("communityId") Long communityId, Model model){
+    public String posts(@PathVariable("communityId") Long communityId,Model model){
         communityService.viewCountPlus(communityId);
         model.addAttribute("posts",communityService.loadCommunityPosts(communityId));
-        model.addAttribute("comment",commentService.getCommentPageList(communityId,0));
         return "community/communityPosts";
     }
 

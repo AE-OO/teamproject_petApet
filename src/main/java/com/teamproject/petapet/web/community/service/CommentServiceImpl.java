@@ -26,10 +26,22 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Page<CommentDTO> getCommentPageList(Long communityId, int pageNum) {
-        Pageable pageable = PageRequest.of( pageNum, 20);
-        return commentRepository.getCommentList(communityId,pageable).map(c -> CommentDTO.fromEntity(c,dateFormat(c)));
+        Pageable pageable = PageRequest.of(pageNum, 20);
+        return commentRepository.findAllByCommunityCommunityId(communityId,pageable).map(c -> CommentDTO.fromEntity(c,dateFormat(c)));
     }
 
+    @Override
+    public int totalPages(Long communityId) {
+        int totalCount = commentRepository.countCommentByCommunityCommunityId(communityId);
+        int totalPage = totalCount/20;
+        if(totalCount % 20 > 0){
+            totalPage++;
+        }
+        return totalPage;
+    }
+
+    @Override
+    public void deleteComment(Long commentId) {commentRepository.deleteById(commentId);}
     public String dateFormat(Comment comment){
         if (comment.getModifiedDate().toLocalDate().isBefore(LocalDate.now())) {
             return comment.getModifiedDate().format(DateTimeFormatter.ofPattern("yy.MM.dd"));

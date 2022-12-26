@@ -3,20 +3,164 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 커뮤니티</title>
     <link>
-    <script th:inline="javaScript">
-        let cId = [[${posts.communityId}]]
-        let loginId = [[${#authentication.name}]]
-        zoom = function (value) {
-            if ($(value).hasClass("zoom-in")) {
-                $(value).attr("width", "");
-                $(value).attr("height", "");
-            } else {
-                $(value).attr("width", "130");
-                $(value).attr("height", "130");
-            }
-            $(value).toggleClass("zoom-in");
-            $(value).toggleClass("zoom-out");
-        }
+    <script>
+        $(function () {
+            getLoginId();
+            getCommentList();
+            //댓글 글자수
+            $("#commentContent").keyup(function () {
+                $("#commentLength").text($("#commentContent").val().length);
+            });
+            //댓글 등록 버튼
+            $("#commentSubmitBtn").click(function () {
+                if ($("#commentContent").val() == '') {
+                    alert("내용을 입력해주세요");
+                    return;
+                } else {
+                    submitComment();
+                }
+            });
+            //비밀댓글 버튼
+            $("#lockBtn").click(function () {
+                $("#lockIcon").toggleClass("bi-unlock-fill");
+                $("#lockIcon").toggleClass("text-gray");
+                $("#lockIcon").toggleClass("bi-lock-fill");
+                $("#lockIcon").toggleClass("text-danger");
+            });
+            //댓글 이미지첨부 버튼
+            $("#commentImgBtn").click(function () {
+                $("#inputFile").click();
+            });
+            //댓글작성 이미지 삭제버튼
+            $("#imgRemoveBtn").click(function () {
+                $("#inputFile").val('');
+                $("#thumbnailImgDiv").addClass(' d-none');
+                $("#thumbnailImg").attr("src", "");
+            });
+            //글목록 버튼
+            $("#communityBtn").click(function () {
+                window.location = "/community";
+            });
+            //게시물 삭제버튼
+            $("#postsDelete").click(function () {
+                let arr = [];
+                $("#postsContent").find("img").each(function (index, item) {
+                    // arr[index] = $(this).attr('src').substr(16)
+                    arr.push($(this).attr('src').substr(16))
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/community/delete",
+                    data: {
+                        communityId: $(location).attr('pathname').substring(11),
+                        deleteImg: arr,
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        alert("삭제가 완료되었습니다.");
+                        window.location = "/community";
+                    },
+                    // error: function () {
+                    //     alert("오류가 발생했습니다.");
+                    // },
+                    complete: function (data) {
+                        alert("삭제가 완료되었습니다.");
+                        window.location = "/community";
+                        //  실패했어도 완료가 되었을 때 처리
+                    }
+                });
+            });
+            //게시물 수정버튼
+            $("#postsUpdate").click(function () {
+                let form = document.createElement('form');
+                let communityId;
+                communityId = document.createElement('input');
+                communityId.setAttribute('type', 'hidden');
+                communityId.setAttribute('name', 'communityId');
+                communityId.setAttribute('value', $(location).attr('pathname').substring(11));
+                form.appendChild(communityId);
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/community/update');
+                document.body.appendChild(form);
+                form.submit();
+            });
+
+            //이전페이지
+            $(document).on("click", "#prevPage", function () {
+                if ($(this).hasClass('disabled')) {
+                    return;
+                }
+                goCommentPage(nowPage - 1);
+            });
+            //다음페이지
+            $(document).on("click", "#nextPage", function () {
+                if ($(this).hasClass('disabled')) {
+                    return;
+                }
+                goCommentPage(nowPage + 1);
+            });
+            //페이지선택
+            $(document).on("click", ".selectPage", function () {
+                if ($(this).parent().hasClass('active')) {
+                    return;
+                }
+                goCommentPage($(this).text() - 1);
+            })
+            //댓글 이미지 확대
+            $(document).on("click", ".zoom-in", function () {
+                $(this).attr("width", "");
+                $(this).attr("height", "");
+                $(this).toggleClass("zoom-in");
+                $(this).toggleClass("zoom-out");
+            });
+            //댓글 이미지 축소
+            $(document).on("click", ".zoom-out", function () {
+                $(this).attr("width", "130");
+                $(this).attr("height", "130");
+                $(this).toggleClass("zoom-in");
+                $(this).toggleClass("zoom-out");
+            });
+            //댓글 삭제
+            $(document).on("click", ".commentDelete", function () {
+                $.ajax({
+                    url: "/comment/delete",
+                    type: "delete",
+                    dateType: "json",
+                    data:{
+                        commentId:$(this).parent().parent().attr('id')
+                    },
+                    success: function (data) {
+                        alert("댓글이 삭제되었습니다.")
+                        getCommentList();
+                    }
+                    , error: function () {
+                        alert('오류');
+                    }
+                })
+            });
+            $(document).on("click", ".commentUpdate", function () {
+                alert($(this).parent().parent().attr('id'));
+            });
+
+            //회원신고
+            $(document).on("click", ".memberReport", function () {
+                let reportMemberId = $(this).parent().parent().prev().text();
+                alert("회원 신고 테스트, 회원 아이디 : " + reportMemberId);
+            });
+
+            //글신고
+            $("#communityReport").click(function () {
+                let reportCommunityId = $(location).attr('pathname').substring(11);
+                if ($("#postsMemberId").text() === loginId) {
+                    alert("본인이 작성한 게시물은 신고할 수 없습니다.");
+                    return;
+                }
+                alert("게시물 신고 테스트, 게시물 번호 : " + reportCommunityId);
+            });
+        });
+        let loginId;
+        let authorities;
+        let nowPage;
         setThumbnail = function (event) {
             let from = Array.from(event.target.files);
             $('#thumbnailImg').empty();
@@ -29,21 +173,22 @@
                 reader.readAsDataURL(el);
             });
         }
+        //댓글 전송
         submitComment = function () {
             let commentSercretRes = "";
             if ($("#lockIcon").hasClass("bi-lock-fill")) {
                 commentSercretRes = "Y";
-            }else{
+            } else {
                 commentSercretRes = "N";
             }
-            let test = {
-                communityId: cId,
+            let submitData = {
+                communityId: $(location).attr('pathname').substring(11),
                 commentContent: $("#commentContent").val(),
                 commentSecret: commentSercretRes,
             }
             // alert($('#inputFile').val())
             let formData = new FormData();
-            formData.append("commentInsertDTO", new Blob([JSON.stringify(test)], {type: "application/json"}));
+            formData.append("commentInsertDTO", new Blob([JSON.stringify(submitData)], {type: "application/json"}));
             formData.append("commentImg", $('#inputFile').get(0).files[0]);
 
             $.ajax({
@@ -56,192 +201,302 @@
                     console.log('success');
                     getCommentList();
                     $("#commentContent").val('');
+                    $("#inputFile").val('');
+                    $("#thumbnailImgDiv").addClass(' d-none');
+                    $("#thumbnailImg").attr("src", "");
+                    $('#thumbnailImg').empty();
+
                 }
                 , error: function () {
                     alert('오류가 발생하였습니다.');
                 }
             });
         }
+        //댓글 List가져오기
         getCommentList = function () {
             $.ajax({
                 url: "/comment",
                 type: "post",
-                data: {communityId: cId},
+                data: {communityId: $(location).attr('pathname').substring(11)},
                 dateType: "json",
                 success: function (data) {
-                    window.location="/community/"+cId
-                    // showList(data);
+                    showList(data);
+                    showPage(data);
+                    nowPage = data.number;
                 }
                 , error: function () {
                     alert('오류가 발생하였습니다.');
                 }
             })
         }
-
-        // getPageSelect = function (data){
-        //     alert("/?");
-        //     let page = '';
-        //     // if(data.isFirst()){
-        //     //     $("#prevPage").addClass("disabled")
-        //     // }
-        //     // if(data.isLast()){
-        //     //     $("#nextPage").addClass("disabled")
-        //     // }
-        //     // if(data.hasPrevious()){
-        //     //     $("#prevPageA").attr("style","")
-        //     // }
-        //     // if(data.hasNext()){
-        //     //     $("#nextPageA").attr("style","")
-        //     // }
-        //     //
-        //     // $.each(data, function (idx, val) {
-        //     //     page += $("#commentForm").html();
-        //     //     // str += $("#commentList").html();
-        //     // });
-        //     //
-        //     // // if(data.getTotalPages()>5){
-        //     // //
-        //     // // }
-        //     // $("#commentPage").html(page);
-        //
-        //     // <div aria-label="Page navigation">
-        //     //         <li th:each="page : ${#numbers.sequence(1,community.getTotalPages())}"
-        //     //             th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
-        //     //             <a className="page-link"
-        //     //                th:href="|javascript:selectPageNum(${page})|"><span>[[${page}]]</span></a>
-        //     //         </li>
-        //     //         <li th:if="${community.getTotalPages()}>5" className="disabled"><a>...</a></li>
-        //     //         <li th:if="${community.getTotalPages()}>5">
-        //     //             <a href="#" th:text="${community.getTotalPages()}"></a>
-        //     //         </li>
-        //     //     </ul>
-        //     // </div>
-        // }
-
+        getLoginId = function () {
+            $.ajax({
+                url: "/getLoginId",
+                type: "post",
+                dateType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.length > 0) {
+                        loginId = data[0];
+                        authorities = data[1];
+                    }
+                    // alert(data[1])
+                    // alert(data[0])
+                }
+                , error: function () {
+                    alert('오류');
+                }
+            })
+        }
         showList = function (data) {
-            let secretIcon = "<i class='bi bi-lock-fill text-secondary me-1'></i>"
             let str = '';
-            $.each(data, function (idx, val) {
-
-                $('.commentUpdate').remove();
-                $('.commentDelete').remove();
-                if (loginId == val.memberId) {
-                    $('.commentBg').addClass("bg-light");
-                    $('.commentInfo').append("<li><a class='dropdown-item commentUpdate' href='#'>수정</a></li>");
-                    $('.commentInfo').append("<li><a class='dropdown-item commentDelete' href='#'>삭제</a></li>");
+            $.each(data.content, function (idx, val) {
+                str += '<div class="px-5 py-3'
+                if (val.memberId === loginId) {
+                    str += ' bg-light'
                 }
-
-                $('.commentWriter').text(val.memberId);
-
-                if (val.memberImg == 0) {
-                    $('.commentProfile').attr("src", "/img/profile.jpg");
-                } else {
-                    $('.commentProfile').attr("src", "/image/" + val.memberImg);
-                }
-
-                $('.commentDate').text(val.modifiedDate);
+                str += '">'
                 if (val.commentSecret === "Y") {
-                    // $('.commentContent').html(secretIcon);
-                    $('.commentContent').html(secretIcon + val.commentContent);
-                } else {
-                    $('.commentContent').text(val.commentContent);
+                    if (val.memberId === loginId || $("#postsMemberId").text() === loginId || authorities === "[ROLE_ADMIN]") {
+                        str += '<div class="d-inline-block me-2">'
+                        if (val.memberImg == 0) {
+                            str += '<img class="rounded-circle border border-1" src="/img/profile.jpg" ' +
+                                'width="60" height="60" style="object-fit:cover">'
+                        } else {
+                            str += '<img class="rounded-circle border border-1" src="/image/' + val.memberImg + '"' +
+                                'width="60" height="60" style="object-fit:cover">'
+                        }
+                        str += '</div>'
+                        str += '<div class="d-inline-block align-middle">'
+                        str += '<div class="dropdown me-1 d-inline-block">'
+                        str += '<a href="javascript:" role="button" data-bs-toggle="dropdown" aria-expanded="false">' + val.memberId + '</a>'
+                        str += '<ul class="dropdown-menu" style="min-width: auto;">'
+                        str += '<li><a class="dropdown-item" href="javascript:">회원정보</a></li>'
+                        str += '<li><a class="dropdown-item" href="javascript:">작성글보기</a></li>'
+                        if (val.memberId !== loginId) {
+                            str += '<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>'
+                            str += '<li><a class="dropdown-item memberReport" href="javascript:">신고하기</a></li>'
+                        }
+                        str += '</ul>'
+                        str += '</div>'
+                        str += '<span class="float-none mx-1">' + val.modifiedDate + '</span>'
+                        str += '<p class="pt-0 m-0">'
+                        str += '<i class="bi bi-lock-fill text-secondary me-1"></i>'
+                        str += '<span>' + val.commentContent + '</span>'
+                        str += '</p>'
+                        str += '</div>'
+                        str += '<div class="dropdown mt-2 float-end">'
+                        str += '<button class="btn btn-link2" type="button" data-bs-toggle="dropdown">'
+                        str += '<i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>'
+                        str += `<ul id="${val.commentId}" class="dropdown-menu" style="min-width:auto;">`
+                        str += `<li><a class="dropdown-item" href="javascript:">답글</a></li>`
+                        if (val.memberId === loginId) {
+                            str += '<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>'
+                            str += '<li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>'
+                        }
+                        str += '</ul></div>'
+                        if (val.commentImg != 0) {
+                            str += '<div class="ms-6">'
+                            str += '<img src="/image/' + val.commentImg + '" class="zoom-in"' +
+                                'width="130" height="130" style="object-fit: cover;">'
+                            str += '</div>'
+                        }
+                    } else {
+                        str += '<div class="d-inline-block align-middle">'
+                        str += '<i class="bi bi-lock-fill text-secondary me-1"></i>'
+                        str += '<span class="pt-0 m-0">해당 댓글은 작성자와 운영자만 볼 수 있습니다.</span>'
+                        str += '<span class="float-none mx-1">' + val.modifiedDate + '</span>'
+                        str += '</div>'
+                    }
+                } else if (val.commentSecret === "N") {
+                    str += '<div class="d-inline-block me-2">'
+                    if (val.memberImg == 0) {
+                        str += '<img class="rounded-circle border border-1" src="/img/profile.jpg" ' +
+                            'width="60" height="60" style="object-fit:cover">'
+                    } else {
+                        str += '<img class="rounded-circle border border-1" src="/image/' + val.memberImg + '"' +
+                            'width="60" height="60" style="object-fit:cover">'
+                    }
+                    str += '</div>'
+                    str += '<div class="d-inline-block align-middle">'
+                    str += '<div class="dropdown me-1 d-inline-block">'
+                    str += '<a href="javascript:" role="button" data-bs-toggle="dropdown" aria-expanded="false">' + val.memberId + '</a>'
+                    str += '<ul class="dropdown-menu" style="min-width: auto;">'
+                    str += '<li><a class="dropdown-item" href="javascript:">회원정보</a></li>'
+                    str += '<li><a class="dropdown-item" href="javascript:">작성글보기</a></li>'
+                    if (val.memberId !== loginId) {
+                        str += '<li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>'
+                        str += '<li><a class="dropdown-item memberReport" href="javascript:">신고하기</a></li>'
+                    }
+                    str += '</ul>'
+                    str += '</div>'
+                    str += '<span class="float-none mx-1">' + val.modifiedDate + '</span>'
+                    str += '<p class="pt-0 m-0"><span>' + val.commentContent + '</span></p>'
+                    str += '</div>'
+                    str += '<div class="dropdown mt-2 float-end">'
+                    str += '<button class="btn btn-link2" type="button" data-bs-toggle="dropdown">'
+                    str += '<i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>'
+                    str += `<ul id="${val.commentId}"class="dropdown-menu" style="min-width:auto;">`
+                    str += `<li><a class="dropdown-item" href="javascript:">답글</a></li>`
+                    if (val.memberId === loginId) {
+                        str += '<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>'
+                        str += '<li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>'
+                    }
+                    str += '</ul></div>'
+                    if (val.commentImg != 0) {
+                        str += '<div class="ms-6">'
+                        str += '<img src="/image/' + val.commentImg + '" class="zoom-in"' +
+                            'width="130" height="130" style="object-fit: cover;">'
+                        str += '</div>'
+                    }
                 }
-
-
-                if (val.commentImg == 0) {
-                    $(".commentImg").hide()
-                } else {
-                    $(".commentImg").attr("src", "/image/" + val.commentImg)
-                    $(".commentImg").show()
-                }
-
-                str += $("#commentForm").html();
-
-                // str += $("#commentList").html();
+                str += '</div>'
+                str += '<hr class="m-0">'
             });
-
             $("#commentListSize").text(data.length);
             $("#commentList").html(str);
         }
-
-        $(function () {
-            // getCommentList();
-            $("#commentContent").keyup(function () {
-                $("#commentLength").text($("#commentContent").val().length);
-            });
-            $("#commentSubmitBtn").click(function () {
-                if ($("#commentContent").val() == '') {
-                    alert("내용을 입력해주세요");
-                    return;
+        showPage = function (data) {
+            let str = '';
+            if (data.totalPages > 0) {
+                str += '<div aria-label="Page navigation" class="mt-4">'
+                str += '<ul class="pagination justify-content-center">'
+                if (data.first) {
+                    str += '<li id="prevPage" class="page-item disabled">'
+                    str += '<a class="page-link" href="javascript:" style="pointer-events: none;">'
+                    str += '<span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>'
+                    str += '</a>'
+                    str += '</li>'
                 } else {
-                    submitComment();
+                    str += '<li id="prevPage" class="page-item">'
+                    str += '<a class="page-link" href="javascript:">'
+                    str += '<span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>'
+                    str += '</a>'
+                    str += '</li>'
+                }
+
+                if (data.totalPages <= 5) {
+                    for (var i = 1; i <= data.totalPages; i++) {
+                        str += '<li class="page-item'
+                        if (data.number + 1 === i) {
+                            str += ' active'
+                        }
+                        str += '">'
+                        str += '<a class="page-link selectPage" href="javascript:"><span>' + i + '</a>'
+                        str += '</li>'
+                    }
+                }
+                if (data.totalPages > 5 && data.totalPages <= 10) {
+                    if (data.number + 1 <= 5) {
+                        for (var i = 1; i <= 5; i++) {
+                            str += '<li class="page-item'
+                            if (data.number + 1 === i) {
+                                str += ' active'
+                            }
+                            str += '">'
+                            str += '<a class="page-link selectPage" href="javascript:"><span>' + i + '</a>'
+                            str += '</li>'
+                        }
+                        str += '<li class="page-item disabled"><a class="page-link">...</a></li>'
+                        str += '<li class="page-item"><a class="page-link selectPage" href="javascript:">' + data.totalPages + '</a></li>'
+
+                    }
+                    if (data.number + 1 > 5) {
+                        str += '<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>'
+                        str += '<li class="page-item disabled"><a class="page-link">...</a></li>'
+                        for (var i = 6; i <= data.totalPages; i++) {
+                            str += '<li class="page-item'
+                            if (data.number + 1 === i) {
+                                str += ' active'
+                            }
+                            str += '">'
+                            str += '<a class="page-link selectPage" href="javascript:"><span>' + i + '</a>'
+                            str += '</li>'
+                        }
+                    }
+                }
+                if (data.totalPages > 10) {
+                    if (data.number + 1 <= 5) {
+                        for (var i = 1; i <= 5; i++) {
+                            str += '<li class="page-item'
+                            if (data.number + 1 === i) {
+                                str += ' active'
+                            }
+                            str += '">'
+                            str += '<a class="page-link selectPage" href="javascript:"><span>' + i + '</a>'
+                            str += '</li>'
+                        }
+                        str += '<li class="page-item disabled"><a class="page-link">...</a></li>'
+                        str += '<li class="page-item"><a class="page-link selectPage" href="javascript:">' + data.totalPages + '</a></li>'
+                    }
+                    if (data.number + 1 > 5 && data.number + 1 < data.totalPages - 4) {
+                        str += '<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>'
+                        str += '<li class="page-item disabled"><a class="page-link">...</a></li>'
+                        for (var i = data.number + 1 - 2; i <= data.number + 1 + 2; i++) {
+                            str += '<li class="page-item'
+                            if (data.number + 1 === i) {
+                                str += ' active'
+                            }
+                            str += '">'
+                            str += '<a class="page-link selectPage" href="javascript:"><span>' + i + '</a>'
+                            str += '</li>'
+                        }
+                        str += '<li class="page-item disabled"><a class="page-link">...</a></li>'
+                        str += '<li class="page-item"><a class="page-link selectPage" href="javascript:">' + data.totalPages + '</a></li>'
+                    }
+                    if (data.number + 1 >= data.totalPages - 4) {
+                        str += '<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>'
+                        str += '<li class="page-item disabled"><a class="page-link">...</a></li>'
+
+                        for (var i = data.totalPages - 4; i <= data.totalPages; i++) {
+                            str += '<li class="page-item'
+                            if (data.number + 1 === i) {
+                                str += ' active'
+                            }
+                            str += '">'
+                            str += '<a class="page-link selectPage" href="javascript:"><span>' + i + '</a>'
+                            str += '</li>'
+                        }
+                    }
+                }
+
+                if (data.last) {
+                    str += '<li id="nextPage" class="page-item disabled">'
+                    str += '<a class="page-link" href="javascript:" style="pointer-events: none;">'
+                    str += '<span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>'
+                    str += '</a>'
+                    str += '</li>'
+                } else {
+                    str += '<li id="nextPage" class="page-item">'
+                    str += '<a class="page-link" href="javascript:">'
+                    str += '<span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>'
+                    str += '</a>'
+                    str += '</li>'
+                }
+                str += '</ul>'
+                str += '</div>'
+            }
+            $("#commentPage").html(str);
+        }
+        goCommentPage = function (aa) {
+            $.ajax({
+                url: "/comment/page",
+                type: "post",
+                data: {
+                    pageNum: aa,
+                    communityId: $(location).attr('pathname').substring(11)
+                },
+                dataType: "json",
+                success: function (data) {
+                    showList(data);
+                    showPage(data);
+                    nowPage = data.number;
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
                 }
             });
-            $("#lockBtn").click(function () {
-                $("#lockIcon").toggleClass("bi-unlock-fill");
-                $("#lockIcon").toggleClass("text-gray");
-                $("#lockIcon").toggleClass("bi-lock-fill");
-                $("#lockIcon").toggleClass("text-danger");
-            });
-            $("#commentImgBtn").click(function () {
-                // $("#inputFile").val('');
-
-                $("#inputFile").click();
-            });
-            // $("#inputFile").change(function (event) {
-            //     setThumbnail(event);
-            // });
-            $("#imgRemoveBtn").click(function () {
-                $("#inputFile").val('');
-                $("#thumbnailImgDiv").addClass(' d-none');
-                $("#thumbnailImg").attr("src", "");
-            });
-            $("#communityBtn").click(function () {
-                window.location="/community";
-            });
-
-            $("#postsDelete").click(function () {
-                let arr = [];
-                $("#postsContent").find("img").each(function(index, item){
-                    // arr[index] = $(this).attr('src').substr(16)
-                    arr.push($(this).attr('src').substr(16))
-                });
-                $.ajax({
-                    type: "POST",
-                    url: "/community/delete",
-                    data: {
-                        communityId: cId,
-                        deleteImg :arr,
-                    },
-                    dataType: "json",
-                    success: function (result) {
-                        alert("삭제가 완료되었습니다.");
-                        window.location = "/community";
-                    },
-                    // error: function () {
-                    //     alert("오류가 발생했습니다.");
-                    // },
-                    complete : function(data) {
-                        alert("삭제가 완료되었습니다.");
-                        window.location = "/community";
-                        //  실패했어도 완료가 되었을 때 처리
-                    }
-                });
-            });
-            $("#postsUpdate").click(function () {
-                let form = document.createElement('form');
-                let communityId;
-                communityId = document.createElement('input');
-                communityId.setAttribute('type', 'hidden');
-                communityId.setAttribute('name', 'communityId');
-                communityId.setAttribute('value', cId);
-                form.appendChild(communityId);
-                form.setAttribute('method', 'post');
-                form.setAttribute('action', '/community/update');
-                document.body.appendChild(form);
-                form.submit();
-            });
-        });
+        }
     </script>
 
 </head>
@@ -281,180 +536,44 @@
                      th:src="${posts.memberImg}==0? '/img/profile.jpg':'/image/'+${posts.memberImg}"
                      width="50" height="50" style="object-fit: cover;">
                 <div class="dropdown mx-1 d-inline-block">
-                    <a href="javascript:" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                       th:text="${posts.memberId}"/>
+                    <a href="javascript:" id="postsMemberId" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false" th:text="${posts.memberId}"/>
                     <ul class="dropdown-menu" style="min-width: auto;">
                         <li><a class="dropdown-item" href="javascript:">회원정보</a></li>
                         <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>
-                        <li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
-                        <li><a class="dropdown-item" href="javascript:">신고하기</a></li>
+                        <li th:unless="${#authentication.name == posts.memberId}">
+                            <a class="dropdown-item" href="javascript:">쪽지보내기</a>
+                        </li>
+                        <li th:unless="${#authentication.name == posts.memberId}">
+                            <a class="dropdown-item memberReport" href="javascript:">신고하기</a>
+                        </li>
                     </ul>
                 </div>
                 <span class="mx-1" th:text="'조회 '+${posts.viewCount}"/>
                 <span class="mx-1" th:text="${#temporals.format(posts.modifiedDate,'yyyy-MM-dd HH:mm')}"/>
                 <span>댓글</span>
                 <span id="commentListSize" class="text-danger" th:text="${posts.commentListSize}"/>
-                <div class="float-end">
+                <div class="float-end mt-2">
                     <button id="postsUpdate"
                             type="button" class="btn btn-info" th:if="${#authentication.name == posts.memberId}">수정
                     </button>
                     <button id="postsDelete" type="button" class="btn btn-danger"
                             th:if="${#authentication.name == posts.memberId}">삭제
                     </button>
+                    <div class="dropdown mx-1 d-inline-block">
+                        <a href="javascript:" role="button" data-bs-toggle="dropdown" class="btn btn-link2 p-0"
+                           aria-expanded="false"><i class="bi bi-three-dots-vertical m-auto fs-5"></i></a>
+                        <ul class="dropdown-menu" style="min-width: auto;">
+                            <li><a id="communityReport" class="dropdown-item" href="javascript:">신고</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <hr class="mt-1 mb-4"/>
                 <div id="postsContent" th:utext="${posts.communityContent}"/>
             </div>
             <div class="bg-lightGray pt-1 pb-5">
-                <div id="commentList" th:if="${posts.commentListSize} != 0">
-                    <div th:each=" comment : ${comment}">
-                        <div th:if="${comment.commentSecret}=='Y'"
-                             th:class="${#authentication.name == comment.memberId}? 'bg-light px-5 py-3 commentBg':'px-5 py-3 commentBg'">
-                            <div th:if="${#authentication.name == comment.memberId} or ${#authentication.name == posts.memberId}
-                                 or ${#authentication.authorities == 'ADMIN'}">
-                                <div class="d-inline-block me-2">
-                                    <img class="rounded-circle border border-1"
-                                         th:src="${comment.memberImg}==0? '/img/profile.jpg':'/image/'+${comment.memberImg}"
-                                         width="60" height="60" style="object-fit:cover">
-                                </div>
-                                <div class="d-inline-block align-middle">
-                                    <div class="dropdown me-1 d-inline-block">
-                                        <a href="javascript:" class="commentWriter" role="button"
-                                           data-bs-toggle="dropdown"
-                                           aria-expanded="false" th:text="${comment.memberId}"></a>
-                                        <ul class="dropdown-menu" style="min-width: auto;">
-                                            <li><a class="dropdown-item" href="javascript:">회원정보</a></li>
-                                            <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>
-                                            <li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
-                                            <li><a class="dropdown-item" href="javascript:">신고하기</a></li>
-                                        </ul>
-                                    </div>
-                                    <span class="float-none mx-1 commentDate" th:text="${comment.modifiedDate}"></span>
-                                    <p class="pt-0 m-0 commentContent">
-                                        <i th:if="${comment.commentSecret == 'Y'}"
-                                           class='bi bi-lock-fill text-secondary me-1'></i>
-                                        <span th:text="${comment.commentContent}"/>
-                                    </p>
-                                </div>
-                                <div class="dropdown mt-2 float-end">
-                                    <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-                                        <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-                                    <ul class="dropdown-menu" style="min-width:auto;">
-                                        <li><a class="dropdown-item commentInfo" href="#">답글</a></li>
-                                        <li th:if="${#authentication.name == comment.memberId}"><a
-                                                class="dropdown-item commentUpdate" href="#">수정</a></li>
-                                        <li th:if="${#authentication.name == comment.memberId}"><a
-                                                class="dropdown-item commentDelete" href="#">삭제</a></li>
-                                    </ul>
-                                </div>
-                                <div class="ms-6" th:unless="${comment.commentImg}==0">
-                                    <img th:src="'/image/'+${comment.commentImg}"
-                                         class="zoom-in commentImg" onclick="zoom(this)"
-                                         width="130" height="130" style="object-fit: cover;">
-                                </div>
-                            </div>
-                            <div th:unless="${#authentication.name == comment.memberId} or ${#authentication.name == posts.memberId}
-                                 or ${#authentication.authorities == 'ADMIN'}">
-                                <div class="d-inline-block align-middle">
-                                    <i th:if="${comment.commentSecret == 'Y'}"
-                                       class='bi bi-lock-fill text-secondary me-1'></i>
-                                    <span class="pt-0 m-0 commentContent">해당 댓글은 작성자와 운영자만 볼 수 있습니다.</span>
-                                    <span class="float-none mx-1 commentDate" th:text="${comment.modifiedDate}"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div th:unless="${comment.commentSecret}=='Y'"
-                             th:class="${#authentication.name == comment.memberId}? 'bg-light px-5 py-3 commentBg':'px-5 py-3 commentBg'">
-                            <div class="d-inline-block me-2">
-                                <img class="rounded-circle border border-1"
-                                     th:src="${comment.memberImg}==0? '/img/profile.jpg':'/image/'+${comment.memberImg}"
-                                     width="60" height="60" style="object-fit:cover">
-                            </div>
-                            <div class="d-inline-block align-middle">
-                                <div class="dropdown me-1 d-inline-block">
-                                    <a href="javascript:" class="commentWriter" role="button" data-bs-toggle="dropdown"
-                                       aria-expanded="false" th:text="${comment.memberId}"></a>
-                                    <ul class="dropdown-menu" style="min-width: auto;">
-                                        <li><a class="dropdown-item" href="javascript:">회원정보</a></li>
-                                        <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>
-                                        <li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
-                                        <li><a class="dropdown-item" href="javascript:">신고하기</a></li>
-                                    </ul>
-                                </div>
-                                <span class="float-none mx-1 commentDate" th:text="${comment.modifiedDate}"></span>
-                                <p class="pt-0 m-0 commentContent">
-                                    <i th:if="${comment.commentSecret == 'Y'}"
-                                       class='bi bi-lock-fill text-secondary me-1'></i>
-                                    <span th:text="${comment.commentContent}"/>
-                                </p>
-                            </div>
-                            <div class="dropdown mt-2 float-end">
-                                <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-                                    <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-                                <ul class="dropdown-menu" style="min-width:auto;">
-                                    <li><a class="dropdown-item commentInfo" href="#">답글</a></li>
-                                    <li th:if="${#authentication.name == comment.memberId}"><a
-                                            class="dropdown-item commentUpdate" href="#">수정</a></li>
-                                    <li th:if="${#authentication.name == comment.memberId}"><a
-                                            class="dropdown-item commentDelete" href="#">삭제</a></li>
-                                </ul>
-                            </div>
-                            <div class="ms-6" th:unless="${comment.commentImg}==0">
-                                <img th:src="'/image/'+${comment.commentImg}"
-                                     class="zoom-in commentImg" onclick="zoom(this)"
-                                     width="130" height="130" style="object-fit: cover;">
-                            </div>
-                        </div>
-                        <hr class="m-0">
-                    </div>
-                </div>
-
-                <div aria-label="Page navigation" class="mt-4" th:if="${comment.getTotalPages()}!=0">
-                    <ul id="pageNum" class="pagination justify-content-center">
-                        <li id="prevPage" th:class="${comment.isFirst()}? 'page-item disabled':'page-item'">
-                            <a class="page-link" href="javascript:"
-                               th:style="${comment.hasPrevious()}? '':'pointer-events: none;'">
-                                <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
-                            </a>
-                        </li>
-                        <li th:if="${(comment.getTotalPages()>5 && comment.getNumber()+1>=comment.getTotalPages()-4)||(comment.getTotalPages()>5 && comment.getNumber()+1>5)}"
-                            class="page-item"><a class="page-link selectPage" href="javascript:" th:text="1"></a></li>
-                        <li th:if="${(comment.getTotalPages()>5 && comment.getNumber()+1>=comment.getTotalPages()-4)||(comment.getTotalPages()>5 && comment.getNumber()+1>5)}"
-                            class="page-item disabled"><a class="page-link">...</a></li>
-                        <li th:if="${comment.getTotalPages()<6} "
-                            th:each="page:${#numbers.sequence(1,comment.getTotalPages())}"
-                            th:class="${comment.getNumber()+1 == page}? 'page-item active':'page-item'">
-                            <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
-                        </li>
-                        <li th:if="${comment.getNumber()+1<6 && comment.getTotalPages()>5 && comment.getNumber()+1<comment.getTotalPages()-4}"
-                            th:each="page:${#numbers.sequence(1,5)}"
-                            th:class="${comment.getNumber()+1 == page}? 'page-item active':'page-item'">
-                            <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
-                        </li>
-                        <li th:if="${comment.getNumber()+1>5 && comment.getTotalPages()>5 && comment.getNumber()+1<comment.getTotalPages()-4}"
-                            th:each="page : ${#numbers.sequence(comment.getNumber()-2+1,comment.getNumber()+2+1)}"
-                            th:class="${comment.getNumber()+1 == page}? 'page-item active':'page-item'">
-                            <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
-                        </li>
-                        <li th:if="${comment.getTotalPages()>5 && comment.getNumber()+1>=comment.getTotalPages()-4}"
-                            th:each="page : ${#numbers.sequence(comment.getTotalPages()-4,comment.getTotalPages())}"
-                            th:class="${comment.getNumber()+1 == page}? 'page-item active':'page-item'">
-                            <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
-                        </li>
-                        <li th:if="${comment.getTotalPages()>5 && comment.getNumber()+1<comment.getTotalPages()-4}"
-                            class="page-item disabled"><a class="page-link">...</a></li>
-                        <li th:if="${comment.getTotalPages()>5 && comment.getNumber()+1<comment.getTotalPages()-4}"
-                            class="page-item"><a class="page-link selectPage" href="javascript:"
-                                                 th:text="${comment.getTotalPages()}"></a>
-                        </li>
-                        <li id="nextPage" th:class="${comment.isLast()}? 'page-item disabled':'page-item'">
-                            <a class="page-link" href="javascript:"
-                               th:style="${comment.hasNext()}? '':'pointer-events: none;'">
-                                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <div id="commentList" th:if="${posts.commentListSize} != 0"></div>
+                <div id="commentPage" th:if="${posts.commentListSize} != 0"></div>
 
                 <div class="bg-white m-5 p-4 pt-2" sec:authorize="hasAnyRole('MEMBER','ADMIN')">
                         <textarea id="commentContent" style="resize:none; height: 100px; border:none;"
@@ -492,50 +611,5 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
-<div id="commentForm" th:if="${posts.commentListSize} != 0" class="d-none">
-    <div class="px-5 py-3 commentBg">
-        <div class="d-inline-block me-2">
-            <img class="rounded-circle border border-1 commentProfile" src="" width="60" height="60"
-                 style="object-fit:cover">
-        </div>
-        <div class="d-inline-block align-middle">
-            <div class="dropdown me-1 d-inline-block">
-                <a href="javascript:" class="commentWriter" role="button" data-bs-toggle="dropdown"
-                   aria-expanded="false"></a>
-                <ul class="dropdown-menu" style="min-width: auto;">
-                    <li><a class="dropdown-item" href="javascript:">회원정보</a></li>
-                    <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>
-                    <li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
-                    <li><a class="dropdown-item" href="javascript:">신고하기</a></li>
-                </ul>
-            </div>
-            <span class="float-none mx-1 commentDate"></span>
-            <p class="pt-0 m-0 commentContent"></p>
-        </div>
-        <div class="dropdown mt-2 float-end">
-            <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-                <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-            <ul class="dropdown-menu" style="min-width:auto;">
-                <li><a class="dropdown-item commentInfo" href="#">답글</a></li>
-                <li><a class="dropdown-item commentUpdate" href="#">수정</a></li>
-                <li><a class="dropdown-item commentDelete" href="#">삭제</a></li>
-            </ul>
-        </div>
-        <div class="ms-6">
-            <img src="" class="zoom-in commentImg" onclick="zoom(this)"
-                 width="130" height="130" style="object-fit: cover;">
-        </div>
-    </div>
-    <hr class="m-0">
-</div>
-<div id="testtesttest" th:if="${posts.commentListSize} != 0" class="d-none"
-     sec:authorize="hasAnyRole('MEMBER','ADMIN')">
-    <div class="px-5 py-3 commentBg">
-        <div class="me-2">
-            <i class='bi bi-lock-fill text-secondary me-1'></i>
-        </div>
-    </div>
-    <hr class="m-0">
-</div>
 </body>
 </html>

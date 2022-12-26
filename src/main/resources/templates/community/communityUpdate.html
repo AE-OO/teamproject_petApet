@@ -56,6 +56,30 @@
                     alert("내용을 작성해주세요");
                     return;
                 } else{
+                    let arr = [];
+                    let deleteImg ;
+                    let compareImg;
+                    let inputDeleteImg
+                    deleteImg = document.createElement('div');
+                    deleteImg.innerHTML = $("#communityContent").text();
+                    compareImg = document.createElement('div');
+                    compareImg.innerHTML = $("#communityContent").val();
+                    $(deleteImg).find("img").each(function(idx,val){
+                        arr.push($(val).attr('src').substr(16))
+                        $(compareImg).find("img").each(function(idx2,val2){
+                            // alert($(val).attr('src').substr(16))
+                            // alert($(val2).attr('src').substr(16))
+                            if($(val).attr('src').substr(16) === $(val2).attr('src').substr(16)){
+                                arr.pop($(val).attr('src').substr(16));
+                            }
+                        });
+                    });
+                    // alert(arr);
+                    inputDeleteImg = document.createElement('input');
+                    inputDeleteImg.setAttribute('type', 'hidden');
+                    inputDeleteImg.setAttribute('name', 'deleteImg[]');
+                    inputDeleteImg.setAttribute('value', arr);
+                    $("input[name=communityId]").after(inputDeleteImg);
                     $("#submitBtn").attr("type", "submit");
                 }
             })

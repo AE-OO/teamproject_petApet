@@ -13357,3 +13357,15 @@ legend {
 .list-group-item .h6 {
   color: inherit;
 }
+
+.zoom-in{
+  cursor: zoom-in;
+}
+
+.zoom-out{
+  cursor: zoom-out;
+}
+
+.w-fit-content{
+  width: fit-content;
+}

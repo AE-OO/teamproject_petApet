@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,6 +23,7 @@ public class CommunityUpdateDTO {
     private String communityCategory;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String communitySubCategory;
+    private List<String> deleteImg;
 
     public static CommunityUpdateDTO fromEntity(Community community) {
         return CommunityUpdateDTO.builder()

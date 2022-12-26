@@ -48,13 +48,6 @@ public class CommunityServiceImpl implements CommunityService {
         communityRepository.save(communityInsertDTO.toEntity(memberId));
     }
 
-//    @Override
-//    public Page<CommunityListDTO> getCommunityList(int pageNum, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
-//        return communityRepository.findAll(pageable).map(
-//                community -> CommunityListDTO.fromEntity(community, dateFormat(community)));
-//    }
-
     @Override
     public Page<CommunityListDTO> getCommunityList(int pageNum, int pageSize, String communityCategory) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
@@ -66,6 +59,7 @@ public class CommunityServiceImpl implements CommunityService {
                 community -> CommunityListDTO.fromEntity(community, dateFormat(community)));
     }
 
+    //회원 작성글 보기
     @Override
     public Page<CommunityPostsDTO> getCommunityMemberPost(int pageNum, int pageSize, String memberId) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
@@ -81,11 +75,6 @@ public class CommunityServiceImpl implements CommunityService {
         }
     }
 
-//    @Override
-//    public Long countTodayCommunity() {
-//        return communityRepository.countTodayCommunity();
-//    }
-
     @Override
     public Long countTodayCommunity(String communityCategory) {
         if (communityCategory.equals("all")) {
@@ -99,24 +88,25 @@ public class CommunityServiceImpl implements CommunityService {
         communityRepository.viewCountPlus(communityId);
     }
 
+
     @Override
-    public CommunityPostsDTO loadCommunityPosts(Long communityId) {
+    public CommunityPostsDTO loadCommunityPosts(Long communityId){
         return CommunityPostsDTO.fromEntity(communityRepository.findById(communityId)
                 .orElseThrow(() -> new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다.")));
     }
 
     @Override
     public CommunityUpdateDTO loadCommunityUpdatePost(String memberId, Long communityId) {
-        return CommunityUpdateDTO.fromEntity(communityRepository.loadupdateCommunityMemberPost(communityId,memberId)
+        return CommunityUpdateDTO.fromEntity(communityRepository.findByCommunityIdAndMemberMemberId(communityId,memberId)
                 .orElseThrow(()->new NullPointerException(communityId+","+memberId+"-> 데이터베이스에서 찾을 수 없습니다.")));
     }
 
     @Override
     @Transactional
     public void updateCommunity(String memberId, CommunityUpdateDTO communityUpdateDTO) {
-//        Community community = communityRepository.findById(communityUpdateDTO.getCommunityId()).get();
-//        community.update(communityUpdateDTO.getCommunityTitle(),communityUpdateDTO.getCommunityContent(),
-//                communityUpdateDTO.getCommunityCategory(),communityUpdateDTO.getCommunitySubCategory());
-//        communityRepository.save(communityUpdateDTO.toEntity());
+        Community community = communityRepository.findById(communityUpdateDTO.getCommunityId())
+                .orElseThrow(()->new NullPointerException(communityUpdateDTO.getCommunityId()+","+memberId+"-> 데이터베이스에서 찾을 수 없습니다."));
+        community.update(communityUpdateDTO.getCommunityTitle(),communityUpdateDTO.getCommunityContent(),
+                communityUpdateDTO.getCommunityCategory(),communityUpdateDTO.getCommunitySubCategory());
     }
 }
