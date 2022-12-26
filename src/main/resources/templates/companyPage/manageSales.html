@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 문의관리</title>
+    <script src="/js/companyPage/manageSales.js"></script>
+    <script src="/js/chart/manageSalesChart.js"></script>
+    <script src="/vendors/chart.js/Chart.min.js"></script>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<!-- manageInquiry Start -->
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row my-5">
+            <div class="col-10 mx-auto">
+                <div class="row mb-3">
+                    <h4 class="mx-5 mb-3"><i class="bi bi-arrow-left"></i><b>&nbsp MY 매출관리</b></h4>
+                  <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title mb-4"><b>월별 매출</b></h5>
+                        <canvas id="monthlySalesChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12 stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-5">
+                                    <h5 class="card-title mb-0" style="float: left;"><b>전체 판매 관리</b></h5>
+                                </div>
+                                <div class="table-responsive tableDiv">
+                                    <table class="table table-hover text-center" id="salesTable">
+                                        <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">#</th>
+                                            <th class="border-bottom pb-2">상품명</th>
+                                            <th class="border-bottom pb-2">구매자</th>
+                                            <th class="border-bottom pb-2">구매날짜</th>
+                                            <th class="border-bottom pb-2">구매상세</th>
+                                            <th class="border-bottom pb-2">구매금액</th>
+                                            <th class="border-bottom pb-2">결제취소</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="salesData">
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center" id="noData"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- manageInquiry End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+</body>
+</html>

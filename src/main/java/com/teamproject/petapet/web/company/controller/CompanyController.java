@@ -113,7 +113,7 @@ public class CompanyController {
         return "redirect:/company/info";
     }
 
-    // 박채원 22.12.15 추가 (이하 2개 메소드)
+    // 박채원 22.12.15 추가 (이하 3개 메소드)
     @GetMapping("/company/manageProduct")
     public String manageProduct(){
         return "/companyPage/manageProduct";
@@ -122,6 +122,11 @@ public class CompanyController {
     @GetMapping("/company/manageInquiry")
     public String manageInquiry(){
         return "/companyPage/manageInquiry";
+    }
+
+    @GetMapping("/company/manageSales")
+    public String manageSales(){
+        return "/companyPage/manageSales";
     }
 
 }

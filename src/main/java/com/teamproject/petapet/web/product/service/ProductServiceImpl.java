@@ -30,8 +30,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> getProductList(String companyId) {
         List<Product> productList = productRepository.findAllByCompany_CompanyId(companyId);
-        List<ProductDTO> productDTOList = productList.stream().map(list -> ProductDTO.fromEntityForManageProduct(list)).collect(Collectors.toList());
-        return productDTOList;
+        return productList.stream().map(list -> ProductDTO.fromEntityForManageProduct(list)).collect(Collectors.toList());
     }
 
     @Override

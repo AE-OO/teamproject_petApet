@@ -13283,3 +13283,8 @@ legend {
 .list-group-item .h6 {
   color: inherit;
 }
+
+.tableDiv {
+  height:520px;
+  overflow: auto;
+}

@@ -28,7 +28,6 @@ function getInquiredList(){
         var list = '';
         if(result.length > 0){
             $.each(result, function(idx, inquiry) {
-                console.log(result);
                 list += `<tr id="inquiryData`+ idx +`">
                                     <td class="pl-0" id="inquiryId">${inquiry.inquiredId}</td>
                                     <td>${inquiry.inquiredCategory}</td>

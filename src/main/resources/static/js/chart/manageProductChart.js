@@ -16,7 +16,7 @@ $(function() {
             getFormatDate(date, 0)
         ],
         datasets: [{
-            label: '# of Votes',
+            label: '월판매량 (개) ',
             data: [
                 getTotalSalesPerMonth()[0].val,
                 getTotalSalesPerMonth()[1].val,
@@ -99,7 +99,6 @@ $(function() {
                 'rgba(153, 102, 255, 1)'
             ],
         }],
-        // These labels appear in the legend and in the tooltips when hovering different arcs
         labels: [
             'test1',
             'test2',
@@ -140,7 +139,7 @@ $(function() {
                 getFormatDate(date, 0)
             ],
             datasets: [{
-                label: '# of Votes',
+                label: '월판매량 (개) ',
                 data: [
                     getDetailSalesPerMonth()[0].val,
                     getDetailSalesPerMonth()[1].val,

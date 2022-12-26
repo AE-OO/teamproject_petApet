@@ -25,6 +25,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
     boolean existsByBuyIdAndMember(@Param("buyId") Long buyId, @Param("memberId") String memberId);
 
     //박채원 22.12.16 추가 (이하 3개 메소드)
+    // 전체 상품 월별 판매량 데이터
     @Query(value = "with recursive T as (\n" +
             "\tselect max(date_sub(buyDate, interval 5 month)) as startMonth from buy \n" +
             "\tunion all\n" +
@@ -38,6 +39,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
             "group by buy_date) R on date_format(T.startMonth, \"%Y-%m\") = R.buy_date;", nativeQuery = true)
     List<Integer> getTotalSalesPerMonth(String companyId);
 
+    //상품별 판매량 데이터
     @Query(value = "with recursive Dummy as (\n" +
             "\tselect 1 as startNum\n" +
             "    union all\n" +
@@ -51,6 +53,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
             "group by b.productId order by sales desc limit 5) j on d.startNum = j.ROWNUM;", nativeQuery = true)
     List<Integer> getProductSales(String companyId);
 
+    //상품별 월별 판매량 데이터
     @Query(value = "with recursive T as (\n" +
             "\tselect max(date_sub(buyDate, interval 5 month)) as startMonth from buy \n" +
             "\tunion all\n" +
@@ -64,4 +67,20 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
             "group by buy_date) R on date_format(T.startMonth, \"%Y-%m\") = R.buy_date;", nativeQuery = true)
     List<Integer> getDetailSalesPerMonth(Long productId);
 
+    List<Buy> getAllByProduct_Company_CompanyIdOrderByBuyDateDesc(String companyId);
+
+    // 월별 회사 매출 데이터
+    @Query(value = "with recursive T as (\n" +
+            "\tselect max(date_sub(buyDate, interval 11 month)) as startMonth from buy \n" +
+            "\tunion all\n" +
+            "    select startMonth + interval 1 month from T where startMonth < now() - interval 1 month\n" +
+            ")\n" +
+            "select ifnull(R.totalPrice,0) from T\n" +
+            "left outer join(\n" +
+            "select date_format(buyDate, \"%Y-%m\") as buy_date, count(b.productId) as product, sum(b.quantity * c.productPrice) as totalPrice\n" +
+            "from buy b, (select productId, productPrice from product where companyId = \"*company111\") c \n" +
+            "where b.productId in (c.productId)\n" +
+            "group by buy_date) R on date_format(T.startMonth, \"%Y-%m\") = R.buy_date order by date_format(T.startMonth, \"%Y-%m\") desc;", nativeQuery = true)
+    List<Integer> getMonthlySales(String companyId);
+    
 }
