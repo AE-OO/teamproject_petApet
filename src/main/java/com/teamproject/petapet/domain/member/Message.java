@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -42,6 +43,7 @@ public class Message {
     @Column(columnDefinition = "boolean default false")
     private boolean messageCheck;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;

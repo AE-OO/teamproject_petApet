@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.cart;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
@@ -22,6 +23,7 @@ public class Cart{
     @GeneratedValue()
     private Long cartId;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;

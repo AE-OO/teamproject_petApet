@@ -55,15 +55,15 @@ class CartRepositoryTest {
         });
     }
 
-    @Test
-    void 카트담기(){
-        String member = "memberA";
-        Member memberA = memberService.findOne(member);
-        Long product = 1L;
-        Product product1 = productService.findOne(product);
-        Cart cart = new Cart(1L,memberA,product1,1L);
-        cartRepository.save(cart);
-
-    }
+//    @Test
+//    void 카트담기(){
+//        String member = "memberA";
+//        Member memberA = memberService.findOne(member);
+//        Long product = 1L;
+//        Product product1 = productService.findOne(product);
+//        Cart cart = new Cart(1L,memberA,product1,1L);
+//        cartRepository.save(cart);
+//
+//    }
 
 }

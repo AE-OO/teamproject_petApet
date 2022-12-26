@@ -24,6 +24,7 @@ import org.springframework.validation.ObjectError;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.09 작성
@@ -43,8 +44,9 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public List<Member> getMemberList() {
-        return memberRepository.findAll(Sort.by(Sort.Direction.DESC, "memberReport"));
+    public List<MemberDTO> getMemberList() {
+        List<Member> memberList = memberRepository.findAll(Sort.by(Sort.Direction.DESC, "memberReport"));
+        return memberList.stream().map(list -> MemberDTO.fromEntityForMemberListOfAdminPage(list)).collect(Collectors.toList());
     }
 
     @Override
@@ -64,7 +66,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public int[] getGenderList() {
-//        ArrayList<Integer> genderList = new ArrayList<>();
         int[] genderList = new int[3];
 
         for (String gender : memberRepository.getGenderList()) {

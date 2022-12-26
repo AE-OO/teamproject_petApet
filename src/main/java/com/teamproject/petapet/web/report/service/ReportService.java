@@ -4,17 +4,14 @@ import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.report.Report;
-import com.teamproject.petapet.web.report.dto.ReportCommunityDTO;
-import com.teamproject.petapet.web.report.dto.ReportMemberDTO;
-import com.teamproject.petapet.web.report.dto.ReportProductDTO;
-import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
+import com.teamproject.petapet.web.report.dto.*;
 
 import java.util.List;
 
 public interface ReportService {
-    List<Report> getReportCommunityList();
-    List<Report> getReportMemberList();
-    List<Report> getReportProductList();
+    List<ReportDTO> getReportCommunityList();
+    List<ReportDTO> getReportMemberList();
+    List<ReportDTO> getReportProductList();
     void addProductReport(ReportProductDTO reportProductDTO);
     void addMemberReport(ReportMemberDTO reportMemberDTO);
     void addCommunityReport(ReportCommunityDTO reportCommunityDTO);

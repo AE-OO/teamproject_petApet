@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.member.dto;
 import com.teamproject.petapet.domain.member.Member;
 import lombok.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class MemberDTO {
     private String memberPhoneNum;
     private String memberName;
     private String memberGender;
+    private String memberJoinDate;
+    private Long memberReport;
 
     public static MemberDTO fromEntity(Member member) {
         return MemberDTO.builder()
@@ -29,6 +32,17 @@ public class MemberDTO {
                 .memberName(member.getMemberName())
                 .memberBirthday(Arrays.asList(String.valueOf(member.getMemberBirthday()).split("-")))
                 .memberPhoneNum(member.getMemberPhoneNum())
+                .build();
+    }
+
+    //박채원 22.12.21 작성
+    public static MemberDTO fromEntityForMemberListOfAdminPage(Member member){
+        return MemberDTO.builder()
+                .memberId(member.getMemberId())
+                .memberName(member.getMemberName())
+                .memberGender(member.getMemberGender())
+                .memberJoinDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(member.getMemberJoinDate()))
+                .memberReport(member.getMemberReport())
                 .build();
     }
 
