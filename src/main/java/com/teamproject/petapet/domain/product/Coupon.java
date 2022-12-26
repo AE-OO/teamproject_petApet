@@ -29,10 +29,10 @@ public class Coupon {
     private LocalDateTime couponEndDate;
     @Column
     private Long couponStock;
-    @Column
+    @Column(columnDefinition = "varchar(30) default 'ALL'")
     @Enumerated(EnumType.STRING)
     private ProductType couponAcceptType;
-    @Column
+    @Column(columnDefinition = "bit default b'0'")
     private boolean couponActive;
     @Column(columnDefinition = "bigint(4) default 0")
     private Long couponPriceDisc;
