@@ -22,7 +22,7 @@ public interface InquiredService {
 
     // 관리자 - VIEW
     Inquired findOne(Long id);
-    List<Inquired> getOtherInquiries();
+    List<InquiryDTO> getOtherInquiries();
 
     //회사 Mypage
     List<InquiryDTO> getCompanyPageInquiryList(String companyId);

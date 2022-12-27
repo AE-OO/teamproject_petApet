@@ -84,8 +84,6 @@ public class SmsServiceImpl implements SmsService{
         SmsResponseDTO response = restTemplate.postForObject(
                 new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"),
                 httpBody, SmsResponseDTO.class);
-
-//        response.setSmsConfirmNum(smsConfirmNum);
         return smsConfirmNum;
     }
 
@@ -112,9 +110,8 @@ public class SmsServiceImpl implements SmsService{
         mac.init(signingKey);
 
         byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
-        String encodeBase64String = Base64.encodeBase64String(rawHmac);
 
-        return encodeBase64String;
+        return Base64.encodeBase64String(rawHmac);
     }
 
     // 인증번호 생성(6자리 난수)

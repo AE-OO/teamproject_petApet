@@ -1,13 +1,9 @@
 package com.teamproject.petapet.web.Inquired.dto;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 @Data
 public class InquiredSubmitDTO {

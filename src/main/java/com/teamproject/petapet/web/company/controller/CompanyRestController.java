@@ -1,20 +1,18 @@
 package com.teamproject.petapet.web.company.controller;
 
-import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor
+@Log4j2
 public class CompanyRestController {
     private final CompanyService companyService;
 
@@ -22,6 +20,14 @@ public class CompanyRestController {
     @PostMapping("/checkCompanyId")
     boolean duplicateCheckCompanyId(@RequestParam String companyId) {
         return companyService.duplicateCheckCompanyId(companyId);
+    }
+    @PostMapping("/checkCompanyEmail")
+    boolean duplicateCheckCompanyEmail(@RequestParam String companyEmail) {
+        return companyService.duplicateCheckCompanyEmail(companyEmail);
+    }
+    @PostMapping("/checkCompanyPhoneNum")
+    boolean duplicateCheckCompanyPhoneNum(@RequestParam String companyPhoneNum) {
+        return companyService.duplicateCheckCompanyPhoneNum(companyPhoneNum);
     }
 
     //비밀번호 확인용

@@ -7,6 +7,8 @@ import com.teamproject.petapet.jwt.JwtTokenProvider;
 import com.teamproject.petapet.web.member.validatiion.PasswordEquals;
 import com.teamproject.petapet.web.member.dto.*;
 
+import com.teamproject.petapet.web.product.fileupload.FileService;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -21,9 +23,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.09 작성
@@ -41,10 +45,10 @@ public class MemberServiceImpl implements MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
 
-
     @Override
-    public List<Member> getMemberList() {
-        return memberRepository.findAll(Sort.by(Sort.Direction.DESC, "memberReport"));
+    public List<MemberDTO> getMemberList() {
+        List<Member> memberList = memberRepository.findAll(Sort.by(Sort.Direction.DESC, "memberReport"));
+        return memberList.stream().map(list -> MemberDTO.fromEntityForMemberListOfAdminPage(list)).collect(Collectors.toList());
     }
 
     @Override
@@ -64,7 +68,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public int[] getGenderList() {
-//        ArrayList<Integer> genderList = new ArrayList<>();
         int[] genderList = new int[3];
 
         for (String gender : memberRepository.getGenderList()) {
@@ -89,7 +92,6 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(memberId).orElse(null);
     }
 
-
     @Transactional
     @Override
     public TokenDTO login(MemberRequestDTO.LoginDTO loginDTO) {
@@ -111,6 +113,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean duplicateCheckMemberId(String memberId) {return memberRepository.existsById(memberId);}
 
+    @Override
+    public boolean duplicateCheckMemberEmail(String memberEmail) {
+        return memberRepository.existsByMemberEmail(memberEmail);
+    }
+
+    @Override
+    public boolean duplicateCheckMemberPhoneNum(String memberPhoneNum) {
+        return memberRepository.existsByMemberPhoneNum(memberPhoneNum);
+    }
 
     //유효성 검사
     @Override
@@ -140,15 +151,15 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean checkMemberPw(String memberId, String memberPw) {
-        return passwordEncoder.matches(memberPw, memberRepository.findMemberPw(memberId));
+        return passwordEncoder.matches(memberPw, memberRepository.findById(memberId).get().getMemberPw());
     }
 
     @Transactional
     @Override
-    public void updateMemberInfo(String memberId, MemberRequestDTO.UpdateMemberInfo updateMemberInfo) {
+    public void updateMemberInfo(String memberId, MemberRequestDTO.UpdateMemberInfo updateMemberInfo){
         Member member = updateMemberInfo.toEntity();
         memberRepository.updateMember(memberId, member.getMemberBirthday(),member.getMemberPhoneNum(),
-                member.getMemberGender(),member.getMemberAddress());
+                member.getMemberGender(),member.getMemberAddress(),member.getMemberEmail());
     }
 
     @Override
@@ -174,11 +185,22 @@ public class MemberServiceImpl implements MemberService {
                 .build().getMemberId();
     }
 
-//    @Override
-//    public boolean findMemberPw(MemberRequestDTO.FindMemberPwDTO findMemberPwDTO) {
-//        return memberRepository.existsMemberByMemberIdAndMemberNameAndMemberPhoneNum(
-//                findMemberPwDTO.getMemberId(),findMemberPwDTO.getMemberName(),findMemberPwDTO.getMemberPhoneNum());
-//    }
+    @Override
+    public String findEmail(String memberId) {return memberRepository.findById(memberId).get().getMemberEmail();}
+
+    @Override
+    public String getOriginalMemberImg(String memberId) {
+        return memberRepository.findById(memberId).get().getMemberImg();
+    }
+
+    @Override
+    public void updateMemberImg(String memberId, String memberImg) {
+        Member member = Member.builder().memberId(memberId).memberImg(memberImg).build();
+        memberRepository.updateMemberImg(member.getMemberId(),member.getMemberImg());
+    }
+
+    @Override
+    public void deleteMemberImg(String memberId) {memberRepository.deleteMemberImg(memberId);}
 
 
 }

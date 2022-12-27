@@ -7,7 +7,6 @@ import com.teamproject.petapet.web.Inquired.dto.InquiredSubmitDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

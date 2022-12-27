@@ -114,23 +114,29 @@
                     </ul>
                 </div>
             </div>
-            <div class="sc-1liba5b-5 jzNnfi" sec:authorize="hasRole('MEMBER')">
-                <div class="sc-1liba5b-6 OvTJQ">MY 커뮤니티 활동</div>
+            <div class="sc-1liba5b-5 jzNnfi">
+                <div class="sc-1liba5b-6 OvTJQ" sec:authorize="hasRole('MEMBER')">MY 커뮤니티 활동</div>
+                <div class="sc-1liba5b-6 OvTJQ" sec:authorize="hasRole('COMPANY')">MY 매출관리</div>
                 <div class="sc-1liba5b-7 gvMCBX">
                     <ul class="sc-1liba5b-8 McnCE">
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 글 작성
                             </a>
                         </li>
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="글 목록" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="글 목록" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 글 목록
                             </a>
                         </li>
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="쪽지함" target="_self" class="sc-1liba5b-10 eLReSz">
+                            <a href="" title="쪽지함" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 쪽지함
+                            </a>
+                        </li>
+                        <li class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/company/manageSales}" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('COMPANY')">
+                                전체 매출
                             </a>
                         </li>
                     </ul>

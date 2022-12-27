@@ -1,11 +1,11 @@
 package com.teamproject.petapet.domain.report;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -38,14 +38,17 @@ public class Report {
     private boolean responseStatus;
 
     //셋 다 신고받는 대상
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "communityId")
     private Community community;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;

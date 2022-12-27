@@ -1,22 +1,13 @@
 package com.teamproject.petapet.domain.cart;
 
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.member.MemberRepository;
-import com.teamproject.petapet.domain.product.Product;
-import com.teamproject.petapet.web.cart.dto.CartDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
-import com.teamproject.petapet.web.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 
@@ -50,19 +41,12 @@ class CartRepositoryTest {
     void test1(){
         String dd = "memberA";
         List<Cart> cartByMember1 = cartRepository.findCartByMember(dd);
-        cartByMember1.forEach(i-> System.out.println("i.getCartId() = " + i.getCartId()));
+        cartByMember1.forEach(i->{
+            System.out.println("i.getCartId() = " + i.getCartId());
+            
+        });
     }
 
-    @Test
-    void 카트담기(){
-        String member = "memberA";
-        Member memberA = memberService.findOne(member);
-        Long product = 1L;
-        Product product1 = productService.findOne(product).orElseThrow(NoSuchElementException::new);
-        Cart cart = new Cart(1L,memberA,product1,1L);
-        cartRepository.save(cart);
-
-    }
 //    @Test
 //    void 카트담기(){
 //        String member = "memberA";

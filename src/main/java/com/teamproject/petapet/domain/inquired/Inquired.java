@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.inquired;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -13,7 +14,7 @@ import java.util.List;
 
 /**
  * 박채원 22.10.02 작성
- * 
+ *
  * 박채원 22.10.09 수정 - 카테고리 컬럼 추가
  */
 
@@ -46,10 +47,12 @@ public class Inquired {
     @Column(length = 200)
     private String answer;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "companyId")
     private Company company;

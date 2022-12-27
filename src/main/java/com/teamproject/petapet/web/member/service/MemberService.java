@@ -2,8 +2,10 @@ package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.member.dto.*;
+import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import org.springframework.validation.BindingResult;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +15,7 @@ import java.util.Map;
  */
 
 public interface MemberService {
-    List<Member> getMemberList();
+    List<MemberDTO> getMemberList();
     void deleteMember(String memberId);
     void addMemberReport(String memberId);
     void updateMemberStopDate(String memberId);
@@ -25,6 +27,8 @@ public interface MemberService {
     Member findOne(String memberId);
 
     boolean duplicateCheckMemberId(String memberId);
+    boolean duplicateCheckMemberEmail(String memberEmail);
+    boolean duplicateCheckMemberPhoneNum(String memberPhoneNum);
     Map<String, String> validateHandling(BindingResult bindingResult);
     MemberDTO memberInfo(String memberId);
 
@@ -37,6 +41,14 @@ public interface MemberService {
     String findMemberId (MemberRequestDTO.FindMemberIdDTO findMemberIdDTO);
 
     String findMemberPw (MemberRequestDTO.FindMemberPwDTO findMemberPwDTO);
+
+    String findEmail(String memberId);
+
+    String getOriginalMemberImg(String memberId);
+
+    void updateMemberImg(String memberId, String memberImg);
+
+    void deleteMemberImg(String memberId);
 
 
 }

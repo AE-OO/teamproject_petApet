@@ -149,7 +149,6 @@ function checkSmsConfirmNum() {
 function goFindPw(){
     window.location="/findPw";
 }
-
 function goLogin(){
     window.location="/login";
 }
@@ -180,8 +179,8 @@ $(document).ready(function () {
                     memberId: memberId(),
                 },
                 dataType: "json",
-                success: function (check) { // 통신 성공 시 "true" 혹은 "false" 반환
-                    if (check) { // 아이디 이미 존재
+                success: function (check) {
+                    if (check) {
                         mIdFeedback().text("");
                         return memberIdResult = true;
                     } else {//조건에 맞을 때
@@ -198,7 +197,6 @@ $(document).ready(function () {
 
         }
     });
-
     // 이름 체크
     $("#input-memberName").blur(function () {
         if (memberName() === null || memberName() === "") { //값이 없을 때
@@ -212,7 +210,6 @@ $(document).ready(function () {
             return memberNameResult = true;
         }
     });
-
     //휴대전화 체크
     $("#input-memberPhoneNum").blur(function () {
         if (memberPhoneNum() === null || memberPhoneNum() === "") {
@@ -278,10 +275,10 @@ $(document).ready(function () {
 
     $("#input-companyName").blur(function () {
         if (companyName() === null || companyName() === "") {
-            cNameFeedback().text("필수 정보입니");
+            cNameFeedback().text("필수 정보입니다.");
             return companyNameResult = false;
         } else if (!(cNameRegExp.test(companyName()))) {
-            cNameFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
+            cNameFeedback().text("한글 또는 영문만 20자까지 입력 가능합니다.");
             return companyNameResult = false;
         } else {
             cNameFeedback().text("");
@@ -297,27 +294,29 @@ $(document).ready(function () {
             cNumberFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
             return companyNumberResult = false;
         } else {
-            $.ajax({
-                type: "POST",
-                url: "/checkCompanyNumber",
-                data: {
-                    companyNumber: companyNumber(),
-                },
-                dataType: "json",
-                success: function (check) {
-                    if (check) { // 존재
-                        cNumberFeedback().text("");
-                        return companyNumberResult = true;
-                    } else {//조건에 맞을 때
-                        cNumberFeedback().text("가입되지 않은 사업자번호입니다.");
-                        return companyNumberResult = false;
-                    }
-                },
-                error: function () {
-                    console.log("통신 오류");
-                    window.location = "/findPw";
-                }
-            });
+            cNumberFeedback().text("");
+            return companyNumberResult = true;
+            // $.ajax({
+            //     type: "POST",
+            //     url: "/checkCompanyNumber",
+            //     data: {
+            //         companyNumber: companyNumber(),
+            //     },
+            //     dataType: "json",
+            //     success: function (check) {
+            //         if (check) { // 존재
+            //             cNumberFeedback().text("");
+            //             return companyNumberResult = true;
+            //         } else {//조건에 맞을 때
+            //             cNumberFeedback().text("가입되지 않은 사업자번호입니다.");
+            //             return companyNumberResult = false;
+            //         }
+            //     },
+            //     error: function () {
+            //         console.log("통신 오류");
+            //         window.location = "/findPw";
+            //     }
+            // });
         }
     });
 
@@ -340,7 +339,6 @@ $(document).ready(function () {
             $("#findBtn").attr("type", "submit");
         }
     });
-
     $("#findCompanyBtn").click(function () {
         if (companyId() === null || companyId() === "") {
             cIdFeedback().text("필수 정보입니다.");
@@ -358,30 +356,54 @@ $(document).ready(function () {
 
     if ($("#findMemberPwResult").val().length > 0) {
         $("#staticBackdrop").modal('show');
+        if($("#findMemberPwResult").val() !== "0"){
+            $.ajax({
+                type: "POST",
+                url: "email/send",
+                data: {
+                    // email: email(),
+                    memberId: $("#findMemberPwResult").val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if(data){
+                        $("#memberEmailResult").text("가입하신 이메일 주소로 임시 비밀번호가 발급되었습니다");
+                    }else{
+                        $("#memberEmailResult").text("임시비밀번호 발송에 실패했습니다");
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/findPw";
+                }
+            });
+        }
     }
 
     if ($("#findCompanyPwResult").val().length > 0) {
         $("#staticBackdrop2").modal('show');
-        $.ajax({
-            type: "POST",
-            url: "email/sendCompany",
-            data: {
-                // email: email(),
-                companyId: $("#findCompanyPwResult").val()
-            },
-            dataType: "json",
-            success: function (data) {
-                if(data){
-                    $("#staticBackdropLabel2").text("가입하신 이메일 주소로 임시 비밀번호가 발급되었습니다");
-                }else{
-                    $("#staticBackdropLabel2").text("임시비밀번호 발송에 실패했습니다.");
+        if($("#findCompanyPwResult").val() !== "0"){
+            $.ajax({
+                type: "POST",
+                url: "email/sendCompany",
+                data: {
+                    // email: email(),
+                    companyId: $("#findCompanyPwResult").val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if(data){
+                        $("#companyEmailResult").text("가입하신 이메일 주소로 임시 비밀번호가 발급되었습니다");
+                    }else{
+                        $("#companyEmailResult").text("임시비밀번호 발송에 실패했습니다");
+                    }
+                },
+                error: function () {
+                    console.log("통신 오류");
+                    window.location = "/findPw";
                 }
-            },
-            error: function () {
-                console.log("통신 오류");
-                window.location = "/findPw";
-            }
-        });
+            });
+        }
     }
 
     $("#input-email").blur(function () {
@@ -399,27 +421,27 @@ $(document).ready(function () {
 
     $("#sendEmailBtn").click(function () {
         if (emailResult) {
-            $.ajax({
-                type: "POST",
-                url: "email/send",
-                data: {
-                    email: email(),
-                    memberId: $("#findMemberPwResult").val()
-                },
-                dataType: "json",
-                success: function (data) {
-                    if(data){
-                        alert("임시비밀번호를 발송하였습니다.");
-                        window.location = "/login";
-                    }else{
-                        alert("임시비밀번호 발송에 실패했습니다.");
-                    }
-                },
-                error: function () {
-                    console.log("통신 오류");
-                    window.location = "/findPw";
-                }
-            });
+            // $.ajax({
+            //     type: "POST",
+            //     url: "email/send",
+            //     data: {
+            //         email: email(),
+            //         memberId: $("#findMemberPwResult").val()
+            //     },
+            //     dataType: "json",
+            //     success: function (data) {
+            //         if(data){
+            //             alert("임시비밀번호를 발송하였습니다.");
+            //             window.location = "/login";
+            //         }else{
+            //             alert("임시비밀번호 발송에 실패했습니다.");
+            //         }
+            //     },
+            //     error: function () {
+            //         console.log("통신 오류");
+            //         window.location = "/findPw";
+            //     }
+            // });
         }
     });
 

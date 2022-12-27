@@ -2,36 +2,37 @@ package com.teamproject.petapet.web.report.service;
 
 import com.teamproject.petapet.domain.report.Report;
 import com.teamproject.petapet.domain.report.ReportRepository;
-import com.teamproject.petapet.web.report.dto.ReportCommunityDTO;
-import com.teamproject.petapet.web.report.dto.ReportMemberDTO;
-import com.teamproject.petapet.web.report.dto.ReportProductDTO;
-import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
+import com.teamproject.petapet.web.report.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class ReportServicImpl implements ReportService {
+public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
 
     @Override
-    public List<Report> getReportCommunityList() {
-        return reportRepository.getCommunityReportList();
+    public List<ReportDTO> getReportCommunityList() {
+        List<Report> reportList = reportRepository.getCommunityReportList();
+        return reportList.stream().map(list -> ReportDTO.fromEntityForCommunityReport(list)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Report> getReportMemberList() {
-        return reportRepository.getMemberReportList();
+    public List<ReportDTO> getReportMemberList() {
+        List<Report> reportList = reportRepository.getMemberReportList();
+        return reportList.stream().map(list -> ReportDTO.fromEntityForMemberReport(list)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Report> getReportProductList() {
-        return reportRepository.getProductReportList();
+    public List<ReportDTO> getReportProductList() {
+        List<Report> reportList = reportRepository.getProductReportList();
+        return reportList.stream().map(list -> ReportDTO.fromEntityForProductReport(list)).collect(Collectors.toList());
     }
 
     @Override

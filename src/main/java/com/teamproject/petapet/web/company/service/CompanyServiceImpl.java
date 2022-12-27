@@ -7,6 +7,7 @@ import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class CompanyServiceImpl implements CompanyService{
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
@@ -31,6 +33,16 @@ public class CompanyServiceImpl implements CompanyService{
     public boolean duplicateCheckCompanyId(String companyId) {
         return companyRepository.existsById("*"+companyId);
     }
+
+    @Override
+    public boolean duplicateCheckCompanyEmail(String companyEmail) {
+        return companyRepository.existsByCompanyEmail(companyEmail);}
+
+    @Override
+    public boolean duplicateCheckCompanyPhoneNum(String companyPhoneNum) {
+        return companyRepository.existsByCompanyPhoneNum(companyPhoneNum);
+    }
+
     @Override
     public boolean checkCompanyPw(String companyId, String companyPw) {
         return passwordEncoder.matches(companyPw, companyRepository.findCompanyPw(companyId));
@@ -65,8 +77,8 @@ public class CompanyServiceImpl implements CompanyService{
                                 "*"+findCompanyPwDTO.getCompanyId(),
                                 findCompanyPwDTO.getCompanyName(),
                                 findCompanyPwDTO.getCompanyNumber())
-                        .orElse("0").replace("*",""))
-                .build().getCompanyId();
+                        .orElse("0"))
+                .build().getCompanyId().replace("*","");
     }
 
     @Override
@@ -89,11 +101,14 @@ public class CompanyServiceImpl implements CompanyService{
         companyRepository.updateCompany(companyId, company.getCompanyEmail(),company.getCompanyPhoneNum());
     }
 
+    @Override
+    public void deleteCompany(String companyId) {companyRepository.deleteById(companyId);}
+
     //22.11.25 박채원 추가
     @Override
     public List<CompanyDTO> getCompanyList() {
         List<Company> result = companyRepository.getCompaniesByActivatedIsFalse();
-        return result.stream().map(company -> CompanyDTO.getListFromEntity(company)).collect(Collectors.toList());
+        return result.stream().map(company -> CompanyDTO.fromEntityForJoinAccept(company)).collect(Collectors.toList());
     }
 
     @Override

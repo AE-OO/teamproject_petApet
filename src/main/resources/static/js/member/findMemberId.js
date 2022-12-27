@@ -185,7 +185,7 @@ $(document).ready(function () {
     // 상호명체크
     $("#input-companyName").blur(function () {
         if (companyName() === null || companyName() === "") {
-            cNameFeedback().text("필수 정보입니");
+            cNameFeedback().text("필수 정보입니다.");
             return companyNameResult = false;
         } else if (!(cNameRegExp.test(companyName()))) {
             cNameFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
