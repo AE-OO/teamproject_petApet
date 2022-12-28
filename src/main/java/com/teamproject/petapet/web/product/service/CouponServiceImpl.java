@@ -1,9 +1,5 @@
 package com.teamproject.petapet.web.product.service;
 
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.product.Coupon;
 import com.teamproject.petapet.domain.product.repository.CouponRepository;
@@ -12,14 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalQuery;
-import java.util.List;
 
 import static com.teamproject.petapet.domain.product.QCoupon.coupon;
 
@@ -40,27 +32,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public Page<CouponDTO> findCouponList() {
-        List<CouponDTO> ActivatedCoupon = jpaQueryFactory
-                .select(Projections.bean(CouponDTO.class
-                        , coupon.couponId
-                        , coupon.couponBeginDate
-                        , coupon.couponEndDate
-                        , coupon.couponStock
-                        , coupon.couponAcceptType
-                        , coupon.couponActive
-                        , coupon.couponPriceDisc
-                        , coupon.couponPercentDisc
-                        , new CaseBuilder()
-                                .when(coupon.couponEndDate.before(LocalDateTime.now()))
-                                .then(false)
-                                .when(coupon.couponBeginDate.before(LocalDateTime.now()))
-                                .then(true)
-                                .otherwise(false).as("couponActive")
-                ))
-                .from(coupon)
-                .fetch();
-        Pageable pageable = PageRequest.of(0, 10);
-        return new PageImpl<>(ActivatedCoupon, pageable, ActivatedCoupon.size());
+        return new PageImpl<>(null,null,0L);
     }
 
     @Override
@@ -69,15 +41,10 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public Long activeCoupon() {
-//        jpaQueryFactory.update(coupon)
-//                .set(coupon.couponActive, true)
-//                .where(coupon.couponId.eq(couponId))
-//                .execute();
         LocalDateTime now = LocalDateTime.now();
         return jpaQueryFactory.update(coupon)
-                .set(coupon.couponActive, true)
-                .where(coupon.couponBeginDate.before(now).and(coupon.couponEndDate.after(now)))
+                .set(coupon.couponActive, false)
+                .where(coupon.couponEndDate.before(now).and(coupon.couponActive.eq(true)))
                 .execute();
-
     }
 }

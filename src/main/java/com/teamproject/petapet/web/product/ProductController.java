@@ -1,7 +1,6 @@
 package com.teamproject.petapet.web.product;
 
 import com.teamproject.petapet.domain.company.Company;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
@@ -16,11 +15,9 @@ import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
-import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
-import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
-import java.util.Objects;
 
 @Controller
 @Slf4j

@@ -15,9 +15,6 @@ public class CouponScheduler {
 
 //    @Scheduled(cron = "*/5 * * * * *")
     public void couponUpdateSchedule(){
-        log.info("couponUpdateSchedule run");
-        Long aLong = couponService.activeCoupon();
-        log.info("aLong ={}",aLong);
-
+        couponService.activeCoupon();
     }
 }
