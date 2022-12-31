@@ -1,8 +1,7 @@
 package com.teamproject.petapet.domain.product;
 
-import com.teamproject.petapet.web.product.coupondtos.CouponDTO;
+import com.teamproject.petapet.web.product.coupon.coupondtos.CouponDTO;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,6 +40,19 @@ public class Coupon {
     private String couponType;
     @Column(length = 5)
     private Long couponDiscRate;
+
+    public void updateCoupon(CouponDTO couponDTO) {
+        this.couponId = couponDTO.getCouponId();
+        this.couponName = couponDTO.getCouponName();
+        this.couponEndDate = LocalDateTime.of(LocalDate.parse(couponDTO.getCouponEndDate()
+                        , DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                , LocalTime.of(23, 59));
+        this.couponStock = couponDTO.getCouponStock();
+        this.couponAcceptType = couponDTO.getCouponAcceptType();
+        this.couponActive = couponDTO.isCouponActive();
+        this.couponType = couponDTO.getCouponType();
+        this.couponDiscRate = couponDTO.getCouponDiscRate();
+    }
 
     public static Coupon convertToEntity(CouponDTO couponDTO) {
         return Coupon.builder()

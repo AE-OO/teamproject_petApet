@@ -1,9 +1,8 @@
-package com.teamproject.petapet.web.product;
+package com.teamproject.petapet.web.product.coupon;
 
-import com.teamproject.petapet.web.product.service.CouponService;
+import com.teamproject.petapet.web.product.coupon.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Slf4j

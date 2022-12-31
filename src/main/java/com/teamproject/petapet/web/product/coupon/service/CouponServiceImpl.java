@@ -1,0 +1,145 @@
+package com.teamproject.petapet.web.product.coupon.service;
+
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.teamproject.petapet.domain.product.Coupon;
+import com.teamproject.petapet.domain.product.ProductType;
+import com.teamproject.petapet.domain.product.repository.CouponRepository;
+import com.teamproject.petapet.web.product.coupon.coupondtos.CouponDTO;
+import com.teamproject.petapet.web.product.coupon.coupondtos.QCouponDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.teamproject.petapet.domain.product.QCoupon.coupon;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+@Transactional
+public class CouponServiceImpl implements CouponService {
+
+    private final CouponRepository couponRepository;
+    private final JPAQueryFactory jpaQueryFactory;
+
+    @Override
+    public void createCoupon(CouponDTO couponDTO) {
+        Coupon coupon = Coupon.convertToEntity(couponDTO);
+        couponRepository.save(coupon);
+    }
+
+    @Override
+    public Page<CouponDTO> findCouponList(Integer page, String acceptType, String isActive, String sort) {
+        PageRequest pageable = PageRequest.of(page - 1, 9);
+        Order direction = getOrder(sort);
+        String property = getProperty(sort);
+        List<CouponDTO> couponDTOList = jpaQueryFactory.select(new QCouponDTO(coupon.couponId,
+                        coupon.couponName,
+                        coupon.couponEndDate.stringValue(),
+                        coupon.couponStock,
+                        coupon.couponAcceptType,
+                        coupon.couponActive,
+                        coupon.couponDiscRate,
+                        coupon.couponType))
+                .from(coupon)
+                .where(isAcceptType(acceptType), isActive(isActive))
+                .offset(pageable.getOffset())
+                .limit(9)
+                .orderBy(getOrderBy(direction, property))
+                .fetch();
+        long totalCount = countCoupon(acceptType, isActive);
+        return new PageImpl<>(couponDTOList, pageable, totalCount);
+    }
+
+    private Order getOrder(String sortStr) {
+        Sort sort;
+        if (sortStr.equals("endDateDesc")) {
+            sort = Sort.by("couponEndDate").descending();
+        } else if (sortStr.equals("couponIdDesc")) {
+            sort = Sort.by("couponId").descending();
+        } else {
+            sort = Sort.by("couponId");
+        }
+        Order direction = null;
+        for (Sort.Order order : sort) {
+            direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
+        }
+        return direction;
+    }
+
+    private OrderSpecifier<?> getOrderBy(Order order, String fieldName) {
+        Path<Object> fieldPath = Expressions.path(Object.class, com.teamproject.petapet.domain.product.QCoupon.coupon, fieldName);
+        return new OrderSpecifier(order, fieldPath);
+    }
+    private String getProperty(String sort){
+        if (sort.equals("couponIdDesc") || sort.equals("couponIdAsc")){
+            return "couponId";
+        } else if (sort.equals("endDateDesc")){
+            return "couponEndDate";
+        }
+        return "couponId";
+    }
+    private Long countCoupon(String acceptType, String isActive) {
+        return jpaQueryFactory.select(coupon.count())
+                .where(isAcceptType(acceptType), isActive(isActive))
+                .from(coupon)
+                .fetchFirst();
+    }
+
+    private BooleanExpression isActive(String isActive) {
+        boolean isThatTure = isActive.equals("active");
+        if (!isActive.equals("any")) {
+            return coupon.couponActive.eq(isThatTure);
+        }
+        return null;
+    }
+
+    private BooleanExpression isAcceptType(String acceptType) {
+        if (!acceptType.equals("total")) {
+            ProductType productType = ProductType.valueOf(acceptType.toUpperCase());
+            return coupon.couponAcceptType.eq(productType);
+        }
+        return null;
+    }
+
+    @Override
+    public void updateCoupon(CouponDTO couponDTO) {
+        Coupon coupon = couponRepository.findById(couponDTO.getCouponId()).orElseThrow(NoSuchFieldError::new);
+        coupon.updateCoupon(couponDTO);
+    }
+
+    @Override
+    public Long activeCoupon() {
+        LocalDateTime now = LocalDateTime.now();
+        return jpaQueryFactory.update(coupon)
+                .set(coupon.couponActive, false)
+                .where(coupon.couponEndDate.before(now).and(coupon.couponActive.eq(true)))
+                .execute();
+    }
+
+    public Map<String, String> validateHandling(BindingResult bindingResult) {
+        Map<String, String> validatorResult = new HashMap<>();
+        //필드 에러
+        for (FieldError error : bindingResult.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
+    }
+}

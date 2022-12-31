@@ -1,23 +1,17 @@
-package com.teamproject.petapet.web.product.coupondtos;
+package com.teamproject.petapet.web.product.coupon.coupondtos;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.teamproject.petapet.domain.product.Coupon;
 import com.teamproject.petapet.domain.product.ProductType;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.poi.hpsf.Date;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -31,15 +25,15 @@ public class CouponDTO {
     private String couponEndDate;
     @NotNull(message = "수량을 입력하세요")
     @Min(0)
-    @Max(value = 9999,message = "0-9999까지의 값을 입력하세요")
+    @Max(value = 9999, message = "0-9999까지의 값을 입력하세요")
     private Long couponStock;
     @NotNull(message = "적용 카테고리를 선택하세요")
     private ProductType couponAcceptType;
     @NotNull(message = "쿠폰 활성화 여부를 선택하세요")
     private boolean couponActive;
     @NotNull(message = "할인율을 입력하세요")
-    @Min(value = 5,message = "5 이상의 값을 입력하세요")
-    @Max(value = 99999,message = "5 자리의 숫자까지 입력하세요")
+    @Min(value = 5, message = "5 이상의 값을 입력하세요")
+    @Max(value = 99999, message = "5 자리의 숫자까지 입력하세요")
     private Long couponDiscRate;
     @NotBlank(message = "쿠폰 타입을 선택하세요")
     private String couponType;
@@ -55,6 +49,7 @@ public class CouponDTO {
         this.couponDiscRate = couponDiscRate;
         this.couponType = couponType;
     }
+
     public CouponDTO convertToDTO(Coupon coupon) {
         return CouponDTO.builder().couponActive(coupon.isCouponActive())
                 .couponAcceptType(coupon.getCouponAcceptType())

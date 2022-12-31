@@ -880,8 +880,6 @@
       let attrAlt = next.attr('alt');
       let pos = attrSrc.lastIndexOf("/");
       let substringSrc = attrSrc.substring(pos+1);
-      console.log(substringSrc)
-      console.log(attrAlt)
       fetch('/product/deleteReviewImg?productId='+productId, {
           method: 'POST',
           headers: {

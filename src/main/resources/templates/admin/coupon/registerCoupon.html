@@ -21,8 +21,21 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="/images/favicon.png"/>
 
+    <style rel="stylesheet">
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        .field-error {
+            border-color: #dc3545;
+            font-size: 12px;
+            color: #dc3545;
+        }
+    </style>
+
 </head>
-<body>
+<body th:object="${couponDTO}">
 <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -67,66 +80,31 @@
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">쿠폰 조회</h4>
+                            <h4 class="card-title">쿠폰 등록</h4>
                             <div style="height: 20px;"></div>
                             <form class="form-sample" th:method="post" th:action="@{/admin/registerCoupon}">
-                                <div class="container-fluid">
-                                    <div class="row col">
-                                        <div class="card-group col-3">
-                                            <div class="card">
-                                                <p class="card-text">
-                                                    asdasd
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="card-group col-3">
-                                            <div class="card">
-                                                <p class="card-text">
-                                                    asdasd
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="card-group col-3">
-                                            <div class="card">
-                                                <p class="card-text">
-                                                    asdasd
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="card-group col-3">
-                                            <div class="card">
-                                                <p class="card-text">
-                                                    asdasd
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="card-group col-3">
-                                            <div class="card">
-                                                <p class="card-text">
-                                                    asdasd
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="form-group col">
                                     <label for="couponName">쿠폰명</label>
                                     <input type="text" class="form-control" id="couponName"
-                                           name="couponName"
-                                           th:placeholder="쿠폰명">
+                                           name="couponName" th:errorclass="field-error"
+                                           th:field="*{couponName}" th:placeholder="쿠폰명">
+                                    <div class="field-error" th:errors="*{couponName}"/>
                                 </div>
                                 <div class="d-flex">
                                     <div class="form-group col-6">
                                         <label for="couponStock">쿠폰수량</label>
-                                        <input class="form-control" id="couponStock"
-                                               placeholder="쿠폰수량 0-9999"
+                                        <input class="form-control" id="couponStock" th:errorclass="field-error"
+                                               placeholder="쿠폰수량 0-9999" th:field="*{couponStock}"
                                                name="couponStock" type="number" min="0">
+                                        <div class="field-error" th:errors="*{couponStock}"/>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="couponEndDate">쿠폰만료일</label>
-                                        <input class="form-control" id="couponEndDate"
+                                        <input class="form-control" id="couponEndDate" th:errorclass="field-error"
+                                               th:field="*{couponEndDate}"
                                                type="date" th:min="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}"
                                                name="couponEndDate">
+                                        <div class="field-error" th:errors="*{couponEndDate}"/>
                                     </div>
                                 </div>
 
@@ -134,7 +112,7 @@
                                     <div class="form-group col-6">
                                         <label for="couponAcceptType">적용카테고리</label>
                                         <select type="input" class="form-control" name="couponAcceptType"
-
+                                                th:field="*{couponAcceptType}" th:errorclass="field-error"
                                                 id="couponAcceptType">
                                             <option value="ALL" selected>전체</option>
                                             <option value="FOOD">사료</option>
@@ -144,15 +122,17 @@
                                             <option value="FASHION">패션/잡화</option>
                                             <option value="STROLLER">유모차</option>
                                         </select>
+                                        <div class="field-error" th:errors="*{couponAcceptType}"/>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="couponActive">활성화여부</label>
                                         <select type="input" class="form-control" name="couponActive"
-
+                                                th:field="*{couponActive}" th:errorclass="field-error"
                                                 id="couponActive">
                                             <option value="true" selected>활성화</option>
                                             <option value="false">비활성화</option>
                                         </select>
+                                        <div class="field-error" th:errors="*{couponActive}"/>
                                     </div>
                                 </div>
                                 <div class="d-flex">
@@ -160,28 +140,30 @@
                                         <label>할인종류</label>
                                         <div class="d-inline-flex col">
                                             <div class="form-check col-6">
-                                                <input type="radio" name="couponType"
-                                                       id="inlineRadio1" value="regularDisc">
+                                                <input type="radio" name="couponType" th:field="*{couponType}"
+                                                       id="inlineRadio1" value="regularDisc" th:errorclass="field-error">
                                                 <label for="inlineRadio1">정가할인</label>
                                             </div>
                                             <div class="form-check col-6">
-                                                <input type="radio" name="couponType"
-                                                       id="inlineRadio2" value="percentDisc">
+                                                <input type="radio" name="couponType" th:field="*{couponType}"
+                                                       id="inlineRadio2" value="percentDisc" th:errorclass="field-error">
                                                 <label for="inlineRadio2">백분율할인</label>
                                             </div>
                                         </div>
+                                        <div class="field-error" th:errors="*{couponType}"/>
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="couponDiscRate">할인율</label>
                                         <div class="form-group">
                                             <input type="number" name="couponDiscRate" class="form-control"
-                                                   id="couponDiscRate">
+                                                   id="couponDiscRate" th:field="*{couponDiscRate}" th:errorclass="field-error">
+                                            <div class="field-error" th:errors="*{couponDiscRate}"/>
                                             <p class="text-secondary text-danger" id="validMsg"></p>
                                         </div>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary mr-2">등록</button>
-                                <a th:href="@{/admin/adminPage}">
+                                <a th:href="@{/admin/coupon}">
                                     <button class="btn btn-light" type="button">취소</button>
                                 </a>
                             </form>
@@ -244,44 +226,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 </body>
-<script th:inline="javascript" type="text/javascript">
-    $(function () {
-        $("#datepicker").datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-    });
-    $("input[name=couponType]:radio").change(function () {
-        let couponType = this.value;
-        let $inputDiscRate = $('input[id=couponDiscRate]');
-        let $validMsg = $('#validMsg');
-        $validMsg.empty();
-        $inputDiscRate.val('');
-        if (couponType === 'regularDisc') {
-            $("#couponDiscRate").on("propertychange change paste input", function () {
-                let rate = $inputDiscRate.val();
-                const regEx = /^\d{4,5}$/;
-                let boolean = regEx.test(rate);
-                if (boolean === false) {
-                    $validMsg.text('천~만 단위의 금액을 입력하세요');
-                } else {
-                    $validMsg.empty();
-                }
-            })
-        }
-        if (couponType === 'percentDisc') {
-            $("#couponDiscRate").on("propertychange change paste input", function () {
-                let rate = $inputDiscRate.val();
-                const regEx = /^\d{1,2}$/;
-                let boolean = regEx.test(rate);
-                if (boolean === false || 5 > rate || 50 < rate) {
-                    $validMsg.text('5 - 50까지 허용됩니다.');
-                } else {
-                    $validMsg.empty();
-                }
-            })
-        }
-    });
-
-</script>
+<script th:inline="javascript" type="text/javascript" src="/js/product/coupon/coupon.js"></script>
 </html>
 
