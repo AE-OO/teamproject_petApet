@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -40,15 +41,15 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public void createCoupon(CouponDTO couponDTO) {
-        Coupon coupon = Coupon.convertToEntity(couponDTO);
+        Coupon coupon = new Coupon(couponDTO);
         couponRepository.save(coupon);
     }
 
     @Override
-    public Page<CouponDTO> findCouponList(Integer page, String acceptType, String isActive, String sort) {
+    public Page<CouponDTO> findCouponList(Integer page, String acceptType, String isActive, String sortStr, String searchContent) {
         PageRequest pageable = PageRequest.of(page - 1, 9);
-        Order direction = getOrder(sort);
-        String property = getProperty(sort);
+        Order direction = getOrder(sortStr);
+        String property = getProperty(sortStr);
         List<CouponDTO> couponDTOList = jpaQueryFactory.select(new QCouponDTO(coupon.couponId,
                         coupon.couponName,
                         coupon.couponEndDate.stringValue(),
@@ -58,23 +59,33 @@ public class CouponServiceImpl implements CouponService {
                         coupon.couponDiscRate,
                         coupon.couponType))
                 .from(coupon)
-                .where(isAcceptType(acceptType), isActive(isActive))
+                .where(isAcceptType(acceptType), isActive(isActive), isSearchContent(searchContent))
                 .offset(pageable.getOffset())
                 .limit(9)
                 .orderBy(getOrderBy(direction, property))
                 .fetch();
-        long totalCount = countCoupon(acceptType, isActive);
+        long totalCount = countCoupon(acceptType, isActive, searchContent);
         return new PageImpl<>(couponDTOList, pageable, totalCount);
     }
 
     private Order getOrder(String sortStr) {
         Sort sort;
-        if (sortStr.equals("endDateDesc")) {
-            sort = Sort.by("couponEndDate").descending();
-        } else if (sortStr.equals("couponIdDesc")) {
-            sort = Sort.by("couponId").descending();
-        } else {
-            sort = Sort.by("couponId");
+        switch (sortStr) {
+            case "stockDesc":
+                sort = Sort.by("couponStock").descending();
+                break;
+            case "stockAsc":
+                sort = Sort.by("couponStock");
+                break;
+            case "endDateDesc":
+                sort = Sort.by("couponEndDate").descending();
+                break;
+            case "couponIdDesc":
+                sort = Sort.by("couponId").descending();
+                break;
+            default:
+                sort = Sort.by("couponId");
+                break;
         }
         Order direction = null;
         for (Sort.Order order : sort) {
@@ -83,21 +94,28 @@ public class CouponServiceImpl implements CouponService {
         return direction;
     }
 
-    private OrderSpecifier<?> getOrderBy(Order order, String fieldName) {
-        Path<Object> fieldPath = Expressions.path(Object.class, com.teamproject.petapet.domain.product.QCoupon.coupon, fieldName);
+    private OrderSpecifier<?> getOrderBy(Order order, String property) {
+        Path<Object> fieldPath = Expressions.path(Object.class, com.teamproject.petapet.domain.product.QCoupon.coupon, property);
         return new OrderSpecifier(order, fieldPath);
     }
-    private String getProperty(String sort){
-        if (sort.equals("couponIdDesc") || sort.equals("couponIdAsc")){
-            return "couponId";
-        } else if (sort.equals("endDateDesc")){
-            return "couponEndDate";
+
+    private String getProperty(String sortStr) {
+        switch (sortStr) {
+            case "couponIdDesc":
+            case "couponIdAsc":
+                return "couponId";
+            case "endDateDesc":
+                return "couponEndDate";
+            case "stockDesc":
+            case "stockAsc":
+                return "couponStock";
         }
         return "couponId";
     }
-    private Long countCoupon(String acceptType, String isActive) {
+
+    private Long countCoupon(String acceptType, String isActive, String searchContent) {
         return jpaQueryFactory.select(coupon.count())
-                .where(isAcceptType(acceptType), isActive(isActive))
+                .where(isAcceptType(acceptType), isActive(isActive), isSearchContent(searchContent))
                 .from(coupon)
                 .fetchFirst();
     }
@@ -106,6 +124,12 @@ public class CouponServiceImpl implements CouponService {
         boolean isThatTure = isActive.equals("active");
         if (!isActive.equals("any")) {
             return coupon.couponActive.eq(isThatTure);
+        }
+        return null;
+    }
+    private BooleanExpression isSearchContent(String searchContent) {
+        if (StringUtils.hasText(searchContent)) {
+            return coupon.couponName.contains(searchContent);
         }
         return null;
     }

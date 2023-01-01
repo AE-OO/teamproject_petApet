@@ -9,7 +9,7 @@
     <!-- plugins:css -->
     <link rel="stylesheet" href="/vendors/feather/feather.css">
     <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
-<!--    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">-->
+    <!--    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">-->
     <link rel="stylesheet" href="/css/osh.css">
     <!-- endinject -->
     <!-- Plugin css for this page -->
@@ -55,7 +55,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/adminPage">
+                    <a class="nav-link" th:href="@{/admin/coupon}">
                         <i class="icon-paper menu-icon"></i>
                         <span class="menu-title">쿠폰 조회</span>
                     </a>
@@ -68,7 +68,13 @@
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="m-0 p-1">쿠폰 조회</h3>
+                            <div class="d-flex">
+                                <h3 class="m-0 p-1 col-6">쿠폰 조회</h3>
+                                <div class="input-group input-group-sm mb-3">
+                                    <input type="text" class="form-control rounded" placeholder="검색" aria-describedby="searchBtn">
+                                    <button class="btn btn-primary" type="button" id="searchBtn">Button</button>
+                                </div>
+                            </div>
                             <div class="d-flex p-1">
                                 <div class="btn-toolbar col-6" role="toolbar">
                                     <div class="btn-group btn-group-sm me-2" role="group">
@@ -88,9 +94,13 @@
                                                 <li><a class="dropdown-item" id="stroller">유모차</a></li>
                                             </ul>
                                         </div>
-                                        <button type="button" id="byRecent" class="btn btn-outline-primary">최신순</button>
-                                        <button type="button" id="byExpiration" class="btn btn-outline-primary">만료일순</button>
-                                        <button type="button" id="byStock" class="btn btn-outline-primary">재고순</button>
+                                        <button type="button" id="sortByRecent" class="btn btn-outline-primary">최신순
+                                        </button>
+                                        <button type="button" id="sortByExpiration" class="btn btn-outline-primary">
+                                            만료일순
+                                        </button>
+                                        <button type="button" id="sortByStock" class="btn btn-outline-primary">재고순
+                                        </button>
                                         <div class="btn-group btn-group-sm">
                                             <button type="button" class="btn btn-outline-primary dropdown-toggle"
                                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -113,7 +123,7 @@
                                 <div class="col-6 appliedSearch">
                                 </div>
                             </div>
-                            <div class="d-flex flex-column">
+                            <div class="container-fluid">
                                 <div class="row col">
                                     <div class="card-group col-4 border p-lg-3 rounded m-1"
                                          th:each="coupon : ${couponList}"
@@ -136,11 +146,11 @@
                                                     </div>
                                                     <div class="text-center col-6">
                                                         <h5 th:if="${coupon.couponDiscRate.toString().length() > 2}"
-                                                            class="couponDiscRate"
-                                                            th:text="|${#numbers.formatInteger(coupon.couponDiscRate, 3, 'COMMA')}원|">
+                                                            class="couponDiscRate text-danger"
+                                                            th:text="|${#numbers.formatInteger(coupon.couponDiscRate, 3, 'COMMA')}원 할인|">
                                                             할인금액</h5>
                                                         <h5 th:if="${coupon.couponDiscRate.toString().length() <= 2}"
-                                                            class="couponDiscRate"
+                                                            class="couponDiscRate text-danger"
                                                             th:text="|${coupon.couponDiscRate}% 할인|">할인금액</h5>
                                                     </div>
                                                 </div>
@@ -154,8 +164,14 @@
                                                             th:text="${'활성화'}" th:value="true">쿠폰 상태</h5>
                                                     </div>
                                                     <div class="col-6 p-2">
-                                                        <h5 class="p-2 text-center couponStock"
-                                                            th:text="|${coupon.couponStock}개|">
+                                                        <h5 class="p-2 text-center couponStock" th:if="${coupon.couponStock != 0 && coupon.couponStock != 1}"
+                                                            th:text="|${coupon.couponStock - 1}개|">
+                                                            재고</h5>
+                                                        <h5 class="p-2 text-center couponStock" th:if="${coupon.couponStock == 1}"
+                                                            th:text="재고소진">
+                                                            재고</h5>
+                                                        <h5 class="p-2 text-center couponStock" th:if="${coupon.couponStock == 0}"
+                                                            th:text="무제한">
                                                             재고</h5>
                                                     </div>
                                                 </div>
@@ -304,7 +320,7 @@
                             <div class="form-group">
                                 <input type="number" name="couponDiscRate" class="form-control"
                                        id="couponDiscRate" th:field="*{couponDiscRate}" th:errorclass="field-error">
-                                <div class="field-error" id="valid_couponDiscRate"></div>
+<!--                                <div class="field-error" id="valid_couponDiscRate"></div>-->
                                 <p class="text-secondary text-danger" id="validMsg"></p>
                             </div>
                         </div>

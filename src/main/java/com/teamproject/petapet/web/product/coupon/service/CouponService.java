@@ -10,7 +10,7 @@ public interface CouponService {
 
     void createCoupon(CouponDTO couponDTO);
 
-    Page<CouponDTO> findCouponList(Integer page, String acceptType, String isActive, String sort);
+    Page<CouponDTO> findCouponList(Integer page, String acceptType, String isActive, String sort, String searchContent);
 
     void updateCoupon(CouponDTO couponDTO);
 

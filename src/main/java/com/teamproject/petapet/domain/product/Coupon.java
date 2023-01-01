@@ -18,11 +18,12 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
+@ToString
 @DynamicUpdate
 public class Coupon {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long couponId;
     @Column(length = 45)
     private String couponName;
@@ -47,24 +48,31 @@ public class Coupon {
         this.couponEndDate = LocalDateTime.of(LocalDate.parse(couponDTO.getCouponEndDate()
                         , DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 , LocalTime.of(23, 59));
-        this.couponStock = couponDTO.getCouponStock();
+        if (couponDTO.getCouponStock() == 0) {
+            this.couponStock = couponDTO.getCouponStock();
+        } else {
+            this.couponStock = couponDTO.getCouponStock() + 1;
+        }
         this.couponAcceptType = couponDTO.getCouponAcceptType();
         this.couponActive = couponDTO.isCouponActive();
         this.couponType = couponDTO.getCouponType();
         this.couponDiscRate = couponDTO.getCouponDiscRate();
     }
 
-    public static Coupon convertToEntity(CouponDTO couponDTO) {
-        return Coupon.builder()
-                .couponStock(couponDTO.getCouponStock())
-                .couponActive(couponDTO.isCouponActive())
-                .couponAcceptType(couponDTO.getCouponAcceptType())
-                .couponEndDate(LocalDateTime.of(LocalDate.parse(couponDTO.getCouponEndDate()
-                                , DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                        , LocalTime.of(23, 59)))
-                .couponType(couponDTO.getCouponType())
-                .couponDiscRate(couponDTO.getCouponDiscRate())
-                .couponName(couponDTO.getCouponName())
-                .build();
+    public Coupon(CouponDTO couponDTO) {
+        this.couponName = couponDTO.getCouponName();
+        this.couponEndDate = LocalDateTime.of(LocalDate.parse(couponDTO.getCouponEndDate()
+                        , DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                        , LocalTime.of(23, 59));
+        if (couponDTO.getCouponStock() == 0) {
+            this.couponStock = couponDTO.getCouponStock();
+        } else {
+            this.couponStock = couponDTO.getCouponStock() + 1;
+        }
+        this.couponAcceptType = couponDTO.getCouponAcceptType();
+        this.couponActive = couponDTO.isCouponActive();
+        this.couponType = couponDTO.getCouponType();
+        this.couponDiscRate = couponDTO.getCouponDiscRate();
     }
+
 }

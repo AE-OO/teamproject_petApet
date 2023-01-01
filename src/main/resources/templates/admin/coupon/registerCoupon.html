@@ -9,7 +9,7 @@
     <!-- plugins:css -->
     <link rel="stylesheet" href="/vendors/feather/feather.css">
     <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">
+<!--    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">-->
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
@@ -67,7 +67,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/adminPage">
+                    <a class="nav-link" th:href="@{/admin/coupon}">
                         <i class="icon-paper menu-icon"></i>
                         <span class="menu-title">쿠폰 조회</span>
                     </a>
@@ -94,7 +94,7 @@
                                     <div class="form-group col-6">
                                         <label for="couponStock">쿠폰수량</label>
                                         <input class="form-control" id="couponStock" th:errorclass="field-error"
-                                               placeholder="쿠폰수량 0-9999" th:field="*{couponStock}"
+                                               placeholder="쿠폰수량 0-9999 (0의 값은 무제한)" th:field="*{couponStock}"
                                                name="couponStock" type="number" min="0">
                                         <div class="field-error" th:errors="*{couponStock}"/>
                                     </div>
@@ -155,7 +155,7 @@
                                     <div class="form-group col-6">
                                         <label for="couponDiscRate">할인율</label>
                                         <div class="form-group">
-                                            <input type="number" name="couponDiscRate" class="form-control"
+                                            <input type="number" name="couponDiscRate" class="form-control" placeholder="정가할인 5자리, 백분율 범위 5 - 50 %"
                                                    id="couponDiscRate" th:field="*{couponDiscRate}" th:errorclass="field-error">
                                             <div class="field-error" th:errors="*{couponDiscRate}"/>
                                             <p class="text-secondary text-danger" id="validMsg"></p>
@@ -199,30 +199,30 @@
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
 <!-- plugins:js -->
-<script src="/vendors/js/vendor.bundle.base.js"></script>
+<!--<script src="/vendors/js/vendor.bundle.base.js"></script>-->
 <!-- endinject -->
 <!-- Plugin js for this page -->
-<script src="/vendors/chart.js/Chart.min.js"></script>
-<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
-<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-<script src="/js/dataTables.select.min.js"></script>
+<!--<script src="/vendors/chart.js/Chart.min.js"></script>-->
+<!--<script src="/vendors/datatables.net/jquery.dataTables.js"></script>-->
+<!--<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>-->
+<!--<script src="/js/dataTables.select.min.js"></script>-->
 
 <!-- End plugin js for this page -->
 <!-- inject:js -->
-<script src="/js/off-canvas.js"></script>
-<script src="/js/hoverable-collapse.js"></script>
-<script src="/js/template.js"></script>
-<script src="/js/settings.js"></script>
+<!--<script src="/js/off-canvas.js"></script>-->
+<!--<script src="/js/hoverable-collapse.js"></script>-->
+<!--<script src="/js/template.js"></script>-->
+<!--<script src="/js/settings.js"></script>-->
 <!-- endinject -->
 <!-- Custom js for this page-->
-<script src="/js/dashboard.js"></script>
-<script src="/js/Chart.roundedBarCharts.js"></script>
+<!--<script src="/js/dashboard.js"></script>-->
+<!--<script src="/js/Chart.roundedBarCharts.js"></script>-->
 
 <!-- Custom js for this page-->
-<script src="/js/chart/chart.js"></script>
+<!--<script src="/js/chart/chart.js"></script>-->
 <!-- End custom js for this page-->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
+<!--<link rel="stylesheet" href="/resources/demos/style.css">-->
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 </body>
