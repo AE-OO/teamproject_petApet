@@ -32,12 +32,6 @@ $("input[name=couponType]:radio").change(function () {
         })
     }
 });
-// $(requestCouponList());
-// async function requestCouponList() {
-// fetch('/admin/coupon/list')
-//     .then((response) => response.json())
-//     .then((data) => console.log(data));
-// }
 
 $('#updateCouponBtn').click(function () {
     $('.field-error').empty();
@@ -71,7 +65,7 @@ $('.modalBtn').click(function () {
     let couponDiscRate = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponDiscRate').text()
     let couponActive = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponActive').attr('value')
     let couponStock = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponStock').text()
-
+    if (couponStock === '무제한') couponStock='0개';
     if (couponDiscRate.includes('%')) {
         let discLastIndexOf = couponDiscRate.lastIndexOf('%');
         let substring = couponDiscRate.substring(0, discLastIndexOf);

@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/admin")
 public class CouponController {
     private final CouponService couponService;
 
-    @GetMapping("/coupon")
+    @GetMapping("/admin/coupon")
     public String couponViewForm(@ModelAttribute("couponDTO") CouponDTO couponDTO,
                                  @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
                                  @RequestParam(value = "acceptType", defaultValue = "total", required = false) String acceptType,
@@ -32,12 +31,12 @@ public class CouponController {
         return "/admin/coupon/couponView";
     }
 
-    @GetMapping("/registerCoupon")
+    @GetMapping("/admin/registerCoupon")
     public String registerCouponForm(@ModelAttribute("couponDTO") CouponDTO couponDTO) {
         return "/admin/coupon/registerCoupon";
     }
 
-    @PostMapping("/registerCoupon")
+    @PostMapping("/admin/registerCoupon")
     public String registerCoupon(@Validated @ModelAttribute CouponDTO couponDTO, BindingResult bindingResult) {
         if (couponDTO.getCouponType().equals("percentDisc") && couponDTO.getCouponDiscRate() > 50) {
             bindingResult.addError(new FieldError("couponDTO","couponDiscRate",couponDTO.getCouponDiscRate(),false,null,null,"5-50의 값을 입력하세요"));
@@ -48,5 +47,10 @@ public class CouponController {
         }
         couponService.createCoupon(couponDTO);
         return "redirect:/admin/coupon";
+    }
+
+    @GetMapping("/member/couponBox")
+    public String couponBoxForm(){
+        return "/admin/coupon/couponBox";
     }
 }

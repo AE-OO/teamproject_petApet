@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 내 정보 수정</title>
+    <script src="/js/member/checkInfo.js"></script>
+    <script src="/js/product/coupon/couponBox.js"></script>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<!-- Myinfo Start -->
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="col-10 mx-auto ps-5">
+            <div class="bg-white pt-5 pb-3">
+                <h4 class="text-black ps-1 mb-0">쿠폰함</h4>
+            </div>
+            <div class="myinfo-item d-flex">
+                <div class="myinfo-text w-100 p-5">
+                    <div class="pt-3">
+                        <div class="btn-group btn-group-lg d-flex couponTab" role="group" id="asd">
+                            <button type="button" class="btn btn-outline-primary active" data-id=1>사용가능</button>
+                            <button type="button" class="btn btn-outline-primary" data-id=2>만료임박</button>
+                            <button type="button" class="btn btn-outline-primary" data-id=3>사용완료・기만만료</button>
+                            <button type="button" class="btn btn-outline-primary" data-id=4>전체쿠폰</button>
+                        </div>
+                        <hr style="border-top:2px solid"/>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row col couponContent">
+
+                        </div>
+                    </div>
+                    <hr class="mt-2 mb-4"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Myinfo End -->
+
+<!-- Modal start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header py-5">
+                <h5 class="modal-title mx-auto " id="staticBackdropLabel"></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal end-->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+<!--<script src="/js/header.js"></script>-->
+<!--<script th:src="@{/js/header.js}"></script>-->
+
+</body>
+</html>
