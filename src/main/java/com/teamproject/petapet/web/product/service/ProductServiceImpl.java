@@ -8,16 +8,13 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.product.Product;
+import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
-import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductDTO;
-import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import lombok.RequiredArgsConstructor;
-
-import com.teamproject.petapet.domain.product.ProductType;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -129,8 +126,19 @@ public class ProductServiceImpl implements ProductService {
                 .limit(pageable.getPageSize())
                 .orderBy(orders.toArray(OrderSpecifier[]::new))
                 .fetch();
-        long count = productRepository.count();
-        return new PageImpl<>(productList, pageable, count);
+        Long totalCount = countProduct(category, productType, content, starRating, minPrice, maxPrice, isPriceRange);
+        return new PageImpl<>(productList, pageable, totalCount);
+    }
+
+    private Long countProduct(String category, ProductType productType, String content, Long starRating, String minPrice, String maxPrice, String isPriceRange) {
+        return jpaQueryFactory.select(product.count())
+                .where(isCategory(productType, category),
+                        isContent(content),
+                        isRating(starRating),
+                        isPriceRange(minPrice, maxPrice, isPriceRange),
+                        product.productStatus.eq("판매중"))
+                .from(product)
+                .fetchFirst();
     }
 
     @Override
@@ -184,8 +192,8 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-    private OrderSpecifier<?> getSorted(Order order, Path<?> parent, String fieldName) {
-        Path<Object> fieldPath = Expressions.path(Object.class, parent, fieldName);
+    private OrderSpecifier<?> getSorted(Order order, String fieldName) {
+        Path<Object> fieldPath = Expressions.path(Object.class, product, fieldName);
 
         return new OrderSpecifier(order, fieldPath);
     }
@@ -197,7 +205,7 @@ public class ProductServiceImpl implements ProductService {
             for (Sort.Order order : pageable.getSort()) {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
                 if (order.getProperty().equals(sortType)) {
-                    OrderSpecifier<?> createdDate = getSorted(direction, product, sortType);
+                    OrderSpecifier<?> createdDate = getSorted(direction, sortType);
                     ORDERS.add(createdDate);
                 }
             }

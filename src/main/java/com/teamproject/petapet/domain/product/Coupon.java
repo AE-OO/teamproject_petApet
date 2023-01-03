@@ -1,7 +1,11 @@
 package com.teamproject.petapet.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.web.product.coupon.coupondtos.CouponDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +15,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -18,7 +24,6 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
-@ToString
 @DynamicUpdate
 public class Coupon {
 
@@ -42,6 +47,10 @@ public class Coupon {
     @Column(length = 5)
     private Long couponDiscRate;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "coupons", cascade = CascadeType.REMOVE)
+    private List<CouponBox> couponBoxes = new ArrayList<>();
+
     public void updateCoupon(CouponDTO couponDTO) {
         this.couponId = couponDTO.getCouponId();
         this.couponName = couponDTO.getCouponName();
@@ -63,7 +72,7 @@ public class Coupon {
         this.couponName = couponDTO.getCouponName();
         this.couponEndDate = LocalDateTime.of(LocalDate.parse(couponDTO.getCouponEndDate()
                         , DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                        , LocalTime.of(23, 59));
+                , LocalTime.of(23, 59));
         if (couponDTO.getCouponStock() == 0) {
             this.couponStock = couponDTO.getCouponStock();
         } else {

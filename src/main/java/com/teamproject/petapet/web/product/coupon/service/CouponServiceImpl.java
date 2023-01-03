@@ -9,10 +9,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.product.Coupon;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.repository.CouponRepository;
-import com.teamproject.petapet.web.product.coupon.coupondtos.CouponBoxDTO;
+import com.teamproject.petapet.web.product.coupon.coupondtos.CouponListDTO;
 import com.teamproject.petapet.web.product.coupon.coupondtos.CouponDTO;
-import com.teamproject.petapet.web.product.coupon.coupondtos.QCouponBoxDTO;
 import com.teamproject.petapet.web.product.coupon.coupondtos.QCouponDTO;
+import com.teamproject.petapet.web.product.coupon.coupondtos.QCouponListDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.teamproject.petapet.domain.product.QCoupon.coupon;
 
@@ -48,14 +49,19 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public Page<CouponBoxDTO> findCouponList(Integer page, String isActive, String sortStr) {
+    public Optional<Coupon> findById(Long id) {
+        return couponRepository.findById(id);
+    }
+
+    @Override
+    public Page<CouponListDTO> findCouponList(Integer page, String isActive, String sortStr) {
         PageRequest pageable = PageRequest.of(page - 1, 9);
         Order direction = getOrder(sortStr);
         String property = getProperty(sortStr);
-        List<CouponBoxDTO> couponDTOList = jpaQueryFactory.select(new QCouponBoxDTO(coupon.couponId,
+        List<CouponListDTO> couponDTOList = jpaQueryFactory.select(new QCouponListDTO(coupon.couponId,
                         coupon.couponName,
                         coupon.couponEndDate.stringValue(),
-                        coupon.couponAcceptType,
+                        coupon.couponAcceptType.stringValue(),
                         coupon.couponActive,
                         coupon.couponDiscRate
                 ))
@@ -122,7 +128,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     private OrderSpecifier<?> getOrderBy(Order order, String property) {
-        Path<Object> fieldPath = Expressions.path(Object.class, com.teamproject.petapet.domain.product.QCoupon.coupon, property);
+        Path<Object> fieldPath = Expressions.path(Object.class, coupon, property);
         return new OrderSpecifier(order, fieldPath);
     }
 
