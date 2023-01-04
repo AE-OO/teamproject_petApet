@@ -27,9 +27,9 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
     //박채원 22.12.16 추가 (이하 3개 메소드)
     // 전체 상품 월별 판매량 데이터
     @Query(value = "with recursive T as (\n" +
-            "\tselect max(date_sub(buyDate, interval 5 month)) as startMonth from buy \n" +
+            "\tselect max(date_sub(now(), interval 5 month)) as startMonth from dual \n" +
             "\tunion all\n" +
-            "    select startMonth + interval 1 month from T where startMonth < now() - interval 1 month\n" +
+            "    select startMonth + interval 1 month from T where startMonth < now()\n" +
             ")\n" +
             "select ifnull(R.product,0) from T\n" +
             "left outer join(\n" +
@@ -55,9 +55,9 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
 
     //상품별 월별 판매량 데이터
     @Query(value = "with recursive T as (\n" +
-            "\tselect max(date_sub(buyDate, interval 5 month)) as startMonth from buy \n" +
+            "\tselect max(date_sub(now(), interval 5 month)) as startMonth from dual \n" +
             "\tunion all\n" +
-            "    select startMonth + interval 1 month from T where startMonth < now() - interval 1 month\n" +
+            "    select startMonth + interval 1 month from T where startMonth < now()\n" +
             ")\n" +
             "select ifnull(R.product,0) from T\n" +
             "left outer join(\n" +
@@ -71,9 +71,9 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
 
     // 월별 회사 매출 데이터
     @Query(value = "with recursive T as (\n" +
-            "\tselect max(date_sub(buyDate, interval 11 month)) as startMonth from buy \n" +
+            "\tselect max(date_sub(now(), interval 11 month)) as startMonth from dual \n" +
             "\tunion all\n" +
-            "    select startMonth + interval 1 month from T where startMonth < now() - interval 1 month\n" +
+            "    select startMonth + interval 1 month from T where startMonth < now()\n" +
             ")\n" +
             "select ifnull(R.totalPrice,0) from T\n" +
             "left outer join(\n" +
