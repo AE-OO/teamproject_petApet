@@ -224,7 +224,7 @@
                                             <td><a href="#" th:href="|@{/admin/{idx}/edit(idx=${Other.inquiredId})}|">[[${Other.inquiredTitle}]]</a>
                                             </td>
                                             <td>[[${Other.inquiredCategory}]]</td>
-                                            <td><label class="badge badge-danger"
+                                            <td><label class="badge badge-danger" th:style="${Other.checked} ? 'background-color: #29d958;' : 'background-color: #ff3333;'"
                                                        th:text="${Other.checked} ?'답변완료':'답변대기'">미답</label></td>
                                         </tr>
                                         </tbody>

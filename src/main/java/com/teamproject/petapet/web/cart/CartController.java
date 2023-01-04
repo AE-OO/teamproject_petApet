@@ -31,20 +31,15 @@ public class CartController {
     /**
      * 회원 장바구니
      * @param principal
-     * @param request
-     * @param httpSession
      * @param model
      * @return
      * 추가할것 - 로그인한 회원 일치 검증 에러처리
      */
     @GetMapping()
-    public String mycart(Principal principal,
-                         HttpServletRequest request,
-                         HttpSession httpSession,
-                         Model model){
+    public String mycart(Principal principal,Model model){
 
         if(principal != null) {
-            String loginMember = checkMember(principal, request, httpSession);
+            String loginMember = checkMember(principal);
 
             // 세션 유지되면 로그인으로 이동
             List<Cart> carts = cartService.findAll(loginMember);
@@ -59,9 +54,9 @@ public class CartController {
     // 상품 페이지 -> 장바구니 담기
     @ResponseBody
     @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
-    public void productToCart(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
+    public void productToCart(@RequestBody CartVO vo, Principal principal){
 
-        String loginMember = checkMember(principal, request, httpSession);
+        String loginMember = checkMember(principal);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
@@ -75,9 +70,9 @@ public class CartController {
 
     @ResponseBody
     @RequestMapping(value = "/buyToCart", method = { RequestMethod.POST }, produces = "application/json")
-    public void buyToCart(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
+    public void buyToCart(@RequestBody CartVO vo, Principal principal){
 
-        String loginMember = checkMember(principal, request, httpSession);
+        String loginMember = checkMember(principal);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
@@ -98,25 +93,22 @@ public class CartController {
 
     @ResponseBody
     @RequestMapping(value = "/removeAll", method = {RequestMethod.POST} , produces = "application/json")
-    public void removeCartAll(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
-        String loginMember = checkMember(principal, request, httpSession);
+    public void removeCartAll(@RequestBody CartVO vo, Principal principal){
+        String loginMember = checkMember(principal);
         cartService.removeCartAll(vo.getMemberId());
     }
 
     @ResponseBody
     @RequestMapping(value = "checkout", method = {RequestMethod.POST} , produces = "application/json")
-    public void checkoutOne(@RequestBody CartVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
-        String loginMember = checkMember(principal, request, httpSession);
+    public void checkoutOne(@RequestBody CartVO vo, Principal principal){
+        String loginMember = checkMember(principal);
         cartService.removeCartAll(vo.getMemberId());
     }
 
 
 
-    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
-        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
-        HttpSession session = request.getSession(false);
-        Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        return loginMemberSession.getMemberId();
+    private String checkMember(Principal principal) {
+        return memberService.findOne(principal.getName()).getMemberId();
     }
 
 

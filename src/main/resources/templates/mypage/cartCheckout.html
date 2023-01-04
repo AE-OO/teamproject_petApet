@@ -270,7 +270,7 @@
                     <td>
                         <div class="payOrder">
                             <strong class="price">
-                                <span id="totalPriceDisp" class="use-calculation-for-totalprice" th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}">11590</span><span class="unit">원</span>
+                                <span id="totalPriceDisp" class="use-calculation-for-totalprice" th:with="var1=${cart.quantity}*${cart.product.productPrice}" data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}"></span><span class="unit">원</span>
                             </strong>
                         </div>
                     </td>
@@ -290,7 +290,7 @@
                     <td>
                         <div class="payPrice">
                             <strong class="price">
-                                <span id="totalPayPriceDisp" th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}" >11,490</span><span class="unit">원</span>
+                                <span id="totalPayPriceDisp" th:with="var1=${cart.quantity}*${cart.product.productPrice}" data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}" >11,490</span><span class="unit">원</span>
                             </strong>
                         </div>
                     </td>
@@ -320,10 +320,10 @@
                 <div class="price_area--mS4cPOr5t2 discount--1CgoO7hQt4"><span class="title---U2sFnkh4X">할인예상금액</span><em><span class="num--s28sqtGizJ">-3,680</span>원</em></div>
             </div>
             <div class="total_area--1Gh9HH8mfy">
-                <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 주문금액</span><em><span class="num--s28sqtGizJ" th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}" >29,420</span>원</em></div>
+                <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 주문금액</span><em><span class="num--s28sqtGizJ" th:with="var1=${cart.quantity}*${cart.product.productPrice}" data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}" >29,420</span>원</em></div>
             </div>
         </div>
-        <div class="buy_area--1s7Qe73yzk"><button type="button" class="btn_expand--2d-FsCrHVi"><span class="title--cW4o5HCufH">총 주문금액</span><em><span class="num--2CYvhIm-m6" id="card-total" th:with="var1=${cart.quantity}*${cart.product.productPrice}" th:text="${var1}">29,420</span>원<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg" class="ico--3qz69NgEHC">
+        <div class="buy_area--1s7Qe73yzk"><button type="button" class="btn_expand--2d-FsCrHVi"><span class="title--cW4o5HCufH">총 주문금액</span><em><span class="num--2CYvhIm-m6" id="card-total" th:with="var1=${cart.quantity}*${cart.product.productPrice}" data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}">29,420</span>원<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg" class="ico--3qz69NgEHC">
             <path opacity="0.9" d="M5.02414 10.3285L4.57129 9.84852L7.99986 6.21426L11.4284 9.84852L10.9756 10.3285L7.99986 7.1743L5.02414 10.3285Z" fill="white" stroke="white" stroke-width="0.5"></path>
             <rect x="0.5" y="1" width="15" height="15" rx="7.5" stroke="white" stroke-opacity="0.6"></rect>
         </svg></em><span class="blind">펼치기</span></button><button type="button" class="link_buy--jXvxZ8Agr-" onclick="requestPay()">총 주문하기<span class="badge--ltxr8Ih722" th:text="${cart.quantity}">1</span></button></div>

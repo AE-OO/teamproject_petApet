@@ -41,9 +41,8 @@ public class InquiredController {
 
     @GetMapping()
     public String getMyInquiry(@ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
-                          Principal principal, HttpServletRequest request,
-                          HttpSession httpSession, Model model){
-        String loginMember = checkMember(principal, request, httpSession);
+                          Principal principal, Model model){
+        String loginMember = checkMember(principal);
         List<Inquired> myInquiry = inquiredService.getMyInquired(loginMember);
         model.addAttribute("myInquiry", myInquiry);
         return "mypage/inquiry";
@@ -55,13 +54,10 @@ public class InquiredController {
 //    }
 
     @PostMapping("/submit")
-    public String inquirySubmit(@Validated
-                                  @ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
-                                   Principal principal, HttpServletRequest request, HttpSession httpSession) throws IOException {
+    public String inquirySubmit(@Validated @ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
+                                   Principal principal) throws IOException {
         log.info("실행");
-//        List<MultipartFile> inquiredImg = inquiredSubmitDTO.getInquiredImg();
-//        List<UploadFile> uploadFiles = fileService.storeFiles(inquiredImg);
-        String login = checkMember(principal, request, httpSession);
+        String login = checkMember(principal);
         Member loginMember = memberService.findOne(login);
 
 
@@ -80,11 +76,7 @@ public class InquiredController {
     }
 
 
-    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
-        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
-        HttpSession session = request.getSession(false);
-        Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        String loginMember = loginMemberSession.getMemberId();
-        return loginMember;
+    private String checkMember(Principal principal) {
+        return memberService.findOne(principal.getName()).getMemberId();
     }
 }
