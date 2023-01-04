@@ -64,7 +64,6 @@ function getProductList(){
                                     <td>${product.productStatus}</td>
                                     <td>0</td>
                                     <td>${product.productReport}</td>
-                                    <td><a href="/product/update?productId=${product.productId}" class="btn btn-sm btn-outline-secondary">수정</a></td>
                                 </tr>`;
             })
         }else {

@@ -32,12 +32,21 @@ $("input[name=couponType]:radio").change(function () {
         })
     }
 });
-
+function validDiscRate(val,type) {
+    if (val === '' && type === 'percentDisc') {
+        return  val='1';
+    } else return val;
+}
 $('#updateCouponBtn').click(function () {
     $('.field-error').empty();
     let couponId = $(this).attr('value');
     let formData = new FormData(document.getElementById('updateCoupon'));
+    let type = formData.get('couponType');
     formData.set('couponId', couponId);
+    let discRate = validDiscRate($('#couponDiscRate').val(), type);
+    formData.set('couponDiscRate', discRate);
+
+
     fetch('/admin/coupon/update', {
         method: 'POST',
         headers: {
@@ -65,7 +74,7 @@ $('.modalBtn').click(function () {
     let couponDiscRate = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponDiscRate').text()
     let couponActive = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponActive').attr('value')
     let couponStock = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponStock').text()
-    if (couponStock === '무제한') couponStock='0개';
+    if (couponStock === '무제한') couponStock = '0개';
     if (couponDiscRate.includes('%')) {
         let discLastIndexOf = couponDiscRate.lastIndexOf('%');
         let substring = couponDiscRate.substring(0, discLastIndexOf);

@@ -834,97 +834,95 @@
 
 
 <script th:inline="javascript" type="text/javascript">
-
     let totalPage = 10;
-  function updateReviewForm() {
-      $('.myReview').remove();
-      $('#myReviewForm').attr('style','display: ');
-  }
 
-  $('#reviewDeleteBtn').click(function () {
-      {
-          fetch('/product/deleteReview', {
-              method: 'POST',
-              headers: {
-                  "Content-Type": "application/text",
-              },
-              body: productId,
-          })
-              .then(response => {
-                  // return response.json();
-              })
-              .then(data => {
-
-              })
-      }
-      let productType = [[${productType}]];
-      window.location.href = '/product/'+productType+'/'+productId+'/details';
-  })
-  $('.reviewImgModalBtn').click(function (){
-      let imgSrc = $(this).children(1).attr('src');
-      let $modalImage = $('.modalImage');
-      $modalImage.attr('src',imgSrc);
-  })
-    function moreReviewImgModalBtn(src) {
-        let lastIndex = src.lastIndexOf("/");
-      let s = src.substring(lastIndex+1);
-        let $modalImage = $('.modalImage');
-        $modalImage.attr('src','/product/images/'+s);
+    function updateReviewForm() {
+        $('.myReview').remove();
+        $('#myReviewForm').attr('style', 'display: ');
     }
 
-  function deleteReviewImg(id) {
-      let productId = $("#productId").val();
-      let $this = $('#'+id);
-      let next = $this.next(1).children(1);
-      let attrSrc = next.attr('src');
-      let attrAlt = next.attr('alt');
-      let pos = attrSrc.lastIndexOf("/");
-      let substringSrc = attrSrc.substring(pos+1);
-      fetch('/product/deleteReviewImg?productId='+productId, {
-          method: 'POST',
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-              substringSrc: substringSrc,
-              attrAlt: attrAlt,
-          }),
-      })
-          .then(response => {
-              // return response.json();
-          })
-          .then(data => {
+    $('#reviewDeleteBtn').click(function () {
+        {
+            fetch('/product/deleteReview', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/text",
+                },
+                body: productId,
+            })
+                .then(response => {
+                    // return response.json();
+                })
+                .then(data => {
 
-          })
-      next.remove()
-      $this.remove()
-  }
+                })
+        }
+        let productType = [[${productType}]];
+        window.location.href = '/product/' + productType + '/' + productId + '/details';
+    })
+    $('.reviewImgModalBtn').click(function () {
+        let imgSrc = $(this).children(1).attr('src');
+        let $modalImage = $('.modalImage');
+        $modalImage.attr('src', imgSrc);
+    })
+
+    function moreReviewImgModalBtn(src) {
+        let lastIndex = src.lastIndexOf("/");
+        let s = src.substring(lastIndex + 1);
+        let $modalImage = $('.modalImage');
+        $modalImage.attr('src', '/product/images/' + s);
+    }
+
+    function deleteReviewImg(id) {
+        let productId = $("#productId").val();
+        let $this = $('#' + id);
+        let next = $this.next(1).children(1);
+        let attrSrc = next.attr('src');
+        let attrAlt = next.attr('alt');
+        let pos = attrSrc.lastIndexOf("/");
+        let substringSrc = attrSrc.substring(pos + 1);
+        fetch('/product/deleteReviewImg?productId=' + productId, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                substringSrc: substringSrc,
+                attrAlt: attrAlt,
+            }),
+        })
+            .then(response => {
+                // return response.json();
+            })
+            .then(data => {
+
+            })
+        next.remove()
+        $this.remove()
+    }
+
     async function updateReview() {
         let productId = $("#productId").val();
         let storeFileNameArr = new Array();
         let uploadFileNameArr = new Array();
         let myReviewImgSize = $('.myReviewImg img[class=reviewImage]').length;
-        for(var i = 0; i < myReviewImgSize; i++){
-            let src = $('.myReviewImg img[id=reviewImage'+i+']').attr('src');
-            let uploadFileName = $('.myReviewImg img[id=reviewImage'+i+']').attr('alt');
+        for (var i = 0; i < myReviewImgSize; i++) {
+            let src = $('.myReviewImg img[id=reviewImage' + i + ']').attr('src');
+            let uploadFileName = $('.myReviewImg img[id=reviewImage' + i + ']').attr('alt');
             let pos = src.lastIndexOf("/");
-            let storeFileName = src.substring(pos+1);
+            let storeFileName = src.substring(pos + 1);
             storeFileNameArr.push(storeFileName);
             uploadFileNameArr.push(uploadFileName);
         }
         $('#appendTarget').empty();
         let formData = new FormData(document.getElementById("myReviewForm"));
-        for (var o = 0; o < storeFileNameArr.length; o++){
-            formData.append('storeFileName',storeFileNameArr[o])
-            formData.append('uploadFileName',uploadFileNameArr[o])
-            formData.append('uploadFile','UploadFile(uploadFileName='+uploadFileNameArr[o]+', storeFileName='+storeFileNameArr[o]+') ')
+        for (var o = 0; o < storeFileNameArr.length; o++) {
+            formData.append('storeFileName', storeFileNameArr[o])
+            formData.append('uploadFileName', uploadFileNameArr[o])
+            formData.append('uploadFile', 'UploadFile(uploadFileName=' + uploadFileNameArr[o] + ', storeFileName=' + storeFileNameArr[o] + ') ')
         }
-        fetch('/product/updateReview?productId='+productId, {
+        fetch('/product/updateReview?productId=' + productId, {
             method: 'POST',
-            // headers: {
-            //     "Content-Type": "multipart/form-data",
-            //     "Content-Type": "application/json",
-            // },
             body: formData,
         })
             .then(response => {
@@ -934,27 +932,25 @@
 
             })
         let productType = [[${productType}]];
-        window.location.href = '/product/'+productType+'/'+productId+'/details';
+        window.location.href = '/product/' + productType + '/' + productId + '/details';
     }
+
     function addDibs(id) {
         $.ajax({
-            type: 'post',           // 타입 (get, post, put 등등)
-            url: '/product/dibs/add',           // 요청할 서버url
-            async: true,            // 비동기화 여부 (default : true)
-            dataType: 'text',       // 데이터 타입 (html, xml, json, text 등등)
+            type: 'post',
+            url: '/product/dibs/add',
+            async: true,
+            dataType: 'text',
             data: {"productId": id},
-            success: function (result) { // 결과 성공 콜백함수
+            success: function (result) {
                 if (result === 'login') {
                     location.href = '/login'
                 }
                 if (result === 'duplicate') {
-                    console.log(result)
                 } else {
-                    console.log(result)
                 }
             },
-            error: function (request, status, error) { // 결과 에러 콜백함수
-                console.log(error)
+            error: function (request, status, error) {
             }
         })
     }
@@ -1008,8 +1004,6 @@
             });
         }
     })
-
-
 
 
     function moreReview() {
@@ -1116,10 +1110,10 @@
         var $input = $(this).parents().eq(2).find(quantity);
         let remainStock = $('#remainStock').text();
         let quantityVal = $("#quantity").val();
-        if (parseInt(quantityVal) < parseInt(remainStock)){
+        if (parseInt(quantityVal) < parseInt(remainStock)) {
             $input.val(parseInt($input.val()) + 1);
             $input.change();
-        } else{
+        } else {
             const excessQuantityHtml = `
             <h6 class="text-secondary osh">재고가 부족합니다</h6>`;
             $('.osh').remove()
@@ -1174,9 +1168,6 @@
             }
         });
     }
-
-
-
 </script>
 
 <script th:src="@{/js/reviewContentStr.js}"></script>

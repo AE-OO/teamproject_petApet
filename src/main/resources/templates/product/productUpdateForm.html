@@ -358,15 +358,10 @@
         formData.append('productRating',productRating)
         fetch('/product/update?productId='+productId, {
             method: 'POST',
-            // headers: {
-            //     "Content-Type": "multipart/form-data",
-            //     "Content-Type": "application/json",
-            // },
             body: formData,
         })
             .then(response => {
                 location.href = response.url
-                // return response.json();
             })
             .then(data => {
             })
@@ -412,7 +407,6 @@
             enctype: 'multipart/form-data',
             processData: false,
             success: function (data) {
-                console.log(data)
                 $(el).summernote('editor.insertImage', data.url);
             }
         });

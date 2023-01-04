@@ -136,7 +136,7 @@ async function broughtCouponList(url) {
             }
             let button ;
             if (coupon.used === true) {
-                button = `<button class="btn btn-sm btn-primary productDirectBtn" id="${coupon.couponAcceptType}" disabled>사용 완료</button>`
+                button = `<button class="btn btn-sm btn-outline-primary productDirectBtn" id="${coupon.couponAcceptType}" disabled>사용 완료</button>`
             } else {
                 button = `<button class="btn btn-sm btn-primary productDirectBtn" id="${coupon.couponAcceptType}">상품 둘러보기</button>`
             }

@@ -184,11 +184,11 @@ $(function() {
 //월별 판매량 차트의 x축 표시하기 위함
 function getFormatDate(date , subNum){
     var year = date.getFullYear();
-    var month = (1 + date.getMonth());
+    var month = (date.getMonth() + 1);
 
     if(month - subNum <= 0){
         year = year - 1;
-        month = month - 1;
+        month = month - subNum +12 ;
     }else{
         month = month - subNum;
     }
