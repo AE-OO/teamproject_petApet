@@ -32,7 +32,7 @@ public class Comment extends BaseTimeEntity {
 
     //비밀댓글
     @Column(length = 1)
-    @ColumnDefault("N")
+    @ColumnDefault("'N'")
     @Convert(converter = EmptyStringToNullConverter.class)
     private String commentSecret;
 

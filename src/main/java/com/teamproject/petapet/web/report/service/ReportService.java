@@ -9,7 +9,7 @@ import com.teamproject.petapet.web.report.dto.*;
 import java.util.List;
 
 public interface ReportService {
-    List<ReportDTO> getReportCommunityList();
+    abstract List<ReportDTO> getReportCommunityList();
     List<ReportDTO> getReportMemberList();
     List<ReportDTO> getReportProductList();
     void addProductReport(ReportProductDTO reportProductDTO);
