@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -73,6 +74,7 @@ public class PaymentsController {
     public void buySuccess(@RequestBody PaymentVO vo,Principal principal, Model model) throws Exception {
         String loginMember = checkMember(principal);
         Buy buy = new Buy(
+                vo.getUid(),
                 vo.getBuyAddress(),
                 memberService.findOne(loginMember),
                 productService.findOne(vo.getBuyProduct()).orElseThrow(NoSuchElementException::new),
@@ -90,6 +92,7 @@ public class PaymentsController {
     public void buySuccess2(@RequestBody PaymentVO vo,Principal principal, Model model) throws Exception {
         String loginMember = checkMember(principal);
         Buy buy = new Buy(
+                vo.getUid(),
                 vo.getBuyAddress(),
                 memberService.findOne(loginMember),
                 productService.findOne(vo.getBuyProduct()).orElseThrow(NoSuchElementException::new),

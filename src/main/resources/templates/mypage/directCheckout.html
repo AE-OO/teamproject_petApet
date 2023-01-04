@@ -334,11 +334,13 @@
     var IMP = window.IMP; // 생략가능
     IMP.init('imp34631730'); // <-- 본인 가맹점 식별코드 삽입
 
+    var uid = "order_" + new Date().getTime(); // <- 주문번호 생성
+
     // 결제api에 전달할 파라미터값
     var param = {
         pg : 'kakaopay',
         pay_method : 'card', //생략 가능
-        merchant_uid: "order_" + new Date().getTime() ,
+        merchant_uid: uid,
         name : [[${product.productName}]],
         amount : [[${product.productPrice}]],
         buyer_name : [[${member.memberName}]],
@@ -357,6 +359,7 @@
 
     // DB에 전달할 파라미터
     var param2 = {
+        "uid" : uid,
         "buyAddress" : buyAddress,
         "buyQuantity" : buyQuantity,
         "buyProduct" : buyProduct,

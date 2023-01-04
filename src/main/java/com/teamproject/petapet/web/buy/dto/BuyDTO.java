@@ -17,9 +17,11 @@ public class BuyDTO {
     private String productName;
     private String buyDetail;
     private Long totalPrice;
+    private String merchantUID;
 
     public static BuyDTO fromEntityForManageSales(Buy buy){
         return BuyDTO.builder()
+                .merchantUID(buy.getMerchantUid())
                 .productName(buy.getProduct().getProductName())
                 .memberId(buy.getMember().getMemberId())
                 .buyDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(buy.getBuyDate()))

@@ -60,6 +60,7 @@ public class CartController {
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
+
                 memberService.findOne(loginMember),
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);

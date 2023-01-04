@@ -1,10 +1,13 @@
 package com.teamproject.petapet.web.company.service;
 
+import com.teamproject.petapet.domain.company.Company;
+import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CompanyService {
     boolean duplicateCheckCompanyId(String companyId);
@@ -28,8 +31,6 @@ public interface CompanyService {
     void refuseJoinCompany(String companyId);
 
 
-
-
-
-
+    //23.1.4 성현 추가
+    Optional<Company> findOne(String id);
 }

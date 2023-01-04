@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -62,7 +63,8 @@ public class BuyController {
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
 
-        Buy buy = new Buy(member.getMemberAddress(),
+        Buy buy = new Buy(
+                member.getMemberAddress(),
                 member,
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
@@ -79,7 +81,8 @@ public class BuyController {
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
 
-        Buy buy = new Buy(member.getMemberAddress(),
+        Buy buy = new Buy(
+                member.getMemberAddress(),
                 member,
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);

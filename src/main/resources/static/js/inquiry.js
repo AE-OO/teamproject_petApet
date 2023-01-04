@@ -195,3 +195,7 @@ const setValue = (target) => {
 function fn_delete(){
     confirm("삭제하시겠습니까")
 }
+
+const putValue = (target) => {
+    let value = $('#inputBuySelect01').val();
+    $('input[name=productDiv]').attr('value',value);}
