@@ -3,11 +3,7 @@ package com.teamproject.petapet.web.company.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.member.Authority;
-import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.company.validation.DuplicateCompanyId;
-import com.teamproject.petapet.web.company.validation.DuplicateCompanyNumber;
-import com.teamproject.petapet.web.company.validation.NotDuplicateCompanyId;
-import com.teamproject.petapet.web.company.validation.NotDuplicateCompanyNumber;
+import com.teamproject.petapet.web.company.validation.*;
 import com.teamproject.petapet.web.member.dto.AuthorityDTO;
 import com.teamproject.petapet.web.member.validatiion.PasswordEquals;
 import com.teamproject.petapet.web.member.validatiion.SmsConfirmNum;
@@ -17,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.sql.Date;
 import java.util.Set;
 
 public  class CompanyRequestDTO {
@@ -56,6 +51,7 @@ public  class CompanyRequestDTO {
         @Pattern(regexp = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$",
                 message = "형식에 맞게 이메일 주소를 입력해주세요.")
         @NotBlank(message = "이메일은 필수 입력값입니다.")
+        @NotDuplicateCompanyEmail
         private String companyEmail;
 
         @SmsConfirmNum //custom validation
@@ -113,7 +109,6 @@ public  class CompanyRequestDTO {
         private String companyName;
 
         @NotBlank(message = "사업자 번호는 필수 입력값입니다.")
-        @DuplicateCompanyNumber
         private String companyNumber;
     }
 

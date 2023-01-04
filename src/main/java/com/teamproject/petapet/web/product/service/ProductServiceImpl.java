@@ -7,12 +7,13 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.product.Product;
+import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.repository.ProductRepository;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import lombok.RequiredArgsConstructor;
 
-import com.teamproject.petapet.domain.product.ProductType;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.teamproject.petapet.domain.product.QProduct.product;
 
@@ -42,11 +44,10 @@ public class ProductServiceImpl implements ProductService {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Product> getProductList() {
-        return productRepository.findAll();
+    public List<ProductDTO> getProductList(String companyId) {
+        List<Product> productList = productRepository.findAllByCompany_CompanyId(companyId);
+        return productList.stream().map(list -> ProductDTO.fromEntityForManageProduct(list)).collect(Collectors.toList());
     }
-
-
 
     @Override
     public Page<Product> getProductPage(Pageable pageable) {
@@ -61,6 +62,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void updateProductStatus(String selectStatus, Long productStock, Long productId) {
         productRepository.updateProductStatus(selectStatus, productStock, productId);
+
+    }
+
+    @Override
+    public void updateProductInfo(String type, Long productId, Long productStock, String productStatus) {
+        if(type.equals("stock")){
+            productRepository.updateProductStock(productStock, productId);
+        }else if(type.equals("status")){
+            productRepository.updateProductStatus(productStatus, productId);
+        }
     }
 
     @Override
@@ -108,7 +119,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findPage(String category,ProductType productType, String sortType,String content, Long starRating,Pageable pageable) {
+    public Page<Product> findPage(String category, ProductType productType, String sortType, String content, Long starRating, Pageable pageable) {
         List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable, sortType);
         List<Product> productList = jpaQueryFactory.select(product)
                 .from(product)

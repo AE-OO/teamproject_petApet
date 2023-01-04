@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.buy;
 
 import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.web.buy.dto.BuyDTO;
 import com.teamproject.petapet.web.buy.dto.BuyVO;
 import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.cart.service.CartService;
@@ -10,6 +11,9 @@ import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -87,5 +91,37 @@ public class BuyController {
 
     private String checkMember(Principal principal) {
         return memberService.findOne(principal.getName()).getMemberId();
+    }
+
+    //박채원 22.12.16 추가 (이하 3개 메소드)
+    @ResponseBody
+    @GetMapping("/getTotalSalesPerMonth")
+    public List<Integer> getTotalSalesPerMonth(Principal principal){
+        return buyService.getTotalSalesPerMonth(principal.getName());
+    }
+    
+    @ResponseBody
+    @GetMapping("/getProductSales")
+    public List<Integer> getProductSales(Principal principal){
+        return buyService.getProductSales(principal.getName());
+    }
+
+    @ResponseBody
+    @GetMapping("/getDetailSalesPerMonth/{productId}")
+    public List<Integer> getDetailSalesPerMonth(@PathVariable("productId") Long productId){
+        return buyService.getDetailSalesPerMonth(productId);
+    }
+
+    //박채원 22.12.26 추가 (이하 2개 메소드)
+    @ResponseBody
+    @GetMapping(value = "/manageSales", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BuyDTO>> getSalesList(Principal principal){
+        return new ResponseEntity(buyService.getCompanyPageSalesList(principal.getName()), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/getMonthlySales")
+    public List<Integer> getMonthlySales(Principal principal){
+        return buyService.getMonthlySales(principal.getName());
     }
 }

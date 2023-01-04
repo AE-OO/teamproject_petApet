@@ -1,7 +1,6 @@
 package com.teamproject.petapet.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
@@ -47,6 +46,7 @@ public class Review {
     @CollectionTable(name = "ReviewImg", joinColumns = @JoinColumn(name = "reviewImg", referencedColumnName = "reviewId"))
     private List<UploadFile> reviewImg;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;

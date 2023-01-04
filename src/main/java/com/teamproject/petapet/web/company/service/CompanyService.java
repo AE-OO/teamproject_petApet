@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface CompanyService {
     boolean duplicateCheckCompanyId(String companyId);
+    boolean duplicateCheckCompanyEmail(String companyEmail);
+    boolean duplicateCheckCompanyPhoneNum(String companyPhoneNum);
     boolean checkCompanyPw(String companyId, String companyPw);
     boolean checkCompanyNumber(String companyNumber);
     void companyJoin(CompanyRequestDTO.JoinDTO joinDTO);
@@ -18,6 +20,7 @@ public interface CompanyService {
     String findEmail(String companyId);
     CompanyDTO companyInfo(String companyId);
     void updateCompanyInfo (String companyId, CompanyRequestDTO.UpdateCompanyInfo updateCompanyInfo);
+    void deleteCompany(String companyId);
 
     //22.11.25 박채원 추가
     List<CompanyDTO> getCompanyList();

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 커뮤니티</title>
+    <link>
+    <script th:inline="javaScript">
+        let mainCategory = [[${mainCategory}]]
+        let nowPageNum = [[${community.getNumber()}]]
+        // selectPageNum = function (value) {
+        //     goPost(value, $("#pageSize").text(), mainCategory)
+        // }
+        goPost = function (value1, value2, value3) {
+            let form = document.createElement('form');
+            let pageNum;
+            pageNum = document.createElement('input');
+            pageNum.setAttribute('type', 'hidden');
+            pageNum.setAttribute('name', 'pageNum');
+            pageNum.setAttribute('value', value1);
+            let pageSize;
+            pageSize = document.createElement('input');
+            pageSize.setAttribute('type', 'hidden');
+            pageSize.setAttribute('name', 'pageSize');
+            pageSize.setAttribute('value', value2);
+            let category;
+            category = document.createElement('input');
+            category.setAttribute('type', 'hidden');
+            category.setAttribute('name', 'communityCategory');
+            category.setAttribute('value', value3);
+            form.appendChild(pageNum);
+            form.appendChild(pageSize);
+            form.appendChild(category);
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', '/community');
+            document.body.appendChild(form);
+            form.submit();
+        }
+        $(function () {
+            $("#writeBtn").click(function () {
+                window.location = "/community/insert";
+            });
+            $("#categoryList").children().click(function () {
+                goPost(0, $("#pageSize").text(), $(this).text().toLowerCase().trim())
+            });
+            $("#pageSizeList").children().click(function () {
+                goPost(nowPageNum, $(this).find('span').text(), mainCategory.toLowerCase().trim())
+            });
+            $(".badge2").click(function () {
+                // alert($(this).parent().prev().text().trim())
+                window.open("/comment/" + $(this).parent().prev().text().trim(), "_blank", "width=900,height=800,left=0,top=0,location=no");
+            });
+            $("#prevPage").click(function () {
+                if ($("#prevPage").hasClass('disabled')) {
+                    return;
+                }
+                goPost(nowPageNum - 1, $("#pageSize").text(), mainCategory.toLowerCase().trim())
+            });
+            $("#nextPage").click(function () {
+                if ($("#nextPage").hasClass('disabled')) {
+                    return;
+                }
+                goPost(nowPageNum + 1, $("#pageSize").text(), mainCategory.toLowerCase().trim())
+            })
+            $(".selectPage").click(function () {
+                goPost($(this).text().trim()-1, $("#pageSize").text(), mainCategory.toLowerCase().trim())
+            })
+            $("#myPostBtn").click(function (){
+                // let form = document.createElement('form');
+                // let memberId;
+                // pageNum = document.createElement('input');
+                // pageNum.setAttribute('type', 'hidden');
+                // pageNum.setAttribute('name', 'pageNum');
+                // pageNum.setAttribute('value', value1);
+                // let pageSize;
+                // pageSize = document.createElement('input');
+                // pageSize.setAttribute('type', 'hidden');
+                // pageSize.setAttribute('name', 'pageSize');
+                // pageSize.setAttribute('value', value2);
+                // let category;
+                // category = document.createElement('input');
+                // category.setAttribute('type', 'hidden');
+                // category.setAttribute('name', 'communityCategory');
+                // category.setAttribute('value', value3);
+                // form.appendChild(pageNum);
+                // form.appendChild(pageSize);
+                // form.appendChild(category);
+                // form.setAttribute('method', 'post');
+                // form.setAttribute('action', '/community');
+                // document.body.appendChild(form);
+                // form.submit();
+                window.location="/community/update";
+            });
+        });
+    </script>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<!-- start feature1 -->
+<hr class="mt-5">
+<div class="container-xxl ">
+    <div class="container py-5">
+        <div class="text-center">
+            <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
+            <h1 class="display-5 mb-3">Pet Community</h1>
+            <div class="col-12 text-center">
+                <ul id="categoryList" class="list-inline rounded mb-4 community-menu">
+                    <!--                    <li class="mx-2 active"><a href="#">인기글</a></li>-->
+                    <li th:class="${mainCategory == 'all'}? 'mx-2 active':'mx-2'"><a href="javascript:">All</a></li>
+                    <li th:class="${mainCategory == '거래'}? 'mx-2 active':'mx-2'"><a href="javascript:">거래</a></li>
+                    <li th:class="${mainCategory == '추천'}? 'mx-2 active':'mx-2'"><a href="javascript:">추천</a></li>
+                    <li th:class="${mainCategory == '일상'}? 'mx-2 active':'mx-2'"><a href="javascript:">일상</a></li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <div class="float-start">
+                    <p class="pt-2 mb-0">새글 <strong th:text="${todayPosts}"/> / [[${community.getTotalElements()}]]</p>
+                </div>
+                <div class="dropdown">
+                    <a class="btn btn-link dropdown-toggle float-end" href="javascript:" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        목록 <span id="pageSize" th:text="${community.getSize()}"/>개
+                    </a>
+                    <ul id="pageSizeList" class="dropdown-menu" style="min-width: auto;">
+                        <li><a class="dropdown-item" href="javascript:">목록 <span>10</span>개</a></li>
+                        <li><a class="dropdown-item" href="javascript:">목록 <span>20</span>개</a></li>
+                        <li><a class="dropdown-item" href="javascript:">목록 <span>30</span>개</a></li>
+                        <li><a class="dropdown-item" href="javascript:">목록 <span>40</span>개</a></li>
+                        <li><a class="dropdown-item" href="javascript:">목록 <span>50</span>개</a></li>
+                    </ul>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th class="col-md-1">번호</th>
+                        <th>제목</th>
+                        <th class="col-md-2">글쓴이</th>
+                        <th class="col-md-2">작성일</th>
+                        <th class="col-md-1">조회</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="community : ${community}">
+                        <td th:text="${community.communityId}"/>
+                        <td class="text-start">
+                            <a th:href="'/community/'+${community.communityId}" class="mx-2">
+                                <strong class="me-2 text-danger" th:if="${mainCategory} == 'all'"
+                                        th:text="${community.communityCategory}"/>
+                                <strong class="me-2" th:if="${community.communitySubCategory != null}"
+                                        th:text="${community.communitySubCategory}"/>
+                                [[${community.communityTitle}]]
+                            </a>
+                            <span class="badge2" role="button" th:if="${community.commentListSize}>0"
+                                  th:text="${community.commentListSize}"/>
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <a href="javascript:" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                   th:text="${community.memberId}"/>
+                                <ul class="dropdown-menu" style="min-width: auto;">
+                                    <li><a class="dropdown-item" href="javascript:">회원정보</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">신고하기</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td th:text="${community.modifiedDate}"/>
+                        <td th:text="${community.viewCount}"/>
+                    </tr>
+                    <tr th:if="${community.getTotalElements()} == 0">
+                        <td class="py-5" colspan="5"><strong>작성된 글이 없습니다</strong></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="mt-4">
+                    <div sec:authorize="hasAnyRole('MEMBER','ADMIN')">
+                    <button id="writeBtn" class="btn btn-danger float-start"> 글쓰기</button>
+                    <button id="myPostBtn" class="btn btn-primary float-end">내글보기</button>
+                    </div>
+                    <div aria-label="Page navigation">
+                        <ul id="pageNum" class="pagination justify-content-center">
+                            <li id="prevPage" th:class="${community.isFirst()}? 'page-item disabled':'page-item'">
+                                <a class="page-link" href="javascript:"
+                                   th:style="${community.hasPrevious()}? '':'pointer-events: none;'">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                                </a>
+                            </li>
+                            <li th:if="${(community.getTotalPages()>5 and community.getNumber()+1>=community.getTotalPages()-4)or(community.getTotalPages()>5 and community.getNumber()+1>5)}"
+                                class="page-item"><a class="page-link selectPage" href="javascript:" th:text="1"></a></li>
+                            <li th:if="${(community.getTotalPages()>5 and community.getNumber()+1>=community.getTotalPages()-4)or(community.getTotalPages()>5 and community.getNumber()+1>5)}"
+                                class="page-item disabled"><a class="page-link">...</a></li>
+                            <li th:if="${community.getTotalPages()<6} "
+                                th:each="page:${#numbers.sequence(1,community.getTotalPages())}"
+                                th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
+                                <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
+                            </li>
+                            <li th:if="${community.getNumber()+1<6 and community.getTotalPages()>5 and community.getNumber()+1<community.getTotalPages()-4}"
+                                th:each="page:${#numbers.sequence(1,5)}"
+                                th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
+                                <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
+                            </li>
+                            <li th:if="${community.getNumber()+1>5 and community.getTotalPages()>5 and community.getNumber()+1<community.getTotalPages()-4}"
+                                th:each="page : ${#numbers.sequence(community.getNumber()-2+1,community.getNumber()+2+1)}"
+                                th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
+                                <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
+                            </li>
+                            <li th:if="${community.getTotalPages()>5 and community.getNumber()+1>=community.getTotalPages()-4}"
+                                th:each="page : ${#numbers.sequence(community.getTotalPages()-4,community.getTotalPages())}"
+                                th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
+                                <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
+                            </li>
+                            <li th:if="${community.getTotalPages()>5 and community.getNumber()+1<community.getTotalPages()-4}"
+                                class="page-item disabled"><a class="page-link">...</a></li>
+                            <li th:if="${community.getTotalPages()>5 and community.getNumber()+1<community.getTotalPages()-4}"
+                                class="page-item"><a class="page-link selectPage" href="javascript:"
+                                                     th:text="${community.getTotalPages()}"></a>
+                            </li>
+                            <li id="nextPage" th:class="${community.isLast()}? 'page-item disabled':'page-item'">
+                                <a class="page-link" href="javascript:"
+                                   th:style="${community.hasNext()}? '':'pointer-events: none;'">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-2 mx-auto me-1 px-0">
+                        <select class="form-control">
+                            <option selected>제목+내용</option>
+                            <option>글제목</option>
+                            <option>글작성자</option>
+                        </select>
+                    </div>
+                    <div class="col-3 mx-1 px-0">
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-1 mx-auto ms-1 px-0">
+                        <button class="btn btn-primary"><i class="fa fa-search m-0"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+
+</body>
+
+</html>

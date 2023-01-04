@@ -1,14 +1,9 @@
 package com.teamproject.petapet.web.product;
 
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
-import com.teamproject.petapet.domain.product.QProduct;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.dibs.service.DibsProductService;
@@ -16,10 +11,10 @@ import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import com.teamproject.petapet.web.product.productdtos.ReviewInsertDTO;
-import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
+import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -46,10 +40,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import static com.teamproject.petapet.domain.product.QProduct.product;
 
 @Controller
 @Slf4j

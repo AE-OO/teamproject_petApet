@@ -1,5 +1,6 @@
 package com.teamproject.petapet.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.community.Comment;
@@ -12,15 +13,14 @@ import com.teamproject.petapet.domain.report.Report;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 
@@ -53,15 +53,18 @@ public class Member{
     @Column(length = 45)
     private String memberAddress;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false, unique = true)
     private String memberPhoneNum;
 
     @Column(length = 45, nullable = false)
     private String memberName;
 
 //    temp by jo
-    @Column
+    @Column(nullable = false, unique = true)
     private String memberEmail;
+
+    @Column
+    private String memberImg;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -77,6 +80,7 @@ public class Member{
     @Column(nullable = false)
     private boolean activated;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Authority> authorities = new HashSet<>();
@@ -85,40 +89,47 @@ public class Member{
     private Date memberStopDate;
 
     //멤버가 어떤 글을 썼는지도 알아야하기 때문에 양방향으로 작성함
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Community> community;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Comment> comment;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Review> review;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Message> message;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Inquired> inquired;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Report> report;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Cart> cart;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Buy> buy;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<DibsProduct> dibsProduct;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<DibsCommunity> dibsCommunity;
 
     public void addAuthority(Authority authority) {
         authorities.add(authority);
     }
-
-
-
 }

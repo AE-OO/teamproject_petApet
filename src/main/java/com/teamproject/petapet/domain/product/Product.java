@@ -1,7 +1,8 @@
 package com.teamproject.petapet.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.cart.Cart;
-import com.teamproject.petapet.domain.report.Report;
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
@@ -20,7 +21,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "company")
 @Getter
 @DynamicInsert
 public class Product {
@@ -78,6 +79,11 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Cart> cart;
 
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "companyId")
+    private Company company;
+
     public Product(String productName, Long productPrice, Long productStock, List<UploadFile> productImg, String productStatus, ProductType productDiv, String productContent, Long productDiscountRate, Long productUnitPrice) {
         this.productName = productName;
         this.productPrice = productPrice;
@@ -105,7 +111,7 @@ public class Product {
     }
 
     public static Product ConvertToEntityByInsertDTO(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, ProductType productDiv) {
-       return Product.builder()
+        return Product.builder()
                 .productName(insertDTO.getProductName())
                 .productPrice(insertDTO.getProductPrice())
                 .productStock(insertDTO.getProductStock())

@@ -65,7 +65,6 @@ public class CartController {
                 quantity);
 
         cartService.addCart(cart);
-
     }
 
     @ResponseBody

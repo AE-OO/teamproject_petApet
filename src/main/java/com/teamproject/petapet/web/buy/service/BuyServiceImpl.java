@@ -3,12 +3,14 @@ package com.teamproject.petapet.web.buy.service;
 
 import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.buy.BuyRepository;
+import com.teamproject.petapet.web.buy.dto.BuyDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,6 +41,32 @@ public class BuyServiceImpl implements BuyService {
     @Override
     public boolean existsByBuyAndMember(Long buyId, String memberId) {
         return buyRepository.existsByBuyIdAndMember(buyId, memberId);
+    }
+
+    @Override
+    public List<Integer> getTotalSalesPerMonth(String companyId) {
+        return buyRepository.getTotalSalesPerMonth(companyId);
+    }
+
+    @Override
+    public List<Integer> getProductSales(String companyId) {
+        return buyRepository.getProductSales(companyId);
+    }
+
+    @Override
+    public List<Integer> getDetailSalesPerMonth(Long productId) {
+        return buyRepository.getDetailSalesPerMonth(productId);
+    }
+
+    @Override
+    public List<BuyDTO> getCompanyPageSalesList(String companyId) {
+        List<Buy> buyList = buyRepository.getAllByProduct_Company_CompanyIdOrderByBuyDateDesc(companyId);
+        return buyList.stream().map(list -> BuyDTO.fromEntityForManageSales(list)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Integer> getMonthlySales(String companyId) {
+        return buyRepository.getMonthlySales(companyId);
     }
 
 }
