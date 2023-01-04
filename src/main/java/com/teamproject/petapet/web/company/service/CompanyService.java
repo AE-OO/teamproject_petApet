@@ -32,6 +32,6 @@ public interface CompanyService {
     // 22.12.21 오성훈. 상품 등록 시 영속성객체가 필요해서 추가
     Optional<Company> findById(String companyId);
 
-
-
+    //23.1.4 성현 추가
+    Optional<Company> findOne(String id);
 }

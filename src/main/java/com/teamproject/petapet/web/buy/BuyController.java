@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -40,13 +41,10 @@ public class BuyController {
 
     // 나의 주문 목록
     @GetMapping()
-    public String myBuy(Principal principal,
-                         HttpServletRequest request,
-                         HttpSession httpSession,
-                         Model model){
+    public String myBuy(Principal principal, Model model){
 
         if(principal != null) {
-            String loginMember = checkMember(principal, request, httpSession);
+            String loginMember = checkMember(principal);
 
             List<Buy> buyList = buyService.findAll(loginMember);
             model.addAttribute("buyList", buyList);
@@ -58,15 +56,15 @@ public class BuyController {
 
     @ResponseBody
     @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
-    public void productToBuy(@RequestBody BuyVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession){
+    public void productToBuy(@RequestBody BuyVO vo, Principal principal){
 
-        String loginMember = checkMember(principal, request, httpSession);
-        Member member = memberService.findOne(loginMember);
+        Member member = memberService.findOne(checkMember(principal));
         log.info("member ={} ", member);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
 
-        Buy buy = new Buy(member.getMemberAddress(),
+        Buy buy = new Buy(
+                member.getMemberAddress(),
                 member,
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
@@ -77,15 +75,14 @@ public class BuyController {
 
     @ResponseBody
     @RequestMapping(value = "/addByCart", method = { RequestMethod.POST }, produces = "application/json")
-    public void cartToBuy(@RequestBody BuyVO vo, Principal principal, HttpServletRequest request, HttpSession httpSession) {
+    public void cartToBuy(@RequestBody BuyVO vo, Principal principal) {
 
-        String loginMember = checkMember(principal, request, httpSession);
-        Member member = memberService.findOne(loginMember);
-        log.info("member ={} ", member);
+        Member member = memberService.findOne(checkMember(principal));
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
 
-        Buy buy = new Buy(member.getMemberAddress(),
+        Buy buy = new Buy(
+                member.getMemberAddress(),
                 member,
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
@@ -95,11 +92,8 @@ public class BuyController {
     }
 
 
-    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
-        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
-        HttpSession session = request.getSession(false);
-        Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        return loginMemberSession.getMemberId();
+    private String checkMember(Principal principal) {
+        return memberService.findOne(principal.getName()).getMemberId();
     }
 
     //박채원 22.12.16 추가 (이하 3개 메소드)

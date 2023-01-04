@@ -10,12 +10,13 @@ function getSalesList(){
             $.each(result, function(idx, sales) {
                 list += `<tr id="salesData`+ idx +`">
                                     <td class="pl-0" id="inquiryId">${idx + 1}</td>
+                                    <td class="merchantUID">${sales.merchantUID}</td>
                                     <td>${sales.productName}</td>
                                     <td>${sales.memberId}</td>
                                     <td>${sales.buyDate}</td>
                                     <td>${sales.buyDetail}</td>
-                                    <td>${sales.totalPrice}</td>
-                                    <td><button type="button" class="btn btn-sm btn-secondary">결제취소</button></td>
+                                    <td class="totalPrice">${sales.totalPrice}</td>
+                                    <td><button onclick="cancelPay()" type="button" class="btn btn-sm btn-secondary">결제취소</button></td>
                                     <td>
                                     </td> </tr>`;
             })
@@ -25,4 +26,24 @@ function getSalesList(){
 
         $(".salesData").html(list);
     })
+}
+
+var merchantUID = $('.merchantUID').text();
+var totalPrice = $('.totalPrice').val();
+
+var param = {
+    "merchant_uid": merchantUID,
+    "cancel_request_amount": totalPrice
+}
+
+//결제 환불
+function cancelPay(){
+    console.log("click!");
+    jQuery.ajax({
+        "url": "/",
+        "type": "POST",
+        "contentType": "application/json",
+        "data": JSON.stringify({param}),
+        "dataType": "json"
+    });
 }
