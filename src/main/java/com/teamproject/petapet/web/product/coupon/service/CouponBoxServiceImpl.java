@@ -9,18 +9,19 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Coupon;
 import com.teamproject.petapet.domain.product.CouponBox;
 import com.teamproject.petapet.domain.product.repository.CouponBoxRepository;
-import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.coupon.coupondtos.CouponBoxDTO;
 import com.teamproject.petapet.web.product.coupon.coupondtos.QCouponBoxDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static com.teamproject.petapet.domain.product.QCoupon.coupon;
 import static com.teamproject.petapet.domain.product.QCouponBox.couponBox;
@@ -29,15 +30,11 @@ import static com.teamproject.petapet.domain.product.QCouponBox.couponBox;
 @Slf4j
 @RequiredArgsConstructor
 public class CouponBoxServiceImpl implements CouponBoxService {
-    private final MemberService memberService;
     private final CouponBoxRepository couponBoxRepository;
-    private final CouponService couponService;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public boolean save(Long couponId, Principal principal) {
-        Member member = memberService.findOne(principal.getName());
-        Coupon coupon = couponService.findById(couponId).orElseThrow(NoSuchElementException::new);
+    public boolean save(Member member, Coupon coupon) {
         if (!duplicateCheckCoupon(coupon, member)) {
             CouponBox couponBox = new CouponBox(LocalDateTime.now().plusDays(7L), member, coupon);
             couponBoxRepository.save(couponBox);
@@ -51,9 +48,7 @@ public class CouponBoxServiceImpl implements CouponBoxService {
     }
 
     @Override
-    public boolean duplicateCheckCoupon(Long couponId, Principal principal) {
-        Member member = memberService.findOne(principal.getName());
-        Coupon coupon = couponService.findById(couponId).orElseThrow(NoSuchElementException::new);
+    public boolean duplicateCheckCoupon(Member member, Coupon coupon) {
         return couponBoxRepository.existsByCouponsAndMember(coupon, member);
     }
 
@@ -78,6 +73,15 @@ public class CouponBoxServiceImpl implements CouponBoxService {
                 .fetch();
         Long totalCount = countCouponBox();
         return new PageImpl<>(couponBoxList, pageable, totalCount);
+    }
+
+    @Override
+    @Transactional
+    public Long expirationCoupon() {
+        return jpaQueryFactory.update(couponBox)
+                .set(couponBox.isUsed, true)
+                .where(couponBox.expirationDate.before(LocalDateTime.now()).and(couponBox.isUsed.eq(false)))
+                .execute();
     }
 
     private BooleanExpression isUsed(String isUsed) {

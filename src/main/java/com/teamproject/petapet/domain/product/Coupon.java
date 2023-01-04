@@ -70,9 +70,9 @@ public class Coupon {
 
     public Coupon(CouponDTO couponDTO) {
         this.couponName = couponDTO.getCouponName();
-        this.couponEndDate = LocalDateTime.of(LocalDate.parse(couponDTO.getCouponEndDate()
-                        , DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                , LocalTime.of(23, 59));
+        this.couponEndDate = LocalDateTime.of(LocalDate.parse(couponDTO.getCouponEndDate(),
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                LocalTime.of(23, 59));
         if (couponDTO.getCouponStock() == 0) {
             this.couponStock = couponDTO.getCouponStock();
         } else {

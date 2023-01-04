@@ -116,10 +116,10 @@ public class ProductController {
 
     @GetMapping("/update")
     public String productUpdateForm(@ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO
-                                    ,@RequestParam("productId") Long productId, Model model, Principal principal) {
+            , @RequestParam("productId") Long productId, Model model, Principal principal) {
         Product findProduct = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         productUpdateDTO = ProductUpdateDTO.convertToProductUpdateDTO(findProduct);
-        if (!principal.getName().equals(findProduct.getCompany().getCompanyId())){
+        if (!principal.getName().equals(findProduct.getCompany().getCompanyId())) {
             return "/error/404";
         }
         model.addAttribute("ProductUpdateDTO", productUpdateDTO);
@@ -128,7 +128,9 @@ public class ProductController {
 
     @PostMapping("/update")
     @ResponseBody
-    public ResponseEntity<?> productUpdate(@Validated @ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO, BindingResult bindingResult, Principal principal) throws IOException {
+    public ResponseEntity<?> productUpdate(@Validated @ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO,
+                                           BindingResult bindingResult,
+                                           Principal principal) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         if (bindingResult.hasGlobalErrors()) {
         }
@@ -137,9 +139,8 @@ public class ProductController {
         }
 
         if (bindingResult.hasErrors()) {
-            log.info("error");
-            headers.setLocation(URI.create("/update?productId="+productUpdateDTO.getProductId()));
-            return new ResponseEntity<>(headers,HttpStatus.BAD_REQUEST);
+            headers.setLocation(URI.create("/update?productId=" + productUpdateDTO.getProductId()));
+            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
         }
 
         Company company = companyService.findById(principal.getName()).orElseThrow(NoSuchElementException::new);
@@ -186,7 +187,8 @@ public class ProductController {
     }
 
     @PostMapping("/insert")
-    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO, BindingResult bindingResult, Principal principal) throws IOException {
+    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO,
+                                BindingResult bindingResult, Principal principal) throws IOException {
 
         if (productInsertDTO.getProductImg().get(0).isEmpty()) {
             bindingResult.addError(new FieldError("productInsertDTO", "productImg", "1장 이상의 사진을 올려주세요"));
@@ -265,17 +267,12 @@ public class ProductController {
         List<UploadFile> uploadFiles = fileService.storeFiles(reviewImg);
 
         Member member = memberService.findOne(principal.getName());
+        Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
 
-        Review review = Review.builder().reviewTitle(reviewInsertDTO.getReviewTitle())
-                .reviewRating(reviewInsertDTO.getReviewRating())
-                .reviewRating(reviewInsertDTO.getReviewRating())
-                .reviewContent(reviewInsertDTO.getReviewContent())
-                .reviewImg(uploadFiles)
-                .reviewDate(LocalDateTime.now())
-                .member(member)
-                .product(productService.findOne(productId).orElseThrow(NoSuchElementException::new)).build();
+        Review review = Review.buildReview(reviewInsertDTO, uploadFiles, member, product);
 
         reviewService.save(review);
+
         Long countReviewByProduct = reviewService.countReviewByProduct(productId);
         productService.updateProductRating(productId);
         productService.updateProductReviewCount(productId, countReviewByProduct);

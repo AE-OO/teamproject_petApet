@@ -4,13 +4,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.teamproject.petapet.domain.community.Comment;
 import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentInsertDTO {
     @NotBlank
     private String commentContent;

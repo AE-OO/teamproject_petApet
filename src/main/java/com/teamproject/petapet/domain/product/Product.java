@@ -10,8 +10,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -75,10 +73,6 @@ public class Product {
     @Column(columnDefinition = "bigint(3) default 0")
     private Long productReport;
 
-    //foreign 키는 Counter 테이블에서 갖지만 Product 테이블에서도 연관관계를 작성해 준 이유는 oneToOne 연관관계는 단방향 관계를 지원하지 않기 때문
-//    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-//    private Counter counter;
-
     @Column(columnDefinition = "bigint(5) default 0")
     private Long productViewCount;
 
@@ -95,18 +89,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "companyId")
     private Company company;
-
-    public Product(String productName, Long productPrice, Long productStock, List<UploadFile> productImg, String productStatus, ProductType productDiv, String productContent, Long productDiscountRate, Long productUnitPrice) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productStock = productStock;
-        this.productImg = productImg;
-        this.productStatus = productStatus;
-        this.productDiv = productDiv;
-        this.productContent = productContent;
-        this.productDiscountRate = productDiscountRate;
-        this.productUnitPrice = productUnitPrice;
-    }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {
         return ProductDetailDTO.builder().productPrice(product.getProductPrice())

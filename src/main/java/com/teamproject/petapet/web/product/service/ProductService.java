@@ -4,9 +4,8 @@ import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
-import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductDTO;
-import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -39,7 +38,6 @@ public interface ProductService {
     Optional<Product> saveProduct(ProductInsertDTO productInsertDTO, List<UploadFile> uploadFiles, Company company);
 
     Optional<Product> saveProduct(Product product);
-
 
     void updateCounterView(Long productId);
 

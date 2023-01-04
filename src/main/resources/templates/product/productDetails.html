@@ -1072,7 +1072,7 @@
 
                     $('#moreRating').attr('value', result[idx].reviewRating);
                     $('#moreReviewProduct').text(result[idx].reviewProduct);
-                    $('#moreReview').attr('id', 'moreReview' + idx);
+                    $('#moreReview').attr('id', 'moreReview');
                     var size = $('p[class = star]').length;
                     for (var i = 0; i < size; i++) {
                         $('p[class = star]').eq(i).attr('id', "moreRating" + i);

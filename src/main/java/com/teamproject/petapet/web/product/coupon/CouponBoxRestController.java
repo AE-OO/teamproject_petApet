@@ -1,5 +1,8 @@
 package com.teamproject.petapet.web.product.coupon;
 
+import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Coupon;
+import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.coupon.coupondtos.CouponBoxDTO;
 import com.teamproject.petapet.web.product.coupon.coupondtos.CouponListDTO;
 import com.teamproject.petapet.web.product.coupon.service.CouponBoxService;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RestController
@@ -18,6 +22,7 @@ import java.security.Principal;
 public class CouponBoxRestController {
 
     private final CouponBoxService couponBoxService;
+    private final MemberService memberService;
     private final CouponService couponService;
 
     @GetMapping("/getCouponList")
@@ -28,18 +33,22 @@ public class CouponBoxRestController {
     }
 
     @GetMapping("/broughtCouponList")
-    public Page<CouponBoxDTO> testList(@RequestParam(value = "isImminent", defaultValue = "false", required = false) String sortStr,
-                                       @RequestParam(value = "isUsed", defaultValue = "any", required = false) String isUsed) {
+    public Page<CouponBoxDTO> broughtCouponList(@RequestParam(value = "isImminent", defaultValue = "false", required = false) String sortStr,
+                                                @RequestParam(value = "isUsed", defaultValue = "any", required = false) String isUsed) {
         return couponBoxService.findCouponBoxList(sortStr, isUsed);
     }
 
     @PostMapping("/download")
     public boolean downloadCoupon(@RequestBody Long couponId, Principal principal) {
-        return couponBoxService.save(couponId, principal);
+        Member member = memberService.findOne(principal.getName());
+        Coupon coupon = couponService.findById(couponId).orElseThrow(NoSuchElementException::new);
+        return couponBoxService.save(member, coupon);
     }
 
     @GetMapping("/duplicateCheck")
     public boolean duplicateCheckCoupon(@RequestParam("couponId") Long couponId, Principal principal) {
-        return couponBoxService.duplicateCheckCoupon(couponId, principal);
+        Member member = memberService.findOne(principal.getName());
+        Coupon coupon = couponService.findById(couponId).orElseThrow(NoSuchElementException::new);
+        return couponBoxService.duplicateCheckCoupon(member, coupon);
     }
 }

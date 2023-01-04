@@ -39,7 +39,7 @@ public class CouponController {
     @PostMapping("/admin/registerCoupon")
     public String registerCoupon(@Validated @ModelAttribute CouponDTO couponDTO, BindingResult bindingResult) {
         if (couponDTO.getCouponType().equals("percentDisc") && couponDTO.getCouponDiscRate() > 50) {
-            bindingResult.addError(new FieldError("couponDTO","couponDiscRate",couponDTO.getCouponDiscRate(),false,null,null,"5-50의 값을 입력하세요"));
+            bindingResult.addError(new FieldError("couponDTO", "couponDiscRate", couponDTO.getCouponDiscRate(), false, null, null, "5-50의 값을 입력하세요"));
         }
 
         if (bindingResult.hasErrors()) {
@@ -50,7 +50,7 @@ public class CouponController {
     }
 
     @GetMapping("/member/couponBox")
-    public String couponBoxForm(){
+    public String couponBoxForm() {
         return "/admin/coupon/couponBox";
     }
 }

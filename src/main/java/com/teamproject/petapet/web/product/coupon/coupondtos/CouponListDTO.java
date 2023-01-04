@@ -23,7 +23,7 @@ public class CouponListDTO {
         this.couponId = couponId;
         this.couponName = couponName;
         this.couponEndDate = couponEndDate;
-        this.couponAcceptType = ProductType.valueOf(couponAcceptType).getProductCategory();;
+        this.couponAcceptType = ProductType.valueOf(couponAcceptType).getProductCategory();
         this.couponActive = couponActive;
         this.couponDiscRate = couponDiscRate;
     }
