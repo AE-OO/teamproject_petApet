@@ -15,8 +15,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CommentInsertDTO {
     @NotBlank
     private String commentContent;
