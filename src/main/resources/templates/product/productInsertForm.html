@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragment/heade :: head(productInsert)}">
     <meta charset="UTF-8">
     <title>Title</title>
@@ -37,7 +37,7 @@
             <div class="col-6">
                 <div class="d-flex mx-3 mb-3">
                     <div class="col-12 m-lg-1">
-                        <h6>상품명
+                        <h6 th:value="*{productName}">상품명
                             <div class="field-error text-secondary fs-6" th:errors="*{productName}"/>
                         </h6>
                         <input type="text" name="productName" placeholder="상품명을 입력하세요."
@@ -64,7 +64,7 @@
                             <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productUnitPrice}"/>
                         </h6>
                         <input type="number"  id="productPrice" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
-                               class="col-8" min="1" max="9999999" th:field="*{productUnitPrice}" placeholder="가격" required>
+                               class="col-8" min="1000" max="9999999" th:field="*{productUnitPrice}" placeholder="가격" required>
                         <span class="validity"></span>
                         <h6 class="text-secondary" id="priceMessage" style="font-size: 12px"></h6>
 
@@ -79,7 +79,7 @@
                             </h6>
                         </div>
                         <div class="col-6 m-lg-1">
-                            <input style="border: none; color: #347a5e" th:field="*{productPrice}" name="productPrice" id="finalPrice">
+                            <input style="border: none; color: #347a5e" th:field="*{productPrice}" name="productPrice" id="finalPrice" readonly>
                         </div>
                     </div>
                 </div>
@@ -87,9 +87,10 @@
                     <div class="d-flex flex-row col">
                         <div class="col-6 m-lg-1">
                             <h6>판매자</h6>
+                                <div class="field-error text-secondary" style="font-size: 12px" th:errors="*{productSeller}"/>
                         </div>
                         <div class="col-6 m-lg-1">
-                            <h6>테스트판매</h6>
+                            <input type="text" readonly style="border: none;" th:field="*{productSeller}" name="productSeller" th:value="${#authentication.name}">
                         </div>
                     </div>
                 </div>
@@ -103,6 +104,7 @@
                         <div class="col-6 m-lg-1">
                             <input type="number" th:field="*{productStock}" min="100" max="9999"
                                    class="col-8" id="productStock"
+                                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                    name="productStock" placeholder="재고" required>
                             <span class="validity"></span>
                             <h6 class="text-secondary" id="stockMessage"></h6>
@@ -123,6 +125,26 @@
                 </div>
                 <div class="d-flex mx-3 col">
                     <div class="d-flex flex-row col-6 m-lg-1">
+                        <h6>상품상태
+                            <div th:errors="*{productStatus}" class="field-error text-secondary">
+                            </div>
+                        </h6>
+
+                    </div>
+                    <div class="d-flex flex-row col-5 m-lg-1 pe-4">
+                        <div class="input-group d-flex flex-row mb-3">
+                            <select type="input" class="form-select form-select-sm" name="productStatus" id="productStatus" required>
+                                <option value="판매중">판매중</option>
+                                <option value="판매중지">판매중지</option>
+                                <option value="재고없음">재고없음</option>
+                                <option value="단종">단종</option>
+                            </select>
+                            <span class="validity"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex mx-3 col">
+                    <div class="d-flex flex-row col-6 m-lg-1">
                         <h6>상품카테고리
                             <div th:errors="*{productDiv}" class="field-error text-secondary">
                             </div>
@@ -131,7 +153,7 @@
                     </div>
                     <div class="d-flex flex-row col-5 m-lg-1 pe-4">
                         <div class="input-group d-flex flex-row mb-3">
-                            <input class="d-flex flex-row" type="hidden" th:field="*{productDiv}" id="osh" value=""
+                            <input class="d-flex flex-row" type="hidden" th:field="*{productDiv}" id="productType" value=""
                                    name="productDiv" required>
                             <select type="input" onchange="putValue(this)" class="form-select form-select-sm"
                                     id="inputGroupSelect01" required>
@@ -147,9 +169,10 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+
+
         <hr class="mb-4 mt-4">
 
         <div class="flex-row p-3 mx-3" style="min-height: 10rem">
@@ -216,6 +239,16 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
+
+    $(document).ready(function () {
+        let companyId = [[${#authentication.name}]];
+        $('#productSeller').val(companyId);
+        let val = $('#productType').val();
+        if (val !== ""){
+            $('select option[value='+val+']').attr('selected',true);
+        }
+    })
+
     function setThumbnail(event) {
             let from = Array.from(event.target.files);
             $('#thumbnailImg').empty();
@@ -274,7 +307,6 @@
             enctype : 'multipart/form-data',
             processData : false,
             success : function(data) {
-                console.log(data)
                 $(el).summernote('editor.insertImage',data.url);
             }
         });
@@ -293,7 +325,7 @@
         $("#productPrice").on("propertychange change paste input", function() {
             let price = fnReplace($("#productPrice").val());
             let discountRate = fnReplace($("#discountRate").val());
-            if (price>9999999){
+            if (price>9999999 || price < 1000){
                 $('#priceMessage').text('1,000원 이상, 9,999,999원 이하의 금액이여야 합니다');
             } else {
                 $('#priceMessage').empty();

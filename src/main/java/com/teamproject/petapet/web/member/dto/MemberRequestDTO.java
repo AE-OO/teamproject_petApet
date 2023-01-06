@@ -1,21 +1,16 @@
 package com.teamproject.petapet.web.member.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamproject.petapet.domain.member.Authority;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.member.validatiion.*;
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 public class MemberRequestDTO {

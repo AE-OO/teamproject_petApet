@@ -15,7 +15,7 @@ public interface BuyService {
     // ->
     Buy addBuy(Buy buy);
 
-    boolean existsByBuyAndMember(Long buyId, String memberId);
+    boolean existsByPurchaseHistory(Long buyId, String memberId);
 
     //박채원 22.12.16 추가 (이하 3개 메소드)
     List<Integer> getTotalSalesPerMonth(String companyId);
