@@ -8,7 +8,7 @@
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
-<!-- Myinfo Start -->
+
 <div class="container-xxl px-0 mx-0">
     <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
     <div class="container py-7" style="right:0">
@@ -38,9 +38,7 @@
         </div>
     </div>
 </div>
-<!-- Myinfo End -->
 
-<!-- Modal start -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -54,13 +52,9 @@
         </div>
     </div>
 </div>
-<!--Modal end-->
 
-<!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
-<!--<script src="/js/header.js"></script>-->
-<!--<script th:src="@{/js/header.js}"></script>-->
 
 </body>
 </html>
