@@ -34,7 +34,7 @@ $(document).ready(function () {
 
         $(".reportModalReason").html(str);
         $("#reportBTN").attr("id","reportMemberBTN");
-        alert("회원 신고 테스트, 회원 아이디 : " + reportMemberId);
+        // alert("회원 신고 테스트, 회원 아이디 : " + reportMemberId);
     });
     
     //게시글 신고 버튼 클릭시 모달 구성
@@ -129,7 +129,3 @@ $(document).ready(function () {
         })
     });
 })
-
-function sendMemberId(memberId){
-    $("#modalTargetId").val(memberId);
-}

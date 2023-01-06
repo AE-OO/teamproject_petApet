@@ -106,6 +106,11 @@
                                 찜 리스트
                             </a>
                         </li>
+                        <li id="mc-product-coupon-page" class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/member/couponBox}" title="찜 리스트" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
+                                쿠폰함
+                            </a>
+                        </li>
                         <li class="sc-1liba5b-9 bgmWPR">
                             <a th:href="@{/company/manageInquiry}" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('COMPANY')">
                                 전체 문의

@@ -14,9 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    // 리뷰 평균점수 계산
-    @Query(value = "select sum(a.reviewRating)/(select count(*) from Review where productId = ?1) from Review a where productId = ?1",nativeQuery = true)
-    Long avg(@Param("id") Long id);
     @Query("select count(r) from Review r where r.product.productId=:productId")
     Long countReviewByProduct(@Param("productId")Long productId);
 

@@ -99,9 +99,9 @@
         <div class="row wow fadeInUp" data-wow-delay="0.3s">
             <div class="col-12 text-center">
                 <ul class="list-inline rounded mb-5" id="portfolio-flters">
-                    <li class="mx-2 action">ALL</li>
+                    <li class="mx-2 active" onclick="sortProduct('productViewCount')">HOT</li>
                     <li class="mx-2" onclick="sortProduct('productId')">최근 등록상품</li>
-                    <li class="mx-2">판매순</li>
+                    <li class="mx-2" onclick="sortProduct('productSellCount')">판매순</li>
                     <li class="mx-2" onclick="sortProduct('review')">리뷰순</li>
                     <li class="mx-2" onclick="sortProduct('productRating')">별점순</li>
                     <li class="mx-2"><a th:href="|@{/product}|">상품목록으로→</a></li>
@@ -474,7 +474,7 @@
         fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'kakao-js-sdk');
 
-    $(document).ready(sortProduct('productId'));
+    $(document).ready(sortProduct('productViewCount'));
 
     async function sortProduct(sortType) {
         $('#appendTarget').empty();
@@ -485,7 +485,6 @@
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 $.each(data, function (idx) {
                     const productListHtml = `
                 <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">

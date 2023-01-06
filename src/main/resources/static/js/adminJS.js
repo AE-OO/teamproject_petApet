@@ -399,7 +399,7 @@ function getMemberList() {
         if (result.length > 0) {
             $.each(result, function (idx, member) {
                 list += `<tr>
-                                            <td>` + idx + `</td>
+                                            <td>` + (idx + 1) + `</td>
                                             <td>${member.memberId}</td>
                                             <td>${member.memberName}</td>
                                             <td>${member.memberGender}</td>

@@ -1,7 +1,9 @@
 package com.teamproject.petapet.domain.cart;
 
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.member.service.MemberService;
+import com.teamproject.petapet.web.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,10 +43,7 @@ class CartRepositoryTest {
     void test1(){
         String dd = "memberA";
         List<Cart> cartByMember1 = cartRepository.findCartByMember(dd);
-        cartByMember1.forEach(i->{
-            System.out.println("i.getCartId() = " + i.getCartId());
-            
-        });
+        cartByMember1.forEach(i-> System.out.println("i.getCartId() = " + i.getCartId()));
     }
 
 //    @Test

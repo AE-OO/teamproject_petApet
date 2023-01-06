@@ -8,40 +8,47 @@
 
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <hr class="mt-5">
-        <div class="text-center mx-auto mt-5">
-            <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
-            <h1 class="display-5 mb-3" th:text="${productDiv.productCategory}">Pet Food</h1>
-            <th:block th:if="${!searchContent.equals('false')}">
-            <h5 class="display-7 mb-3" th:text="|&#039;${#request.getParameter('searchContent')}&#039; 검색 결과|">Pet Food</h5>
-            </th:block>
-        </div>
-        <div class="row wow fadeInUp" data-wow-delay="0.3s">
-            <div class="col-12 text-center">
-                <ul class="list-inline rounded mb-4" id="portfolio-flters">
-                    <li class="mx-2" value="all"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'all'},${size},${page},${sortType},${'false'},${starRating})}">전체보기</a></li>
-                    <li class="mx-2" value="food"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'food'},${size},${page},${sortType},${'false'},${starRating})}">사료</a></li>
-                    <li class="mx-2" value="snack"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'snack'},${size},${page},${sortType},${'false'},${starRating})}">간식</a></li>
-                    <li class="mx-2" value="walking"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'walking'},${size},${page},${sortType},${'false'},${starRating})}">산책용품</a></li>
-                    <li class="mx-2" value="toy"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'toy'},${size},${page},${sortType},${'false'},${starRating})}">장난감</a></li>
-                    <li class="mx-2" value="fashion"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'fashion'},${size},${page},${sortType},${'false'},${starRating})}">패션/잡화</a></li>
-                    <li class="mx-2" value="stroller"><a style="text-decoration: none"
-                                        th:href="#{product.querystring(${'stroller'},${size},${page},${sortType},${'false'},${starRating})}">유모차</a></li>
-                </ul>
-            </div>
-        </div>
+<div class="text-center mx-auto mt-5">
+    <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
+    <h1 class="display-5 mb-3" th:text="${productDiv.productCategory}">Pet Food</h1>
+    <th:block th:if="${!searchContent.equals('false')}">
+        <h5 class="display-7 mb-3" th:text="|&#039;${#request.getParameter('searchContent')}&#039; 검색 결과|">Pet Food</h5>
+    </th:block>
+</div>
+<div class="row wow fadeInUp" data-wow-delay="0.3s">
+    <div class="col-12 text-center">
+        <ul class="list-inline rounded mb-4" id="portfolio-flters">
+            <li class="mx-2" value="all"><a style="text-decoration: none"
+                                            th:href="#{product.querystring(${'all'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">전체보기</a>
+            </li>
+            <li class="mx-2" value="food"><a style="text-decoration: none"
+                                             th:href="#{product.querystring(${'food'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">사료</a>
+            </li>
+            <li class="mx-2" value="snack"><a style="text-decoration: none"
+                                              th:href="#{product.querystring(${'snack'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">간식</a>
+            </li>
+            <li class="mx-2" value="walking"><a style="text-decoration: none"
+                                                th:href="#{product.querystring(${'walking'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">산책용품</a>
+            </li>
+            <li class="mx-2" value="toy"><a style="text-decoration: none"
+                                            th:href="#{product.querystring(${'toy'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">장난감</a>
+            </li>
+            <li class="mx-2" value="fashion"><a style="text-decoration: none"
+                                                th:href="#{product.querystring(${'fashion'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">패션/잡화</a>
+            </li>
+            <li class="mx-2" value="stroller"><a style="text-decoration: none"
+                                                 th:href="#{product.querystring(${'stroller'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">유모차</a>
+            </li>
+        </ul>
+    </div>
+</div>
 <div class="customContainer-xxl pb-5">
     <div class="container m-0">
-        <form class="d-flex col justify-content-end" th:action="@{/product}" method="get">
+        <div class="d-flex col justify-content-end">
             <div class="col-6">
                 <div class="input-group mb-2">
                     <div class="col-3">
-                        <select class="form-select" type="input"
+                        <select class="form-select" type="input" id="category"
                                 name="category">
                             <option value="all" selected>전체</option>
                             <option value="food">사료</option>
@@ -53,223 +60,284 @@
                         </select>
                     </div>
                     <input type="text" class="form-control" placeholder="찾고 싶은 상품을 입력하세요" name="searchContent"
-                           aria-label="Recipient's username" aria-describedby="button-addon2" id="searchBar">
-                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">검색</button>
+                           aria-label="Recipient's username" aria-describedby="contentSearchBtn" id="searchBar">
+                    <button class="btn btn-outline-secondary" type="button" id="contentSearchBtn">검색</button>
                 </div>
             </div>
-        </form>
+        </div>
         <div class="wow fadeInUp" data-wow-delay="0.4s"
              style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
             <hr class="">
         </div>
         <div class="d-flex col">
-        <div style="flex: 0 0 20%; max-width: 20%; padding-right: 1rem">
+            <div style="flex: 0 0 20%; max-width: 20%; padding-right: 1rem">
                 <nav class="nav flex-column border" style="position: sticky; top: 5rem;">
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item" style="border: none">
                             <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     카테고리
                                 </button>
                             </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body p-1">
                                     <ul class="m-1 p-2">
                                         <li value="all"><a style="text-decoration: none"
-                                                                        th:href="#{product.querystring(${'all'},${size},${page},${sortType},${searchContent},${starRating})}">전체보기</a></li>
+                                                           th:href="#{product.querystring(${'all'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">전체보기</a>
+                                        </li>
                                         <li value="food"><a style="text-decoration: none"
-                                                                         th:href="#{product.querystring(${'food'},${size},${page},${sortType},${searchContent},${starRating})}">사료</a></li>
+                                                            th:href="#{product.querystring(${'food'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">사료</a>
+                                        </li>
                                         <li value="snack"><a style="text-decoration: none"
-                                                                          th:href="#{product.querystring(${'snack'},${size},${page},${sortType},${searchContent},${starRating})}">간식</a></li>
+                                                             th:href="#{product.querystring(${'snack'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">간식</a>
+                                        </li>
                                         <li value="walking"><a style="text-decoration: none"
-                                                                            th:href="#{product.querystring(${'walking'},${size},${page},${sortType},${searchContent},${starRating})}">산책용품</a></li>
+                                                               th:href="#{product.querystring(${'walking'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">산책용품</a>
+                                        </li>
                                         <li value="toy"><a style="text-decoration: none"
-                                                                        th:href="#{product.querystring(${'toy'},${size},${page},${sortType},${searchContent},${starRating})}">장난감</a></li>
+                                                           th:href="#{product.querystring(${'toy'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">장난감</a>
+                                        </li>
                                         <li value="fashion"><a style="text-decoration: none"
-                                                                            th:href="#{product.querystring(${'fashion'},${size},${page},${sortType},${searchContent},${starRating})}">패션/잡화</a></li>
+                                                               th:href="#{product.querystring(${'fashion'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">패션/잡화</a>
+                                        </li>
                                         <li value="stroller"><a style="text-decoration: none"
-                                                                             th:href="#{product.querystring(${'stroller'},${size},${page},${sortType},${searchContent},${starRating})}">유모차</a></li>
+                                                                th:href="#{product.querystring(${'stroller'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">유모차</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <hr>
                     <div class="star">
-                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'1'})}" type="button">
+                        <a class="btn productRating"
+                           th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'1'},${isPriceRange},${minPrice},${maxPrice})}"
+                           type="button">
                             <div class="row align-items-start">
                                 <div class="col-5 nav-item">★☆☆☆☆</div>
                                 <div class="col-7 fs-6" style="color: #1f2326">1점 이상</div>
                             </div>
                         </a>
-                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'2'})}" type="button">
+                        <a class="btn productRating"
+                           th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'2'},${isPriceRange},${minPrice},${maxPrice})}"
+                           type="button">
                             <div class="row align-items-start">
                                 <div class="col-5 nav-item">★★☆☆☆</div>
                                 <div class="col-7 fs-6" style="color: #1f2326">2점 이상</div>
                             </div>
                         </a>
-                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'3'})}" type="button">
+                        <a class="btn productRating"
+                           th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'3'},${isPriceRange},${minPrice},${maxPrice})}"
+                           type="button">
                             <div class="row align-items-start">
                                 <div class="col-5 nav-item">★★★☆☆</div>
                                 <div class="col-7 fs-6" style="color: #1f2326">3점 이상</div>
                             </div>
                         </a>
-                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'4'})}" type="button">
+                        <a class="btn productRating"
+                           th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'4'},${isPriceRange},${minPrice},${maxPrice})}"
+                           type="button">
                             <div class="row align-items-start">
                                 <div class="col-5 nav-item">★★★★☆</div>
                                 <div class="col-7 fs-6" style="color: #1f2326">4점 이상</div>
                             </div>
                         </a>
-                        <a class="btn productRating" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'5'})}" type="button">
+                        <a class="btn productRating"
+                           th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${'5'},${isPriceRange},${minPrice},${maxPrice})}"
+                           type="button">
                             <div class="row align-items-start">
                                 <div class="col-5 nav-item">★★★★★</div>
                                 <div class="col-7 fs-6" style="color: #1f2326">5점 이상</div>
                             </div>
                         </a>
                     </div>
-                    <a class="nav-link active" aria-current="page" href="#">Active</a>
-                    <a class="nav-link" href="#">Link</a>
-                    <a class="nav-link" href="#">Link</a>
+                    <hr>
+                    <div>
+                        <a class="nav-link py-0 text-dark" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${starRating},${'false'},${''},${''})}">가격 전체</a>
+                        <a class="nav-link pb-0 text-dark" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${starRating},${'true'},${''},${'20000'})}">2만원 이하</a>
+                        <a class="nav-link pb-0 text-dark" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${starRating},${'true'},${'20000'},${'40000'})}">2~4만원</a>
+                        <a class="nav-link pb-0 text-dark" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${starRating},${'true'},${'40000'},${'60000'})}">4~6만원</a>
+                        <a class="nav-link pb-0 text-dark" th:href="#{product.querystring(${category},${size},${page},${sortType},${searchContent},${starRating},${'true'},${'60000'},${''})}">6만원 이상</a>
+                    </div>
+                    <div class="d-flex nav-link">
+                        <input type="text" class="me-2" size="5" name="minPrice" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                        <h6 class="align-self-center">~</h6>
+                        <input class="ms-2" name="maxPrice" size="5" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                        <button class="btn btn-sm btn-secondary ms-2" id="priceSearchBtn">검색</button>
+                    </div>
+                    <hr>
                     <a class="nav-link" onclick="focusSearchBar()">검색</a>
                 </nav>
-        </div>
-        <div style="flex: 0 0 80%; max-width: 80%;">
-        <div class="d-flex">
-            <div class="col-8">
-                <div class="btn-group form-check form-check-inline" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="productId" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productId,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio1">최신순</label>
-
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="salePriceAsc" autocomplete="off">
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=salePriceAsc,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio2">낮은가격순</label>
-
-                    <input type="radio" class="btn-check"  name="btnradio" id="btnradio3" value="salePriceDesc" autocomplete="off">
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=salePriceDesc,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio3">높은가격순</label>
-
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" value="productReviewCount" autocomplete="off">
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productReviewCount,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio4">리뷰순</label>
-
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="productRating" autocomplete="off">
-                    <label class="btn btn-outline-primary" th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productRating,searchContent=${searchContent},rating=${starRating})}'|" for="btnradio5">평점순</label>
-                </div>
             </div>
-            <div class="d-flex justify-content-end col-4">
-                <li class="nav-item dropdown">
-                    <th:block th:if="${size ne null}">
-                        <a class="nav-link dropdown-toggle" role="button"
-                           th:text="|${size}개씩 보기|"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                        </a>
-                    </th:block>
-                    <th:block th:if="${size eq null}">
-                        <a class="nav-link dropdown-toggle" role="button"
-                           th:text="|20개씩 보기|"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                        </a>
-                    </th:block>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item"
-                               th:href="#{product.querystring(${category},${'20'},${page},${sortType},${searchContent},${starRating})}">20개씩
-                            보기</a></li>
-                        <li><a class="dropdown-item"
-                               th:href="#{product.querystring(${category},${'40'},${page},${sortType},${searchContent},${starRating})}">40개씩
-                            보기</a></li>
-                    </ul>
-                </li>
-            </div>
-        </div>
-        <div class="row mb-3"></div>
-            <th:block th:if="${!productList.hasContent()}">
-                <div class="d-flex justify-content-center">
-                    <div class="align-self-stretch" style="margin-top: 10rem">
-                        <h5>등록된 상품이 없습니다.</h5>
+            <div style="flex: 0 0 80%; max-width: 80%;">
+                <div class="d-flex">
+                    <div class="col-6">
+                        <div class="btn-group form-check form-check-inline" role="group"
+                             aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="productId"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary"
+                                   th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productId,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
+                                   for="btnradio1">최신순</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="salePriceAsc"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary"
+                                   th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=salePriceAsc,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
+                                   for="btnradio2">낮은가격순</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" value="salePriceDesc"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary"
+                                   th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=salePriceDesc,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
+                                   for="btnradio3">높은가격순</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4"
+                                   value="productReviewCount" autocomplete="off">
+                            <label class="btn btn-outline-primary"
+                                   th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productReviewCount,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
+                                   for="btnradio4">리뷰순</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5"
+                                   value="productSellCount" autocomplete="off">
+                            <label class="btn btn-outline-primary"
+                                   th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productSellCount,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
+                                   for="btnradio5">판매순</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio6" value="productRating"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary"
+                                   th:onclick="|location.href='@{/product(category=${category},size=${size},page=1,sortType=productRating,searchContent=${searchContent},rating=${starRating},isPriceRange=${isPriceRange},minPrice=${minPrice},maxPrice=${maxPrice})}'|"
+                                   for="btnradio6">평점순</label>
+                        </div>
+                    </div>
+                    <div class="col-4" id="filter">
+
+                    </div>
+                    <div class="d-flex justify-content-end col-2">
+                        <li class="nav-item dropdown">
+                            <th:block th:if="${size ne null}">
+                                <a class="nav-link dropdown-toggle" role="button"
+                                   th:text="|${size}개씩 보기|"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                </a>
+                            </th:block>
+                            <th:block th:if="${size eq null}">
+                                <a class="nav-link dropdown-toggle" role="button"
+                                   th:text="|20개씩 보기|"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                </a>
+                            </th:block>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item"
+                                       th:href="#{product.querystring(${category},${'20'},${page},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">20개씩
+                                    보기</a></li>
+                                <li><a class="dropdown-item"
+                                       th:href="#{product.querystring(${category},${'40'},${page},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">40개씩
+                                    보기</a></li>
+                            </ul>
+                        </li>
                     </div>
                 </div>
-            </th:block>
-        <div class="row g-4 portfolio-container " style="position: relative; height: auto;">
-            <th:block th:if="${productList.hasContent()}">
-            <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp"
-                 data-wow-delay="0.1s" th:each="product : ${productList}">
-                <div class="portfolio rounded">
-                    <img class=""
-                         th:src="|@{/product/images/{filename}(filename=${product.productImg.get(0).storeFileName})}|"
-                         width="270" height="240" alt=""/>
-                    <div class="portfolio-text" style="opacity: 1;">
-                        <h1 class="text-start rounded ms-2">
-                            <a style="text-decoration: none;" class="text-dark fs-5"
-                               th:href="|@{/product/{productType}/{productId}/details(productType=${category},productId=${product.productId})}|"
-                               th:text="${product.productName}"></a>
-                        </h1>
-                        <div class="d-flex flex-row">
-                            <div>
-                                <fieldset class="p-1">
-                                    <div class="d-flex flex-row" style="max-height: 1rem; margin-top: 0.1rem">
-                                        <p th:class="star" th:value="${product.productRating}">
-                                            <a class="my_star" value="1">★</a>
-                                            <a class="my_star" value="2">★</a>
-                                            <a class="my_star" value="3">★</a>
-                                            <a class="my_star" value="4">★</a>
-                                            <a class="my_star" value="5">★</a>
-                                        <p>
-                                    </div>
-                                </fieldset>
-                            </div>
-                            <div>
-                                <h6 class="align-self-center mt-2" th:text="|(${product.productReviewCount})|">(0)</h6>
-                            </div>
-                            <div class="col text-end align-self-end m-0 p-0">
-                                <th:block th:if="${product.productDiscountRate>0}">
+                <div class="row mb-3"></div>
+                <th:block th:if="${!productList.hasContent()}">
+                    <div class="d-flex justify-content-center">
+                        <div class="align-self-stretch" style="margin-top: 10rem">
+                            <h5>등록된 상품이 없습니다.</h5>
+                        </div>
+                    </div>
+                </th:block>
+                <div class="row g-4 portfolio-container " style="position: relative; height: auto;">
+                    <th:block th:if="${productList.hasContent()}">
+                        <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp"
+                             data-wow-delay="0.1s" th:each="product : ${productList}">
+                            <div class="portfolio rounded">
+                                <img class=""
+                                     th:src="|@{/product/images/{filename}(filename=${product.productImg.get(0).storeFileName})}|"
+                                     width="270" height="240" alt=""/>
+                                <div class="portfolio-text" style="opacity: 1;">
+                                    <h1 class="text-start rounded ms-2">
+                                        <a style="text-decoration: none;" class="text-dark fs-5"
+                                           th:href="|@{/product/{productType}/{productId}/details(productType=${product.getProductDiv().name().toLowerCase()},productId=${product.productId})}|"
+                                           th:text="${product.productName}"></a>
+                                    </h1>
+                                    <div class="d-flex flex-row">
+                                        <div>
+                                            <fieldset class="p-1">
+                                                <div class="d-flex flex-row"
+                                                     style="max-height: 1rem; margin-top: 0.1rem">
+                                                    <p th:class="star" th:value="${product.productRating}">
+                                                        <a class="my_star" value="1">★</a>
+                                                        <a class="my_star" value="2">★</a>
+                                                        <a class="my_star" value="3">★</a>
+                                                        <a class="my_star" value="4">★</a>
+                                                        <a class="my_star" value="5">★</a>
+                                                    <p>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div>
+                                            <h6 class="align-self-center mt-2"
+                                                th:text="|(${product.productReviewCount})|">(0)</h6>
+                                        </div>
+                                        <div class="col text-end align-self-end m-0 p-0">
+                                            <th:block th:if="${product.productDiscountRate>0}">
                                     <span><i><h5 style="text-decoration: line-through;" class="fs-6 text-end"
                                                  th:text="|${product.productUnitPrice}원|"></h5></i></span>
-                                </th:block>
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <div class="row col">
+                                            <th:block th:if="${product.productDiscountRate==0}">
+                                                <h1 class="fs-5 text-end"
+                                                    th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></h1>
+                                            </th:block>
+                                            <th:block th:if="${product.productDiscountRate>0}">
+                                                <div class="col-4">
+                                                    <h1 class="fs-6 align-self-end" style="color: red"
+                                                        th:text="|${product.productDiscountRate}%할인|"></h1>
+                                                </div>
+                                                <div class="col-8">
+                                                    <h1 class="fs-5 text-end"
+                                                        th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></h1>
+                                                </div>
+                                            </th:block>
+                                        </div>
+                                        <div class="d-flex flex-row">
+                                            <div id="dib" class="justify-content-start">
+                                                <th:block th:if="${product.duplicateDibsProduct}">
+                                                    <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
+                                                                                                    style="color: red">♥︎</a>
+                                                    </p>
+                                                </th:block>
+                                                <th:block th:if="${!product.duplicateDibsProduct}">
+                                                    <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
+                                                                                                    th:id="${product.productId}"
+                                                                                                    onclick="addDibs(this.getAttribute('id'))"
+                                                                                                    style="color: red">♡</a>
+                                                    </p>
+                                                </th:block>
+                                            </div>
+                                            <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
+                                                <button type="button" class="btn bg-secondary me-1 addCart"
+                                                        th:value="*{product.productId}">장바구니
+                                                    <input type="hidden" class="quan" value="1"/></button>
+                                                <button class="btn bg-secondary addBuy"
+                                                        th:onclick="|location.href='@{/direct/checkout/{idx}(idx=${product.productId})}'|">
+                                                    바로구매
+                                                    <input type="hidden" class="quan" value="1"/></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-column">
-                            <div class="row col">
-                                <th:block th:if="${product.productDiscountRate==0}">
-                                    <h1 class="fs-5 text-end"
-                                        th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></h1>
-                                </th:block>
-                                <th:block th:if="${product.productDiscountRate>0}">
-                                    <div class="col-4">
-                                        <h1 class="fs-6 align-self-end" style="color: red"
-                                            th:text="|${product.productDiscountRate}%할인|"></h1>
-                                    </div>
-                                    <div class="col-8">
-                                        <h1 class="fs-5 text-end"
-                                            th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></h1>
-                                    </div>
-                                </th:block>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <div id="dib" class="justify-content-start">
-                                    <th:block th:if="${product.duplicateDibsProduct}">
-                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
-                                                                                        style="color: red">♥︎</a></p>
-                                    </th:block>
-                                    <th:block th:if="${!product.duplicateDibsProduct}">
-                                        <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
-                                                                                        th:id="${product.productId}"
-                                                                                        onclick="addDibs(this.getAttribute('id'))"
-                                                                                        style="color: red">♡</a></p>
-                                    </th:block>
-                                </div>
-                                <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
-                                    <button type="button" class="btn bg-secondary me-1 addCart"
-                                            th:value="*{product.productId}">장바구니
-                                        <input type="hidden" class="quan" value="1"/></button>
-                                    <button class="btn bg-secondary addBuy"
-                                            th:onclick="|location.href='@{/direct/checkout/{idx}(idx=${product.productId})}'|">
-                                        바로구매
-                                        <input type="hidden" class="quan" value="1"/></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </th:block>
                 </div>
             </div>
-            </th:block>
-        </div>
-    </div>
         </div>
     </div>
 </div>
@@ -280,19 +348,21 @@
         <ul class="pagination page-body-wrapper" id="paginationBox">
             <li class="page-item" th:if="${start > 5}">
                 <a class="page-link"
-                   th:href="#{product.querystring(${category},${size},${start - 5},${sortType},${searchContent},${starRating})}">이전</a>
-<!--                   th:href="@{/product(category=${#request.getParameter('category')},page=${start - 5},size=${#request.getParameter('size')})}">이전</a>-->
+                   th:href="#{product.querystring(${category},${size},${start - 5},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">이전</a>
+                <!--                   th:href="@{/product(category=${#request.getParameter('category')},page=${start - 5},size=${#request.getParameter('size')})}">이전</a>-->
             </li>
-            <li class="page-item" id="pageNumber" th:value="${number}" th:classappend="${productList.getNumber()==number}"
+            <li class="page-item" id="pageNumber" th:value="${number}"
+                th:classappend="${productList.getNumber()==number}"
                 th:each="number : ${#numbers.sequence(start,end)}">
-<!--                <a class="page-link" th:href="@{/product(category=${#request.getParameter('category')},page=${number},size=${#request.getParameter('size')})}"-->
-                <a class="page-link" th:href="#{product.querystring(${category},${size},${number},${sortType},${searchContent},${starRating})}"
+                <!--                <a class="page-link" th:href="@{/product(category=${#request.getParameter('category')},page=${number},size=${#request.getParameter('size')})}"-->
+                <a class="page-link"
+                   th:href="#{product.querystring(${category},${size},${number},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}"
                    th:text="${number}"></a>
             </li>
             <li class="page-item" th:if="${end < productList.totalPages}">
                 <a class="page-link"
-                   th:href="#{product.querystring(${category},${size},${start + 5},${sortType},${searchContent},${starRating})}">다음</a>
-<!--                   th:href="@{/product(category=${#request.getParameter('category')},page=${start + 5},size=${#request.getParameter('size')})}">다음</a>-->
+                   th:href="#{product.querystring(${category},${size},${start + 5},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">다음</a>
+                <!--                   th:href="@{/product(category=${#request.getParameter('category')},page=${start + 5},size=${#request.getParameter('size')})}">다음</a>-->
             </li>
         </ul>
     </nav>
@@ -315,23 +385,20 @@
 
     function addDibs(id) {
         $.ajax({
-            type: 'post',           // 타입 (get, post, put 등등)
-            url: '/product/dibs/add',           // 요청할 서버url
-            async: true,            // 비동기화 여부 (default : true)
-            dataType: 'text',       // 데이터 타입 (html, xml, json, text 등등)
+            type: 'post',
+            url: '/product/dibs/add',
+            async: true,
+            dataType: 'text',
             data: {"productId": id},
-            success: function (result) { // 결과 성공 콜백함수
+            success: function (result) {
                 if (result === 'login') {
                     location.href = '/login'
                 }
                 if (result === 'duplicate') {
-                    console.log(result)
                 } else {
-                    console.log(result)
                 }
             },
-            error: function (request, status, error) { // 결과 에러 콜백함수
-                console.log(error)
+            error: function (request, status, error) {
             }
         })
     }
@@ -362,23 +429,96 @@
         });
     });
 
+    let urlSearchParams = new URLSearchParams(location.search);
+
     $(document).ready(setActive());
 
     function setActive() {
-    let urlSearchParams = new URLSearchParams(location.search);
-    const sortType = urlSearchParams.get('sortType');
-    const productCategory = urlSearchParams.get('category');
-    const pageNumber = urlSearchParams.get('page');
 
-    $("input:radio[name ='btnradio']:input[value="+sortType+"]").attr("checked", true);
-    $("ul[id = 'portfolio-flters'] li[value="+productCategory+']').attr("class",'mx-2 active');
-    console.log(sortType)
-    $("ul[id = 'paginationBox'] li[value="+pageNumber+']').attr("class",'page-item active');
-    }
+        const sortType = urlSearchParams.get('sortType');
+        const productCategory = urlSearchParams.get('category');
+        const pageNumber = urlSearchParams.get('page');
+        if (sortType === null || sortType === ''){
+        $("input:radio[name ='btnradio']:input[value=productId]").attr("checked", true);
+        } else {
+        $("input:radio[name ='btnradio']:input[value=" + sortType + "]").attr("checked", true);
+        }
+        $("ul[id = 'paginationBox'] li[value=" + pageNumber + ']').attr("class", 'page-item active');
+        $("ul[id = 'portfolio-flters'] li[value=" + productCategory + ']').attr("class", 'mx-2 active');
+        }
 
     function focusSearchBar() {
         $('#searchBar').focus();
     }
+
+    $(document).ready(isRating());
+    function isRating() {
+        let rating = urlSearchParams.get('rating');
+        if (rating != 0 && rating != null){
+            const appendActivatedFilter = `<button class="btn btn-outline-secondary" id="ratingFilter">${rating}점 이상 <i class="bi bi-x-square ms-1"></button>`;
+            $('#filter').append(appendActivatedFilter);
+        }
+        $('#ratingFilter').click(function () {
+            urlSearchParams.set('rating','0');
+            location.href = '/product?' + urlSearchParams.toString();
+        })
+
+    }
+    $('#priceSearchBtn').click(function () {
+        let minPriceVal = $('input[name = minPrice]').val();
+        let maxPriceVal = $('input[name = maxPrice]').val();
+        urlSearchParams.set('isPriceRange','true');
+        urlSearchParams.set('minPrice',minPriceVal);
+        urlSearchParams.set('maxPrice',maxPriceVal);
+        location.href = '/product?' + urlSearchParams.toString();
+    })
+
+    $(document).ready(isPriceRange);
+    function isPriceRange() {
+        let isPriceRange = urlSearchParams.get('isPriceRange');
+        let minPrice = urlSearchParams.get('minPrice');
+        let maxPrice = urlSearchParams.get('maxPrice');
+        if (isPriceRange === 'true' && maxPrice !== '' && minPrice !== ''){
+            const appendPriceFilter = `<button class="btn btn-outline-secondary" id="priceFilter">${minPrice} ~ ${maxPrice}원 <i class="bi bi-x-square ms-1"></i></button>`;
+            $('#filter').append(appendPriceFilter);
+        } else if (isPriceRange === 'true' && maxPrice === ''){
+            const appendPriceFilter = `<button class="btn btn-outline-secondary" id="priceFilter">${minPrice}원 이상<i class="bi bi-x-square ms-1"></i></button>`;
+            $('#filter').append(appendPriceFilter);
+        } else if (isPriceRange === 'true' && minPrice === ''){
+            const appendPriceFilter = `<button class="btn btn-outline-secondary" id="priceFilter">${maxPrice}원 이하<i class="bi bi-x-square ms-1"></i></button>`;
+            $('#filter').append(appendPriceFilter);
+        }
+        $('#priceFilter').click(function () {
+            urlSearchParams.set('isPriceRange','false');
+            urlSearchParams.set('minPrice','');
+            urlSearchParams.set('maxPrice','');
+            location.href = '/product?' + urlSearchParams.toString();
+        })
+    }
+
+    $(document).ready(searchContent());
+    $(document).ready(isSearch());
+
+function searchContent() {
+    $('#contentSearchBtn').click(function () {
+        let category = $('#category').val();
+        let searchContent = $('#searchBar').val();
+        let searchUrl = 'product?category='+category+'&size=20&page=1&sortType=productId&searchContent='+searchContent+'&rating=0&isPriceRange=false&minPrice=&maxPrice='
+        location.href= searchUrl;
+    })
+}
+
+function isSearch() {
+    let searchContent = urlSearchParams.get('searchContent');
+    if (searchContent != null && searchContent !== 'false'){
+        const appendSearchFilter = `<button class="btn btn-outline-secondary" id="searchFilter">'${searchContent}'검색<i class="bi bi-x-square ms-1"></i></button>`;
+        $('#filter').append(appendSearchFilter);
+    }
+    $('#searchFilter').click(function () {
+        urlSearchParams.set('searchContent','false');
+        location.href = '/product?' + urlSearchParams.toString();
+    })
+}
 </script>
 
 <!-- Template Javascript -->
