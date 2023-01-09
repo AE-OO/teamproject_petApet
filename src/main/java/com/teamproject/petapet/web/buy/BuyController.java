@@ -105,7 +105,7 @@ public class BuyController {
     
     @ResponseBody
     @GetMapping("/getProductSales")
-    public List<Integer> getProductSales(Principal principal){
+    public List<List<String>> getProductSales(Principal principal){
         return buyService.getProductSales(principal.getName());
     }
 

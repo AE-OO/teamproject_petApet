@@ -50,7 +50,7 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public List<Integer> getProductSales(String companyId) {
+    public List<List<String>> getProductSales(String companyId) {
         return buyRepository.getProductSales(companyId);
     }
 
@@ -69,5 +69,4 @@ public class BuyServiceImpl implements BuyService {
     public List<Integer> getMonthlySales(String companyId) {
         return buyRepository.getMonthlySales(companyId);
     }
-
 }

@@ -78,11 +78,11 @@ $(function() {
     var productSales = {
         datasets: [{
             data: [
-                getProductSales()[0].val,
-                getProductSales()[1].val,
-                getProductSales()[2].val,
-                getProductSales()[3].val,
-                getProductSales()[4].val
+                getProductSales()[0].val[1],
+                getProductSales()[1].val[1],
+                getProductSales()[2].val[1],
+                getProductSales()[3].val[1],
+                getProductSales()[4].val[1]
             ],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -100,11 +100,11 @@ $(function() {
             ],
         }],
         labels: [
-            'test1',
-            'test2',
-            'test3',
-            'test4',
-            'test5'
+            getProductSales()[0].val[0],
+            getProductSales()[1].val[0],
+            getProductSales()[2].val[0],
+            getProductSales()[3].val[0],
+            getProductSales()[4].val[0]
         ]
     };
 
@@ -236,6 +236,7 @@ function getProductSales(){
             });
         }
     })
+
     return salesArray;
 }
 
