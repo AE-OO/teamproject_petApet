@@ -44,24 +44,26 @@ public class PaymentsController {
     }
 
     // productList 페이지에서 checkout 페이지로 이동
-    @GetMapping("/direct/checkout/{idx}")
-    public String getPayment2(@PathVariable("idx") Long productId, Model model,
+    @GetMapping("/direct/checkout/{idx}_{quan}")
+    public String getPayment2(@PathVariable("idx") Long productId, @PathVariable("quan") Long quantity, Model model,
                               Principal principal){
         Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         String loginMember = checkMember(principal);
         Member member = memberService.findOne(loginMember);
+        model.addAttribute("quantity", quantity);
         model.addAttribute("product", product);
         model.addAttribute("member", member);
         log.info("뷰 완료!!");
         return "mypage/directCheckout";
     }
     @ResponseBody
-    @RequestMapping(value = "/direct/checkout/{idx}", method = { RequestMethod.POST }, produces = "application/json")
-    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId, Principal principal, Model model) {
+    @RequestMapping(value = "/direct/checkout/{idx}_{quan}", method = { RequestMethod.POST }, produces = "application/json")
+    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId,@PathVariable("quan") Long quantity, Principal principal, Model model) {
         String loginMember = checkMember(principal);
         Long getProduct = vo.getBuyProduct();
         Member member = memberService.findOne(loginMember);
         Product product = productService.findOne(getProduct).orElseThrow(NoSuchElementException::new);
+        model.addAttribute("quantity", quantity);
         model.addAttribute("product", product);
         model.addAttribute("member", member);
         return "mypage/directCheckout";

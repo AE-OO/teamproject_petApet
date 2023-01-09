@@ -99,7 +99,7 @@
                             <!-- 추가 -->
                             <input id="productId" type="hidden" th:value="*{productId}"/>
                             <input id="quantity" type="text" style="height: 100%" class="col-12" value="1" maxlength="6"
-                                   autocomplete="off">
+                                   autocomplete="off"/>
                         </div>
                         <div style="display:table-cell;vertical-align:top;" class="col-3">
                             <button id="plus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem"
@@ -117,7 +117,9 @@
                             <button id="addCart" class="btn btn-info ms-3" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
                         <div class="col-6 d-grid">
-                            <button id="addBuy" class="btn btn-info ms-3" th:onclick="'javascript:checkout()'">바로구매
+                            <button type="button" class="btn btn-info ms-3" id="addBuy" th:onclick="'javascript:direct()'">
+                                바로 구매
+<!--                                <a class="btn btn-info ms-3" th:href="|@{/direct/checkout/{idx}_{quan}(idx=${productId},quan=${quantity})}|">바로구매</a>-->
                             </button>
                         </div>
                     </div>
@@ -941,33 +943,31 @@
     const btnMinus = $('#minus');
     const btnPlus = $('#plus');
     const quantity = $('#quantity');
+    var urlCart = "/cart/add";
+    var urlBuy = "/buy/addByProduct";
+    var productId = $("#productId").val();
 
     $(btnMinus).click(function () {
         var $input = $(this).parents().eq(2).find(quantity);
+        console.log("빼기 >>", $input.val());
         var count = parseInt($input.val()) - 1;
         count = count < 1 ? 1 : count;
-        $input.val(count);
-        $input.change();
+        $input.val(count).change();
         console.log("빼기 >>", $input.val());
+        console.log("빼기2 >>", quantity.val());
     });
 
     $(btnPlus).click(function () {
         var $input = $(this).parents().eq(2).find(quantity);
-        $input.val(parseInt($input.val()) + 1);
-        $input.change();
         console.log("더하기 >>", $input.val());
+        $input.val(parseInt($input.val()) + 1).change();
+        console.log("더하기 >>", $input.val());
+        console.log("더하기2 >>", quantity.val());
     });
-
-    var urlCart = "/cart/add";
-    var urlBuy = "/buy/addByProduct";
-    var productId = $("#productId").val();
-    var quantityVal = $("#quantity").val();
-    var param = {"product": productId, "quantity": quantityVal};
 
     function addCart() {
         alert("실행");
-        console.log("product : " + productId);
-        console.log("quantity : " + quantityVal);
+        var param = {"product": productId, "quantity": quantity.val()};
         $.ajax({
             url: urlCart,
             type: "POST",
@@ -984,11 +984,20 @@
         });
     }
 
-    var product = $("#productId").text();
-    var param2 = {"buyProduct": productId, "buyQuantity": quantityVal};
-
-    function checkout() {
+    function direct(){
         alert("실행");
+        let a;
+        a.innerHTML=`
+        <a class="btn btn-info ms-3" th:href="|@{/direct/checkout/{idx}_{quan}(idx=`[[productId]]`]},quan=`[[quantity]]`)}|">바로구매</a>
+        `
+    }
+
+    function checkout1() {
+        alert("실행");
+        console.log(productId);
+        console.log(quantity.val());
+        var param2 = {"buyProduct": productId, "buyQuantity": quantity.val()};
+        alert(location.href="http://localhost:8088/direct/checkout/"+product);
         $.ajax({
             url: "/direct/checkout",
             type: "POST",
@@ -997,7 +1006,8 @@
             contentType: "application/json",
             charset: "UTF-8",
             success: function (data) {
-                // location.href="http://localhost:8088/direct/checkout/"+[[product]];
+                alert("결제화면으로 이동합니다");
+                location.href="http://localhost:8088/direct/checkout/"+product;
             },
             error: function (jqXHR, status, errorThrown) {
                 alert("에러");

@@ -59,8 +59,8 @@ public class CartController {
         String loginMember = checkMember(principal);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
+        log.info("dd ={}", quantity);
         Cart cart = new Cart(
-
                 memberService.findOne(loginMember),
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
                 quantity);
