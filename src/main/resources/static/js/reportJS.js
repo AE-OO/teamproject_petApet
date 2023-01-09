@@ -43,7 +43,7 @@ $(document).ready(function () {
         
         if ($("#postsMemberId").text() === loginId) {
             alert("본인이 작성한 게시물은 신고할 수 없습니다.");
-            // 알림창뜨고 빈 모달 뜨는 문제 발생 -----------------------------------------------오류
+            // 알림창뜨고 빈 모달 뜨는 문제 발생 -----------------------------------------------수정하기
         }else {
             $("#reportModalTitle").text("게시글신고");
             $("#modalTargetId").val(reportCommunityId);
@@ -92,9 +92,7 @@ $(document).ready(function () {
             reportReasonDetail : $("textarea[name=reportReasonDetail]").val(),
             memberId : $("#modalTargetId").val()
         }
-
-        console.log(reportMemberDTO);
-
+        
         $.ajax({
             url: "/report/addMemberReport",
             type: "post",
