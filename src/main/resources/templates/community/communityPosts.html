@@ -41,8 +41,8 @@
                 <img class="rounded-circle border border-1 me-1 my-1"
                      th:src="${posts.memberImg}==0? '/img/profile.jpg':'/image/'+${posts.memberImg}"
                      width="50" height="50" style="object-fit: cover;">
-                <div class="dropdown mx-1 d-inline-block">
-                    <a href="javascript:" id="postsMemberId" role="button" data-bs-toggle="dropdown"
+                <div class="dropdown mx-1 d-inline-block memberDiv">
+                    <a href="javascript:" id="postsMemberId" class="memberId" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false" th:text="${posts.memberId}"/>
                     <ul class="dropdown-menu" style="min-width: auto;">
                         <li><a id="communityMemberProfile" class="dropdown-item" href="javascript:">회원정보</a></li>
