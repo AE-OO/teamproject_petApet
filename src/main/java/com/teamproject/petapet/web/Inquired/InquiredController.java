@@ -5,6 +5,7 @@ import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.Inquired.dto.InquiredSubmitDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
+import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Controller
@@ -33,15 +35,16 @@ public class InquiredController {
 
     private final MemberService memberService;
 
+    private final CompanyService companyService;
+
     private final FileService fileService;
 
     public final String INQUIRED_CATEGORY1 = "문의";
 
     @GetMapping()
     public String getMyInquiry(@ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
-                          Principal principal, HttpServletRequest request,
-                          HttpSession httpSession, Model model){
-        String loginMember = checkMember(principal, request, httpSession);
+                          Principal principal, Model model){
+        String loginMember = checkMember(principal);
         List<Inquired> myInquiry = inquiredService.getMyInquired(loginMember);
         model.addAttribute("myInquiry", myInquiry);
         return "mypage/inquiry";
@@ -53,13 +56,10 @@ public class InquiredController {
 //    }
 
     @PostMapping("/submit")
-    public String inquirySubmit(@Validated
-                                  @ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
-                                   Principal principal, HttpServletRequest request, HttpSession httpSession) throws IOException {
+    public String inquirySubmit(@Validated @ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
+                                   Principal principal) throws IOException {
         log.info("실행");
-//        List<MultipartFile> inquiredImg = inquiredSubmitDTO.getInquiredImg();
-//        List<UploadFile> uploadFiles = fileService.storeFiles(inquiredImg);
-        String login = checkMember(principal, request, httpSession);
+        String login = checkMember(principal);
         Member loginMember = memberService.findOne(login);
 
 
@@ -68,7 +68,7 @@ public class InquiredController {
                 inquiredSubmitDTO.getInquiredContent(),
                 INQUIRED_CATEGORY1,
                 loginMember,
-                inquiredSubmitDTO.getEmail(),
+                companyService.findOne(inquiredSubmitDTO.getCompanyId()).orElseThrow(NoSuchElementException::new),
                 false
         );
 
@@ -78,11 +78,7 @@ public class InquiredController {
     }
 
 
-    private String checkMember(Principal principal, HttpServletRequest request, HttpSession httpSession) {
-        httpSession.setAttribute("loginMember", memberService.findOne(principal.getName()));
-        HttpSession session = request.getSession(false);
-        Member loginMemberSession = (Member) session.getAttribute("loginMember");
-        String loginMember = loginMemberSession.getMemberId();
-        return loginMember;
+    private String checkMember(Principal principal) {
+        return memberService.findOne(principal.getName()).getMemberId();
     }
 }

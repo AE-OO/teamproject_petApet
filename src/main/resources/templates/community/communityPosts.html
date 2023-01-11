@@ -4,6 +4,7 @@
     <title>petApet - 커뮤니티</title>
     <link>
     <script th:src="@{/js/community/comment.js}"></script>
+    <script type="text/javascript" src="/js/reportJS.js"></script>
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
@@ -50,7 +51,11 @@
                             <a class="dropdown-item" href="javascript:">쪽지보내기</a>
                         </li>
                         <li th:unless="${#authentication.name == posts.memberId}">
-                            <a class="dropdown-item memberReport" href="javascript:">신고하기</a>
+<!--                            <a class="dropdown-item memberReport" href="javascript:">신고하기</a>-->
+                            <button type="button" class="dropdown-item memberReport" id="addProductReport"
+                                    data-bs-toggle="modal" data-bs-target="#addReportModal"
+                                    title="신고하기">신고하기
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -69,7 +74,13 @@
                         <a href="javascript:" role="button" data-bs-toggle="dropdown" class="btn btn-link2 p-0"
                            aria-expanded="false"><i class="bi bi-three-dots-vertical m-auto fs-5"></i></a>
                         <ul class="dropdown-menu" style="min-width: auto;">
-                            <li><a id="communityReport" class="dropdown-item" href="javascript:">신고</a></li>
+                            <li>
+<!--                                <a id="communityReport" class="dropdown-item" href="javascript:">신고</a>-->
+                                <button type="button" class="dropdown-item communityReport"
+                                        data-bs-toggle="modal" data-bs-target="#addReportModal"
+                                        title="신고">신고
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -106,6 +117,7 @@
             </div>
             <div class="text-center mt-3">
                 <button type="button" id="communityBtn" class="btn btn-primary">글목록</button>
+                </button>
             </div>
         </div>
     </div>
@@ -113,5 +125,31 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+
+<!-- 신고 Modal -->
+<div class="modal" id="addReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="reportModalTitle"><!-- 모달 제목 --></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>신고 사유를 선택해 주세요</h6>
+                <input type="hidden" id="modalTargetId"> <!-- 신고대상의 id -->
+                <div class="reportModalReason"></div>
+                <hr>
+                <h6>구체적인 사유를 작성해 주세요</h6>
+                <textarea class="form-control" name="reportReasonDetail" rows="3"
+                          placeholder="구체적인 신고 사유 입력"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="reportBTN">신고하기</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

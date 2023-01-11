@@ -57,9 +57,6 @@ public class Inquired {
     @JoinColumn(name = "companyId")
     private Company company;
 
-    @Column
-    private String email;
-
     // 답변 활성화 컬럼
     @Column(nullable = false)
     private boolean checked;
@@ -68,12 +65,12 @@ public class Inquired {
     @CollectionTable(name = "InquiredImg", joinColumns = @JoinColumn(name = "inquiredImgId", referencedColumnName = "inquiredId"))
     private List<UploadFile> inquiredImg;
 
-    public Inquired(String inquiredTitle, String inquiredContent, String inquiredCategory, Member member, String email, boolean checked) {
+    public Inquired(String inquiredTitle, String inquiredContent, String inquiredCategory, Member member, Company company, boolean checked) {
         this.inquiredTitle = inquiredTitle;
         this.inquiredContent = inquiredContent;
         this.inquiredCategory = inquiredCategory;
         this.member = member;
-        this.email = email;
+        this.company = company;
         this.checked = checked;
 //        this.inquiredImg = inquiredImg;
     }

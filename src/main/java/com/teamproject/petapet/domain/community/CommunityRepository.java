@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -23,23 +24,25 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Query(value = "select count(*) from Community c where date_format(modifiedDate,'%Y-%m-%d') = curdate()", nativeQuery = true)
     Long countTodayCommunity();
 
-    @Query(value = "select count(*) from Community c where date_format(modifiedDate,'%Y-%m-%d') = curdate() and communityCategory =:communityCategory",nativeQuery = true)
+    @Query(value = "select count(*) from Community c where date_format(modifiedDate,'%Y-%m-%d') = curdate() and communityCategory =:communityCategory", nativeQuery = true)
     Long countTodayCommunity(String communityCategory);
 
     @Transactional
     @Modifying
     @Query("update Community c set c.viewCount=c.viewCount+1 where c.communityId=:communityId")
-    void viewCountPlus(Long communityId);
+    void viewCountPlus(@Param("communityId") Long communityId);
 
     Page<Community> findAllByCommunityCategory(String communityCategory, Pageable pageable);
+
     Page<Community> findAllByMember(String memberId, Pageable pageable);
-    Optional<Community> findByCommunityIdAndMemberMemberId(Long communityId,String memberId);
+
+    Optional<Community> findByCommunityIdAndMemberMemberId(Long communityId, String memberId);
 
     @Query("select c from Community c where c.communityCategory = '공지사항'")
-    public List<Community> getNotice();
+    List<Community> getNotice();
 
     @Modifying
     @Transactional
     @Query("update Community c set c.communityTitle =:title, c.communityContent =:content where c.communityId =:noticeId")
-    public void updateNotice(String title, String content, Long noticeId);
+    void updateNotice(String title, String content, Long noticeId);
 }

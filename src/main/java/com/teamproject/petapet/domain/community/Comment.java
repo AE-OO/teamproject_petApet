@@ -5,6 +5,7 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.community.converter.EmptyStringToNullConverter;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -33,7 +34,7 @@ public class Comment extends BaseTimeEntity {
 
     //비밀댓글
     @Column(length = 1)
-    @ColumnDefault("N")
+    @ColumnDefault("'N'")
     @Convert(converter = EmptyStringToNullConverter.class)
     private String commentSecret;
 

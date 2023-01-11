@@ -102,7 +102,7 @@ function getFormatDate(date , subNum){
 
     if(month - subNum <= 0){
         year = year - 1;
-        month = month - 1;
+        month = month - subNum + 12;
     }else{
         month = month - subNum;
     }

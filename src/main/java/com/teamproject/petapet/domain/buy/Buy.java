@@ -26,6 +26,9 @@ public class Buy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long buyId;
 
+    @Column
+    private String merchantUid;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime buyDate;
@@ -47,6 +50,14 @@ public class Buy {
     private Long quantity;
 
     public Buy(String buyAddress, Member member, Product product, Long quantity) {
+        this.buyAddress = buyAddress;
+        this.member = member;
+        this.quantity = quantity;
+        this.product = product;
+    }
+
+    public Buy(String merchantUid ,String buyAddress, Member member, Product product, Long quantity) {
+        this.merchantUid = merchantUid;
         this.buyAddress = buyAddress;
         this.member = member;
         this.quantity = quantity;

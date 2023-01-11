@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>petApet 관리자용</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/vendors/feather/feather.css">
+    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
+    <!--    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">-->
+    <link rel="stylesheet" href="/css/osh.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="/js/select.dataTables.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="/css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="/images/favicon.png"/>
+
+</head>
+<body>
+<div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            Admin Page - 쿠폰 관리
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <a th:href="@{/logout}">
+                <button class="btn btn-light" type="button">
+                    Logout
+                </button>
+            </a>
+        </div>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/adminPage}">
+                        <i class="icon-grid menu-icon"></i>
+                        <span class="menu-title">Main</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/registerCoupon}">
+                        <i class="icon-grid-2 menu-icon"></i>
+                        <span class="menu-title">쿠폰 등록</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/coupon}">
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">쿠폰 조회</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="col-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <h3 class="m-0 p-1 col-6">쿠폰 조회</h3>
+                                <div class="input-group input-group-sm mb-3">
+                                    <input type="text" class="form-control rounded" placeholder="검색"
+                                           aria-describedby="searchBtn">
+                                    <button class="btn btn-primary" type="button" id="searchBtn">검색</button>
+                                </div>
+                            </div>
+                            <div class="d-flex p-1">
+                                <div class="btn-toolbar col-6" role="toolbar">
+                                    <div class="btn-group btn-group-sm me-2" role="group">
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                적용타입
+                                            </button>
+                                            <ul class="dropdown-menu acceptType">
+                                                <li><a class="dropdown-item" id="total">모든 쿠폰</a></li>
+                                                <li><a class="dropdown-item" id="all">전체상품</a></li>
+                                                <li><a class="dropdown-item" id="food">사료</a></li>
+                                                <li><a class="dropdown-item" id="snack">간식</a></li>
+                                                <li><a class="dropdown-item" id="walking">산책용품</a></li>
+                                                <li><a class="dropdown-item" id="toy">장난감</a></li>
+                                                <li><a class="dropdown-item" id="fashion">패션/잡화</a></li>
+                                                <li><a class="dropdown-item" id="stroller">유모차</a></li>
+                                            </ul>
+                                        </div>
+                                        <button type="button" id="sortByRecent" class="btn btn-outline-primary">최신순
+                                        </button>
+                                        <button type="button" id="sortByExpiration" class="btn btn-outline-primary">
+                                            만료일순
+                                        </button>
+                                        <button type="button" id="sortByStock" class="btn btn-outline-primary">재고순
+                                        </button>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                활성화유무
+                                            </button>
+                                            <ul class="dropdown-menu activeParam">
+                                                <li>
+                                                    <button class="dropdown-item" value="any">모든 쿠폰</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" value="active">활성화</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" value="inactive">비활성화</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 appliedSearch">
+                                </div>
+                            </div>
+                            <div class="container-fluid">
+                                <div class="row col">
+                                    <div class="card-group col-4 border p-lg-3 rounded m-1"
+                                         th:each="coupon : ${couponList}"
+                                         style="flex: 0 0 32.33333%;  max-width: 32.33333%;">
+                                        <div class="card">
+                                            <div class="pricing-card-body">
+                                                <p class="card-text couponEndDate"
+                                                   th:text="|${coupon.couponEndDate.substring(0,19)} 까지|">
+                                                    쿠폰 마감일
+                                                </p>
+                                                <h3 class="card-text py-2 couponName" th:text="${coupon.couponName}">
+                                                    쿠폰명
+                                                </h3>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <h5 class="couponAcceptType"
+                                                            th:value="${coupon.couponAcceptType}"
+                                                            th:text="${coupon.couponAcceptType.productCategory}">
+                                                            카테고리</h5>
+                                                    </div>
+                                                    <div class="text-center col-6">
+                                                        <h5 th:if="${coupon.couponDiscRate.toString().length() > 2}"
+                                                            class="couponDiscRate text-danger"
+                                                            th:text="|${#numbers.formatInteger(coupon.couponDiscRate, 3, 'COMMA')}원 할인|">
+                                                            할인금액</h5>
+                                                        <h5 th:if="${coupon.couponDiscRate.toString().length() <= 2}"
+                                                            class="couponDiscRate text-danger"
+                                                            th:text="|${coupon.couponDiscRate}% 할인|">할인금액</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 p-2">
+                                                        <h5 class="couponActive p-2"
+                                                            th:if="${coupon.couponActive == false}"
+                                                            th:text="${'비활성화'}" th:value="false">쿠폰 상태</h5>
+                                                        <h5 class="couponActive p-2"
+                                                            th:if="${coupon.couponActive == true}"
+                                                            th:text="${'활성화'}" th:value="true">쿠폰 상태</h5>
+                                                    </div>
+                                                    <div class="col-6 p-2">
+                                                        <h5 class="p-2 text-center couponStock"
+                                                            th:if="${coupon.couponStock != 0 && coupon.couponStock != 1}"
+                                                            th:text="|${coupon.couponStock - 1}개|">
+                                                            재고</h5>
+                                                        <h5 class="p-2 text-center couponStock"
+                                                            th:if="${coupon.couponStock == 1}"
+                                                            th:text="재고소진">
+                                                            재고</h5>
+                                                        <h5 class="p-2 text-center couponStock"
+                                                            th:if="${coupon.couponStock == 0}"
+                                                            th:text="무제한">
+                                                            재고</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <button class="btn btn-sm btn-primary modalBtn"
+                                                            data-bs-toggle="modal"
+                                                            th:id="${coupon.couponId}" data-bs-target="#exampleModal">수정
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex sticky-bottom justify-content-center">
+                            <nav th:if="${page<=couponList.totalPages && couponList.hasContent()}"
+                                 th:with="start=${(couponList.getNumber()/5)*5 + 1},
+                                        end=(${start+4 < couponList.totalPages ? start+4 : couponList.totalPages})">
+                                <ul class="pagination" id="paginationBox">
+                                    <li class="page-item" th:if="${start > 5}">
+                                        <a class="page-link"
+                                           th:href="@{/admin/coupon(page=${start - 5})}">이전</a>
+                                    </li>
+                                    <li class="page-item" id="pageNumber" th:value="${number}"
+                                        th:classappend="${couponList.getNumber()==number}"
+                                        th:each="number : ${#numbers.sequence(start,end)}">
+                                        <a class="page-link"
+
+                                           th:text="${number}"></a>
+                                    </li>
+                                    <li class="page-item" th:if="${end < couponList.totalPages}">
+                                        <a class="page-link"
+                                           th:href="@{/admin/coupon(page=${start + 5})}">다음</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a
+                    href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
+                    class="ti-heart text-danger ml-1"></i></span>
+        </div>
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a
+                    href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
+        </div>
+    </footer>
+</div>
+</body>
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" th:object="${couponDTO}">
+    <div class="modal-dialog" style="max-width: 50rem">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="exampleModalLabel">쿠폰 수정</h3>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="bi bi-x-circle" style="font-size: 1.5rem"></i></button>
+            </div>
+            <form class="form-sample" id="updateCoupon" th:method="post" th:action="@{/admin/coupon/update}">
+                <div class="modal-body">
+                    <div class="form-group col">
+                        <label for="couponName">쿠폰명</label>
+                        <input type="text" class="form-control" id="couponName"
+                               name="couponName" th:errorclass="field-error"
+                               th:field="*{couponName}" th:placeholder="쿠폰명">
+                        <div class="field-error" id="valid_couponName"></div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group col-6">
+                            <label for="couponStock">쿠폰수량</label>
+                            <input class="form-control" id="couponStock" th:errorclass="field-error"
+                                   placeholder="쿠폰수량 0-9999" th:field="*{couponStock}"
+                                   name="couponStock" type="number" min="0">
+                            <div class="field-error" id="valid_couponStock"></div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="couponEndDate">쿠폰만료일</label>
+                            <input class="form-control" id="couponEndDate" th:errorclass="field-error"
+                                   th:field="*{couponEndDate}"
+                                   type="date" th:min="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}"
+                                   name="couponEndDate">
+                            <div class="field-error" id="valid_couponEndDate"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group col-6">
+                            <label for="couponAcceptType">적용카테고리</label>
+                            <select type="input" class="form-control" name="couponAcceptType"
+                                    th:field="*{couponAcceptType}" th:errorclass="field-error"
+                                    id="couponAcceptType">
+                                <option value="ALL" selected>전체</option>
+                                <option value="FOOD">사료</option>
+                                <option value="SNACK">간식</option>
+                                <option value="WALKING">산책용품</option>
+                                <option value="TOY">장난감</option>
+                                <option value="FASHION">패션/잡화</option>
+                                <option value="STROLLER">유모차</option>
+                            </select>
+                            <div class="field-error" id="valid_couponAcceptType"></div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="couponActive">활성화여부</label>
+                            <select type="input" class="form-control" name="couponActive"
+                                    th:field="*{couponActive}" th:errorclass="field-error"
+                                    id="couponActive">
+                                <option value="true" selected>활성화</option>
+                                <option value="false">비활성화</option>
+                            </select>
+                            <div class="field-error" id="valid_couponActive"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group col-6">
+                            <label>할인종류</label>
+                            <div class="d-inline-flex col">
+                                <div class="form-check col-6">
+                                    <input type="radio" name="couponType" th:field="*{couponType}"
+                                           id="inlineRadio1" value="regularDisc" th:errorclass="field-error">
+                                    <label for="inlineRadio1">정가할인</label>
+                                </div>
+                                <div class="form-check col-6">
+                                    <input type="radio" name="couponType" th:field="*{couponType}"
+                                           id="inlineRadio2" value="percentDisc" th:errorclass="field-error">
+                                    <label for="inlineRadio2">백분율할인</label>
+                                </div>
+                            </div>
+                            <div class="field-error" id="valid_couponType"></div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="couponDiscRate">할인율</label>
+                            <div class="form-group">
+                                <input type="number" name="couponDiscRate" class="form-control"
+                                       id="couponDiscRate" th:field="*{couponDiscRate}" th:errorclass="field-error">
+                                <div class="field-error" id="valid_couponDiscRate"></div>
+                                <p class="text-secondary text-danger" id="validMsg"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="updateCouponBtn">수정하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script th:inline="javascript" type="text/javascript" src="/js/product/coupon/coupon.js"></script>
+</html>
+

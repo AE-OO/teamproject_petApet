@@ -19,7 +19,7 @@ public class ProductDTO {
     private String productStatus;
     private Long productReport;
 
-    public static ProductDTO fromEntityForManageProduct(Product product){
+    public static ProductDTO fromEntityForManageProduct(Product product) {
         return ProductDTO.builder()
                 .productId(product.getProductId())
                 .productName(product.getProductName())
