@@ -50,5 +50,7 @@ public interface MemberService {
 
     void deleteMemberImg(String memberId);
 
+    CommunityMemberDTO memberProfile(String memberId);
+
 
 }

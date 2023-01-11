@@ -45,7 +45,6 @@
                 goPost(nowPageNum, $(this).find('span').text(), mainCategory.toLowerCase().trim())
             });
             $(".badge2").click(function () {
-                // alert($(this).parent().prev().text().trim())
                 window.open("/comment/" + $(this).parent().prev().text().trim(), "_blank", "width=900,height=800,left=0,top=0,location=no");
             });
             $("#prevPage").click(function () {
@@ -127,7 +126,7 @@
                         <li><a class="dropdown-item" href="javascript:">목록 <span>50</span>개</a></li>
                     </ul>
                 </div>
-                <table class="table table-hover">
+                <table class="table2 table-hover">
                     <thead>
                     <tr>
                         <th class="col-md-1">번호</th>

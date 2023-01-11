@@ -60,7 +60,7 @@ public class FileService implements WebMvcConfigurer {
 
     /**
      * 22.12.15 장사론 추가
-     * 프로필 이미지 교체 시 기존에 있는 이미지 삭제
+     * 이미지 교체 시 기존에 있는 이미지 삭제
      */
     public void deleteFile(String storeFileName) {
         try {

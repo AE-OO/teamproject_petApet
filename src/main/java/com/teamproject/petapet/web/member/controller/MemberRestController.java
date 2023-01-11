@@ -1,10 +1,13 @@
 package com.teamproject.petapet.web.member.controller;
 
 import com.teamproject.petapet.web.community.commentDto.CommentDTO;
+import com.teamproject.petapet.web.member.dto.CommunityMemberDTO;
+import com.teamproject.petapet.web.member.dto.MemberDTO;
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -99,6 +102,11 @@ public class MemberRestController {
         Object principal2 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal2;
         return new ResponseEntity<>(new String[]{userDetails.getUsername(), userDetails.getAuthorities().toString()}, HttpStatus.OK);
+    }
+
+    @PostMapping("/getMemberProfile")
+    public ResponseEntity<CommunityMemberDTO> getMemberProfile(String memberId){
+        return new ResponseEntity<>(memberService.memberProfile(memberId),HttpStatus.OK);
     }
 
 }

@@ -1785,6 +1785,7 @@ progress {
   vertical-align: top;
   border-color: var(--bs-table-border-color);
 }
+
 .table > :not(caption) > * > * {
   padding: 0.5rem 0.5rem;
   background-color: var(--bs-table-bg);
@@ -1796,6 +1797,13 @@ progress {
 }
 .table > thead {
   vertical-align: bottom;
+}
+
+.table2 > :not(caption) > * > * {
+  padding: 0.5rem 0.5rem;
+  background-color: var(--bs-table-bg);
+  border-bottom-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
 .table2 > tbody {
   vertical-align: inherit;
@@ -6841,6 +6849,26 @@ textarea.form-control-lg {
   vertical-align: baseline;
   border-radius: var(--bs-badge-border-radius);
 }
+
+.badge2 {
+  --bs-badge-padding-x: 0.65em;
+  --bs-badge-padding-y2: 0.25em;
+  --bs-badge-font-size: 0.75em;
+  --bs-badge-font-weight: 700;
+  --bs-
+  display: inline-block;
+  padding: var(--bs-badge-padding-y2) var(--bs-badge-padding-x);
+  font-size: var(--bs-badge-font-size);
+  font-weight: var(--bs-badge-font-weight);
+  line-height: 1;
+  color: var(--bs-danger);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 10px;
+  border:1px solid var(--bs-gray-400)
+}
+
 .badge:empty {
   display: none;
 }
@@ -9522,6 +9550,11 @@ textarea.form-control-lg {
   border-color: rgba(var(--bs-black-rgb), var(--bs-border-opacity)) !important;
 }
 
+.border-gray-700 {
+  --bs-border-opacity: 1;
+  border-color: rgba(var(--bs-black-rgb), var(--bs-border-opacity)) !important;
+}
+
 
 .border-1 {
   --bs-border-width: 1px;
@@ -10286,8 +10319,16 @@ textarea.form-control-lg {
   padding-left: 4.5rem !important;
 }
 
-ps-7 {
+.ps-7 {
   padding-left: 6rem !important;
+}
+
+.ps-8 {
+  padding-left: 7.5rem !important;
+}
+
+.ps-9 {
+  padding-left: 9rem !important;
 }
 
 .gap-0 {

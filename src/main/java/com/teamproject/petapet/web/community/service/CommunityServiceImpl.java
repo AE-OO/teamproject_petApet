@@ -2,10 +2,6 @@ package com.teamproject.petapet.web.community.service;
 
 import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.community.CommunityRepository;
-import com.teamproject.petapet.web.community.communityDto.CommunityInsertDTO;
-import com.teamproject.petapet.web.community.communityDto.CommunityListDTO;
-import com.teamproject.petapet.web.community.communityDto.CommunityPostsDTO;
-import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
 import com.teamproject.petapet.web.community.dto.CommunityDTO;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -50,27 +46,26 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public void insertCommunity(String memberId, CommunityInsertDTO communityInsertDTO) {
-        communityRepository.save(communityInsertDTO.toEntity(memberId));
+    public void insertCommunity(String memberId, CommunityRequestDTO.InsertDTO insertDTO) {
+        communityRepository.save(insertDTO.toEntity(memberId));
     }
-
     @Override
-    public Page<CommunityListDTO> getCommunityList(int pageNum, int pageSize, String communityCategory) {
+    public Page<CommunityDTO> getCommunityList(int pageNum, int pageSize, String communityCategory) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
         if (communityCategory.equals("all")) {
             return communityRepository.findAll(pageable).map(
-                    community -> CommunityListDTO.fromEntity(community, dateFormat(community)));
+                    community -> CommunityDTO.fromEntityForCommunityMain(community, dateFormat(community)));
         }
         return communityRepository.findAllByCommunityCategory(communityCategory, pageable).map(
-                community -> CommunityListDTO.fromEntity(community, dateFormat(community)));
+                community -> CommunityDTO.fromEntityForCommunityMain(community, dateFormat(community)));
     }
 
-    //회원 작성글 보기
+    //회원별 작성글 보기....
     @Override
-    public Page<CommunityPostsDTO> getCommunityMemberPost(int pageNum, int pageSize, String memberId) {
+    public Page<CommunityDTO> getCommunityMemberPost(int pageNum, int pageSize, String memberId) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
         return communityRepository.findAllByMember(memberId,pageable)
-                .map(community -> CommunityPostsDTO.fromEntity(community));
+                .map(community -> CommunityDTO.fromEntityForCommunityPosts(community));
     }
 
     public String dateFormat(Community community) {
@@ -96,24 +91,23 @@ public class CommunityServiceImpl implements CommunityService {
 
 
     @Override
-    public CommunityPostsDTO loadCommunityPosts(Long communityId){
-        return CommunityPostsDTO.fromEntity(communityRepository.findById(communityId)
+    public CommunityDTO loadCommunityPosts(Long communityId){
+        return CommunityDTO.fromEntityForCommunityPosts(communityRepository.findById(communityId)
                 .orElseThrow(() -> new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다.")));
     }
 
     @Override
-    public CommunityUpdateDTO loadCommunityUpdatePost(String memberId, Long communityId) {
-        return CommunityUpdateDTO.fromEntity(communityRepository.findByCommunityIdAndMemberMemberId(communityId,memberId)
+    public CommunityDTO loadCommunityUpdatePost(String memberId, Long communityId) {
+        return CommunityDTO.fromEntityForUpdatePost(communityRepository.findByCommunityIdAndMemberMemberId(communityId,memberId)
                 .orElseThrow(()->new NullPointerException(communityId+","+memberId+"-> 데이터베이스에서 찾을 수 없습니다.")));
     }
 
     @Override
     @Transactional
-    public void updateCommunity(String memberId, CommunityUpdateDTO communityUpdateDTO) {
-        Community community = communityRepository.findById(communityUpdateDTO.getCommunityId())
-                .orElseThrow(()->new NullPointerException(communityUpdateDTO.getCommunityId()+","+memberId+"-> 데이터베이스에서 찾을 수 없습니다."));
-        community.update(communityUpdateDTO.getCommunityTitle(),communityUpdateDTO.getCommunityContent(),
-                communityUpdateDTO.getCommunityCategory(),communityUpdateDTO.getCommunitySubCategory());
+    public void updateCommunity(String memberId, CommunityRequestDTO.UpdateDTO updateDTO) {
+        Community community = communityRepository.findById(updateDTO.getCommunityId())
+                .orElseThrow(()->new NullPointerException(updateDTO.getCommunityId()+","+memberId+"-> 데이터베이스에서 찾을 수 없습니다."));
+        community.update(updateDTO.toEntity());
     }
 
     @Override
@@ -147,6 +141,13 @@ public class CommunityServiceImpl implements CommunityService {
     public void deleteNotice(Long noticeId) {
         log.info("========== 공지사항 삭제 ==========");
         communityRepository.deleteById(noticeId);
+    }
+
+    @Override
+    public String getCommunityTitle(Long communityId) {
+        return communityRepository.findById(communityId)
+                .orElseThrow(()->new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다."))
+                .getCommunityTitle();
     }
 
 }
