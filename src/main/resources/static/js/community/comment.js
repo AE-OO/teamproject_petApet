@@ -139,16 +139,16 @@ $(function () {
     });
     //댓글 삭제 버튼
     $(document).on("click", ".commentDelete", function () {
-        if ($(this).closest('.commentDiv').find(".commentMemberId").text() === loginId) {
-            let cImg = $(this).closest('.commentDiv').find(".commentImg").attr("src") === undefined ? undefined : $(this).closest('.commentDiv').find(".commentImg").attr("src").substring(7);
-            // console.log($(this).closest('.commentDiv').find(".sideMenu").attr('id'))
+        if ($(this).closest('.memberDiv').find(".memberId").text() === loginId) {
+            let cImg = $(this).closest('.memberDiv').find(".commentImg").attr("src") === undefined ? undefined : $(this).closest('.memberDiv').find(".commentImg").attr("src").substring(7);
+            // console.log($(this).closest('.memberDiv').find(".sideMenu").attr('id'))
             $.ajax({
                 url: "/comment/delete",
                 type: "delete",
                 dateType: "json",
                 data: {
-                    commentId: $(this).closest('.commentDiv').find(".sideMenu").attr('id'),
-                    memberId: $(this).closest('.commentDiv').find(".commentMemberId").text(),
+                    commentId: $(this).closest('.memberDiv').find(".sideMenu").attr('id'),
+                    memberId: $(this).closest('.memberDiv').find(".memberId").text(),
                     commentImg: cImg
                 },
                 success: function (data) {
@@ -163,14 +163,14 @@ $(function () {
     });
     //댓글 수정 버튼
     $(document).on("click", ".commentUpdate", function () {
-        if ($(this).closest('.commentDiv').find(".commentMemberId").text() === loginId) {
-            $(this).closest('.commentDiv').append(commentForm())
-            $("#commentContent2").val($(this).closest('.commentDiv').find(".commentContent").text());
-            if ($(this).closest('.commentDiv').find(".commentImg").attr("src") !== undefined) {
-                $("#thumbnailImg2").attr("src", $(this).closest('.commentDiv').find(".commentImg").attr("src"));
+        if ($(this).closest('.memberDiv').find(".memberId").text() === loginId) {
+            $(this).closest('.memberDiv').append(commentForm())
+            $("#commentContent2").val($(this).closest('.memberDiv').find(".commentContent").text());
+            if ($(this).closest('.memberDiv').find(".commentImg").attr("src") !== undefined) {
+                $("#thumbnailImg2").attr("src", $(this).closest('.memberDiv').find(".commentImg").attr("src"));
                 $("#thumbnailImgDiv2").removeClass('d-none');
             }
-            if ($(this).closest('.commentDiv').find("i").hasClass('bi-lock-fill')) {
+            if ($(this).closest('.memberDiv').find("i").hasClass('bi-lock-fill')) {
                 $("#lockIcon2").toggleClass("bi-unlock-fill");
                 $("#lockIcon2").toggleClass("text-gray");
                 $("#lockIcon2").toggleClass("bi-lock-fill");
@@ -182,23 +182,23 @@ $(function () {
     });
     //댓글 수정 등록 버튼
     $(document).on("click", "#updateCommentBtn", function () {
-        if ($(this).closest('.commentDiv').find(".commentMemberId").text() === loginId) {
+        if ($(this).closest('.memberDiv').find(".memberId").text() === loginId) {
             if ($("#commentContent2").val() == '') {
                 alert("내용을 입력해주세요");
                 return;
             } else {
-                // alert($(this).closest('.commentDiv').find(".commentImg").attr("src"));
-                // alert($(this).closest('.commentDiv').find(".sideMenu").attr('id'));
-                // alert($(this).closest('.commentDiv').find(".commentMemberId").text());
-                submitUpdateComment($(this).closest('.commentDiv').find(".sideMenu").attr('id'),
-                    $(this).closest('.commentDiv').find(".commentMemberId").text(),
-                    $(this).closest('.commentDiv').find(".commentImg").attr("src"));
+                // alert($(this).closest('.memberDiv').find(".commentImg").attr("src"));
+                // alert($(this).closest('.memberDiv').find(".sideMenu").attr('id'));
+                // alert($(this).closest('.memberDiv').find(".memberId").text());
+                submitUpdateComment($(this).closest('.memberDiv').find(".sideMenu").attr('id'),
+                    $(this).closest('.memberDiv').find(".memberId").text(),
+                    $(this).closest('.memberDiv').find(".commentImg").attr("src"));
             }
         }
     });
     //답글 달기 버튼
     $(document).on("click", ".recomment", function () {
-        $(this).closest('.commentDiv').append(commentForm())
+        $(this).closest('.memberDiv').append(commentForm())
         $("#lockBtn2").next().next().attr("id", "recommentBtn");
     });
     //답글 등록 버튼
@@ -207,7 +207,7 @@ $(function () {
             alert("내용을 입력해주세요");
             return;
         } else {
-            submitRecomment($(this).closest('.commentDiv').find(".sideMenu").attr('id'));
+            submitRecomment($(this).closest('.memberDiv').find(".sideMenu").attr('id'));
         }
     });
 
@@ -235,22 +235,6 @@ $(function () {
 
     $(document).on("keyup", "#commentContent2", function () {
         $("#commentLength2").text($("#commentContent2").val().length)
-    });
-
-    //회원신고
-    $(document).on("click", ".memberReport", function () {
-        let reportMemberId = $(this).parent().parent().prev().text();
-        alert("회원 신고 테스트, 회원 아이디 : " + reportMemberId);
-    });
-
-    //글신고
-    $("#communityReport").click(function () {
-        let reportCommunityId = $(location).attr('pathname').split("/")[2];
-        if ($("#postsMemberId").text() === loginId) {
-            alert("본인이 작성한 게시물은 신고할 수 없습니다.");
-            return;
-        }
-        alert("게시물 신고 테스트, 게시물 번호 : " + reportCommunityId);
     });
 
     $("#communityMemberProfile").click(function () {
@@ -447,7 +431,7 @@ showList = function (data) {
     let str = '';
     $.each(data.content, function (idx, val) {
         if (val.isDeleted === 1) {
-            str += `<div class="commentDiv px-5 py-2">
+            str += `<div class="memberDiv px-5 py-2">
                     <div class="d-inline-block align-middle py-2">
                     <i class="bi bi-exclamation-circle me-1"></i>
                     <span class="pt-0 m-0">삭제된 댓글입니다.</span>
@@ -455,7 +439,7 @@ showList = function (data) {
                     </div><hr class="m-0">`
         }
 
-        str += `<div class="commentDiv px-5 py-2`
+        str += `<div class="memberDiv px-5 py-2`
         if (val.memberId === loginId) {
             str += ` bg-light`
         }
@@ -474,7 +458,7 @@ showList = function (data) {
                 str += `</div>
                         <div class="d-inline-block align-middle">
                         <div class="dropdown me-1 d-inline-block">
-                        <a href="javascript:" role="button" class="commentMemberId" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
+                        <a href="javascript:" role="button" class="memberId" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
                         <ul class="dropdown-menu" style="min-width: auto;">
                         <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
                         <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>`
@@ -524,7 +508,7 @@ showList = function (data) {
             str += `</div>
                     <div class="d-inline-block align-middle">
                     <div class="dropdown me-1 d-inline-block">
-                    <a href="javascript:"  class="commentMemberId" role="button" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
+                    <a href="javascript:"  class="memberId" role="button" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
                     <ul class="dropdown-menu" style="min-width: auto;">
                     <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
                     <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>`
@@ -556,7 +540,6 @@ showList = function (data) {
                             </div>`
                 }
             } else {
-                str += `<span class="d-none replyId">${btoa(val.replyId)}</span>`
                 if (val.memberId === loginId) {
                     str += `<div class="dropdown mt-1 float-end">
                             <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">

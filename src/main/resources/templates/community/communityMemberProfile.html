@@ -4,21 +4,26 @@
     <title>petApet - 회원정보</title>
     <link>
     <script>
-
         $(function () {
             getMemberProfile();
+            getLoginId();
             $("#closeBtn").click(function () {
                 window.close();
             });
             $("#sendMessage").click(function () {
                 let _width = '450';
                 let _height = '500';
-                let _left = Math.ceil(( window.screen.width - _width )/2);
-                let _top = Math.ceil(( window.screen.height - _height )/2);
-                window.open('/message/'+$("#memberId").text(), '_blank',
-                    'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top+', location=no,resizeable=no,menubar=no,scrollbars=no,status=no' );
+                let _left = Math.ceil((window.screen.width - _width) / 2);
+                let _top = Math.ceil((window.screen.height - _height) / 2);
+                window.open('/message/' + $("#memberId").text(), '_blank',
+                    'width=' + _width + ', height=' + _height + ', left=' + _left + ', top=' + _top + ', location=no,resizeable=no,menubar=no,scrollbars=no,status=no');
                 window.close();
-            })
+
+            });
+            if(loginId === $(location).attr('pathname').split("/")[3] || authorities !== "[ROLE_MEMBER]"){
+                $("#sendMessage").remove();
+                $("#memberReport").remove();
+            }
         });
         getMemberProfile = function () {
             $.ajax({
@@ -41,6 +46,25 @@
             $("#communityCount").text(data.communityCount);
             $("#commentCount").text(data.commentCount);
         }
+        let loginId;
+        let authorities;
+        getLoginId = function () {
+            $.ajax({
+                url: "/getLoginId",
+                type: "post",
+                dateType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.length > 0) {
+                        loginId = data[0];
+                        authorities = data[1];
+                    }
+                }
+                , error: function () {
+                    alert('오류');
+                }
+            })
+        }
     </script>
 
 </head>
@@ -62,6 +86,9 @@
                 <p id="memberId" class="text-black fs-5 mb-2"></p>
                 <button type="button" id="sendMessage" class="btn btn-outline-dark btn-sm">
                     <i class="bi bi-chat-right-text me-1"></i>쪽지
+                </button>
+                <button type="button" id="memberReport" class="btn btn-outline-dark btn-sm">
+                    신고하기
                 </button>
             </div>
         </div>
