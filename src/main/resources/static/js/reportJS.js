@@ -131,11 +131,13 @@ $(document).ready(function () {
         })
     });
 
+    // 모달의 취소버튼, X버튼 눌렀을 때 모달 초기화
     $(document).on("click", "#reportCancleBTN", function (){
         modalClear();
     });
 })
 
+// 모달 초기화 메소드
 function modalClear(){
     $("#reportReasonDetail").val("");
 }
