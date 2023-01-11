@@ -18,7 +18,7 @@ $(document).ready(function () {
     //회원 신고 버튼 클릭시 모달 구성
     $(document).on("click", ".memberReport", function () {
         let reportMemberId = $(this).closest(".memberDiv").find(".memberId").text();
-        console.log(reportMemberId);
+        alert("회원 신고 테스트, 회원 아이디 : " + reportMemberId);
 
         $("#reportModalTitle").text("회원신고");
         $("#modalTargetId").val(reportMemberId);
@@ -35,7 +35,6 @@ $(document).ready(function () {
 
         $(".reportModalReason").html(str);
         $("#reportBTN").attr("id","reportMemberBTN");
-        // alert("회원 신고 테스트, 회원 아이디 : " + reportMemberId);
     });
     
     //게시글 신고 버튼 클릭시 모달 구성
