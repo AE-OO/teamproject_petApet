@@ -3,6 +3,8 @@ package com.teamproject.petapet.web.community.controller;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,4 +24,9 @@ public class CommunityRestController {
         }
         communityService.deleteCommunity(communityId);
     }
+
+    @PostMapping("/getCommunityTitle")
+    public ResponseEntity<String> getCommunityTitle(@RequestParam Long communityId){
+        return new ResponseEntity<>(communityService.getCommunityTitle(communityId),HttpStatus.OK);
+        }
 }

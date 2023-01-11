@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title></title>
+    <link>
+    <script>
+        $(function () {
+            // getLoginId();
+            $("title").text("petApet - " + $(location).attr('pathname').split("/")[2] + " 쪽지대화");
+            $("#messageReceiver").text($(location).attr('pathname').split("/")[2]);
+            $("#sendMessage").click(function () {
+                if($("#messageContent").val() ===''||$("#messageContent").val() === null){
+                    alert("내용을 입력해주세요");
+                }else{
+                    sendMessage();
+                }
+            })
+        })
+        let loginId;
+        getLoginId = function () {
+            $.ajax({
+                url: "/getLoginId",
+                type: "post",
+                dateType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.length > 0) {
+                        loginId = data[0];
+                    }
+                }
+                , error: function () {
+                    alert('오류');
+                }
+            })
+        }
+        sendMessage = function () {
+            alert($("#messageContent").val()+";"+$(location).attr('pathname').split("/")[2])
+            $.ajax({
+                url: "/message/send",
+                type: "post",
+                data: JSON.stringify({
+                    messageContent:$("#messageContent").val(),
+                    messageReceiver:$(location).attr('pathname').split("/")[2],
+                }),
+                contentType: 'application/json',
+                dateType: "json",
+                success: function (data) {
+                    showList(data);
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div class="px-3 py-2 bg-dark">
+    <span id="messageReceiver" class="text-white"></span>
+</div>
+<div class="m-4">
+    <div class="col-12">
+        <div id="msgArea"></div>
+    </div>
+</div>
+<div class="input-group pt-2 position-fixed bottom-0 px-4 mb-3">
+    <textarea id="messageContent" style="resize:none; font-size:14px;" class="form-control px-1"
+              placeholder="보낼 내용을 작성해주세요." maxlength="600"></textarea>
+    <button type="button" id="sendMessage" class="btn btn-dark text-end">전송</button>
+</div>
+</body>
+</html>

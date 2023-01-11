@@ -1,31 +1,22 @@
 package com.teamproject.petapet.web.member.controller;
 
-import com.teamproject.petapet.web.community.commentDto.CommentDTO;
+import com.teamproject.petapet.web.member.dto.CommunityMemberDTO;
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.*;
 import java.security.Principal;
-import java.util.UUID;
 
 /**
  * 장사론 22.10.19 작성
@@ -99,6 +90,11 @@ public class MemberRestController {
         Object principal2 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal2;
         return new ResponseEntity<>(new String[]{userDetails.getUsername(), userDetails.getAuthorities().toString()}, HttpStatus.OK);
+    }
+
+    @PostMapping("/getMemberProfile")
+    public ResponseEntity<CommunityMemberDTO> getMemberProfile(String memberId){
+        return new ResponseEntity<>(memberService.memberProfile(memberId),HttpStatus.OK);
     }
 
 }

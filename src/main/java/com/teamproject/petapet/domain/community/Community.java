@@ -62,11 +62,11 @@ public class Community extends BaseTimeEntity {
     private List<Comment> comment;
 
     //커뮤니티 게시물 수정
-    public void update(String communityTitle,String communityContent,String communityCategory,String communitySubCategory){
-        this.communityTitle = communityTitle;
-        this.communityContent = communityContent;
-        this.communityCategory = communityCategory;
-        this.communitySubCategory = communitySubCategory;
+    public void update(Community community){
+        this.communityTitle = community.getCommunityTitle();
+        this.communityContent = community.getCommunityContent();
+        this.communityCategory = community.getCommunityCategory();
+        this.communitySubCategory = community.getCommunitySubCategory();
     }
 
 }

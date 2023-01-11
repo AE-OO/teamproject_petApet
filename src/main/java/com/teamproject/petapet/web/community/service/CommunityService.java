@@ -1,10 +1,5 @@
 package com.teamproject.petapet.web.community.service;
 
-import com.teamproject.petapet.domain.community.Community;
-import com.teamproject.petapet.web.community.communityDto.CommunityInsertDTO;
-import com.teamproject.petapet.web.community.communityDto.CommunityListDTO;
-import com.teamproject.petapet.web.community.communityDto.CommunityPostsDTO;
-import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
 import org.springframework.data.domain.Page;
 import com.teamproject.petapet.web.community.dto.CommunityDTO;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
@@ -19,19 +14,19 @@ public interface CommunityService {
     List<CommunityDTO> getCommunityList();
     void deleteCommunity(Long communityId);
     void addCommunityReport(Long communityId);
-    void insertCommunity(String memberId, CommunityInsertDTO communityInsertDTO);
-
-    Page<CommunityListDTO> getCommunityList(int pageNum,int pageSize, String communityCategory);
-    Page<CommunityPostsDTO> getCommunityMemberPost(int pageNum,int pageSize, String memberId);
+    void insertCommunity(String memberId, CommunityRequestDTO.InsertDTO insertDTO);
+    Page<CommunityDTO> getCommunityList(int pageNum, int pageSize, String communityCategory);
+    Page<CommunityDTO> getCommunityMemberPost(int pageNum, int pageSize, String memberId);
     Long countTodayCommunity(String communityCategory);
     void viewCountPlus(Long communityId);
-    CommunityPostsDTO loadCommunityPosts(Long communityId);
-    CommunityUpdateDTO loadCommunityUpdatePost(String memberId, Long communityId);
-    void updateCommunity(String memberId,CommunityUpdateDTO communityUpdateDTO);
+    CommunityDTO loadCommunityPosts(Long communityId);
+    CommunityDTO loadCommunityUpdatePost(String memberId, Long communityId);
+    void updateCommunity(String memberId, CommunityRequestDTO.UpdateDTO updateDTO);
 
     List<CommunityDTO> getNotice();
     void registerNotice(CommunityRequestDTO.registerNotice registerNotice);
     CommunityDTO getOneNotice(Long noticeId);
     void updateNotice(CommunityRequestDTO.registerNotice registerNotice);
     void deleteNotice(Long noticeId);
+    String getCommunityTitle(Long communityId);
 }

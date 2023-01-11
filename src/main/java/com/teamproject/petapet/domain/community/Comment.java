@@ -9,6 +9,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 박채원 22.10.02 작성
@@ -18,8 +20,8 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@ToString(exclude = {"member", "community"})
+
+@Getter @ToString(exclude = {"member", "community"})
 @EntityListeners(value = {AuditingEntityListener.class})
 public class Comment extends BaseTimeEntity {
 
@@ -44,6 +46,9 @@ public class Comment extends BaseTimeEntity {
     @Column
     private Long replyId;
 
+    @Column(columnDefinition = "int(1) default 0")
+    private int depth;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "memberId")
@@ -52,4 +57,10 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "communityId")
     private Community community;
+
+    public void update(Comment comment){
+        this.commentContent = comment.getCommentContent();
+        this.commentSecret = comment.getCommentSecret();
+        this.commentImg = comment.getCommentImg();
+    }
 }
