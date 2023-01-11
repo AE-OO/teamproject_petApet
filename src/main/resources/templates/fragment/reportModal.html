@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5 text-center" id="reportModalTitle"><!-- 모달 제목 --></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="reportCancleBTN"></button>
             </div>
             <div class="modal-body">
                 <h6>신고 사유를 선택해 주세요</h6>
@@ -13,11 +13,11 @@
                 <div class="reportModalReason"></div>
                 <hr>
                 <h6>구체적인 사유를 작성해 주세요</h6>
-                <textarea class="form-control" name="reportReasonDetail" rows="3"
+                <textarea class="form-control" name="reportReasonDetail" rows="3" id="reportReasonDetail"
                           placeholder="구체적인 신고 사유 입력"></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reportCancleBTN">취소</button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="reportBTN">신고하기</button>
             </div>
         </div>

@@ -81,6 +81,7 @@ $(document).ready(function () {
             success: function (result) {
                 if(result === 'success'){
                     alert("상품을 신고하였습니다.");
+                    modalClear();
                 }
             }
         })
@@ -102,6 +103,7 @@ $(document).ready(function () {
             success: function (result) {
                 if(result === 'success'){
                     alert("회원을 신고하였습니다.");
+                    modalClear();
                 }
             }
         })
@@ -123,8 +125,17 @@ $(document).ready(function () {
             success: function (result) {
                 if(result === 'success'){
                     alert("게시글을 신고하였습니다.");
+                    modalClear();
                 }
             }
         })
     });
+
+    $(document).on("click", "#reportCancleBTN", function (){
+        modalClear();
+    });
 })
+
+function modalClear(){
+    $("#reportReasonDetail").val("");
+}
