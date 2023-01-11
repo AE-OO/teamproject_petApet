@@ -1,10 +1,8 @@
 package com.teamproject.petapet.web.community.service;
 
-import com.teamproject.petapet.web.community.commentDto.CommentDTO;
-import com.teamproject.petapet.web.community.commentDto.CommentRequestDTO;
+import com.teamproject.petapet.web.community.dto.CommentDTO;
+import com.teamproject.petapet.web.community.dto.CommentRequestDTO;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 
 public interface CommentService {

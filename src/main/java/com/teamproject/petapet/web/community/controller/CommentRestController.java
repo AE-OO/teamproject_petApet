@@ -1,7 +1,7 @@
 package com.teamproject.petapet.web.community.controller;
 
-import com.teamproject.petapet.web.community.commentDto.CommentDTO;
-import com.teamproject.petapet.web.community.commentDto.CommentRequestDTO;
+import com.teamproject.petapet.web.community.dto.CommentDTO;
+import com.teamproject.petapet.web.community.dto.CommentRequestDTO;
 import com.teamproject.petapet.web.community.service.CommentService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,6 @@ public class CommentRestController {
     public void replyInsert(Principal principal,
                               @RequestPart(name = "insertReplyDTO") CommentRequestDTO.InsertReplyDTO insertReplyDTO,
                               @RequestPart(name = "commentImg", required = false) MultipartFile commentImg) throws IOException {
-        System.out.println(insertReplyDTO);
         if (commentImg != null) {
             insertReplyDTO.setCommentImg(fileService.storeFile(commentImg).getStoreFileName());
         }

@@ -1,4 +1,4 @@
-package com.teamproject.petapet.web.community.commentDto;
+package com.teamproject.petapet.web.community.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.teamproject.petapet.domain.community.Comment;

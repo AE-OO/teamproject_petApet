@@ -1,11 +1,8 @@
-package com.teamproject.petapet.web.community.commentDto;
+package com.teamproject.petapet.web.community.dto;
 
 import com.teamproject.petapet.domain.community.Comment;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder

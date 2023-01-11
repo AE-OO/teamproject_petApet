@@ -2,8 +2,8 @@ package com.teamproject.petapet.web.community.service;
 
 import com.teamproject.petapet.domain.community.Comment;
 import com.teamproject.petapet.domain.community.CommentRepository;
-import com.teamproject.petapet.web.community.commentDto.CommentDTO;
-import com.teamproject.petapet.web.community.commentDto.CommentRequestDTO;
+import com.teamproject.petapet.web.community.dto.CommentDTO;
+import com.teamproject.petapet.web.community.dto.CommentRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
