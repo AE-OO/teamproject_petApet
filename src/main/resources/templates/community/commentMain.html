@@ -4,6 +4,7 @@
     <title>petApet - 커뮤니티</title>
     <link>
     <script th:src="@{/js/community/comment.js}"></script>
+    <script th:src="@{/js/reportJS.js}"></script>
     <script>
         $(function () {
             getCommunityTitle();
@@ -82,5 +83,7 @@
 </div>
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<!-- 신고 모달 -->
+<th:block th:replace="~{fragment/reportModal :: reportModal}"></th:block>
 </body>
 </html>

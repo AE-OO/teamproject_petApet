@@ -17,7 +17,8 @@ $(document).ready(function () {
 
     //회원 신고 버튼 클릭시 모달 구성
     $(document).on("click", ".memberReport", function () {
-        let reportMemberId = $(this).parent().parent().prev().text();
+        let reportMemberId = $(this).closest(".memberDiv").find(".memberId").text();
+        console.log(reportMemberId);
 
         $("#reportModalTitle").text("회원신고");
         $("#modalTargetId").val(reportMemberId);

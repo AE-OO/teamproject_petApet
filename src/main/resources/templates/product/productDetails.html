@@ -383,14 +383,14 @@
         </div>
         <div>
             <div class="d-flex flex-row pb-3 px-3">
-                <div class="d-flex flex-column flex-fill">
+                <div class="d-flex flex-column flex-fill memberDiv">
                     <th:block th:if="${!reviews.hasContent()}">등록된 상품평이 없습니다.</th:block>
                     <article id="review" class="row justify-content-start" th:each="review : ${reviews}">
                         <div class="col-1">
                             <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                         </div>
                         <div class="col-1 me-2">
-                            <h6 th:text="${review.member.memberId}" id="memberId">작성자</h6>
+                            <h6 class="memberId" th:text="${review.member.memberId}" id="memberId">작성자</h6>
                             <h6 style="font-size: 0.5rem" class="text-secondary mt-1"
                                 th:text="${#temporals.format(review.reviewDate,'yyyy-MM-dd')}">2000.00.00</h6>
                         </div>
@@ -410,7 +410,6 @@
                                  width="100" height="100"
                                  class="reviewImage"></a>
                         </div>
-                        <h6 style="display: none" th:text="${review.member.memberId}"></h6>                     <!-- 신고 메소드 재활용하려고 사론 언니 코드랑 억지로 맞춰둔건데 더 좋은 방법 없는지 -->
                         <div class="col text-end">
                             <div>
                                 <th:block th:if="${#authentication.name != review.member.memberId}">
@@ -751,31 +750,9 @@
     </div>
 </div>
 
-<!-- 신고 Modal -->
-<div class="modal" id="addReportModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5 text-center" id="reportModalTitle"><!-- 모달 제목 --></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h6>신고 사유를 선택해 주세요</h6>
-                <input type="hidden" id="modalTargetId"> <!-- 신고대상의 id -->
-                <div class="reportModalReason"></div>
-                <hr>
-                <h6>구체적인 사유를 작성해 주세요</h6>
-                <textarea class="form-control" name="reportReasonDetail" rows="3"
-                          placeholder="구체적인 신고 사유 입력"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="reportBTN">신고하기</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- 신고 모달 -->
+<th:block th:replace="~{fragment/reportModal :: reportModal}"></th:block>
+
 <!-- 리뷰 이미지 Modal -->
 <div class="modal fade" id="reviewImgModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="reviewImgModalLabel" aria-hidden="true">
     <div class="modal-dialog">

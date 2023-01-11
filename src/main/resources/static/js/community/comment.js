@@ -464,7 +464,10 @@ showList = function (data) {
                         <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>`
                 if (val.memberId !== loginId) {
                     str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
-                            <li><a class="dropdown-item memberReport" href="javascript:">신고하기</a></li>`
+                            <button type="button" class="dropdown-item memberReport" id="addProductReport"
+                                    data-bs-toggle="modal" data-bs-target="#addReportModal"
+                                    title="신고하기">신고하기
+                            </button>`
                 }
                 str += `</ul>
                         </div>
@@ -514,7 +517,10 @@ showList = function (data) {
                     <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>`
             if (val.memberId !== loginId) {
                 str += `<li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
-                        <li><a class="dropdown-item memberReport" href="javascript:">신고하기</a></li>`
+                        <button type="button" class="dropdown-item memberReport" id="addProductReport"
+                                    data-bs-toggle="modal" data-bs-target="#addReportModal"
+                                    title="신고하기">신고하기
+                        </button>`
             }
             str += `</ul>
                     </div>
