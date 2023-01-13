@@ -54,10 +54,10 @@ public class CommunityServiceImpl implements CommunityService {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
         if (communityCategory.equals("all")) {
             return communityRepository.findAll(pageable).map(
-                    community -> CommunityDTO.fromEntityForCommunityMain(community, dateFormat(community)));
+                    community -> CommunityDTO.fromEntityForCommunityMain(community));
         }
         return communityRepository.findAllByCommunityCategory(communityCategory, pageable).map(
-                community -> CommunityDTO.fromEntityForCommunityMain(community, dateFormat(community)));
+                community -> CommunityDTO.fromEntityForCommunityMain(community));
     }
 
     //회원별 작성글 보기....
@@ -66,14 +66,6 @@ public class CommunityServiceImpl implements CommunityService {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
         return communityRepository.findAllByMember(memberId,pageable)
                 .map(community -> CommunityDTO.fromEntityForCommunityPosts(community));
-    }
-
-    public String dateFormat(Community community) {
-        if (community.getModifiedDate().toLocalDate().isBefore(LocalDate.now())) {
-            return community.getModifiedDate().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
-        } else {
-            return community.getModifiedDate().format(DateTimeFormatter.ofPattern("HH:mm"));
-        }
     }
 
     @Override
@@ -144,10 +136,13 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public String getCommunityTitle(Long communityId) {
-        return communityRepository.findById(communityId)
-                .orElseThrow(()->new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다."))
-                .getCommunityTitle();
+    public CommunityDTO getCommunityTitle(Long communityId) {
+        Community community = communityRepository.findById(communityId)
+                .orElseThrow(()->new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다."));
+        return CommunityDTO.builder()
+                .communityTitle(community.getCommunityTitle())
+                .memberId(community.getMember().getMemberId())
+                .build();
     }
 
 }

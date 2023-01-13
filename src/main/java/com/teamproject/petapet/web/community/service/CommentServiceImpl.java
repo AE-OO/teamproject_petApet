@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
         Pageable pageable = PageRequest.of(pageNum, 20,
                 Sort.by("replyId").ascending().and(Sort.by("createdDate")));
         return commentRepository.test2(communityId,pageable)
-                .map(c -> CommentDTO.fromEntity(c,dateFormat(c)));
+                .map(c -> CommentDTO.fromEntity(c));
     }
 
     @Override
@@ -60,11 +60,4 @@ public class CommentServiceImpl implements CommentService {
         comment.update(updateDTO.toEntity());
     }
 
-    public String dateFormat(Comment comment) {
-        if (comment.getModifiedDate().toLocalDate().isBefore(LocalDate.now())) {
-            return comment.getModifiedDate().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
-        } else {
-            return comment.getModifiedDate().format(DateTimeFormatter.ofPattern("HH:mm"));
-        }
-    }
 }

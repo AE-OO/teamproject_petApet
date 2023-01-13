@@ -5,19 +5,42 @@
     <link>
     <script>
         $(function () {
-            // getLoginId();
+            getLoginId();
+            getMessageList(nowPage);
+
+            $("#messageDiv").outerHeight(window.screen.height - $("#messageHeader").outerHeight() - $("#messageFooter").outerHeight())
             $("title").text("petApet - " + $(location).attr('pathname').split("/")[2] + " 쪽지대화");
             $("#messageReceiver").text($(location).attr('pathname').split("/")[2]);
             $("#sendMessage").click(function () {
-                if($("#messageContent").val() ===''||$("#messageContent").val() === null){
+                if ($("#messageContent").val() === '' || $("#messageContent").val() === null) {
                     alert("내용을 입력해주세요");
-                }else{
+                } else {
                     sendMessage();
+                }
+            })
+
+            //엔터키 누르면 전송됨 줄바꿈은 Shift+Enter키 사용
+            $('#messageContent').keydown(function (event) {
+                if (event.keyCode == 13)
+                    if (!event.shiftKey) {
+                        event.preventDefault();
+                        if ($("#messageContent").val() === '' || $("#messageContent").val() === null) {
+                            alert("내용을 입력해주세요");
+                        } else {
+                            sendMessage();
+                        }
+                    }
+            });
+            $("#messageContent").focus();
+            $("#messageDiv").scroll(function () {
+                if (Math.floor($("#msgArea").height()) - $("#messageDiv").height() + $("#messageDiv").scrollTop() == 0) {
+                    getMessageList(nowPage+1);
                 }
             })
         })
         let loginId;
         let authorities;
+        let nowPage ;
         getLoginId = function () {
             $.ajax({
                 url: "/getLoginId",
@@ -41,34 +64,87 @@
                 url: "/message/send",
                 type: "post",
                 data: JSON.stringify({
-                    messageContent:$("#messageContent").val(),
-                    messageReceiver:$(location).attr('pathname').split("/")[2],
+                    messageContent: $("#messageContent").val(),
+                    messageReceiver: $(location).attr('pathname').split("/")[2],
                 }),
                 contentType: 'application/json',
                 dateType: "json",
                 success: function (data) {
-                    // showList(data);
+                    $("#messageContent").val('');
+                    getMessageList(nowPage);
                 }
                 , error: function () {
                     alert('오류가 발생하였습니다.');
                 }
             })
         }
+        getMessageList = function (value) {
+            $.ajax({
+                url: "/message/getMessageList",
+                type: "post",
+                data: {
+                    messageReceiver: $(location).attr('pathname').split("/")[2],
+                    pageNum : value
+                },
+                dateType: "json",
+                success: function (data) {
+                    // console.log(data.content);
+                    showMessageList(data);
+                    nowPage=data.number
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        showMessageList = function (data) {
+            let str = '';
+            $.each(data.content.reverse(), function (idx, val) {
+                if (val.memberId === loginId) {
+                    str += `<div class="my-2 w-fit-content mx-auto me-0 text-end">
+                            <div class="d-inline-block align-bottom">`
+                    if (val.messageCheck === false) {
+                        str += `<p class="mb-0 text-danger" style="font-size:10px;">1</p>`
+                    }
+                    str += `<p class="mb-0 text-black" style="font-size:10px;">${val.messageDate}</p>
+                            </div>
+                            <div class="bg-info rounded-3 px-3 py-2 mw-80 d-inline-block text-start">
+                            <pre class="white-space-pre-wrap mb-0">${val.messageContent}</pre>
+                            </div>
+                            </div>`;
+                } else {
+                    str += `<div class="my-2 w-fit-content">
+                            <div class="bg-mainSecondary rounded-3 px-3 py-2 mw-80 d-inline-block text-justify">
+                            <pre class="white-space-pre-wrap mb-0">${val.messageContent}</pre>
+                            </div>
+                            <div class="d-inline-block align-bottom">
+                            <p class="mb-0 text-black" style="font-size:10px;">${val.messageDate}</p>
+                            </div>
+                            </div>`;
+                }
+            })
+            // if(nowPage == 0){
+            //     $("#msgArea").html(str);
+            // }else{
+                $("#msgArea").prepend(str);
+            // }
+        }
+
     </script>
 </head>
 <body>
-<div class="px-3 py-2 bg-dark">
+<div id="messageHeader" class="px-3 py-2 sticky-top bg-dark">
     <span id="messageReceiver" class="text-white"></span>
 </div>
-<div class="m-4">
-    <div class="col-12">
-        <div id="msgArea"></div>
+<div id="messageDiv" class="px-4 py-3 text-white lh-sm overflow-y-auto d-flex flex-column-reverse">
+    <div id="msgArea">
     </div>
 </div>
-<div class="input-group pt-2 position-fixed bottom-0 px-4 mb-3">
-    <textarea id="messageContent" style="resize:none; font-size:14px;" class="form-control px-1"
-              placeholder="보낼 내용을 작성해주세요." maxlength="600"></textarea>
-    <button type="button" id="sendMessage" class="btn btn-dark text-end">전송</button>
+<div id="messageFooter" class="pt-2 sticky-bottom w-100 px-4 pb-3 bg-dark">
+    <textarea id="messageContent" style="resize:none; height:80px; font-size:15px;"
+              class="form-control text-white lh-sm border-0 bg-dark px-1"
+              maxlength="300"></textarea>
+    <button type="button" id="sendMessage" class="btn btn-dark py-1 px-3 float-end">전송</button>
 </div>
 </body>
 </html>

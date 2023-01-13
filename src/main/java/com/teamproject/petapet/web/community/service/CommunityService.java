@@ -28,5 +28,5 @@ public interface CommunityService {
     CommunityDTO getOneNotice(Long noticeId);
     void updateNotice(CommunityRequestDTO.registerNotice registerNotice);
     void deleteNotice(Long noticeId);
-    String getCommunityTitle(Long communityId);
+    CommunityDTO getCommunityTitle(Long communityId);
 }

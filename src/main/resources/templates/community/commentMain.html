@@ -3,7 +3,6 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 커뮤니티</title>
     <link>
-    <script th:src="@{/js/community/comment.js}"></script>
     <script>
         $(function () {
             getCommunityTitle();
@@ -15,7 +14,8 @@
                 data: {communityId: $(location).attr('pathname').split("/")[2]},
                 dateType: "json",
                 success: function (data) {
-                    $("#communityTitle").text(data);
+                    $("#communityTitle").text(data.communityTitle);
+                    $("#postsMemberId").text(data.memberId);
                 }
                 , error: function () {
                     alert('오류가 발생하였습니다.');
@@ -23,11 +23,13 @@
             })
         }
     </script>
+    <script th:src="@{/js/community/comment.js}"></script>
 
 </head>
 <body>
 <div class="mx-5 mt-3">
     <h4 id="communityTitle" class="my-3">글제목</h4>
+    <h4 id="postsMemberId" class="my-3 d-none"></h4>
     <hr class="m-0 opacity-100">
 </div>
 <div class="mx-5 mb-3">

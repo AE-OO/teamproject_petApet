@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.community.controller;
 
+import com.teamproject.petapet.web.community.dto.CommunityDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class CommunityRestController {
     }
 
     @PostMapping("/getCommunityTitle")
-    public ResponseEntity<String> getCommunityTitle(@RequestParam Long communityId){
+    public ResponseEntity<CommunityDTO> getCommunityTitle(@RequestParam Long communityId){
         return new ResponseEntity<>(communityService.getCommunityTitle(communityId),HttpStatus.OK);
         }
 }

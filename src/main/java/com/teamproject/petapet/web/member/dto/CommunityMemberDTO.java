@@ -5,16 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 
 @Data
 @Builder
 public class CommunityMemberDTO {
 
     private String memberId;
-    private List<String> memberBirthday;
-    private String memberGender;
+//    private List<String> memberBirthday;
+//    private String memberGender;
     private String memberImg;
     private String memberJoinDate;
     private int communityCount;
@@ -24,15 +22,13 @@ public class CommunityMemberDTO {
     public static CommunityMemberDTO fromEntity(Member member) {
         return CommunityMemberDTO.builder()
                 .memberId(member.getMemberId())
-                .memberGender(member.getMemberGender())
+//                .memberGender(member.getMemberGender())
                 .memberJoinDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(member.getMemberJoinDate()))
-                .memberBirthday(Arrays.asList(String.valueOf(member.getMemberBirthday()).split("-")))
+//                .memberBirthday(Arrays.asList(String.valueOf(member.getMemberBirthday()).split("-")))
                 .memberImg(member.getMemberImg()==null?"0":member.getMemberImg())
                 .communityCount(member.getCommunity().size())
                 .commentCount(member.getComment().size())
                 .build();
     }
-
-
 
 }

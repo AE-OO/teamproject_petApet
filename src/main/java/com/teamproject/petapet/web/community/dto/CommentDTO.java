@@ -4,6 +4,9 @@ import com.teamproject.petapet.domain.community.Comment;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Data
 @Builder
 public class CommentDTO {
@@ -18,11 +21,13 @@ public class CommentDTO {
     private Long replyId;
     private String memberId;
     private String memberImg;
-    public static CommentDTO fromEntity(final Comment comment, String modifiedDate) {
+    public static CommentDTO fromEntity(final Comment comment) {
         return CommentDTO.builder()
                 .commentId(comment.getCommentId())
                 .commentContent(comment.getCommentContent())
-                .modifiedDate(modifiedDate)
+                .modifiedDate(comment.getModifiedDate().toLocalDate().isBefore(LocalDate.now())?
+                        DateTimeFormatter.ofPattern("yyyy.MM.dd").format(comment.getModifiedDate()):
+                        DateTimeFormatter.ofPattern("HH:mm").format(comment.getModifiedDate()))
                 .commentImg(comment.getCommentImg()==null?"0":comment.getCommentImg())
                 .commentSecret(comment.getCommentSecret())
                 .isDeleted(comment.getDepth())

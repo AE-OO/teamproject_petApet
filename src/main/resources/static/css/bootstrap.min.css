@@ -9655,6 +9655,10 @@ textarea.form-control-lg {
   max-width: 100% !important;
 }
 
+.mw-80 {
+  max-width: 80% !important;
+}
+
 .vw-100 {
   width: 100vw !important;
 }
@@ -10481,6 +10485,10 @@ textarea.form-control-lg {
   word-break: break-word !important;
 }
 
+.wb-break-all {
+  word-break: break-all !important;
+}
+
 /* rtl:end:remove */
 .text-primary {
   --bs-text-opacity: 1;
@@ -10621,6 +10629,11 @@ textarea.form-control-lg {
 .bg-lightGray {
   --bs-bg-opacity: 1;
   background-color: rgba(0,0,0,0.05) !important;
+}
+
+.bg-mainSecondary {
+  --bs-bg-opacity: 1;
+  background-color: #525368 !important;
 }
 
 .bg-dark {
@@ -13422,7 +13435,24 @@ legend {
   width: fit-content;
 }
 
+.h-fit-content{
+  height: fit-content;
+}
+
+.overflow-y-scroll{
+  overflow-y:scroll;
+}
+
+.overflow-y-auto{
+  overflow-y:scroll;
+}
+
+
 .tableDiv {
   height:520px;
   overflow: auto;
+}
+
+.white-space-pre-wrap{
+  white-space:pre-wrap;
 }
