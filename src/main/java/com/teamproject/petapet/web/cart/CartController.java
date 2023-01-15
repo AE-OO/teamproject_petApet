@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.cart;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.web.cart.dto.CartDTO;
 import com.teamproject.petapet.web.cart.dto.CartVO;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
@@ -82,6 +83,15 @@ public class CartController {
 
         cartService.addCart(cart);
 
+    }
+
+    // 카트페이지 주문수정 버튼 - 수량 변경
+    @ResponseBody
+    @RequestMapping(value = "/modify", method = { RequestMethod.POST } , produces = "application/json")
+    public void modifyCart(@RequestBody CartVO vo){
+        log.info("카트 번호>> ={}", vo.getCartId());
+        log.info("수량 변경>> ={}", vo.getQuantity());
+        cartService.setQuan(vo.getQuantity(), vo.getCartId());
     }
 
     @ResponseBody

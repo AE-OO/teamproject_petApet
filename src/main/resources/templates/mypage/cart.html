@@ -292,7 +292,9 @@
                                                                                 </span>
                                                                                 </a>
                                                                             </div>
+                                                                            <input class="productValue" type="hidden" th:value="${cart.product.productPrice}">
                                                                             <span class="price--2Uv-07hf78"
+                                                                                  th:value="${cart.product.productPrice}"
                                                                                   data-th-text="${#numbers.formatInteger(cart.product.productPrice, 3, 'COMMA') + '원'}">
                                                                                 상품가격</span>
                                                                         </div>
@@ -313,6 +315,7 @@
                                                                             <button th:value="${cart.cartId}" type="button" class="remove-product">
                                                                                 <!--                                                                            <a href="">삭제</a>-->삭제
                                                                             </button>
+                                                                            <input id="cartId" type="hidden" th:value="${cart.cartId}">
                                                                         </div>
                                                                         <div class="number">
                                                                             <button type="button" class="minus_btn"><span class="minus">-</span></button>
@@ -338,7 +341,9 @@
                                                                         <div class = "product-price">
                                                                             <span class="num--1hENWZ6Uv8 product-price"
                                                                                   th:with="var1=${cart.quantity}*${cart.product.productPrice}"
-                                                                                  data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}">상품금액</span>
+                                                                                  data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}"
+                                                                                  th:value="${cart.quantity}*${cart.product.productPrice}"
+                                                                            >상품금액</span>
                                                                             원
                                                                         </div>
                                                                     </div>
@@ -349,7 +354,7 @@
                                                                 </div>
                                                                 <div class="m_only--3xDkIw7vDP"></div>
                                                                 <div class="order_buttons--2Fb79h6uWq"><button
-                                                                        type="button">찜하기</button><button type="button"><span
+                                                                        type="button">찜하기</button><button type="button" class="modify"><span
                                                                         class="none_280--1-kFXWiEW1">주문</span>수정</button><button
                                                                         type="button" class="btn_order--4bpIwtdOmc">주문<span
                                                                         class="none_280--1-kFXWiEW1">하기</span></button>
