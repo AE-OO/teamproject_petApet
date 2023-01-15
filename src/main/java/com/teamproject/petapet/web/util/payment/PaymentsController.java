@@ -43,6 +43,12 @@ public class PaymentsController {
         return "mypage/cartCheckout";
     }
 
+    @ResponseBody
+    @GetMapping("/cart/checkout")
+    public String getPayment3() {
+        return "ok";
+    }
+
     // productList 페이지에서 checkout 페이지로 이동
     @GetMapping("/direct/checkout/{idx}")
     public String getPayment2(@PathVariable("idx") Long productId, Model model,

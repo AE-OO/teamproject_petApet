@@ -14,20 +14,25 @@ const btnMinus = $('.number .minus_btn');
 const btnPlus = $('.number .plus_btn');
 const input = $('.number > input');
 
+const icoCheck = $('.checked--2A5fgfRoYJ');
+
 const selectedPrice =$('.num--37aOyGmdW1.dd'); // <- 작업해야함
 const productPrice = $('.price--2Uv-07hf78'); // 상품 개별 단가
 const totalProductPrice = $('.product-price>span'); // 상품 개별 총금액
 const selectDeleteCards = $('.btn_delete--3P5eHI2eDa'); // 상품 삭제 선택
+
 /* 상품 */
 const productQuntity = $('em.quan > .num--37aOyGmdW1'); // 상품 주문 수량
 const productTotalFn = $('em.totalFn > .num--37aOyGmdW1'); // 상품 총 금액
-const fadeTime = 300;
 
 /* 주문 */
 const addBuy = $('.addBuy');
 
+//fade time 값을 넣으면 지연 동작함. 일단 0으로 세팅
+let fadeTime = 0;
 
-$(document).ready(function() {
+$(totalFnAll);
+
     // function cal_fn(){
     //     const quantity = $(card).children().find(productQuntity).get().val();
     //     const price = parseInt($(card).children().find(productPrice).get.text());
@@ -44,33 +49,39 @@ $(document).ready(function() {
         if (this.className == checkboxAllTargeted){
             $(this).attr('class', checkboxAllTarget);
             $(checkbox).attr('class', checkboxAllTarget);
+            $(checkbox).attr('aria-checked', false);
             $(buy).attr('class', offBuy);
         } else{
             $(this).attr('class', checkboxAllTargeted);
             $(checkbox).attr('class', checkboxAllTargeted);
+            $(checkbox).attr('aria-checked', true);
             $(buy).attr('class', onBuy);
         }
+            totalFnAll();
     });
 
     // 개별 선택
     $(checkBoxEach).click(function(){
         if (this.className == checkboxAllTargeted){
             $(this).attr('class', checkboxAllTarget);
+            $(this).attr('aria-checked', false);
             $(this).parents().eq(11).children().find(buy).attr('class', offBuy);
             // $(this).parents().eq(11).children().find(input).val(0);
-            console.log("val", $(input).val());
+            // console.log("val", $(input).val());
 
             // 전체 삭제
             $(selectDeleteCards).click(function(){
                 $(this).parents().eq(4).children().find(cards).remove();
                 $(this).parents().eq(4).children().find(input).val(0);
-                console.log("val", $(input).val());
+                // console.log("val", $(input).val());
             });
         } else{
             // const quan = [[${cart.quantity}]];
             $(this).attr('class', checkboxAllTargeted);
+            $(this).attr('aria-checked', true);
             $(this).parents().eq(11).children().find(buy).attr('class', onBuy);
         }
+            totalFnAll();
     })
 
     // 수량
@@ -86,14 +97,14 @@ $(document).ready(function() {
         var $input = $(this).parent().find('input');
         $input.val(parseInt($input.val()) + 1);
         $input.change();
-        console.log($input.change());
+        // console.log($input.change());
     });
 
 
-    $(input).change( function() {
+    $(input).change( function () {
         updateQuantity(this);
-        // totalFnAll();
-        console.log("click:!", $(this).val());
+        totalFnAll();
+        // console.log("click:!", $(this).val());
 
     });
 
@@ -102,13 +113,16 @@ $(document).ready(function() {
     function updateQuantity(quantityInput)
     {
         const productRow = $(quantityInput).parents().eq(13);
-        const price = parseInt(productRow.children().find(productPrice).text());
+        let eachPrice = productRow.children().find(productPrice).text();
+        let price = parseInt(eachPrice.replaceAll('원','').replaceAll(',',''));
+        // const price = parseInt(productRow.children().find(productPrice).text());
+
         const quantity = $(quantityInput).val();
-        const linePrice = price * quantity;
+        const linePrice = (price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         //
-        console.log('가격', price);
-        console.log('수량', quantity);
-        console.log('총가격', linePrice)
+        // console.log('가격', price);
+        // console.log('수량', quantity);
+        // console.log('총가격', linePrice)
 
         // totalFnAll();
 
@@ -117,7 +131,7 @@ $(document).ready(function() {
             // $(this).text(linePrice);
             $(this).fadeOut(fadeTime, function() {
                 $(this).text(linePrice);
-                totalFnAll();
+                // totalFnAll();
                 $(this).fadeIn(fadeTime);
             });
         });
@@ -128,14 +142,14 @@ $(document).ready(function() {
             // $(this).text(linePrice);
             $(this).fadeOut(fadeTime, function() {
                 $(this).text(linePrice);
-                totalFnAll();
+                // totalFnAll();
                 $(this).fadeIn(fadeTime);
             });
         });
 
         /* 수량 */
         productRow.children().find(productQuntity).each(function () {
-            console.log('vv',this);
+            // console.log('vv',this);
             // $(this).text(quantity);
             // totalFnAll();
             $(this).fadeOut(fadeTime, function() {
@@ -146,7 +160,7 @@ $(document).ready(function() {
         });
 
         productRow.children().find(productTotalFn).each(function () {
-            console.log('vv',this);
+            // console.log('vv',this);
             // $(this).text(linePrice);
             // totalFnAll();
             $(this).fadeOut(fadeTime, function() {
@@ -158,31 +172,11 @@ $(document).ready(function() {
     }
 
     /* Set rates + misc */
-    var fadeTime = 300;
+
 
 
     /* Recalculate cart */
-    function totalFnAll()
-    {
-        let subtotal = 0
 
-        $(card).each(function () {
-            subtotal += parseInt($(this).children().find(totalProductPrice).text());
-        });
-        console.log('>>subtotal:type:',typeof subtotal);
-        console.log('>>subtotal',subtotal);
-
-        $('.num--2CYvhIm-m6').fadeOut(fadeTime, function() {
-            $('#cart-total').text(subtotal);
-            // $('#cart-total').html(subtotal);
-            // if(subtotal == 0){
-            //     $(card).fadeOut(fadeTime);
-            // }else{
-            //     $(card).fadeIn(fadeTime);
-            // }
-            $('.num--2CYvhIm-m6').fadeIn(fadeTime);
-        });
-    }
 
     // 선택 삭제
     $(removeCard).on("click", card, function(e){
@@ -258,9 +252,56 @@ $(document).ready(function() {
         // });
     });
 
-});
+function totalFnAll()
+{
+    let subtotal = 0
 
+        $(icoCheck).parents().find(totalProductPrice).each(function () {
+            let checked = $(this).parents().eq(5).children(5).children().children().children().children().eq(0).attr('aria-checked');
+            if (checked === 'true') {
+            subtotal += parseInt($(this).text().replaceAll(',',''));
+                // console.log('asd')
+            }
+        });
 
+    // $(card).children().find(totalProductPrice).each(function () {
+    //     subtotal += parseInt($(this).text().replaceAll(',',''));
+        // subtotal += parseInt($(this).children().find(totalProductPrice).text());
+    // });
+    // console.log('>>subtotal:type:',typeof subtotal);
+    // console.log('>>subtotal',subtotal);
+
+    $('.num--2CYvhIm-m6').fadeOut(fadeTime, function() {
+        let replaceTotalPrice = subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        $(this).text(replaceTotalPrice);
+        // $('#cart-total').html(subtotal);
+        // if(subtotal == 0){
+        //     $(card).fadeOut(fadeTime);
+        // }else{
+        //     $(card).fadeIn(fadeTime);
+        // }
+        $('.num--2CYvhIm-m6').fadeIn(fadeTime);
+    });
+}
+
+$('.link_buy--jXvxZ8Agr-').click(function () {
+    $('.check--2EZEnyir5V').children(0).each(function () {
+    if ($(this).attr('aria-checked') === 'true') {
+        let cartId = $(this).parents().eq(1).children().find($('.remove-product')).val();
+        let productName = $(this).parent().next().children().find($('.ico_npay_plus--37zciz9t8T')).text();
+        let price = $(this).parents().eq(10).children().find($('.totalFn')).children(0).text().replace(',','');
+        let quan = $(this).parents().eq(10).children().find($('.quan')).children(0).text();
+        console.log(cartId)
+        console.log(productName)
+        console.log(price)
+        console.log(quan)
+    }})
+    $('.product-removal').children(0).each(function () {
+        let cartId = $(this).val();
+    });
+
+    // location.href = '/cart/checkout';
+})
 // function deleteNotices(){
 //     var deleteList = [];
 //     $("input[name='']:checked").each(function(){
