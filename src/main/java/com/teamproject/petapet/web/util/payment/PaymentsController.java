@@ -37,6 +37,7 @@ public class PaymentsController {
     public String getPayment1(@PathVariable("idx") Long cartId, Model model){
         Cart cart = cartService.findOne(cartId);
         model.addAttribute("cart", cart);
+        model.addAttribute("localDate", LocalDate.now());
         log.info("뷰 완료!!");
         return "mypage/cartCheckout";
     }
