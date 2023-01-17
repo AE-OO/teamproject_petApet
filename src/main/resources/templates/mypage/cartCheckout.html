@@ -223,7 +223,7 @@
                                         <label for="overnightOptIn">
                             <span class="bundle-info__expected-delivery-info_option">
                               <span class="bundle-info__expected-delivery-date">
-                                <strong data-bundle-info__over-night-pdd="">내일(목) 11/10 새벽 7시 전</strong>
+                                <strong th:text="'3일뒤 ' + ${#temporals.format(localDate.plusDays(3), 'M월/dd일 ')}+${#temporals.dayOfWeekName(localDate.plusDays(3))}"></strong>
                                 <span class="bundle-info__expected-delivery-date-suffix_option bundle-info__expected-delivery-date-suffix--colored" data-bundle-info__over-night-guarantee="">도착 보장</span>
                               </span>
                             </span>
@@ -281,6 +281,16 @@
                         <div class="payDelivery">
                             <strong class="price">
                                 <span id="deliveryPriceDisp" class="delivery-total-price-value use-calculation-for-totalprice" data-price="0">0</span><span class="unit">원</span>
+                            </strong>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="wrap-title">쿠폰 할인</th>
+                    <td>
+                        <div class="coupon">
+                            <strong class="price">
+                                <span id="couponDisp"> 쿠폰 적용</span><span class="unit">원</span>
                             </strong>
                         </div>
                     </td>

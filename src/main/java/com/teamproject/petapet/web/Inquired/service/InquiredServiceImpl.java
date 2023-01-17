@@ -36,12 +36,6 @@ public class InquiredServiceImpl implements InquiredService {
         inquiredRepository.deleteById(inquiredId);
     }
 
-//    @Transactional
-//    @Override
-//    public void setInquiredCheck(Boolean cheked, Long inquiredId) {
-//        inquiredRepository.setCheck(cheked,inquiredId);
-//    }
-
     @Override
     public Inquired findOne(Long id) {
         return inquiredRepository.findById(id).get();

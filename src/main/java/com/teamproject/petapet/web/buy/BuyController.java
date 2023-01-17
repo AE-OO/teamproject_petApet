@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -48,6 +50,7 @@ public class BuyController {
 
             List<Buy> buyList = buyService.findAll(loginMember);
             model.addAttribute("buyList", buyList);
+            model.addAttribute("curDate", LocalDateTime.now());
             return "mypage/buy";
         }
 
