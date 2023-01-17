@@ -16,10 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -43,9 +41,9 @@ public class PaymentsController {
         return "mypage/cartCheckout";
     }
 
-    // productList 페이지에서 checkout 페이지로 이동
-    @GetMapping("/direct/checkout/{idx}_{quan}")
-    public String getPayment2(@PathVariable("idx") Long productId, @PathVariable("quan") Long quantity, Model model,
+    // productList or productDetail 페이지에서 direct checkout 페이지 뷰
+    @RequestMapping(value = "/direct/checkout", method = {RequestMethod.GET})
+    public String getPayment2(@RequestParam("productId") Long productId, @RequestParam("quantity") Long quantity, Model model,
                               Principal principal){
         Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         String loginMember = checkMember(principal);
@@ -53,21 +51,38 @@ public class PaymentsController {
         model.addAttribute("quantity", quantity);
         model.addAttribute("product", product);
         model.addAttribute("member", member);
+        model.addAttribute("localDate", LocalDate.now());
         log.info("뷰 완료!!");
+
+        log.info("수량 ={}", quantity);
         return "mypage/directCheckout";
     }
-    @ResponseBody
-    @RequestMapping(value = "/direct/checkout/{idx}_{quan}", method = { RequestMethod.POST }, produces = "application/json")
-    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId,@PathVariable("quan") Long quantity, Principal principal, Model model) {
-        String loginMember = checkMember(principal);
-        Long getProduct = vo.getBuyProduct();
-        Member member = memberService.findOne(loginMember);
-        Product product = productService.findOne(getProduct).orElseThrow(NoSuchElementException::new);
-        model.addAttribute("quantity", quantity);
-        model.addAttribute("product", product);
-        model.addAttribute("member", member);
-        return "mypage/directCheckout";
-    }
+
+//    @GetMapping("/direct/checkout")
+//    public String getPayment2(@RequestParam("idx") Long productId, @RequestParam("quan") Long quantity, Model model,
+//                              Principal principal){
+//        Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
+//        String loginMember = checkMember(principal);
+//        Member member = memberService.findOne(loginMember);
+//        model.addAttribute("quantity", quantity);
+//        model.addAttribute("product", product);
+//        model.addAttribute("member", member);
+//        log.info("뷰 완료!!");
+//        return "mypage/directCheckout";
+//    }
+    // productList or productDetail 페이지에서 데이터 전송하는
+//    @ResponseBody
+//    @RequestMapping(value = "/direct/checkout/{idx}", method = { RequestMethod.POST }, produces = "application/json")
+//    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId, @RequestParam("quan") Long quantity, Principal principal, Model model) {
+//        String loginMember = checkMember(principal);
+//        Long getProduct = vo.getBuyProduct();
+//        Member member = memberService.findOne(loginMember);
+//        Product product = productService.findOne(getProduct).orElseThrow(NoSuchElementException::new);
+//        model.addAttribute("quantity", quantity);
+//        model.addAttribute("product", product);
+//        model.addAttribute("member", member);
+//        return "mypage/directCheckout";
+//    }
 
 
     // mail 전송 1

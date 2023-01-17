@@ -22,6 +22,7 @@ const selectDeleteCards = $('.btn_delete--3P5eHI2eDa'); // 상품 삭제 선택
 /* 상품 */
 const productQuntity = $('em.quan > .num--37aOyGmdW1'); // 상품 주문 수량
 const productTotalFn = $('em.totalFn > .num--37aOyGmdW1'); // 상품 총 금액
+const cartTotalQuan = $('em#cartTotalQuan'); //  x 건 주문하기 <- x
 const fadeTime = 300;
 
 /* 주문 */
@@ -152,6 +153,18 @@ $(document).ready(function() {
             // totalFnAll();
             $(this).fadeOut(fadeTime, function() {
                 $(this).text(linePrice);
+                // recalculateCart();
+                $(this).fadeIn(fadeTime);
+            });
+        });
+
+        /* x건 주문하기 */
+        productRow.children().find(cartTotalQuan).each(function () {
+            console.log('vv',this);
+            // $(this).text(linePrice);
+            // totalFnAll();
+            $(this).fadeOut(fadeTime, function() {
+                $(this).text(quantity);
                 // recalculateCart();
                 $(this).fadeIn(fadeTime);
             });
