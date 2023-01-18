@@ -68,7 +68,6 @@ $(document).ready(function () {
     //회원 정지 버튼 클릭
     $(".confirmDisabledMember").click(function () {
         var memberId = $(this).attr("id");
-        console.log(memberId);
 
         $.ajax({
             url: "/admin/disabledMember/" + memberId,

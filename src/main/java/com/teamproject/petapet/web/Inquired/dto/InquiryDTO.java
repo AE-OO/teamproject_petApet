@@ -28,6 +28,7 @@ public class InquiryDTO {
                 .inquiredDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(inquired.getInquiredDate()))
                 .inquiredContent(inquired.getInquiredContent())
                 .checked(inquired.isChecked())
+                .answer(inquired.getAnswer())
                 .build();
     }
 
