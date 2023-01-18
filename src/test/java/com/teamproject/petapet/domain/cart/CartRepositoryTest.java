@@ -8,7 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -23,6 +26,24 @@ class CartRepositoryTest {
 
     @Autowired
     ProductService productService;
+
+    @Test
+    void arrival() {
+        Date today = new Date();
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd E요일");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf3 = new SimpleDateFormat("a hh:mm:ss");
+        SimpleDateFormat sdf4 = new SimpleDateFormat("오늘은 올 해의 D번째 날");
+        SimpleDateFormat sdf5 = new SimpleDateFormat("오늘은 이 달의 d번째 날");
+        SimpleDateFormat sdf6 = new SimpleDateFormat("오늘은 올 해의 w번째 주");
+        SimpleDateFormat sdf7 = new SimpleDateFormat("오늘은 이 달의 W번째 주");
+        SimpleDateFormat sdf8 = new SimpleDateFormat("오늘은 이 달의 F번째 E요일");
+        SimpleDateFormat afterThreedays = new SimpleDateFormat("내일(E)요일 yy/MM 전");
+        SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd (E)", Locale.KOREA);
+        System.out.println("afterThreedays = " + afterThreedays);
+        System.out.println("sdf8 = " + sdf8);
+        System.out.println("newFormat = " + newFormat);
+    }
 
     @Test
     public void insertCartDummies(){
@@ -44,6 +65,11 @@ class CartRepositoryTest {
         String dd = "memberA";
         List<Cart> cartByMember1 = cartRepository.findCartByMember(dd);
         cartByMember1.forEach(i-> System.out.println("i.getCartId() = " + i.getCartId()));
+    }
+
+    @Test
+    public void modify(){
+
     }
 
 //    @Test

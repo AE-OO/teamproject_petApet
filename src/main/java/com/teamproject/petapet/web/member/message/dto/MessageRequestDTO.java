@@ -4,10 +4,11 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.Message;
 import lombok.Data;
 
+
 public class MessageRequestDTO {
 
     @Data
-    public class InsertDTO {
+    public static class InsertDTO {
         private String messageReceiver;
         private String messageContent;
 

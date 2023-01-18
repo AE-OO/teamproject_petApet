@@ -39,6 +39,8 @@
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
+
+                        <!--                        <img class="img-fluid" th:src="@{/img/petSnack.jpg}" style="width: 27rem;">-->
                     </div>
                 </div>
             </div>
@@ -75,7 +77,7 @@
                     <th:block th:if="*{productDiscountRate>0}">
                     <span style="text-decoration: line-through;"><i><h5 class="me-3" th:text="|*{productUnitPrice}원|">price</h5></i></span>
                     </th:block>
-                    <h4 class="me-3" th:text="|${#numbers.formatInteger(findProduct.productPrice, 3, 'COMMA')}원|">price</h4>
+                    <h4 class="me-3" th:text="|*{productPrice}원|">price</h4>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
@@ -99,7 +101,7 @@
                         <div class="col-9" id="quantityInputBox">
                             <input id="productId" type="hidden" th:value="*{productId}"/>
                             <input id="quantity" type="text" style="height: 100%" class="col-12" value="1" maxlength="6"
-                                   autocomplete="off">
+                                   autocomplete="off"/>
                         </div>
                         <div style="display:table-cell;vertical-align:top;" class="col-3">
                             <button id="plus" class="btn btn-primary btn-group-vertical" style="height: 1.5rem"
@@ -116,10 +118,14 @@
                         <div class="col-6 d-grid">
                             <button id="addCart" class="btn btn-info ms-3" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
                         </div>
-                        <div class="col-6 d-grid">
-                            <button id="addBuy" class="btn btn-info ms-3" th:onclick="'javascript:checkout()'">바로구매
+                        <form class="col-6 d-grid" th:action="@{/direct/checkout}">
+                            <input type="hidden" th:value="${productId}" th:name="productId"/>
+                            <input type="hidden" id="productQuan" value="1" th:name="quantity"/>
+                            <button type="submit" class="btn btn-info ms-3" id="addBuy">
+                                바로 구매
+<!--                                <a class="btn btn-info ms-3" th:href="@{/direct/checkout}">바로구매</a>-->
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -523,6 +529,7 @@
                                                 data-bs-toggle="modal" data-bs-target="#addReportModal"
                                                 title="신고하기">신고하기
                                         </button>
+                                        <!--                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>-->
                                     </div>
                                 </div>
                             </div>
@@ -1032,13 +1039,16 @@
     const btnMinus = $('#minus');
     const btnPlus = $('#plus');
     const quantity = $('#quantity');
+    var urlCart = "/cart/add";
+    var productId = $("#productId").val();
 
     $(btnMinus).click(function () {
         var $input = $(this).parents().eq(2).find(quantity);
+        console.log("빼기 >>", $input.val());
         var count = parseInt($input.val()) - 1;
         count = count < 1 ? 1 : count;
-        $input.val(count);
-        $input.change();
+        $input.val(count).change();
+        $('#productQuan').val(count).change();
         console.log("빼기 >>", $input.val());
     });
 
@@ -1047,8 +1057,9 @@
         let remainStock = $('#remainStock').text();
         let quantityVal = $("#quantity").val();
         if (parseInt(quantityVal) < parseInt(remainStock)) {
-            $input.val(parseInt($input.val()) + 1);
-            $input.change();
+            $input.val(parseInt($input.val()) + 1).change();
+            $('#productQuan').val(parseInt($input.val())).change();
+
         } else {
             const excessQuantityHtml = `
             <h6 class="text-secondary osh">재고가 부족합니다</h6>`;
@@ -1066,8 +1077,7 @@
 
     function addCart() {
         alert("실행");
-        console.log("product : " + productId);
-        console.log("quantity : " + quantityVal);
+        var param = {"product": productId, "quantity": quantity.val()};
         $.ajax({
             url: urlCart,
             type: "POST",
@@ -1084,26 +1094,28 @@
         });
     }
 
-    var product = $("#productId").text();
-    var param2 = {"buyProduct": productId, "buyQuantity": quantityVal};
+    // function direct() {
+    //     alert("실행");
+    //     console.log(productId);
+    //     console.log(quantity.val());
+    //     var param2 = {"buyProduct": productId, "buyQuantity": quantity.val()};
+    //     $.ajax({
+    //         url: "/direct/checkout",
+    //         type: "POST",
+    //         data: JSON.stringify(param2),
+    //         dataType: "text",
+    //         contentType: "application/json",
+    //         charset: "UTF-8",
+    //         success: function (data) {
+    //             alert("결제화면으로 이동합니다");
+    //             location.href="http://localhost:8088/direct/checkout/"+product;
+    //         },
+    //         error: function (jqXHR, status, errorThrown) {
+    //             alert("에러");
+    //         }
+    //     });
+    // }
 
-    function checkout() {
-        alert("실행");
-        $.ajax({
-            url: "/direct/checkout",
-            type: "POST",
-            data: JSON.stringify(param2),
-            dataType: "text",
-            contentType: "application/json",
-            charset: "UTF-8",
-            success: function (data) {
-                // location.href="http://localhost:8088/direct/checkout/"+[[product]];
-            },
-            error: function (jqXHR, status, errorThrown) {
-                alert("에러");
-            }
-        });
-    }
 </script>
 
 <script th:src="@{/js/reviewContentStr.js}"></script>

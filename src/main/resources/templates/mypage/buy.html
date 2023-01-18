@@ -247,14 +247,13 @@
                                                             <div class="sc-ki5ja7-0 bQVZKC">
                                                                 <div class="sc-ki5ja7-1 krPkOP"><span font-weight="bold"
                                                                         color="#111111" style="font-size:1.25rem"
-                                                                        class="sc-755zt3-0 hullgd">배송완료</span><span
+                                                                        class="sc-755zt3-0 hullgd" th:text="${buy.buyDate.plusDays(3).isBefore(curDate)} ? '배송완료' : '배송중'">배송완료</span><span
                                                                         size="4" class="sc-13xhsmd-0 SWzAJ"><span
                                                                             size="4"
                                                                             class="sc-13xhsmd-1 kMeFyN"></span></span><span
                                                                         font-weight="normal" color="#00891A"
                                                                         class="sc-755zt3-0 sc-lcvccu-0 jAERXO dhoCVo"
-                                                                        th:text="${buy.buyDate}"> 주문 날짜
-                                                                        도착</span>
+                                                                        th:text="${#temporals.format(buy.buyDate,'yyyy년 MM월 dd일 주문')}"></span>
                                                                     <div class="sc-yctqi4-0 cOIBfe">
                                                                         <div class="sc-16dovgh-0 sc-16dovgh-1 cNcuvY epHmvE">
                                                                         </div>

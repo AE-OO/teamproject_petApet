@@ -43,22 +43,25 @@ $(function () {
     $("#backBtn").click(function () {
         window.location = "/community";
     });
+    //로그인 버튼
     $("#loginBtn").click(function () {
         window.location = "/login";
     });
-
+    //회원가입 버튼
     $("#joinBtn").click(function () {
         window.location = "/join";
     });
-
+    //commentMain 팝업 창 로그인 버튼
     $("#commentLoginBtn").click(function () {
         opener.parent.location.href = '/login'
         window.close();
     });
+    //commentMain 팝업 창 회원가입 버튼
     $("#commentJoinBtn").click(function () {
         opener.parent.location.href = '/join'
         window.close();
     });
+
     //게시물 삭제버튼
     $("#postsDelete").click(function () {
         let arr = [];
@@ -102,21 +105,22 @@ $(function () {
         document.body.appendChild(form);
         form.submit();
     });
-    //이전페이지
+
+    //댓글 이전 페이지
     $(document).on("click", "#prevPage", function () {
         if ($(this).hasClass('disabled')) {
             return;
         }
         goCommentPage(nowPage - 1);
     });
-    //다음페이지
+    //댓글 다음 페이지
     $(document).on("click", "#nextPage", function () {
         if ($(this).hasClass('disabled')) {
             return;
         }
         goCommentPage(nowPage + 1);
     });
-    //페이지선택
+    //댓글 페이지선택
     $(document).on("click", ".selectPage", function () {
         if ($(this).parent().hasClass('active')) {
             return;
@@ -196,12 +200,12 @@ $(function () {
             }
         }
     });
-    //답글 달기 버튼
+    //댓글 답글(대댓글) 달기 버튼
     $(document).on("click", ".recomment", function () {
         $(this).closest('.memberDiv').append(commentForm())
         $("#lockBtn2").next().next().attr("id", "recommentBtn");
     });
-    //답글 등록 버튼
+    //댓글 답글(대댓글) 등록 버튼
     $(document).on("click", "#recommentBtn", function () {
         if ($("#commentContent2").val() == '') {
             alert("내용을 입력해주세요");
@@ -211,11 +215,11 @@ $(function () {
         }
     });
 
-    //답글작성, 댓글수정 취소버튼
+    //답글,댓글수정 취소버튼
     $(document).on("click", "#cancelBtn", function () {
         $("#commentForm").remove();
     });
-    //답글작성, 댓글수정 비밀글 설정
+    //답글,댓글수정 비밀글 설정
     $(document).on("click", "#lockBtn2", function () {
         $("#lockIcon2").toggleClass("bi-unlock-fill");
         $("#lockIcon2").toggleClass("text-gray");
@@ -232,25 +236,31 @@ $(function () {
         $("#thumbnailImgDiv2").addClass(' d-none');
         $("#thumbnailImg2").attr("src", "");
     });
-
+    //답글,댓글수정 글자수 체크
     $(document).on("keyup", "#commentContent2", function () {
         $("#commentLength2").text($("#commentContent2").val().length)
     });
 
-    $("#communityMemberProfile").click(function () {
+    //회원정보 팝업 창
+    $(document).on("click",".memberProfile",function () {
         let _width = '400';
         let _height = '300';
         // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
-        let _left = Math.ceil(( window.screen.width - _width )/2);
-        let _top = Math.ceil(( window.screen.height - _height )/2);
-        window.open('/community/memberProfile/'+$("#postsMemberId").text(), '_blank',
-            'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top+', location=no,resizeable=no,menubar=no,scrollbars=no,status=no' );
+        let _left = Math.ceil((window.screen.width - _width) / 2);
+        let _top = Math.ceil((window.screen.height - _height) / 2);
+        window.open('/community/memberProfile/' + $(this).closest('.memberDiv').find(".memberId").text(), '_blank',
+            'width=' + _width + ', height=' + _height + ', left=' + _left + ', top=' + _top + ', location=no,resizeable=no,menubar=no,scrollbars=no,status=no');
+    })
+    //쪽지보내기 버튼
+    $(document).on("click",".sendMessage",function () {
+        goMessagePage($(this).closest('.memberDiv').find(".memberId").text());
     })
 
 });
 let loginId;
 let authorities;
 let nowPage;
+//댓글 이미지 썸네일
 setThumbnail = function (event) {
     let from = Array.from(event.target.files);
     $('#thumbnailImg').empty();
@@ -263,7 +273,7 @@ setThumbnail = function (event) {
         reader.readAsDataURL(el);
     });
 }
-
+//대댓글 ,댓글 수정 이미지 썸네일
 setThumbnail2 = function (event) {
     let from = Array.from(event.target.files);
     $('#thumbnailImg2').empty();
@@ -407,6 +417,7 @@ getCommentList = function () {
         }
     })
 }
+//로그인 정보 (아이디,권한) 가져오는 ajax - 타임리프 대신 사용
 getLoginId = function () {
     $.ajax({
         url: "/getLoginId",
@@ -425,6 +436,26 @@ getLoginId = function () {
             alert('오류');
         }
     })
+}
+//댓글 페이지 선택
+goCommentPage = function (value) {
+    $.ajax({
+        url: "/comment/page",
+        type: "post",
+        data: {
+            pageNum: value,
+            communityId: $(location).attr('pathname').split("/")[2]
+        },
+        dataType: "json",
+        success: function (data) {
+            showList(data);
+            showPage(data);
+            nowPage = data.number;
+        }
+        , error: function () {
+            alert('오류가 발생하였습니다.');
+        }
+    });
 }
 //댓글 리스트 태그
 showList = function (data) {
@@ -476,21 +507,31 @@ showList = function (data) {
                         <i class="bi bi-lock-fill text-secondary me-1"></i>
                         <span class="commentContent">${val.commentContent}</span>
                         </p>
-                        </div>
-                        <div class="dropdown mt-1 float-end">
+                        </div>`
+                if (val.commentId === val.replyId) {
+                    str += `<div class="dropdown mt-1 float-end">
                         <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
                         <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-                        <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;">`
-                if (val.commentId === val.replyId) {
-                    str += `<li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
-                }
-                if (val.memberId === loginId) {
-                    str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
+                        <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;">
+                        <li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
+                    if (val.memberId === loginId) {
+                        str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
                             <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
+                    }
+                    str += '</ul></div>'
+                } else {
+                    if (val.memberId === loginId) {
+                        str += `<div class="dropdown mt-1 float-end">
+                            <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
+                            <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
+                            <li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
+                            <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
+                            </ul></div>`
+                    }
                 }
-                str += '</ul></div>'
                 if (val.commentImg != 0) {
-                    str += `<div class="ms-5 ps-3 mt-2">
+                    str += `<div class="ms-6">
                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
                             </div>`
                 }
@@ -568,6 +609,7 @@ showList = function (data) {
     $("#commentListSize").text(data.length);
     $("#commentList").html(str);
 }
+//댓글 페이지네이션 태그
 showPage = function (data) {
     let str = '';
     if (data.totalPages > 0) {
@@ -689,25 +731,7 @@ showPage = function (data) {
     }
     $("#commentPage").html(str);
 }
-goCommentPage = function (value) {
-    $.ajax({
-        url: "/comment/page",
-        type: "post",
-        data: {
-            pageNum: value,
-            communityId: $(location).attr('pathname').split("/")[2]
-        },
-        dataType: "json",
-        success: function (data) {
-            showList(data);
-            showPage(data);
-            nowPage = data.number;
-        }
-        , error: function () {
-            alert('오류가 발생하였습니다.');
-        }
-    });
-}
+//대댓글, 댓글수정 태그
 commentForm = function () {
     $("#commentForm").remove();
     let str = '';

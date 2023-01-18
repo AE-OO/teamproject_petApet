@@ -53,4 +53,6 @@ public class MemberDTO {
                 .memberReport(member.getMemberReport())
                 .build();
     }
+
+
 }

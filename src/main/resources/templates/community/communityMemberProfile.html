@@ -3,6 +3,7 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 회원정보</title>
     <link>
+    <script th:src="@{/js/message/goMessagePage.js}"></script>
     <script>
         $(function () {
             getMemberProfile();
@@ -11,14 +12,8 @@
                 window.close();
             });
             $("#sendMessage").click(function () {
-                let _width = '450';
-                let _height = '500';
-                let _left = Math.ceil((window.screen.width - _width) / 2);
-                let _top = Math.ceil((window.screen.height - _height) / 2);
-                window.open('/message/' + $("#memberId").text(), '_blank',
-                    'width=' + _width + ', height=' + _height + ', left=' + _left + ', top=' + _top + ', location=no,resizeable=no,menubar=no,scrollbars=no,status=no');
+                goMessagePage($("#memberId").text());
                 window.close();
-
             });
             if(loginId === $(location).attr('pathname').split("/")[3] || authorities !== "[ROLE_MEMBER]"){
                 $("#sendMessage").remove();
@@ -40,7 +35,9 @@
             })
         }
         showProfile = function (data) {
-            $("#memberImg").attr("src", data.memberImg === "0" ? "/img/profile.jpg" : "/image/" + data.memberImg);
+            if(data.memberImg !== "0"){
+                $("#memberImg").attr("/image/" + data.memberImg);
+            }
             $("#memberId").text(data.memberId);
             $("#joinDate").text(data.memberJoinDate);
             $("#communityCount").text(data.communityCount);
@@ -79,7 +76,7 @@
     <div class="col-12">
         <div class="row">
             <div class="col-4 text-end">
-                <img id="memberImg" src="" width="80" height="80" class="rounded-3 border border-1"
+                <img id="memberImg" src="/img/profile.jpg" width="80" height="80" class="rounded-3 border border-1"
                      style="object-fit:cover">
             </div>
             <div class="col-8">

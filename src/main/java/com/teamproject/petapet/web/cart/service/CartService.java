@@ -16,4 +16,6 @@ public interface CartService {
     void removeCartOne(Long cartId);
 
     void removeCartAll(String memberId);
+
+    void setQuan(Long quantity, Long cartId);
 }

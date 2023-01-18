@@ -40,7 +40,6 @@ public class InquiredServiceImpl implements InquiredService {
     @Transactional
     @Override
     public void setInquiredCheck(Long inquiredId, String answer) {
-        System.out.println("service!!!!!!!!!!!!!!!!" + answer);
         inquiredRepository.setCheck(inquiredId, answer);
     }
 

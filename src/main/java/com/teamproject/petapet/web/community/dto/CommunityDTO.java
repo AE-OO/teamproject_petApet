@@ -4,6 +4,7 @@ import com.teamproject.petapet.domain.community.Community;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -50,13 +51,15 @@ public class CommunityDTO {
     }
 
     //커뮤니티 메인
-    public static CommunityDTO fromEntityForCommunityMain(Community community, String modifiedDate) {
+    public static CommunityDTO fromEntityForCommunityMain(Community community) {
         return CommunityDTO.builder()
                 .communityId(community.getCommunityId())
                 .communityTitle(community.getCommunityTitle())
                 .communityCategory(community.getCommunityCategory())
                 .communitySubCategory(community.getCommunitySubCategory())
-                .modifiedDate(modifiedDate)
+                .modifiedDate(community.getModifiedDate().toLocalDate().isBefore(LocalDate.now())?
+                        DateTimeFormatter.ofPattern("yyyy.MM.dd").format(community.getModifiedDate()):
+                        DateTimeFormatter.ofPattern("HH:mm").format(community.getModifiedDate()))
                 .viewCount(community.getViewCount())
                 .memberId(community.getMember().getMemberId())
                 .commentListSize(community.getComment().size())
@@ -71,7 +74,7 @@ public class CommunityDTO {
                 .communityContent(community.getCommunityContent())
                 .communityCategory(community.getCommunityCategory())
                 .communitySubCategory(community.getCommunitySubCategory())
-                .modifiedDate(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(community.getModifiedDate()))
+                .modifiedDate(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm").format(community.getModifiedDate()))
                 .viewCount(community.getViewCount())
                 .memberId(community.getMember().getMemberId())
                 .memberImg(community.getMember().getMemberImg() == null ? "0" : community.getMember().getMemberImg())

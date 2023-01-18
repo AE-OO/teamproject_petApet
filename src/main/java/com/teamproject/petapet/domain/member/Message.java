@@ -30,10 +30,10 @@ public class Message {
     @Column(length = 45, nullable = false)
     private String messageReceiver;
 
-    @Column(length = 45, nullable = false)
-    private String messageTitle;
+//    @Column(length = 45, nullable = false)
+//    private String messageTitle;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 200, nullable = false)
     private String messageContent;
 
     @CreationTimestamp

@@ -2,6 +2,7 @@
 const card = $('.store_container--382-BRTlye');  // 상품 박스
 const cards = $('#cards'); // 상품 박스 부모
 const removeCard = $('.product-removal > button'); // 상품 박스 >  삭제 버튼
+const modifyCard = $('.order_buttons--2Fb79h6uWq > button.modify');
 const checkbox = $("button[role='checkbox']");
 const checkboxAll = $('button#check-all');
 const checkboxAllTarget = 'btn_check--31ufZfaM8S';
@@ -15,12 +16,13 @@ const btnPlus = $('.number .plus_btn');
 const input = $('.number > input');
 
 const selectedPrice =$('.num--37aOyGmdW1.dd'); // <- 작업해야함
-const productPrice = $('.price--2Uv-07hf78'); // 상품 개별 단가
+const productPrice = $('.productValue'); // 상품 개별 단가
 const totalProductPrice = $('.product-price>span'); // 상품 개별 총금액
 const selectDeleteCards = $('.btn_delete--3P5eHI2eDa'); // 상품 삭제 선택
 /* 상품 */
 const productQuntity = $('em.quan > .num--37aOyGmdW1'); // 상품 주문 수량
 const productTotalFn = $('em.totalFn > .num--37aOyGmdW1'); // 상품 총 금액
+const cartTotalQuan = $('em#cartTotalQuan'); //  x 건 주문하기 <- x
 const fadeTime = 300;
 
 /* 주문 */
@@ -102,7 +104,7 @@ $(document).ready(function() {
     function updateQuantity(quantityInput)
     {
         const productRow = $(quantityInput).parents().eq(13);
-        const price = parseInt(productRow.children().find(productPrice).text());
+        const price = (productRow.children().find(productPrice)).val();
         const quantity = $(quantityInput).val();
         const linePrice = price * quantity;
         //
@@ -155,6 +157,18 @@ $(document).ready(function() {
                 $(this).fadeIn(fadeTime);
             });
         });
+
+        /* x건 주문하기 */
+        productRow.children().find(cartTotalQuan).each(function () {
+            console.log('vv',this);
+            // $(this).text(linePrice);
+            // totalFnAll();
+            $(this).fadeOut(fadeTime, function() {
+                $(this).text(quantity);
+                // recalculateCart();
+                $(this).fadeIn(fadeTime);
+            });
+        });
     }
 
     /* Set rates + misc */
@@ -183,6 +197,31 @@ $(document).ready(function() {
             $('.num--2CYvhIm-m6').fadeIn(fadeTime);
         });
     }
+
+    const quanVal = $('#quantity');
+    const cartId = $('#cartId');
+
+    // 주문 수정
+    $(modifyCard).on("click", card , function (e){
+
+        console.log("수정 수량 : ", quanVal.val());
+        console.log("카트 번호 : ", cartId.val());
+        const param = { "quantity" : quanVal.val(), "cartId" : cartId.val() }
+        $.ajax({
+            url: "/cart/modify",
+            type: "POST",
+            data: JSON.stringify(param),
+            dataType: "text",
+            contentType : "application/json",
+            charset : "UTF-8",
+            success: function (data) {
+                alert("수량 수정 되었음!! ")
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("에러");
+            }
+        })
+    });
 
     // 선택 삭제
     $(removeCard).on("click", card, function(e){

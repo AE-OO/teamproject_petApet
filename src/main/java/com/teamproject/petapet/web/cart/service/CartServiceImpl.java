@@ -41,5 +41,10 @@ public class CartServiceImpl implements CartService{
         cartRepository.deleteAllByMember(memberId);
     }
 
+    @Override
+    public void setQuan(Long quantity, Long cartId) {
+        cartRepository.setQuan(quantity, cartId);
+    }
+
 
 }
