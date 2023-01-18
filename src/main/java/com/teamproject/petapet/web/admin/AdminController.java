@@ -1,6 +1,7 @@
 package com.teamproject.petapet.web.admin;
 
 import com.teamproject.petapet.domain.inquired.Inquired;
+import com.teamproject.petapet.web.Inquired.dto.InquiryRequestDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
@@ -29,22 +30,20 @@ public class AdminController {
         return "/admin/adminMain";
     }
 
-    // 뷰 확인
+    // 문의사항 상세페이지 띄우기
     @GetMapping("/{idx}/edit")
     public String inquiryView(@PathVariable("idx") Long inquiredId, Model model){
         Inquired inquiredList = inquiredService.findOne(inquiredId);
         model.addAttribute("inquiredList", inquiredList);
-        log.info("뷰 완료!!");
         return "admin/inquiryView";
     }
-//     뷰 업데이트
-//    @PostMapping("/{idx}/edit")
-//    public String updateCheckInquiry(@PathVariable("idx") Long inquiredId, @ModelAttribute InquiryDTO inquiryDTO){
-//
-//        inquiredService.setInquiredCheck(inquiredId);
-//        log.info("수정 완료!!");
-//        return "redirect:/admin/adminPage";
-//    }
+    
+    // 문의사항에 답변 달기
+    @PostMapping("/{idx}/edit")
+    public String updateCheckInquiry(@PathVariable("idx") Long inquiredId, @ModelAttribute("inquiredList") InquiryRequestDTO.GetAnswerDTO getAnswerDTO){
+        inquiredService.setInquiredCheck(inquiredId, getAnswerDTO.getAnswer());
+        return "redirect:/admin/adminPage";
+    }
 
     //공지사항 등록 폼으로 이동
     @GetMapping("/registerNotice")
