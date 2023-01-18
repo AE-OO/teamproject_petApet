@@ -5,7 +5,8 @@
     <link>
     <script th:src="@{/js/member/getLoginInfo.js}"></script>
     <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
-    <script th:src="@{/js/reportJS.js}"></script>
+    <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
+
     <script>
         $(function () {
             getLoginId();
@@ -119,7 +120,7 @@
                 dateType: "json",
                 success: function (data) {
                     showNoticeList(data)
-                    console.log(data)
+                    // console.log(data)
                 }
                 , error: function () {
                     alert('오류가 발생하였습니다.');
@@ -152,11 +153,13 @@
                             <a href="javascript:" class="memberId" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ${val.memberId}</a>
                             <ul class="dropdown-menu" style="min-width: auto;">
-                            <li><a class="dropdown-item" href="javascript:">회원정보</a></li>
+                            <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
                             <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>`
                     if (val.memberId !== loginId) {
                         str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
-                            <li><a class="dropdown-item memberReport" href="javascript:">신고하기</a></li>`
+                                <li><button type="button" class="dropdown-item memberReport" id="addProductReport"
+                                    data-bs-toggle="modal" data-bs-target="#addReportModal"
+                                    title="신고하기">신고하기</button></li>`
                     }
                     str += `</ul>
                             </div>
@@ -392,7 +395,7 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
-
+<!-- 신고 모달 -->
+<th:block th:replace="~{fragment/reportModal :: reportModal}"></th:block>
 </body>
-
 </html>

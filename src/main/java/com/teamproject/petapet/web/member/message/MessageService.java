@@ -9,6 +9,6 @@ import java.util.List;
 public interface MessageService {
     void insertMessage(String memberId,MessageRequestDTO.InsertDTO insertDTO);
     Page<MessageDTO> getMessageList(String memberId, String messageReceiver,int pageNum);
-
     void updateMessageCheck(String memberId, String messageReceiver);
+    List<String> getReceiverList(String memberId);
 }

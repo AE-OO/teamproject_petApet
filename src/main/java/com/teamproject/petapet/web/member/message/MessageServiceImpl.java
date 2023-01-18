@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,12 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public void updateMessageCheck(String memberId, String messageReceiver) {
         messageRepository.updateMessageCheck(memberId, messageReceiver);
+    }
+
+    @Override
+    public List<String> getReceiverList(String memberId) {
+        return messageRepository.getReceiverList(memberId);
+
     }
 
 

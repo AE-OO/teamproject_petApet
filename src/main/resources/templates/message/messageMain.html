@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 쪽지함</title>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script>
+        $(function () {
+            getLoginId();
+            getTest()
+        })
+        getTest = function () {
+            $.ajax({
+                url: "/message/test",
+                type: "post",
+                // data: {communityCategory: value},
+                dateType: "json",
+                success: function (data) {
+                    console.log(data)
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="bg-white pt-5 pb-3">
+                    <h4 class="text-black ps-5 mb-0"><i class="bi bi-arrow-left"></i> 쪽지함</h4>
+                </div>
+                <div class="myinfo-item  d-flex">
+                    <div class="myinfo-text w-100 p-5">
+                        <table class="table2 table-hover">
+                            <thead>
+                            <tr>
+                                <th class="col-md-3">상대아이디</th>
+                                <th>최근 내용</th>
+                                <th class="col-md-2">최근날짜</th>
+                            </tr>
+                            </thead>
+                            <tbody id="messageList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Myinfo End -->
+
+<!-- smsConfirmNum Modal start -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-8 mx-auto">
+                    <h5 class="modal-title text-center pt-3" id="staticBackdropLabel">인증번호 확인</h5>
+                    <div class="py-3">
+                        <div class="mb-0">
+                            <input id="input-smsConfirmNum" type="text" class="form-control"
+                                   name="smsConfirmNum" maxlength="6" placeholder="인증번호 6자리 입력">
+                            <p id="feedback-smsConfirmNum" class="text-start text-danger small ps-2 my-1"/>
+                            <p id="feedback-smsConfirmNum2" class="text-start text-danger small ps-2 my-1"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">닫기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- smsConfirmNum Modal end-->
+
+<!-- updateMemberPw Modal start -->
+<div class="modal fade" id="updateMemberPw" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="updateMemberPwLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-11 mx-auto">
+                    <h5 class="modal-title text-center py-3" id="updateMemberPwLabel">비밀번호 바꾸기</h5>
+                    <!-- Original memberPw start -->
+                    <div class="row g-2 mb-2">
+                        <label for="input-originalMemberPw" class="myinfo-p col-3">현재 비밀번호</label>
+                        <div class="col-9 px-0">
+                            <input type="password" id="input-originalMemberPw"
+                                   class="form-control px-3 py-2" maxlength="18"
+                                   placeholder="비밀번호를 입력해주세요" onkeyup="checkOriginalMemberPw()">
+                            <p id="feedback-originalMemberPw" class="text-start small text-danger ps-2 my-1"/>
+                        </div>
+                    </div>
+                    <!-- Original memberPw end -->
+
+                    <!-- New MemberPw start -->
+                    <div class="row g-2 mb-2">
+                        <label for="input-newMemberPw" class="myinfo-p col-3">새 비밀번호</label>
+                        <div class="col-9 px-0">
+                            <input type="password" id="input-newMemberPw"
+                                   class="form-control px-3 py-2" maxlength="18"
+                                   placeholder="새 비밀번호를 입력해주세요" onkeyup="checkNewMemberPw()" disabled>
+                            <p id="feedback-newMemberPw"
+                               class="text-start text-danger small ps-2 my-1"/>
+                        </div>
+                    </div>
+                    <!-- New MemberPw end -->
+
+                    <!-- New MemberPw2 start -->
+                    <div class="row g-2">
+                        <label for="input-newMemberPw2" class="myinfo-p col-3">새 비밀번호 확인</label>
+                        <div class="col-9 px-0">
+                            <input type="password" id="input-newMemberPw2"
+                                   class="form-control px-3 py-2" maxlength="18"
+                                   placeholder="새 비밀번호를 다시 입력해주세요" onkeyup="checkNewMemberPw2()" disabled>
+                            <p id="feedback-newMemberPw2"
+                               class="text-start text-danger small ps-2 my-1"/>
+                        </div>
+                    </div>
+                    <!-- New MemberPw2 end -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeBtn" class="mx-auto me-1 col-5 btn btn-outline-primary"
+                        data-bs-dismiss="modal">닫기
+                </button>
+                <button type="button" id="sendNewMemberPwBtn" class="mx-auto ms-1 col-5 btn btn-primary">확인</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- updateMemberPw Modal end-->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+</body>
+
+</html>

@@ -17,6 +17,9 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             "or (m.messageReceiver=:memberId and m.member.memberId=:messageReceiver)")
     Page<Message> getMessageList(String memberId, String messageReceiver, Pageable pageable);
 
+    @Query(value = "select distinct messageReceiver from Message where memberId=:memberId", nativeQuery = true)
+    List<String> getReceiverList(String memberId);
+
     @Modifying
     @Transactional
     @Query("update Message m set m.messageCheck = true " +
