@@ -53,7 +53,7 @@ public class CommunityServiceImpl implements CommunityService {
     public Page<CommunityDTO> getCommunityList(int pageNum, int pageSize, String communityCategory) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
         if (communityCategory.equals("all")) {
-            return communityRepository.findAll(pageable).map(
+            return communityRepository.getCommunityList(pageable).map(
                     community -> CommunityDTO.fromEntityForCommunityMain(community));
         }
         return communityRepository.findAllByCommunityCategory(communityCategory, pageable).map(
@@ -106,6 +106,12 @@ public class CommunityServiceImpl implements CommunityService {
     public List<CommunityDTO> getNotice() {
         List<Community> communityList = communityRepository.getNotice();
         return communityList.stream().map(list -> CommunityDTO.fromEntityForNotice(list)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CommunityDTO> getCommunityMainNotice() {
+        List<Community> communityList = communityRepository.getNotice();
+        return communityList.stream().map(list -> CommunityDTO.fromEntityForCommunityMain(list)).collect(Collectors.toList());
     }
 
     @Override

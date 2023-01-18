@@ -3,6 +3,7 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title></title>
     <link>
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
     <script>
         $(function () {
             getLoginId();
@@ -33,32 +34,16 @@
             });
             $("#messageContent").focus();
             $("#messageDiv").scroll(function () {
+                if (last) {
+                    return;
+                }
                 if (Math.floor($("#msgArea").height()) - $("#messageDiv").height() + $("#messageDiv").scrollTop() == 0) {
-                    getMessageList(nowPage+1);
+                    getMessageList(nowPage + 1);
                 }
             })
         })
-        let loginId;
-        let authorities;
-        let nowPage ;
-        getLoginId = function () {
-            $.ajax({
-                url: "/getLoginId",
-                type: "post",
-                dateType: "json",
-                async: false,
-                success: function (data) {
-                    if (data.length > 0) {
-                        loginId = data[0];
-                        authorities = data[1];
-
-                    }
-                }
-                , error: function () {
-                    alert('오류');
-                }
-            })
-        }
+        let nowPage;
+        let last;
         sendMessage = function () {
             $.ajax({
                 url: "/message/send",
@@ -71,7 +56,8 @@
                 dateType: "json",
                 success: function (data) {
                     $("#messageContent").val('');
-                    getMessageList(nowPage);
+                    getMessageList(0);
+
                 }
                 , error: function () {
                     alert('오류가 발생하였습니다.');
@@ -84,20 +70,22 @@
                 type: "post",
                 data: {
                     messageReceiver: $(location).attr('pathname').split("/")[2],
-                    pageNum : value
+                    pageNum: value
                 },
                 dateType: "json",
                 success: function (data) {
-                    // console.log(data.content);
-                    showMessageList(data);
-                    nowPage=data.number
+                    // console.log(data);
+                    nowPage = data.number;
+                    last = data.last;
+                    showMessageList(data,nowPage);
+
                 }
                 , error: function () {
                     alert('오류가 발생하였습니다.');
                 }
             })
         }
-        showMessageList = function (data) {
+        showMessageList = function (data,value) {
             let str = '';
             $.each(data.content.reverse(), function (idx, val) {
                 if (val.memberId === loginId) {
@@ -123,11 +111,11 @@
                             </div>`;
                 }
             })
-            // if(nowPage == 0){
-            //     $("#msgArea").html(str);
-            // }else{
-                $("#msgArea").prepend(str);
-            // }
+            if (value == 0 || value == undefined) {
+                $("#msgArea").empty()
+            }
+            $("#msgArea").prepend(str);
+
         }
 
     </script>

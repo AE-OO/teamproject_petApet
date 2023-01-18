@@ -25,7 +25,7 @@ public class MessageServiceImpl implements MessageService{
 
     @Override
     public Page<MessageDTO> getMessageList(String memberId, String messageReceiver, int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum, 10, Sort.by("messageId").descending());
+        Pageable pageable = PageRequest.of(pageNum, 50, Sort.by("messageId").descending());
         return messageRepository.getMessageList(memberId,messageReceiver,pageable)
                 .map(message -> MessageDTO.fromEntity(message));
     }

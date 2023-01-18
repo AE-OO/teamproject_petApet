@@ -3,7 +3,8 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 커뮤니티</title>
     <link>
-    <script th:src="@{/js/message/goMessagePage.js}"></script>
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script th:src="@{/js/community/comment.js}"></script>
     <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
 </head>
@@ -52,7 +53,7 @@
                             <a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a>
                         </li>
                         <li th:unless="${#authentication.name == posts.memberId}">
-<!--                            <a class="dropdown-item memberReport" href="javascript:">신고하기</a>-->
+                            <!--                            <a class="dropdown-item memberReport" href="javascript:">신고하기</a>-->
                             <button type="button" class="dropdown-item memberReport" id="addProductReport"
                                     data-bs-toggle="modal" data-bs-target="#addReportModal"
                                     title="신고하기">신고하기
@@ -76,7 +77,6 @@
                            aria-expanded="false"><i class="bi bi-three-dots-vertical m-auto fs-5"></i></a>
                         <ul class="dropdown-menu" style="min-width: auto;">
                             <li>
-<!--                                <a id="communityReport" class="dropdown-item" href="javascript:">신고</a>-->
                                 <button type="button" class="dropdown-item communityReport"
                                         data-bs-toggle="modal" data-bs-target="#addReportModal"
                                         title="신고">신고
@@ -123,6 +123,7 @@
         </div>
     </div>
 </div>
+
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>

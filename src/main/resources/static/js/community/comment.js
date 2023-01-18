@@ -37,7 +37,8 @@ $(function () {
     });
     //글목록 버튼
     $("#communityBtn").click(function () {
-        window.location = "/community";
+        // window.location = "/community";
+        history.go(-1);
     });
 
     $("#backBtn").click(function () {
@@ -240,25 +241,9 @@ $(function () {
     $(document).on("keyup", "#commentContent2", function () {
         $("#commentLength2").text($("#commentContent2").val().length)
     });
-
-    //회원정보 팝업 창
-    $(document).on("click",".memberProfile",function () {
-        let _width = '400';
-        let _height = '300';
-        // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
-        let _left = Math.ceil((window.screen.width - _width) / 2);
-        let _top = Math.ceil((window.screen.height - _height) / 2);
-        window.open('/community/memberProfile/' + $(this).closest('.memberDiv').find(".memberId").text(), '_blank',
-            'width=' + _width + ', height=' + _height + ', left=' + _left + ', top=' + _top + ', location=no,resizeable=no,menubar=no,scrollbars=no,status=no');
-    })
-    //쪽지보내기 버튼
-    $(document).on("click",".sendMessage",function () {
-        goMessagePage($(this).closest('.memberDiv').find(".memberId").text());
-    })
-
 });
-let loginId;
-let authorities;
+// let loginId;
+// let authorities;
 let nowPage;
 //댓글 이미지 썸네일
 setThumbnail = function (event) {
@@ -418,25 +403,25 @@ getCommentList = function () {
     })
 }
 //로그인 정보 (아이디,권한) 가져오는 ajax - 타임리프 대신 사용
-getLoginId = function () {
-    $.ajax({
-        url: "/getLoginId",
-        type: "post",
-        dateType: "json",
-        async: false,
-        success: function (data) {
-            if (data.length > 0) {
-                loginId = data[0];
-                authorities = data[1];
-            }
-            // alert(data[1])
-            // alert(data[0])
-        }
-        , error: function () {
-            alert('오류');
-        }
-    })
-}
+// getLoginId = function () {
+//     $.ajax({
+//         url: "/getLoginId",
+//         type: "post",
+//         dateType: "json",
+//         async: false,
+//         success: function (data) {
+//             if (data.length > 0) {
+//                 loginId = data[0];
+//                 authorities = data[1];
+//             }
+//             // alert(data[1])
+//             // alert(data[0])
+//         }
+//         , error: function () {
+//             alert('오류');
+//         }
+//     })
+// }
 //댓글 페이지 선택
 goCommentPage = function (value) {
     $.ajax({
@@ -722,7 +707,7 @@ showPage = function (data) {
                     </li>`
         } else {
             str += `<li id="nextPage" class="page-item">
-                    <a class="page-link" href="javascript:" style="pointer-events: none;">
+                    <a class="page-link" href="javascript:">
                     <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
                     </a>
                     </li>`

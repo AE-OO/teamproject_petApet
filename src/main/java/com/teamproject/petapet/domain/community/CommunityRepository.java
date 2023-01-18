@@ -34,6 +34,10 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
     Page<Community> findAllByCommunityCategory(String communityCategory, Pageable pageable);
 
+    @Query(value = "select c from Community c where c.communityCategory not in ('공지사항')",
+    countQuery = "select count(c) from Community c where c.communityCategory not in ('공지사항')")
+    Page<Community> getCommunityList(Pageable pageable);
+
     Page<Community> findAllByMember(String memberId, Pageable pageable);
 
     Optional<Community> findByCommunityIdAndMemberMemberId(Long communityId, String memberId);

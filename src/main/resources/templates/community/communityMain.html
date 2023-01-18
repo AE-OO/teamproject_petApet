@@ -3,92 +3,314 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 커뮤니티</title>
     <link>
-    <script th:inline="javaScript">
-        let mainCategory = [[${mainCategory}]]
-        let nowPageNum = [[${community.getNumber()}]]
-        // selectPageNum = function (value) {
-        //     goPost(value, $("#pageSize").text(), mainCategory)
-        // }
-        goPost = function (value1, value2, value3) {
-            let form = document.createElement('form');
-            let pageNum;
-            pageNum = document.createElement('input');
-            pageNum.setAttribute('type', 'hidden');
-            pageNum.setAttribute('name', 'pageNum');
-            pageNum.setAttribute('value', value1);
-            let pageSize;
-            pageSize = document.createElement('input');
-            pageSize.setAttribute('type', 'hidden');
-            pageSize.setAttribute('name', 'pageSize');
-            pageSize.setAttribute('value', value2);
-            let category;
-            category = document.createElement('input');
-            category.setAttribute('type', 'hidden');
-            category.setAttribute('name', 'communityCategory');
-            category.setAttribute('value', value3);
-            form.appendChild(pageNum);
-            form.appendChild(pageSize);
-            form.appendChild(category);
-            form.setAttribute('method', 'post');
-            form.setAttribute('action', '/community');
-            document.body.appendChild(form);
-            form.submit();
-        }
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
+    <script th:src="@{/js/reportJS.js}"></script>
+    <script>
         $(function () {
+            getLoginId();
+            //게시판 List
+            getCommunityList(nowCommunityCategory, nowPage, nowPageSize);
+            //공지사항 List
+            getNotice();
+            //글쓰기 버튼
             $("#writeBtn").click(function () {
                 window.location = "/community/insert";
             });
+            //카테고리 선택
             $("#categoryList").children().click(function () {
-                goPost(0, $("#pageSize").text(), $(this).text().toLowerCase().trim())
+                getCommunityList($(this).find('a').text(), 0, nowPageSize)
             });
+            //커뮤니티 개수 선택
             $("#pageSizeList").children().click(function () {
-                goPost(nowPageNum, $(this).find('span').text(), mainCategory.toLowerCase().trim())
+                getCommunityList(nowCommunityCategory, nowPage, $(this).find('span').text())
             });
-            $(".badge2").click(function () {
+            //댓글 보기
+            $(document).on("click", ".badge2", function () {
                 window.open("/comment/" + $(this).parent().prev().text().trim(), "_blank", "width=900,height=800,left=0,top=0,location=no");
             });
-            $("#prevPage").click(function () {
-                if ($("#prevPage").hasClass('disabled')) {
+            //이전 페이지
+            $(document).on("click", "#prevPage", function () {
+                if ($(this).hasClass('disabled')) {
                     return;
                 }
-                goPost(nowPageNum - 1, $("#pageSize").text(), mainCategory.toLowerCase().trim())
+                getCommunityList(nowCommunityCategory, nowPage - 1, nowPageSize);
             });
-            $("#nextPage").click(function () {
-                if ($("#nextPage").hasClass('disabled')) {
+            //다음 페이지
+            $(document).on("click", "#nextPage", function () {
+                if ($(this).hasClass('disabled')) {
                     return;
                 }
-                goPost(nowPageNum + 1, $("#pageSize").text(), mainCategory.toLowerCase().trim())
-            })
-            $(".selectPage").click(function () {
-                goPost($(this).text().trim()-1, $("#pageSize").text(), mainCategory.toLowerCase().trim())
-            })
-            $("#myPostBtn").click(function (){
-                // let form = document.createElement('form');
-                // let memberId;
-                // pageNum = document.createElement('input');
-                // pageNum.setAttribute('type', 'hidden');
-                // pageNum.setAttribute('name', 'pageNum');
-                // pageNum.setAttribute('value', value1);
-                // let pageSize;
-                // pageSize = document.createElement('input');
-                // pageSize.setAttribute('type', 'hidden');
-                // pageSize.setAttribute('name', 'pageSize');
-                // pageSize.setAttribute('value', value2);
-                // let category;
-                // category = document.createElement('input');
-                // category.setAttribute('type', 'hidden');
-                // category.setAttribute('name', 'communityCategory');
-                // category.setAttribute('value', value3);
-                // form.appendChild(pageNum);
-                // form.appendChild(pageSize);
-                // form.appendChild(category);
-                // form.setAttribute('method', 'post');
-                // form.setAttribute('action', '/community');
-                // document.body.appendChild(form);
-                // form.submit();
-                window.location="/community/update";
+                getCommunityList(nowCommunityCategory, nowPage + 1, nowPageSize);
             });
+            //댓글 페이지선택
+            $(document).on("click", ".selectPage", function () {
+                if ($(this).parent().hasClass('active')) {
+                    return;
+                }
+                getCommunityList(nowCommunityCategory, $(this).text() - 1, nowPageSize);
+            });
+            //내글보기 버튼
+            $("#myPostBtn").click(function () {
+                window.location = "/community/update";
+            });
+
+            $("#noticeCheck").click(function () {
+                if($('#noticeCheck').is(':checked')){
+                    $("#noticeList").hide();
+                }else{
+                    $("#noticeList").show();
+                }
+            })
         });
+
+        let nowPage;
+        let nowCommunityCategory = "all";
+        let nowPageSize;
+        //게시글 List 가져오는 ajax
+        getCommunityList = function (value1, value2, value3) {
+            $.ajax({
+                url: "/community/getCommunityList",
+                type: "post",
+                data: {
+                    communityCategory: value1.toLowerCase(),
+                    pageNum: value2,
+                    pageSize: value3,
+                },
+                dateType: "json",
+                success: function (data) {
+                    // console.log(data);
+                    nowCommunityCategory = value1.toLowerCase();
+                    nowPage = data.number;
+                    nowPageSize = data.size;
+                    showList(data);
+                    showPage(data);
+                    getTodayPosts(value1);
+                    $("#pageSize").text(data.size);
+                    $("#totalElements").text(data.totalElements);
+                    $("#categoryList").find('a').parent().removeClass('active')
+                    $("#categoryList").find("a:contains(" + nowCommunityCategory.charAt(0).toUpperCase() + ")").parent().addClass('active')
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        //새글 갯수 가져오는 ajax
+        getTodayPosts = function (value) {
+            $.ajax({
+                url: "/community/todayPosts",
+                type: "post",
+                data: {communityCategory: value},
+                dateType: "json",
+                success: function (data) {
+                    $("#totayPosts").text(data);
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        //공지사항 List 가져오는 ajax
+        getNotice = function () {
+            $.ajax({
+                url: "/community/getNotice",
+                type: "post",
+                dateType: "json",
+                success: function (data) {
+                    showNoticeList(data)
+                    console.log(data)
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        //게시글 리스트 태그
+        showList = function (data) {
+            let str = '';
+            if (data.content.length === 0) {
+                str += `<tr><td class="py-5" colspan="5"><strong>작성된 글이 없습니다</strong></td></tr>`;
+            } else {
+                $.each(data.content, function (idx, val) {
+                    str += `<tr>
+                            <td>${val.communityId}</td>
+                            <td class="text-start">
+                            <a href="/community/${val.communityId}" class="mx-2">`
+                    if (nowCommunityCategory === 'all') {
+                        str += `<strong class="me-2 text-danger">${val.communityCategory}</strong>`
+                    }
+                    if (val.communitySubCategory != null) {
+                        str += `<strong class="me-2">${val.communitySubCategory}</strong>`
+                    }
+                    str += `${val.communityTitle}</a>`
+                    if (val.commentListSize > 0) {
+                        str += `<span class="badge2" role="button">${val.commentListSize}</span>`
+                    }
+                    str += `<td>
+                            <div class="memberDiv dropdown">
+                            <a href="javascript:" class="memberId" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ${val.memberId}</a>
+                            <ul class="dropdown-menu" style="min-width: auto;">
+                            <li><a class="dropdown-item" href="javascript:">회원정보</a></li>
+                            <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>`
+                    if (val.memberId !== loginId) {
+                        str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
+                            <li><a class="dropdown-item memberReport" href="javascript:">신고하기</a></li>`
+                    }
+                    str += `</ul>
+                            </div>
+                            </td>
+                            <td>${val.modifiedDate}</td>
+                            <td>${val.viewCount}</td>
+                            </tr>
+                            </td>`
+                });
+            }
+            $("#communityList").html(str);
+        }
+        showNoticeList = function (data) {
+            if (data.length === 0) {
+                $("#noticeList").remove();
+                return;
+            }
+            let str = '';
+            $.each(data, function (idx, val) {
+                str += `<tr class="bg-light fw-bold">
+                        <td class="py-1"><botton class="btn btn-dark btn-sm">${val.communityCategory}</botton></td>
+                        <td class="text-start">
+                        <a href="/community/${val.communityId}" class="mx-2">${val.communityTitle}</a>`
+                if (val.commentListSize > 0) {
+                    str += `<span class="badge2" role="button">${val.commentListSize}</span>`
+                }
+                str += `<td>관리자</td>
+                        <td>${val.modifiedDate}</td>
+                        <td>${val.viewCount}</td>
+                        </tr>
+                        </td>`
+            });
+            $("#noticeList").html(str);
+        }
+        //게시글 페이지네이션 태그
+        showPage = function (data) {
+            let str = '';
+            if (data.totalPages > 0) {
+                str += `<div aria-label="Page navigation"><ul class="pagination justify-content-center">`
+                if (data.first) {
+                    str += `<li id = "prevPage" class = "page-item disabled" >
+                            <a class = "page-link" href = "javascript:" style = "pointer-events: none;" >
+                            <span aria-hidden = "true"> <i class = "bi bi-chevron-left"></i></span>
+                            </a>
+                            </li>`
+                } else {
+                    str += `<li id = "prevPage" class = "page-item">
+                            <a class = "page-link" href = "javascript:">
+                            <span aria-hidden = "true"><i class = "bi bi-chevron-left"></i></span>
+                            </a>
+                            </li>`
+                }
+                if (data.totalPages <= 5) {
+                    for (var i = 1; i <= data.totalPages; i++) {
+                        str += `<li class = "page-item`
+                        if (data.number + 1 === i) {
+                            str += ` active`
+                        }
+                        str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                    }
+                }
+                if (data.totalPages > 5 && data.totalPages <= 10) {
+                    if (data.number + 1 <= 5) {
+                        for (var i = 1; i <= 5; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+
+                    }
+                    if (data.number + 1 > 5) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+                        for (var i = 6; i <= data.totalPages; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                    }
+                }
+                if (data.totalPages > 10) {
+                    if (data.number + 1 <= 5) {
+                        for (var i = 1; i <= 5; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+                    }
+                    if (data.number + 1 > 5 && data.number + 1 < data.totalPages - 4) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+                        for (var i = data.number + 1 - 2; i <= data.number + 1 + 2; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+                    }
+                    if (data.number + 1 >= data.totalPages - 4) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+
+                        for (var i = data.totalPages - 4; i <= data.totalPages; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                    }
+                }
+
+                if (data.last) {
+                    str += `<li id="nextPage" class="page-item disabled">
+                <a class="page-link" href="javascript:" style="pointer-events: none;">
+                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                </a>
+                </li>`
+                } else {
+                    str += `<li id="nextPage" class="page-item">
+                <a class="page-link" href="javascript:">
+                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                </a>
+                </li>`
+                }
+                str += `</ul></div>`
+            }
+            $("#communityPage").html(str);
+        }
     </script>
 </head>
 <body>
@@ -102,22 +324,20 @@
             <h1 class="display-5 mb-3">Pet Community</h1>
             <div class="col-12 text-center">
                 <ul id="categoryList" class="list-inline rounded mb-4 community-menu">
-                    <!--                    <li class="mx-2 active"><a href="#">인기글</a></li>-->
-                    <li th:class="${mainCategory == 'all'}? 'mx-2 active':'mx-2'"><a href="javascript:">All</a></li>
-                    <li th:class="${mainCategory == '거래'}? 'mx-2 active':'mx-2'"><a href="javascript:">거래</a></li>
-                    <li th:class="${mainCategory == '추천'}? 'mx-2 active':'mx-2'"><a href="javascript:">추천</a></li>
-                    <li th:class="${mainCategory == '일상'}? 'mx-2 active':'mx-2'"><a href="javascript:">일상</a></li>
+                    <li class="mx-2"><a href="javascript:">All</a></li>
+                    <li class="mx-2"><a href="javascript:">거래</a></li>
+                    <li class="mx-2"><a href="javascript:">추천</a></li>
+                    <li class="mx-2"><a href="javascript:">일상</a></li>
                 </ul>
             </div>
             <div class="col-12">
                 <div class="float-start">
-                    <p class="pt-2 mb-0">새글 <strong th:text="${todayPosts}"/> / [[${community.getTotalElements()}]]</p>
+                    <p class="pt-2 mb-0">새글<strong id="totayPosts" class="mx-1"></strong>/<span id="totalElements"
+                                                                                                class="ms-1"></span></p>
                 </div>
                 <div class="dropdown">
-                    <a class="btn btn-link dropdown-toggle float-end" href="javascript:" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        목록 <span id="pageSize" th:text="${community.getSize()}"/>개
-                    </a>
+                    <a class="btn btn-link dropdown-toggle float-end" href="javascript:" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">목록 <span id="pageSize"></span>개</a>
                     <ul id="pageSizeList" class="dropdown-menu" style="min-width: auto;">
                         <li><a class="dropdown-item" href="javascript:">목록 <span>10</span>개</a></li>
                         <li><a class="dropdown-item" href="javascript:">목록 <span>20</span>개</a></li>
@@ -125,6 +345,10 @@
                         <li><a class="dropdown-item" href="javascript:">목록 <span>40</span>개</a></li>
                         <li><a class="dropdown-item" href="javascript:">목록 <span>50</span>개</a></li>
                     </ul>
+                </div>
+                <div class="form-check form-check-inline float-end mt-05">
+                    <input class="form-check-input" type="checkbox" id="noticeCheck">
+                    <label class="form-check-label" for="noticeCheck">공지감추기</label>
                 </div>
                 <table class="table2 table-hover">
                     <thead>
@@ -136,91 +360,15 @@
                         <th class="col-md-1">조회</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr th:each="community : ${community}">
-                        <td th:text="${community.communityId}"/>
-                        <td class="text-start">
-                            <a th:href="'/community/'+${community.communityId}" class="mx-2">
-                                <strong class="me-2 text-danger" th:if="${mainCategory} == 'all'"
-                                        th:text="${community.communityCategory}"/>
-                                <strong class="me-2" th:if="${community.communitySubCategory != null}"
-                                        th:text="${community.communitySubCategory}"/>
-                                [[${community.communityTitle}]]
-                            </a>
-                            <span class="badge2" role="button" th:if="${community.commentListSize}>0"
-                                  th:text="${community.commentListSize}"/>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="javascript:" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                   th:text="${community.memberId}"/>
-                                <ul class="dropdown-menu" style="min-width: auto;">
-                                    <li><a class="dropdown-item" href="javascript:">회원정보</a></li>
-                                    <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>
-                                    <li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
-                                    <li><a class="dropdown-item" href="javascript:">신고하기</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td th:text="${community.modifiedDate}"/>
-                        <td th:text="${community.viewCount}"/>
-                    </tr>
-                    <tr th:if="${community.getTotalElements()} == 0">
-                        <td class="py-5" colspan="5"><strong>작성된 글이 없습니다</strong></td>
-                    </tr>
-                    </tbody>
+                    <tbody id="noticeList"></tbody>
+                    <tbody id="communityList"></tbody>
                 </table>
                 <div class="mt-4">
                     <div sec:authorize="hasAnyRole('MEMBER','ADMIN')">
-                    <button id="writeBtn" class="btn btn-danger float-start"> 글쓰기</button>
-                    <button id="myPostBtn" class="btn btn-primary float-end">내글보기</button>
+                        <button id="writeBtn" class="btn btn-danger float-start">글쓰기</button>
+                        <button id="myPostBtn" class="btn btn-primary float-end">내글보기</button>
                     </div>
-                    <div aria-label="Page navigation">
-                        <ul id="pageNum" class="pagination justify-content-center">
-                            <li id="prevPage" th:class="${community.isFirst()}? 'page-item disabled':'page-item'">
-                                <a class="page-link" href="javascript:"
-                                   th:style="${community.hasPrevious()}? '':'pointer-events: none;'">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
-                                </a>
-                            </li>
-                            <li th:if="${(community.getTotalPages()>5 and community.getNumber()+1>=community.getTotalPages()-4)or(community.getTotalPages()>5 and community.getNumber()+1>5)}"
-                                class="page-item"><a class="page-link selectPage" href="javascript:" th:text="1"></a></li>
-                            <li th:if="${(community.getTotalPages()>5 and community.getNumber()+1>=community.getTotalPages()-4)or(community.getTotalPages()>5 and community.getNumber()+1>5)}"
-                                class="page-item disabled"><a class="page-link">...</a></li>
-                            <li th:if="${community.getTotalPages()<6} "
-                                th:each="page:${#numbers.sequence(1,community.getTotalPages())}"
-                                th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
-                                <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
-                            </li>
-                            <li th:if="${community.getNumber()+1<6 and community.getTotalPages()>5 and community.getNumber()+1<community.getTotalPages()-4}"
-                                th:each="page:${#numbers.sequence(1,5)}"
-                                th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
-                                <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
-                            </li>
-                            <li th:if="${community.getNumber()+1>5 and community.getTotalPages()>5 and community.getNumber()+1<community.getTotalPages()-4}"
-                                th:each="page : ${#numbers.sequence(community.getNumber()-2+1,community.getNumber()+2+1)}"
-                                th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
-                                <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
-                            </li>
-                            <li th:if="${community.getTotalPages()>5 and community.getNumber()+1>=community.getTotalPages()-4}"
-                                th:each="page : ${#numbers.sequence(community.getTotalPages()-4,community.getTotalPages())}"
-                                th:class="${community.getNumber()+1 == page}? 'page-item active':'page-item'">
-                                <a class="page-link selectPage" href="javascript:"><span th:text="${page}"/></a>
-                            </li>
-                            <li th:if="${community.getTotalPages()>5 and community.getNumber()+1<community.getTotalPages()-4}"
-                                class="page-item disabled"><a class="page-link">...</a></li>
-                            <li th:if="${community.getTotalPages()>5 and community.getNumber()+1<community.getTotalPages()-4}"
-                                class="page-item"><a class="page-link selectPage" href="javascript:"
-                                                     th:text="${community.getTotalPages()}"></a>
-                            </li>
-                            <li id="nextPage" th:class="${community.isLast()}? 'page-item disabled':'page-item'">
-                                <a class="page-link" href="javascript:"
-                                   th:style="${community.hasNext()}? '':'pointer-events: none;'">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <div id="communityPage"></div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-2 mx-auto me-1 px-0">

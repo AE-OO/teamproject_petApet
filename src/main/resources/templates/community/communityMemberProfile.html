@@ -3,7 +3,8 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 회원정보</title>
     <link>
-    <script th:src="@{/js/message/goMessagePage.js}"></script>
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script>
         $(function () {
             getMemberProfile();
@@ -42,25 +43,6 @@
             $("#joinDate").text(data.memberJoinDate);
             $("#communityCount").text(data.communityCount);
             $("#commentCount").text(data.commentCount);
-        }
-        let loginId;
-        let authorities;
-        getLoginId = function () {
-            $.ajax({
-                url: "/getLoginId",
-                type: "post",
-                dateType: "json",
-                async: false,
-                success: function (data) {
-                    if (data.length > 0) {
-                        loginId = data[0];
-                        authorities = data[1];
-                    }
-                }
-                , error: function () {
-                    alert('오류');
-                }
-            })
         }
     </script>
 

@@ -13,7 +13,8 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Query(value = "select m from Message m where (m.messageReceiver=:messageReceiver and m.member.memberId=:memberId) " +
             "or (m.messageReceiver=:memberId and m.member.memberId=:messageReceiver)"
-            ,countQuery ="select count(m) from Message m where (m.messageReceiver=:messageReceiver and m.member.memberId=:memberId)" )
+            ,countQuery ="select count(m) from Message m where (m.messageReceiver=:messageReceiver and m.member.memberId=:memberId)"+
+            "or (m.messageReceiver=:memberId and m.member.memberId=:messageReceiver)")
     Page<Message> getMessageList(String memberId, String messageReceiver, Pageable pageable);
 
     @Modifying
