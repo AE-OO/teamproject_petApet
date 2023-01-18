@@ -285,20 +285,50 @@ function totalFnAll()
 }
 
 $('.link_buy--jXvxZ8Agr-').click(function () {
+    let buyArray = new Array() ;
     $('.check--2EZEnyir5V').children(0).each(function () {
     if ($(this).attr('aria-checked') === 'true') {
         let cartId = $(this).parents().eq(1).children().find($('.remove-product')).val();
         let productName = $(this).parent().next().children().find($('.ico_npay_plus--37zciz9t8T')).text();
-        let price = $(this).parents().eq(10).children().find($('.totalFn')).children(0).text().replace(',','');
-        let quan = $(this).parents().eq(10).children().find($('.quan')).children(0).text();
-        console.log(cartId)
-        console.log(productName)
-        console.log(price)
-        console.log(quan)
+        let productPrice = $(this).parents().eq(10).children().find($('.totalFn')).children(0).text().replace(',','');
+        let quantity = $(this).parents().eq(10).children().find($('.quan')).children(0).text();
+
+        let buy = {} ;
+
+        buy.cartId = cartId ;
+        buy.productName = productName ;
+        buy.productPrice = productPrice ;
+        buy.quantity = quantity ;
+
+        buyArray.push(buy) ;
+
     }})
-    $('.product-removal').children(0).each(function () {
-        let cartId = $(this).val();
-    });
+    let buyList = JSON.stringify(buyArray);
+
+    let xmlHttp =new XMLHttpRequest();
+    let url = "/cart/checkout?str=" + encodeURI(JSON.stringify(buyArray));
+    console.log(url)
+    xmlHttp.open("GET", url, true);
+    xmlHttp.setRequestHeader('Content-Type', 'text/html;charset=utf-8');
+    xmlHttp.send(null);
+    // $.ajax({
+    //     url: "/cart/checkout?str="+ encodeURI(JSON.stringify(buyArray)),
+    //     type: "GET",
+        // contentType : "text/plain",
+        // contentType : "application/json",
+        // dataType:'application/json',
+        // dataType:'text/plain',
+        // body: JSON.stringify(buyArray),
+        // data: JSON.stringify(buyArray),
+        // success: function(data){
+        //     alert("삭제되었습니다.");
+        // },
+        // error: function (error){
+        //     alert('삭제 실패했습니다.');
+        // }
+    // });
+
+    console.log(buyList)
 
     // location.href = '/cart/checkout';
 })
