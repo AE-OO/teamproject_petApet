@@ -340,6 +340,12 @@
 </div>
 <script th:inline="javascript">
 
+    var buyAddress = $('#buyAddress').text();
+    var buyQuantity = $('#buyQuantity').val();
+    var buyProduct = $('#buyProduct').val();
+    var buyerEmail = $('#memberEmail').text();
+    var postUrl = "/buy";
+
     var IMP = window.IMP; // 생략가능
     IMP.init('imp34631730'); // <-- 본인 가맹점 식별코드 삽입
 
@@ -351,20 +357,16 @@
         pay_method : 'card', //생략 가능
         merchant_uid: uid,
         name : [[${product.productName}]],
-        amount : [[${product.productPrice}]],
+        amount : [[${product.productPrice}]]*[[${quantity}]],
         buyer_name : [[${member.memberName}]],
         buyer_tel : [[${member.memberPhoneNum}]],
         buyerEmail : [[${member.memberEmail}]],
         buyAddress : [[${member.memberAddress}]],
-        buyQuantity : 1,
+        buyQuantity : [[${quantity}]],
         buyMember : [[${member.memberId}]],
         buyProduct : [[${product.productId}]]
     }
 
-    var buyAddress = $('#buyAddress').text();
-    var buyQuantity = $('#buyQuantity').val();
-    var buyProduct = $('#buyProduct').val();
-    var buyerEmail = $('#memberEmail').text();
 
     // DB에 전달할 파라미터
     var param2 = {
@@ -385,7 +387,7 @@
         IMP.request_pay(param, function (rsp) { // callback
             if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
                 // jQuery로 HTTP 요청
-                console.log("결제완료");
+                window.location.replace(postUrl)
                 addBuyDB();
             } else {
                 alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
@@ -394,7 +396,6 @@
     }
 
     function addBuyDB(){
-        console.log("디비저장실행");
         $.ajax({
             url: "/checkout2",
             type: "POST",
@@ -404,6 +405,7 @@
             charset : "UTF-8",
             success: function (data) {
                 alert("DB 상품이 추가 되었음!! ")
+                // 장바구니 데이터 삭제
             },
             error: function (jqXHR, status, errorThrown) {
 

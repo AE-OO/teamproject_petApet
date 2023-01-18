@@ -238,6 +238,7 @@
                             <div class="bundle-info__vendor-item-box ">
                                 <input type="hidden" id="buyProduct" th:value="${cart.product.productId}"/>
                                 <input type="hidden" id="buyQuantity" th:value="${cart.quantity}">
+                                <input type="hidden" id="buyCartId" th:value="${cart.cartId}">
                                 <div class="bundle-info__vendor-item">
                                     <p th:text="${cart.product.productName}" id="product">
                                         <span class="bundle-info__vendor-item__offer-condition" ></span>
@@ -351,7 +352,7 @@
         pay_method : 'card', //생략 가능
         merchant_uid: uid , // 상점에서 관리하는 주문 번호
         name : [[${cart.product.productName}]], // 상품명
-        amount : [[${cart.product.productPrice}]],
+        amount : [[${cart.product.productPrice}]]*[[${cart.quantity}]],
         buyer_name : [[${cart.member.memberName}]],
         buyer_tel : [[${cart.member.memberPhoneNum}]],
         buyerEmail : [[${cart.member.memberEmail}]],
@@ -365,7 +366,7 @@
     var buyQuantity = $('#buyQuantity').val();
     var buyProduct = $('#buyProduct').val();
     var buyerEmail = $('#memberEmail').text();
-
+    var buyCartId = $('#buyCartId').val();
 
     var param2 = {
         "uid" : uid,
@@ -385,17 +386,15 @@
         IMP.request_pay(param, function (rsp) { // callback
             if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
                 // jQuery로 HTTP 요청
-                console.log("결제완료");
                 addBuyDB();
-
+                successBuy();
             } else {
                 alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
             }
         });
     }
-
+    var postUrl = "/buy";
     function addBuyDB(){
-        console.log("디비저장실행");
         $.ajax({
             url: "/checkout",
             type: "POST",
@@ -404,8 +403,24 @@
             contentType : "application/json",
             charset : "UTF-8",
             success: function (data) {
-                alert("DB 상품이 추가 되었음!! ")
+                window.location.replace(postUrl)
             },
+            error: function (jqXHR, status, errorThrown) {
+
+            }
+        });
+    }
+
+    var param3 = {"cartId":buyCartId}
+
+    function successBuy(){
+        $.ajax({
+            url: "/cart/success",
+            type: "POST",
+            data: JSON.stringify(param3),
+            dataType: "text",
+            contentType: "application/json",
+            charset: "UTF-8",
             error: function (jqXHR, status, errorThrown) {
 
             }

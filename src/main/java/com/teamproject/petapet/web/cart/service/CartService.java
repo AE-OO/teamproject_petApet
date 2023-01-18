@@ -18,4 +18,6 @@ public interface CartService {
     void removeCartAll(String memberId);
 
     void setQuan(Long quantity, Long cartId);
+
+    boolean checkDuplication(String memberId);
 }

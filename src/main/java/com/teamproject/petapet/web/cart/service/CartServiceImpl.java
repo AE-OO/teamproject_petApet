@@ -46,5 +46,10 @@ public class CartServiceImpl implements CartService{
         cartRepository.setQuan(quantity, cartId);
     }
 
+    @Override
+    public boolean checkDuplication(String memberId) {
+        return cartRepository.checkDuplication(memberId);
+    }
+
 
 }

@@ -955,9 +955,6 @@
         count = count < 1 ? 1 : count;
         $input.val(count).change();
         $('#productQuan').val(count).change();
-        console.log("빼기 >>", $input.val());
-        console.log("빼기2 >>", quantity.val());
-        console.log("히든 >>", $('#productQuan').val());
     });
 
     $(btnPlus).click(function () {
@@ -965,13 +962,11 @@
         console.log("더하기 >>", $input.val());
         $input.val(parseInt($input.val()) + 1).change();
         $('#productQuan').val(parseInt($input.val())).change();
-        console.log("더하기 >>", $input.val());
-        console.log("더하기2 >>", quantity.val());
-        console.log("히든 >>", $('#productQuan').val());
     });
 
+    var postUrl = "/cart";
+
     function addCart() {
-        alert("실행");
         var param = {"product": productId, "quantity": quantity.val()};
         $.ajax({
             url: urlCart,
@@ -981,35 +976,13 @@
             contentType: "application/json",
             charset: "UTF-8",
             success: function (data) {
-                alert("장바구니에 상품이 추가 되었음!! ")
+                window.location.href= postUrl ;
             },
             error: function (jqXHR, status, errorThrown) {
 
             }
         });
     }
-
-    // function direct() {
-    //     alert("실행");
-    //     console.log(productId);
-    //     console.log(quantity.val());
-    //     var param2 = {"buyProduct": productId, "buyQuantity": quantity.val()};
-    //     $.ajax({
-    //         url: "/direct/checkout",
-    //         type: "POST",
-    //         data: JSON.stringify(param2),
-    //         dataType: "text",
-    //         contentType: "application/json",
-    //         charset: "UTF-8",
-    //         success: function (data) {
-    //             alert("결제화면으로 이동합니다");
-    //             location.href="http://localhost:8088/direct/checkout/"+product;
-    //         },
-    //         error: function (jqXHR, status, errorThrown) {
-    //             alert("에러");
-    //         }
-    //     });
-    // }
 
 </script>
 

@@ -85,13 +85,19 @@ public class CartController {
 
     }
 
-    // 카트페이지 주문수정 버튼 - 수량 변경
+    // 카트페이지 주문수정 버튼 - 수량 변경 - 미완
     @ResponseBody
     @RequestMapping(value = "/modify", method = { RequestMethod.POST } , produces = "application/json")
     public void modifyCart(@RequestBody CartVO vo){
         log.info("카트 번호>> ={}", vo.getCartId());
         log.info("수량 변경>> ={}", vo.getQuantity());
         cartService.setQuan(vo.getQuantity(), vo.getCartId());
+    }
+    // 상품 구매완료 후 장바구니 비우기
+    @ResponseBody
+    @RequestMapping(value = "/success", method = { RequestMethod.POST } , produces = "application/json")
+    public void successBuy(@RequestBody CartVO vo){
+        cartService.removeCartOne(vo.getCartId());
     }
 
     @ResponseBody

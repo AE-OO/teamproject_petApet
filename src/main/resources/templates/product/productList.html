@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body class="">
-
+<input type="text" id="memberId" th:text="${#authentication.name}" >
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <hr class="mt-5">
         <div class="text-center mx-auto mt-5">
@@ -258,7 +258,7 @@
                                             th:value="*{product.productId}">장바구니
                                         <input type="hidden" class="quan" value="1"/></button>
                                     <button class="btn bg-secondary addBuy"
-                                            th:onclick="|location.href='@{/direct/checkout/{idx}(idx=${product.productId})}'|">
+                                            th:onclick="|location.href='@{/product/{productType}/{productId}/details(productType=${category},productId=${product.productId})}'|">
                                         바로구매
                                         <input type="hidden" class="quan" value="1"/></button>
                                 </div>
@@ -340,12 +340,16 @@
 
     const addCartBtn = $('.addCart');  // 상품 리스트에서 장바구니로 상품을 추가하는 기능
 
+    var postUrl = "cart";
+    var memberId = $('#memberId').text();
+
     $(addCartBtn).click(function () {
         var productId = $(this).val();
         var quantity = $(this).children('.quan').val();
-        var param = {"product": productId, "quantity": quantity};
+        var param = {"product": productId, "quantity": quantity , "memberId" : [[${#authentication.name}]]};
         console.log("product : " + productId);
         console.log("quantity : " + quantity);
+        console.log("memberId : " + param.memberId);
         $.ajax({
             url: "/cart/add",
             type: "POST",
@@ -354,7 +358,11 @@
             contentType: "application/json",
             charset: "UTF-8",
             success: function (data) {
-                alert("장바구니 추가되었음")
+                if (confirm("장바구니로 이동 하시겠습니까?") == true){
+                    location.replace(postUrl)
+                }else {
+
+                }
             },
             error: function (jqXHR, status, errorThrown) {
                 alert("에러");
