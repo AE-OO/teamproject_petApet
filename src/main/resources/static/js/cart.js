@@ -260,7 +260,6 @@ function totalFnAll()
             let checked = $(this).parents().eq(5).children(5).children().children().children().children().eq(0).attr('aria-checked');
             if (checked === 'true') {
             subtotal += parseInt($(this).text().replaceAll(',',''));
-                // console.log('asd')
             }
         });
 
@@ -303,34 +302,19 @@ $('.link_buy--jXvxZ8Agr-').click(function () {
         buyArray.push(buy) ;
 
     }})
-    let buyList = JSON.stringify(buyArray);
 
-    let xmlHttp =new XMLHttpRequest();
-    let url = "/cart/checkout?str=" + encodeURI(JSON.stringify(buyArray));
-    console.log(url)
-    xmlHttp.open("GET", url, true);
-    xmlHttp.setRequestHeader('Content-Type', 'text/html;charset=utf-8');
-    xmlHttp.send(null);
-    // $.ajax({
-    //     url: "/cart/checkout?str="+ encodeURI(JSON.stringify(buyArray)),
-    //     type: "GET",
-        // contentType : "text/plain",
-        // contentType : "application/json",
-        // dataType:'application/json',
-        // dataType:'text/plain',
-        // body: JSON.stringify(buyArray),
-        // data: JSON.stringify(buyArray),
-        // success: function(data){
-        //     alert("삭제되었습니다.");
-        // },
-        // error: function (error){
-        //     alert('삭제 실패했습니다.');
-        // }
-    // });
-
-    console.log(buyList)
-
-    // location.href = '/cart/checkout';
+    $.ajax({
+        url: "/cart/checkout?str="+ encodeURI(JSON.stringify(buyArray)),
+        type: "GET",
+        contentType : "application/json",
+        success: function(data){
+            let parse = JSON.parse(data);
+            console.log(parse);
+        },
+        error: function (error){
+            alert('삭제 실패했습니다.');
+        }
+    });
 })
 // function deleteNotices(){
 //     var deleteList = [];

@@ -13,7 +13,6 @@ import com.teamproject.petapet.web.util.payment.dto.PaymentVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,12 +44,12 @@ public class PaymentsController {
     @ResponseBody
     @GetMapping("/cart/checkout")
     public String getPayment3(@RequestParam String str) {
-//        JSONArray objects = new JSONArray(str);
-//        String s = objects.toString();
-        JSONObject jsonObject = new JSONObject();
-        String s = jsonObject.optString(str);
+        JSONArray objects = new JSONArray(str);
+        String s = objects.toString();
+//        JSONObject jsonObject = new JSONObject();
+//        String s = jsonObject.optString(str);
         log.info("osh= {}",s);
-        return "ok";
+        return s;
     }
 
     // productList 페이지에서 checkout 페이지로 이동
