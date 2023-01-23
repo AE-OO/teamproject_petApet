@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.product.service;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.teamproject.petapet.domain.buy.QBuy.buy;
 import static com.teamproject.petapet.domain.product.QProduct.product;
 
 /**
@@ -44,9 +46,16 @@ public class ProductServiceImpl implements ProductService {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ProductDTO> getProductList(String companyId) {
-        List<Product> productList = productRepository.findAllByCompany_CompanyId(companyId);
-        return productList.stream().map(ProductDTO::fromEntityForManageProduct).collect(Collectors.toList());
+    public List<ProductDTO> getCompanyProductList(String companyId) {
+        List<ProductDTO> productDTOList = jpaQueryFactory
+                .select(Projections.bean(
+                        ProductDTO.class, product.productId, product.productName, product.productDiv,
+                        product.productPrice, product.productReport, product.productStock, product.productStatus, buy.count().as("totalBuy")))
+                .from(product, buy)
+                .where(product.productId.eq(buy.product.productId), product.company.companyId.eq(companyId))
+                .groupBy(buy.product.productId)
+                .fetch();
+        return productDTOList;
     }
 
     @Override

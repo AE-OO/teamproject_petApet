@@ -62,7 +62,7 @@ function getProductList(){
                                     <td>${product.productPrice}</td>
                                     <td>${product.productStock}</td>
                                     <td>${product.productStatus}</td>
-                                    <td>0</td>
+                                    <td>${product.totalBuy}</td>
                                     <td>${product.productReport}</td>
                                 </tr>`;
             })

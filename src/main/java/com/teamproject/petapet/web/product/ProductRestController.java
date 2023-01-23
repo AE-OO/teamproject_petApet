@@ -134,9 +134,10 @@ public class ProductRestController {
     }
 
     //22.12.15 박채원 추가 - 이하 3개 메소드(사업자 마이페이지 구현 위함)
-    @GetMapping(value = "/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ProductDTO>> getProductList(Principal principal) {
-        return new ResponseEntity<>(productService.getProductList(principal.getName()), HttpStatus.OK);
+    //23.01.23 박채원 수정 - getProductList 메소드 (querydsl로 데이터 가져옴)
+    @GetMapping(value="/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProductDTO>> getProductList(Principal principal){
+        return new ResponseEntity<>(productService.getCompanyProductList(principal.getName()), HttpStatus.OK);
     }
 
     @PostMapping("/updateStock/{productId}")

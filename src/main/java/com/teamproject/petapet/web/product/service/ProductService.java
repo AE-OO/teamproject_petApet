@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 
 public interface ProductService {
-    List<ProductDTO> getProductList(String companyId);
+    List<ProductDTO> getCompanyProductList(String companyId);
 
     Page<Product> getProductPage(Pageable pageable);
 
