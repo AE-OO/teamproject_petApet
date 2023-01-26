@@ -26,4 +26,18 @@ public class ProductListDTO {
     private List<Review> review;
     private Long productReviewCount;
     private boolean duplicateDibsProduct;
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IntegratedSearchDTO {
+        private Long productId;
+        private String productName;
+        private Long productPrice;
+        private Long productRating;
+        private String productDiv;
+        private ProductType productCategory;
+        private Long productViewCount;
+    }
 }

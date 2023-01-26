@@ -25,6 +25,7 @@ div{
 
 #container{
   position: relative;
+  top: 70px;
   min-width: 980px;
   overflow: hidden;
 }

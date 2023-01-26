@@ -57,5 +57,4 @@ public class Company {
     public void addAuthority(Authority authority) {
         authorities.add(authority);
     }
-
 }
