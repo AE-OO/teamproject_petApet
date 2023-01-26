@@ -52,7 +52,7 @@
                             <a href="/join" class="dropdown-item" sec:authorize="isAnonymous()">회원가입</a>
                             <a href="/admin/adminPage" class="dropdown-item" sec:authorize="hasRole('ADMIN')">관리자</a>
                             <a href="/member/checkInfo" class="dropdown-item" sec:authorize="hasRole('MEMBER')">내 정보</a>
-                            <a href="/company/info" class="dropdown-item" sec:authorize="hasRole('COMPANY')">기업 정보</a>
+                            <a href="/company/manageProduct" class="dropdown-item" sec:authorize="hasRole('COMPANY')">기업 정보</a>
                             <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
                             <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
                             <a th:href="@{/member/couponBox}" class="dropdown-item" sec:authorize="hasRole('MEMBER')">쿠폰함</a>

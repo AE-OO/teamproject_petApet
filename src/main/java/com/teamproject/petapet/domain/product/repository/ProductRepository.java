@@ -29,8 +29,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("update Product p set p.productStatus =:productStatus where p.productId =:productId")
     void updateProductStatus(@Param("productStatus") String productStatus, @Param("productId") Long productId);
 
-    List<Product> findAllByCompany_CompanyId(String companyId);
-
     Page<Product> findAllByProductStatus(Pageable pageable, String status);
 
     Page<Product> findAllByProductNameContainsAndProductDiv(String productName, ProductType productType, Pageable pageable);
