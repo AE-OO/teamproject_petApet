@@ -21,7 +21,11 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     @Query(value = "update Cart c set c.quantity =: quantity where c.cartId =: cartId")
     void setQuan(@Param("quantity") Long quantity, @Param("cartId") Long cartId);
 
+    // 카트 상품 중복확인
     @Query("select c.product from Cart c where c.member =: memberId")
     boolean checkDuplication(@Param("memberId") String memberId);
 
+//    @Transactional
+//    @Modifying
+//    @Query(value = "update Cart c set c.quantity where c.pr")
 }

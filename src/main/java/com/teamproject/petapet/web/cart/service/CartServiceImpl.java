@@ -50,6 +50,4 @@ public class CartServiceImpl implements CartService{
     public boolean checkDuplication(String memberId) {
         return cartRepository.checkDuplication(memberId);
     }
-
-
 }

@@ -67,6 +67,22 @@ public class CartController {
                 quantity);
 
         cartService.addCart(cart);
+
+//        String loginMember = checkMember(principal);
+//        Long product = vo.getProduct();
+//        Long quantity = vo.getQuantity();
+//        log.info("dd ={}", quantity);
+//        if (!cartService.checkDuplication(loginMember)){
+//            Cart cart = new Cart(
+//                    memberService.findOne(loginMember),
+//                    productService.findOne(product).orElseThrow(NoSuchElementException::new),
+//                    quantity);
+//
+//            cartService.addCart(cart);
+//        } else {
+//            log.info("cartid ={}",);
+//            cartService.setQuan(vo.getQuantity(), vo.getCartId());
+//        }
     }
 
     @ResponseBody
