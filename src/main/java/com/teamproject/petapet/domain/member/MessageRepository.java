@@ -22,8 +22,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             "where m.member.memberId =:messageReceiver and m.messageReceiver =:memberId and m.messageCheck = false")
     void updateMessageCheck(String memberId, String messageReceiver);
 
-    //roomNumber 최댓값 구하기
-    @Query("select max(m.roomNumber) from Message m")
+    @Query(value = "select ifnull(max(m.roomNumber),0) from Message m", nativeQuery = true)
     int maxRoomNumber();
 
     //메세지 이력 있는지 없는지 검사
