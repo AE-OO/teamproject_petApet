@@ -18,8 +18,8 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <h1 class="display-1 text-white mb-5 animated slideInDown">Welcome petApet</h1>
-                            <form class="d-flex">
-                                <input class="form-control me-sm-2" type="text" placeholder="찾고싶은 상품을 검색해 보세요!">
+                            <form class="d-flex" th:action="@{/search}">
+                                <input class="form-control me-sm-2" name="searchContent" type="text" placeholder="찾고싶은 상품을 검색해 보세요!">
                                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                             </form>
                         </div>
@@ -36,14 +36,33 @@
     <div class="container py-5 pt-lg-0">
         <div class="row gx-0">
             <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
-                <div class="bg-white shadow d-flex align-items-center h-100 px-5" style="min-height: 160px;">
+                <div class="bg-white shadow d-flex align-items-center h-100 px-5" style="min-height: 260px;">
                     <div class="d-flex">
                         <div class="flex-shrink-0 btn-lg-square rounded-circle bg-light">
                             <i class="fa fa-times text-primary"></i>
                         </div>
                         <div class="ps-3">
-                            <h4>No Hidden Cost</h4>
-                            <span>Clita erat ipsum lorem sit sed stet duo justo</span>
+                            <h4>최신 커뮤글</h4>
+                                <ul class="m-0 p-0">
+                                    <li>
+                                        1
+                                    </li>
+                                    <li>
+                                        2
+                                    </li>
+                                    <li>
+                                        1
+                                    </li>
+                                    <li>
+                                        2
+                                    </li>
+                                    <li>
+                                        1
+                                    </li>
+                                    <li>
+                                        2
+                                    </li>
+                                </ul>
                         </div>
                     </div>
                 </div>
@@ -55,7 +74,7 @@
                             <i class="fa fa-users text-primary"></i>
                         </div>
                         <div class="ps-3">
-                            <h4>Dedicated Team</h4>
+                            <h4>인기 커뮤</h4>
                             <span>Clita erat ipsum lorem sit sed stet duo justo</span>
                         </div>
                     </div>
@@ -68,7 +87,7 @@
                             <i class="fa fa-phone text-primary"></i>
                         </div>
                         <div class="ps-3">
-                            <h4>24/7 Available</h4>
+                            <h4>공지사항</h4>
                             <span>Clita erat ipsum lorem sit sed stet duo justo</span>
                         </div>
                     </div>
@@ -87,6 +106,7 @@
         data-color="mono"
         data-shape="pc"
         data-support-multiple-densities="true"
+        style="position: fixed; top: 53rem"
 ></div>
 
 <!-- Projects Start -->
