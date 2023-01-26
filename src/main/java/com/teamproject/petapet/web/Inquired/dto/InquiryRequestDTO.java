@@ -16,6 +16,7 @@ public class InquiryRequestDTO {
         private String answer;
     }
 
+    // 상품 상세페이지에서 사업자한테 상품관련 문의하기 DTO
     @Data
     @Builder
     public static class RegisterInquiryToCompany {
