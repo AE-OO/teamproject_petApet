@@ -106,12 +106,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findId(Long id) {
-        return productRepository.findById(id).get();
-    }
-
-
-    @Override
     public Optional<Product> saveProduct(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, Company company) {
         ProductType productDiv = ProductType.valueOf(insertDTO.getProductDiv());
 
@@ -125,6 +119,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> saveProduct(Product product) {
         return Optional.of(productRepository.save(product));
+    }
+
+    @Override
+    public Page<Product> findPage(String searchContent, Pageable pageable) {
+        List<Product> productList = jpaQueryFactory.select(product)
+                .from(product)
+                .where(isContent(searchContent))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy()
+                .fetch();
+        Long totalCount = countProduct(searchContent);
+        return new PageImpl<>(productList, pageable, totalCount);
     }
 
     @Override
@@ -143,6 +150,14 @@ public class ProductServiceImpl implements ProductService {
                 .fetch();
         Long totalCount = countProduct(category, productType, content, starRating, minPrice, maxPrice, isPriceRange);
         return new PageImpl<>(productList, pageable, totalCount);
+    }
+
+    private Long countProduct(String content) {
+        return jpaQueryFactory.select(product.count())
+                .where(isContent(content),
+                        product.productStatus.eq("판매중"))
+                .from(product)
+                .fetchFirst();
     }
 
     private Long countProduct(String category, ProductType productType, String content, Long starRating, String minPrice, String maxPrice, String isPriceRange) {

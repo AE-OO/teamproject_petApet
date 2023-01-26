@@ -38,16 +38,13 @@ public interface ProductService {
     Optional<Product> saveProduct(ProductInsertDTO productInsertDTO, List<UploadFile> uploadFiles, Company company);
 
     Optional<Product> saveProduct(Product product);
-    Product findId(Long id);
-
-    Optional<Product> productSave(ProductInsertDTO productInsertDTO,List<UploadFile> uploadFiles);
 
     void updateCounterView(Long productId);
 
     void updateCounterSell(Long productId);
 
+    Page<Product> findPage(String searchContent, Pageable pageable);
     Page<Product> findPage(String category, ProductType productType, String sortType, String searchContent, Long starRating, String minPrice, String maxPrice, String isPriceRange, Pageable pageable);
 
     void addProductReport(Long productId);
 }
-
