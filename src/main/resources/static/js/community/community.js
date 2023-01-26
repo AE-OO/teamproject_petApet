@@ -38,6 +38,10 @@ getCommunityList = function (value1, value2, value3) {
         },
         dateType: "json",
         success: function (data) {
+            if (data.number > data.totalPages - 1 && data.totalPages > 0) {
+                getCommunityList(0, value2, value3);
+                return;
+            }
             // console.log(data);
             nowCommunityCategory = value1.toLowerCase();
             nowPage = data.number;
@@ -156,7 +160,6 @@ getMemberWritingList = function (value1, value2, value3) {
         }
     })
 }
-
 //게시글 리스트 태그
 showCommunityList = function (data) {
     let str = '';
@@ -522,6 +525,7 @@ showLoginMemberWritingList = function (data) {
     str += `</tbody>`
     $("#list").html(str);
 }
+
 showLoginMemberCommentWritingList = function (data) {
     $("#radioCheck").hide();
     let str = `<tbody class="border-top border-2">`;
@@ -547,7 +551,11 @@ showLoginMemberCommentWritingList = function (data) {
                     <a href="/community/${val.communityId}" class="me-2 text-lightGray" style="font-size:12px !important;">
                     원문제목 : <span class="text-lightGray" style="font-size:12px !important;">${val.communityTitle}</span>
                     <span class="text-danger" style="font-size:12px !important;">[${val.commentListSize}]</span>
-                    </a></div></div></td></tr>`
+                    </a></div>`
+                if(val.commentImg !== "0"){
+                    str += `<div><img src="/image/${val.commentImg}" class="zoom-in" width="70" height="7 d0" style="object-fit: cover;"></div>`
+                }
+                str += `</div></td></tr>`
         });
     }
     str += `</tbody>`

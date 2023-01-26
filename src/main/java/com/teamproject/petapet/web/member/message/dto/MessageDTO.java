@@ -11,8 +11,6 @@ import java.time.format.DateTimeFormatter;
 @Builder
 public class MessageDTO {
 
-    private Long messageId;
-
     private String messageReceiver;
 
     private String messageContent;
@@ -22,6 +20,8 @@ public class MessageDTO {
     private boolean messageCheck;
 
     private String memberId;
+
+    private int uncheckedMessageListSize;
 
     public static MessageDTO fromEntity(final Message message) {
         return MessageDTO.builder()
@@ -35,11 +35,13 @@ public class MessageDTO {
                 .build();
     }
 
-    public static MessageDTO fromEntityForMessageRoomList(final Message message) {
+    public static MessageDTO fromEntityForMessageRoomList(final Message message,int uncheckedMessageListSize) {
         return MessageDTO.builder()
-                .messageId(message.getMessageId())
                 .messageReceiver(message.getMessageReceiver())
                 .messageDate(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm").format(message.getMessageDate()))
+                .messageContent(message.getMessageContent())
+                .memberId(message.getMember().getMemberId())
+                .uncheckedMessageListSize(uncheckedMessageListSize)
                 .build();
     }
 

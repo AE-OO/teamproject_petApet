@@ -55,8 +55,7 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Query("select c from Community c where c.communityTitle like %:searchContent% and c.communityCategory not in ('공지사항')")
     Page<Community> searchCommunityTitle(String searchContent,Pageable pageable);
 
-    @Query("select c from Community c where c.communityTitle " +
-            "like %:searchContent% or c.communityContent like %:searchContent% and c.communityCategory not in ('공지사항')")
+    @Query("select c from Community c where (c.communityTitle like %:searchContent% or c.communityContent like %:searchContent%) and c.communityCategory not in ('공지사항')")
     Page<Community> searchCommunityTitleContentList(String searchContent,Pageable pageable);
 
     @Query("select c from Community c where c.member.memberId like %:searchContent% and c.communityCategory not in ('공지사항')" )

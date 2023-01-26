@@ -69,6 +69,21 @@
                     return;
                 }
             })
+
+            //댓글 이미지 확대
+            $(document).on("click", ".zoom-in", function () {
+                $(this).attr("width", "");
+                $(this).attr("height", "");
+                $(this).toggleClass("zoom-in");
+                $(this).toggleClass("zoom-out");
+            });
+            //댓글 이미지 축소
+            $(document).on("click", ".zoom-out", function () {
+                $(this).attr("width", "70");
+                $(this).attr("height", "70");
+                $(this).toggleClass("zoom-in");
+                $(this).toggleClass("zoom-out");
+            });
         })
         getLoginMemberProfile = function () {
             $.ajax({

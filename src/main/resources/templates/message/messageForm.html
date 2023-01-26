@@ -28,10 +28,12 @@
                         if ($("#messageContent").val() === '' || $("#messageContent").val() === null) {
                             alert("내용을 입력해주세요");
                         } else {
+                            // parentRefresh()
                             sendMessage();
                         }
                     }
             });
+
             $("#messageContent").focus();
             $("#messageDiv").scroll(function () {
                 if (last) {
@@ -57,6 +59,7 @@
                 success: function (data) {
                     $("#messageContent").val('');
                     getMessageList(0);
+                    parentRefresh();
 
                 }
                 , error: function () {
@@ -78,6 +81,7 @@
                     nowPage = data.number;
                     last = data.last;
                     showMessageList(data,nowPage);
+                    parentRefresh()
 
                 }
                 , error: function () {
@@ -117,7 +121,11 @@
             $("#msgArea").prepend(str);
 
         }
-
+        function parentRefresh(){
+            let parentPageNum=opener.parent.nowPage;
+            let parentPageSize=opener.parent.nowPageSize;
+            opener.parent.getMessageRoomList(parentPageNum, parentPageSize);
+        }
     </script>
 </head>
 <body>

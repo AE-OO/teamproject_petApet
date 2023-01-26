@@ -52,6 +52,31 @@
                 getMemberWritingList($(this).text() - 1, nowPageSize, nowSort);
             });
         })
+
+        getMemberProfile = function () {
+            $.ajax({
+                url: "/getMemberProfile",
+                type: "post",
+                data:{
+                    memberId:$(location).attr('pathname').split("/")[3],
+                },
+                dateType: "json",
+                success: function (data) {
+                    showProfile(data);
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        showProfile = function (data) {
+            if (data.memberImg !== "0") {
+                $("#memberImg").attr("/image/" + data.memberImg);
+            }
+            $("#memberId").text(data.memberId);
+            $("#communityCount").text(data.communityCount);
+            $("#commentCount").text(data.commentCount);
+        }
     </script>
 </head>
 <body>
