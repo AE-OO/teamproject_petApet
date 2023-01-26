@@ -38,15 +38,7 @@
                                th:href="@{/product(category=stroller)}">유모차</a>
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
-                        <a th:href="@{/community}" class="nav-link dropdown-toggle">Community</a>
-                        <div class="dropdown-menu bg-light m-0">
-                            <a href="#" class="dropdown-item">Test1</a>
-                            <a href="#" class="dropdown-item">Test2</a>
-                            <a href="#" class="dropdown-item">Test3</a>
-                            <a href="#" class="dropdown-item">Test5</a>
-                        </div>
-                    </div>
+                    <a th:href="@{/community}" class="nav-link dropdown-toggle">Community</a>
                     <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
                         <i class="fa fa-heart"></i></a>
                     <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
@@ -64,6 +56,7 @@
                             <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
                             <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
                             <a th:href="@{/member/couponBox}" class="dropdown-item" sec:authorize="hasRole('MEMBER')">쿠폰함</a>
+                            <a href="/message" class="dropdown-item" sec:authorize="hasRole('MEMBER')">쪽지함</a>
                             <a href="/logout" class="dropdown-item" sec:authorize="isAuthenticated()">로그아웃</a>
                         </div>
                     </div>

@@ -23,23 +23,23 @@ public class CommunityController {
     private final FileService fileService;
     @GetMapping
     public String communityMain(Model model){
-        model.addAttribute("todayPosts",communityService.countTodayCommunity("all"));
-        model.addAttribute("community",communityService.getCommunityList(0,20,"all"));
-        model.addAttribute("mainCategory","all");
+//        model.addAttribute("todayPosts",communityService.countTodayCommunity("all"));
+//        model.addAttribute("community",communityService.getCommunityList(0,20,"all"));
+//        model.addAttribute("mainCategory","all");
         return "community/communityMain";
     }
 
-    @PostMapping
-    public String communityList(String communityCategory,int pageNum,int pageSize,Model model){
-        model.addAttribute("mainCategory",communityCategory);
-        model.addAttribute("todayPosts",communityService.countTodayCommunity(communityCategory));
-        if(!communityService.getCommunityList(pageNum,pageSize,communityCategory).hasContent()){
-            model.addAttribute("community",communityService.getCommunityList(0,pageSize,communityCategory));
-        }else{
-            model.addAttribute("community",communityService.getCommunityList(pageNum,pageSize,communityCategory));
-        }
-        return "community/communityMain";
-    }
+//    @PostMapping
+//    public String communityList(String communityCategory,int pageNum,int pageSize,Model model){
+////        model.addAttribute("mainCategory",communityCategory);
+////        model.addAttribute("todayPosts",communityService.countTodayCommunity(communityCategory));
+////        if(!communityService.getCommunityList(pageNum,pageSize,communityCategory).hasContent()){
+////            model.addAttribute("community",communityService.getCommunityList(0,pageSize,communityCategory));
+////        }else{
+////            model.addAttribute("community",communityService.getCommunityList(pageNum,pageSize,communityCategory));
+////        }
+//        return "community/communityMain";
+//    }
 
     @GetMapping("/insert")
     public String communityInsertForm(){return "community/communityInsert";}

@@ -11,6 +11,11 @@ import java.net.Socket;
 @RequestMapping("/message")
 public class MessageController extends Socket {
 
+    @GetMapping
+    public String messageMain(){
+        return "message/messageMain";
+    }
+
     @GetMapping("/{memberId}")
     public String messageForm(@PathVariable String memberId){
         return "message/messageForm";

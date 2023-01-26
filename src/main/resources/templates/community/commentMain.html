@@ -4,7 +4,7 @@
     <title>petApet - 커뮤니티</title>
     <link>
     <script th:src="@{/js/community/comment.js}"></script>
-    <script th:src="@{/js/reportJS.js}"></script>
+    <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
     <script>
         $(function () {
             getCommunityTitle();
@@ -25,8 +25,9 @@
             })
         }
     </script>
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script th:src="@{/js/community/comment.js}"></script>
-
 </head>
 <body>
 <div class="mx-5 mt-3">

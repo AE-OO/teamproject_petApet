@@ -77,6 +77,7 @@
                 getSubCategoryList($(this).text());
                 $("input[name=communityCategory]").val($(this).text());
             });
+            $("input[name=communityCategory]").val($("#adminCategory").text() );
             $("#cancelBtn").click(function () {
                 window.location = "/community"
             })
@@ -113,7 +114,7 @@
             <input type="hidden" name="communityCategory">
             <input type="hidden" name="communitySubCategory">
             <div class="col-12 p-3 border border-bottom-0">
-                <div class="dropdown float-start">
+                <div class="dropdown float-start" sec:authorize="hasAnyRole('MEMBER')">
                     <a id="category" class="btn btn-link dropdown-toggle" href="javascript:" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">주제</a>
                     <ul id="categoryUl" class="dropdown-menu" style="min-width: auto;">
@@ -121,6 +122,9 @@
                         <li><a class="dropdown-item" href="javascript:">추천</a></li>
                         <li><a class="dropdown-item" href="javascript:">일상</a></li>
                     </ul>
+                </div>
+                <div class="float-start" sec:authorize="hasAnyRole('ADMIN')">
+                    <strong id="adminCategory" class="mx-1 px-2 py-3 text-danger">공지사항</strong>
                 </div>
                 <div id="subCategoryDropdown" class="dropdown float-start">
                     <a id="subCategory" class="btn btn-link dropdown-toggle" href="javascript:" role="button"

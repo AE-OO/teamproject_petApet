@@ -24,6 +24,7 @@ public interface CommunityService {
     void updateCommunity(String memberId, CommunityRequestDTO.UpdateDTO updateDTO);
 
     List<CommunityDTO> getNotice();
+    List<CommunityDTO> getCommunityMainNotice();
     void registerNotice(CommunityRequestDTO.registerNotice registerNotice);
     CommunityDTO getOneNotice(Long noticeId);
     void updateNotice(CommunityRequestDTO.registerNotice registerNotice);
