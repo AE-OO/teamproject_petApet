@@ -48,7 +48,7 @@
                        aria-expanded="false" th:text="${posts.memberId}"/>
                     <ul class="dropdown-menu" style="min-width: auto;">
                         <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
-                        <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>
+                        <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>
                         <li th:unless="${#authentication.name == posts.memberId}">
                             <a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a>
                         </li>

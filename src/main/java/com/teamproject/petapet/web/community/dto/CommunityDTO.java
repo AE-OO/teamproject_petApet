@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.community.dto;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.teamproject.petapet.domain.community.Community;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 @Data
 @Builder
 public class CommunityDTO {
+
     private Long communityId;
     private String communityTitle;
     private String communityContent;
@@ -89,6 +91,22 @@ public class CommunityDTO {
                 .communityContent(community.getCommunityContent())
                 .communityCategory(community.getCommunityCategory())
                 .communitySubCategory(community.getCommunitySubCategory())
+                .build();
+    }
+
+    public static CommunityDTO fromEntityForSearchList(Community community) {
+        return CommunityDTO.builder()
+                .communityId(community.getCommunityId())
+                .communityTitle(community.getCommunityTitle())
+                .communityContent(community.getCommunityContent())
+                .communityCategory(community.getCommunityCategory())
+                .communitySubCategory(community.getCommunitySubCategory())
+                .modifiedDate(community.getModifiedDate().toLocalDate().isBefore(LocalDate.now())?
+                        DateTimeFormatter.ofPattern("yyyy.MM.dd").format(community.getModifiedDate()):
+                        DateTimeFormatter.ofPattern("HH:mm").format(community.getModifiedDate()))
+                .viewCount(community.getViewCount())
+                .memberId(community.getMember().getMemberId())
+                .commentListSize(community.getComment().size())
                 .build();
     }
 

@@ -53,7 +53,7 @@ public class SecurityConfig {
                 //인증 없이 접근 가능
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/message/**").hasRole("MEMBER")
-                .antMatchers("/member/**","/community/insert","/community/update").hasAnyRole("MEMBER","ADMIN")
+                .antMatchers("/member/**","/community/insert","/community/update","/community/memberWriting/**").hasAnyRole("MEMBER","ADMIN")
                 .antMatchers("/company/**","/member").hasAnyRole("COMPANY","ADMIN")
 //                .antMatchers("/community/insert").authenticated()
                 .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")

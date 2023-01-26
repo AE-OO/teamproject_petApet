@@ -1,7 +1,6 @@
-package com.teamproject.petapet.web.member.message;
+package com.teamproject.petapet.web.member.message.service;
 
 import com.teamproject.petapet.domain.member.MessageRepository;
-import com.teamproject.petapet.web.community.dto.CommunityDTO;
 import com.teamproject.petapet.web.member.message.dto.MessageDTO;
 import com.teamproject.petapet.web.member.message.dto.MessageRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,13 @@ public class MessageServiceImpl implements MessageService{
 
     @Override
     public void insertMessage(String memberId ,MessageRequestDTO.InsertDTO insertDTO) {
-        messageRepository.save(insertDTO.toEntity(memberId));
+        int roomNumber;
+        if(messageRepository.existMessageList(memberId,insertDTO.getMessageReceiver())==0){
+            roomNumber = messageRepository.maxRoomNumber()+1;
+        }else {
+            roomNumber = messageRepository.getRoomNumber(memberId,insertDTO.getMessageReceiver());
+        }
+        messageRepository.save(insertDTO.toEntity(memberId,roomNumber));
     }
 
     @Override
@@ -37,10 +42,9 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public List<String> getReceiverList(String memberId) {
-        return messageRepository.getReceiverList(memberId);
-
+    public Page<MessageDTO> getMessageRoomList(String memberId, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("messageId").descending());
+        return messageRepository.getMessageRoomList(memberId,pageable).map(m -> MessageDTO.fromEntity(m));
     }
-
 
 }

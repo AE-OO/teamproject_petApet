@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 글목록</title>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script th:src="@{/js/community/community.js}"></script>
+    <script>
+        $(function () {
+            getLoginMemberProfile();
+            getLoginId();
+            getLoginMemberWritingList(nowPage, nowPageSize, "community");
+            $("input[name=radioCheck]").click(function () {
+                if ($("input[name=radioCheck]:checked").val() === "title") {
+                    $(".communityContent").hide();
+                    $(".communityTitle").removeClass("border-white")
+                } else {
+                    $(".communityContent").show();
+                    $(".communityTitle").addClass("border-white")
+                }
+            })
+            //목록 개수 선택
+            $("#pageSizeList").children().click(function () {
+                getLoginMemberWritingList(nowPage, $(this).find('span').text(), nowSort)
+            });
+            //작성글, 댓글 선택
+            $("#type").children().click(function () {
+                getLoginMemberWritingList(nowPage, nowPageSize, $(this).val())
+            });
+            //이전 페이지
+            $(document).on("click", "#prevPage", function () {
+                if ($(this).hasClass('disabled')) {
+                    return;
+                }
+                getLoginMemberWritingList(nowPage - 1, nowPageSize, nowSort);
+
+            });
+            //다음 페이지
+            $(document).on("click", "#nextPage", function () {
+                if ($(this).hasClass('disabled')) {
+                    return;
+                }
+                getLoginMemberWritingList(nowPage + 1, nowPageSize, nowSort);
+
+            });
+            //댓글 페이지선택
+            $(document).on("click", ".selectPage", function () {
+                if ($(this).parent().hasClass('active')) {
+                    return;
+                }
+                getLoginMemberWritingList($(this).text() - 1, nowPageSize, nowSort);
+            });
+            $("#allCheck").click(function () {
+                if($("input[name='deleteCheck']:checked").length === $(".communityTitle").length){
+                    $("input[name='deleteCheck']").prop("checked",false)
+                }else{
+
+                    $("input[name='deleteCheck']").prop("checked",true)
+                }
+            })
+            $("#deleteBtn").click(function () {
+                if($("input[name='deleteCheck']:checked").length === 0){
+                    alert("삭제할 게시물을 선택해 주세요.")
+                    return;
+                }
+                if (confirm("정말로 삭제하시겠습니까?") == true){
+                    myWritingDelete(nowSort)
+                }else{
+                    return;
+                }
+            })
+        })
+        getLoginMemberProfile = function () {
+            $.ajax({
+                url: "/getLoginMemberProfile",
+                type: "post",
+                dateType: "json",
+                success: function (data) {
+                    showProfile(data);
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        showProfile = function (data) {
+            if (data.memberImg !== "0") {
+                $("#memberImg").attr("/image/" + data.memberImg);
+            }
+            $("#memberId").text(data.memberId);
+            $("#communityCount").text(data.communityCount);
+            $("#commentCount").text(data.commentCount);
+        }
+        myWritingDelete = function (value) {
+            let lists = [];
+            $("input[name='deleteCheck']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
+                lists.push($(this).val());
+            });
+
+            $.ajax({
+                url: "/"+value+"/myWritingDelete",
+                type: "post",
+                data: {
+                    deleteList: lists
+                },
+                dateType: "json",
+                success: function () {
+                    getLoginMemberWritingList(nowPage, nowPageSize, value);
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+
+        }
+    </script>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="bg-white p-3">
+                    <h4 class="text-black ps-5 mb-0"><i class="bi bi-arrow-left"></i>글목록</h4>
+                </div>
+                <div class="myinfo-item d-flex">
+                    <div class="myinfo-text w-100 p-3">
+                        <div class="my-2">
+                            <div class="col-12 p-3 border border-2 text-start">
+                                <div class="d-inline-block align-middle">
+                                    <img id="memberImg" src="/img/profile.jpg" width="60" height="60"
+                                         class="border border-1"
+                                         style="object-fit:cover">
+                                </div>
+                                <div class="ms-2 d-inline-block align-middle">
+                                    <div class="mb-1">
+                                        <strong id="memberId" class="me-1"></strong><a href="/member/checkInfo" class="ms-1" style="font-size:14px;">내 정보 수정</a>
+                                    </div>
+                                    <div style="font-size: 15px">
+                                        <span class="me-2">총 게시물<strong id="communityCount"
+                                                                         class="text-danger ms-1"></strong>개</span>|
+                                        <span class="ms-1">총 댓글<strong id="commentCount"
+                                                                        class="text-danger ms-1"></strong>개</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 myWritingList">
+                            <div class="float-start">
+                                <p id="type" class="pt-2 mb-0 text-gray-400">
+                                    <button class="btn btn-link2 pe-1 dropdown-toggle" value="community">내가 쓴 게시글
+                                    </button>
+                                    |
+                                    <button class="btn btn-link2 px-1 dropdown-toggle" value="comment">내가 쓴 댓글</button>
+                                </p>
+                            </div>
+                            <div class="dropdown">
+                                <a class="btn btn-link dropdown-toggle float-end mt-2" href="javascript:" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">목록 <span id="pageSize">20</span>개</a>
+                                <ul id="pageSizeList" class="dropdown-menu" style="min-width: auto;">
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>10</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>20</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>30</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>40</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>50</span>개</a></li>
+                                </ul>
+                            </div>
+                            <div id="radioCheck" class="float-end mt-2">
+                                <div class="form-check form-check-inline me-1 mt-1-7">
+                                    <input class="form-check-input" type="radio" name="radioCheck" value="title"
+                                           id="radio1">
+                                    <label class="form-check-label" for="radio1">제목</label>
+                                </div>
+                                <div class="form-check form-check-inline me-1">
+                                    <input class="form-check-input" type="radio" name="radioCheck" value="titleContent"
+                                           id="radio2"
+                                           checked>
+                                    <label class="form-check-label" for="radio2">제목+내용</label>
+                                </div>
+                            </div>
+                            <table class="table table-borderless mb-0 text-start">
+                                <thead>
+                                <tr>
+                                    <td class="py-1">
+                                        <button id="allCheck" class="btn btn-outline-dark btn-sm"><i class="fa fa-check me-1" aria-hidden="true"></i>전체선택
+                                        </button>
+                                        <button id="deleteBtn" class="btn btn-outline-dark btn-sm">삭제</button>
+                                    </td>
+                                </tr>
+                                </thead>
+                            </table>
+                            <table id="list" class="table2 table-responsive list">
+                            </table>
+                            <div class="mt-4">
+                                <div id="page"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+</body>
+
+</html>

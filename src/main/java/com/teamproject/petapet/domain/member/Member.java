@@ -106,6 +106,14 @@ public class Member{
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Message> message;
 
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "member1", cascade = CascadeType.REMOVE)
+//    private List<MessageRoom> messageRoom1;
+//
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "member2", cascade = CascadeType.REMOVE)
+//    private List<MessageRoom> messageRoom2;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Inquired> inquired;

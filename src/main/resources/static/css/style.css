@@ -1152,3 +1152,13 @@ ul,li{
     outline: 0;
 }
 
+.myWritingList,
+.myWritingList a,
+.myWritingList button,
+.myWritingList span {
+    font-size:14px !important;
+}
+
+.myWritingList .badge2{
+    font-size:12px !important;
+}

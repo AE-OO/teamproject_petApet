@@ -20,8 +20,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-@Getter @ToString(exclude = {"member", "community"})
+@Getter
+@ToString(exclude = {"member", "community"})
 @EntityListeners(value = {AuditingEntityListener.class})
 public class Comment extends BaseTimeEntity {
 

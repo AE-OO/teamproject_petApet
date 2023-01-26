@@ -7,22 +7,155 @@
     <script>
         $(function () {
             getLoginId();
-            getTest()
+            getMessageRoomList(nowPage,nowPageSize)
         })
-        getTest = function () {
+        let nowPage
+        let nowPageSize
+        getMessageRoomList = function (page,size) {
             $.ajax({
-                url: "/message/test",
+                url: "/message/getMessageRoomList",
                 type: "post",
-                // data: {communityCategory: value},
+                data: {
+                    pageNum: page,
+                    pageSize:size
+                },
                 dateType: "json",
                 success: function (data) {
-                    console.log(data)
+                    if (data.number > data.totalPages - 1 && data.totalPages > 0) {
+                        getMessageRoomList(0, size);
+                        return;
+                    }
+                    nowPage = data.number;
+                    nowPageSize = data.size;
+                    showPage(data);
+                    $("#pageSize").text(data.size);
+
                 }
                 , error: function () {
                     alert('오류가 발생하였습니다.');
                 }
             })
         }
+        showPage = function (data) {
+            let str = '';
+            if (data.totalPages > 0) {
+                str += `<div aria-label="Page navigation"><ul class="pagination justify-content-center">`
+                if (data.first) {
+                    str += `<li id = "prevPage" class = "page-item disabled" >
+                            <a class = "page-link" href = "javascript:" style = "pointer-events: none;" >
+                            <span aria-hidden = "true"> <i class = "bi bi-chevron-left"></i></span>
+                            </a>
+                            </li>`
+                } else {
+                    str += `<li id = "prevPage" class = "page-item">
+                            <a class = "page-link" href = "javascript:">
+                            <span aria-hidden = "true"><i class = "bi bi-chevron-left"></i></span>
+                            </a>
+                            </li>`
+                }
+                if (data.totalPages <= 5) {
+                    for (var i = 1; i <= data.totalPages; i++) {
+                        str += `<li class = "page-item`
+                        if (data.number + 1 === i) {
+                            str += ` active`
+                        }
+                        str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                    }
+                }
+                if (data.totalPages > 5 && data.totalPages <= 10) {
+                    if (data.number + 1 <= 5) {
+                        for (var i = 1; i <= 5; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+
+                    }
+                    if (data.number + 1 > 5) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+                        for (var i = 6; i <= data.totalPages; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                    }
+                }
+                if (data.totalPages > 10) {
+                    if (data.number + 1 <= 5) {
+                        for (var i = 1; i <= 5; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+                    }
+                    if (data.number + 1 > 5 && data.number + 1 < data.totalPages - 4) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+                        for (var i = data.number + 1 - 2; i <= data.number + 1 + 2; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+                    }
+                    if (data.number + 1 >= data.totalPages - 4) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+
+                        for (var i = data.totalPages - 4; i <= data.totalPages; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                    }
+                }
+
+                if (data.last) {
+                    str += `<li id="nextPage" class="page-item disabled">
+                <a class="page-link" href="javascript:" style="pointer-events: none;">
+                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                </a>
+                </li>`
+                } else {
+                    str += `<li id="nextPage" class="page-item">
+                <a class="page-link" href="javascript:">
+                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                </a>
+                </li>`
+                }
+                str += `</ul></div>`
+            }
+            $("#page").html(str);
+        }
+
     </script>
 </head>
 <body>
@@ -38,110 +171,63 @@
                 </div>
                 <div class="myinfo-item  d-flex">
                     <div class="myinfo-text w-100 p-5">
-                        <table class="table2 table-hover">
-                            <thead>
-                            <tr>
-                                <th class="col-md-3">상대아이디</th>
-                                <th>최근 내용</th>
-                                <th class="col-md-2">최근날짜</th>
-                            </tr>
-                            </thead>
-                            <tbody id="messageList"></tbody>
-                        </table>
+                        <div class="col-12 myWritingList">
+                            <div class="float-start">
+                                <p id="type" class="pt-2 mb-0 text-gray-400">
+                                    <button class="btn btn-link2 pe-1 dropdown-toggle" value="community">내가 쓴 게시글
+                                    </button>
+                                    |
+                                    <button class="btn btn-link2 px-1 dropdown-toggle" value="comment">내가 쓴 댓글</button>
+                                </p>
+                            </div>
+                            <div class="dropdown">
+                                <a class="btn btn-link dropdown-toggle float-end mt-2" href="javascript:" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">목록 <span id="pageSize">20</span>개</a>
+                                <ul id="pageSizeList" class="dropdown-menu" style="min-width: auto;">
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>10</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>20</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>30</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>40</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>50</span>개</a></li>
+                                </ul>
+                            </div>
+<!--                            <div id="radioCheck" class="float-end mt-2">-->
+<!--                                <div class="form-check form-check-inline me-1 mt-1-7">-->
+<!--                                    <input class="form-check-input" type="radio" name="radioCheck" value="title"-->
+<!--                                           id="radio1">-->
+<!--                                    <label class="form-check-label" for="radio1">제목</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-check form-check-inline me-1">-->
+<!--                                    <input class="form-check-input" type="radio" name="radioCheck" value="titleContent"-->
+<!--                                           id="radio2"-->
+<!--                                           checked>-->
+<!--                                    <label class="form-check-label" for="radio2">제목+내용</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <table class="table table-borderless mb-0 text-start">
+                                <thead>
+                                <tr>
+                                    <td class="py-1">
+                                        <button id="allCheck" class="btn btn-outline-dark btn-sm"><i class="fa fa-check me-1" aria-hidden="true"></i>전체선택
+                                        </button>
+                                        <button id="deleteBtn" class="btn btn-outline-dark btn-sm">삭제</button>
+                                    </td>
+                                </tr>
+                                </thead>
+                            </table>
+                            <table id="list" class="table2 table-responsive list">
+                            </table>
+                            <div class="mt-4">
+                                <div id="page"></div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Myinfo End -->
-
-<!-- smsConfirmNum Modal start -->
-<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="col-8 mx-auto">
-                    <h5 class="modal-title text-center pt-3" id="staticBackdropLabel">인증번호 확인</h5>
-                    <div class="py-3">
-                        <div class="mb-0">
-                            <input id="input-smsConfirmNum" type="text" class="form-control"
-                                   name="smsConfirmNum" maxlength="6" placeholder="인증번호 6자리 입력">
-                            <p id="feedback-smsConfirmNum" class="text-start text-danger small ps-2 my-1"/>
-                            <p id="feedback-smsConfirmNum2" class="text-start text-danger small ps-2 my-1"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="mx-auto col-4 btn btn-link" data-bs-dismiss="modal">닫기</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- smsConfirmNum Modal end-->
-
-<!-- updateMemberPw Modal start -->
-<div class="modal fade" id="updateMemberPw" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-labelledby="updateMemberPwLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="col-11 mx-auto">
-                    <h5 class="modal-title text-center py-3" id="updateMemberPwLabel">비밀번호 바꾸기</h5>
-                    <!-- Original memberPw start -->
-                    <div class="row g-2 mb-2">
-                        <label for="input-originalMemberPw" class="myinfo-p col-3">현재 비밀번호</label>
-                        <div class="col-9 px-0">
-                            <input type="password" id="input-originalMemberPw"
-                                   class="form-control px-3 py-2" maxlength="18"
-                                   placeholder="비밀번호를 입력해주세요" onkeyup="checkOriginalMemberPw()">
-                            <p id="feedback-originalMemberPw" class="text-start small text-danger ps-2 my-1"/>
-                        </div>
-                    </div>
-                    <!-- Original memberPw end -->
-
-                    <!-- New MemberPw start -->
-                    <div class="row g-2 mb-2">
-                        <label for="input-newMemberPw" class="myinfo-p col-3">새 비밀번호</label>
-                        <div class="col-9 px-0">
-                            <input type="password" id="input-newMemberPw"
-                                   class="form-control px-3 py-2" maxlength="18"
-                                   placeholder="새 비밀번호를 입력해주세요" onkeyup="checkNewMemberPw()" disabled>
-                            <p id="feedback-newMemberPw"
-                               class="text-start text-danger small ps-2 my-1"/>
-                        </div>
-                    </div>
-                    <!-- New MemberPw end -->
-
-                    <!-- New MemberPw2 start -->
-                    <div class="row g-2">
-                        <label for="input-newMemberPw2" class="myinfo-p col-3">새 비밀번호 확인</label>
-                        <div class="col-9 px-0">
-                            <input type="password" id="input-newMemberPw2"
-                                   class="form-control px-3 py-2" maxlength="18"
-                                   placeholder="새 비밀번호를 다시 입력해주세요" onkeyup="checkNewMemberPw2()" disabled>
-                            <p id="feedback-newMemberPw2"
-                               class="text-start text-danger small ps-2 my-1"/>
-                        </div>
-                    </div>
-                    <!-- New MemberPw2 end -->
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="closeBtn" class="mx-auto me-1 col-5 btn btn-outline-primary"
-                        data-bs-dismiss="modal">닫기
-                </button>
-                <button type="button" id="sendNewMemberPwBtn" class="mx-auto ms-1 col-5 btn btn-primary">확인</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- updateMemberPw Modal end-->
-
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>

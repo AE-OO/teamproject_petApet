@@ -47,4 +47,8 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
+
+    @Column(nullable = false)
+    private int roomNumber;
+
 }

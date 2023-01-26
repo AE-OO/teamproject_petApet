@@ -179,4 +179,8 @@ public class MemberController {
                 .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
                 .body(resource);
     }
+
+    @GetMapping("/member/writingList")
+    public String writingList(){return "member/memberWritingList";}
+
 }

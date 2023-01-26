@@ -97,4 +97,9 @@ public class MemberRestController {
         return new ResponseEntity<>(memberService.memberProfile(memberId),HttpStatus.OK);
     }
 
+    @PostMapping("/getLoginMemberProfile")
+    public ResponseEntity<CommunityMemberDTO> getLoginMemberProfile(Principal principal){
+        return new ResponseEntity<>(memberService.memberProfile(principal.getName()),HttpStatus.OK);
+    }
+
 }

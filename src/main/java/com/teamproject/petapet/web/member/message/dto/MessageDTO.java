@@ -1,7 +1,5 @@
 package com.teamproject.petapet.web.member.message.dto;
 
-import com.teamproject.petapet.domain.community.Comment;
-import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Message;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 @Data
 @Builder
 public class MessageDTO {
+
+    private Long messageId;
 
     private String messageReceiver;
 
@@ -32,6 +32,14 @@ public class MessageDTO {
                         DateTimeFormatter.ofPattern("a hh:mm").format(message.getMessageDate()))
                 .messageCheck(message.isMessageCheck())
                 .memberId(message.getMember().getMemberId())
+                .build();
+    }
+
+    public static MessageDTO fromEntityForMessageRoomList(final Message message) {
+        return MessageDTO.builder()
+                .messageId(message.getMessageId())
+                .messageReceiver(message.getMessageReceiver())
+                .messageDate(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm").format(message.getMessageDate()))
                 .build();
     }
 

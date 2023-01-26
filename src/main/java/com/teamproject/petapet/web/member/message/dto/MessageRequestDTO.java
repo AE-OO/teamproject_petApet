@@ -12,12 +12,16 @@ public class MessageRequestDTO {
         private String messageReceiver;
         private String messageContent;
 
-        public Message toEntity(String memberId) {
-            return Message.builder()
+//        private int roomNumber;
+
+        public Message toEntity(String memberId,int roomNumber) {
+            Message message = Message.builder()
                     .messageReceiver(messageReceiver)
                     .messageContent(messageContent)
+                    .roomNumber(roomNumber)
                     .member(Member.builder().memberId(memberId).build())
                     .build();
+            return message;
         }
     }
 }
