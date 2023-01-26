@@ -10,11 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +48,7 @@ public class CommunityServiceImpl implements CommunityService {
     public void insertCommunity(String memberId, CommunityRequestDTO.InsertDTO insertDTO) {
         communityRepository.save(insertDTO.toEntity(memberId));
     }
+
     @Override
     public Page<CommunityDTO> getCommunityList(int pageNum, int pageSize, String communityCategory) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
@@ -58,14 +58,6 @@ public class CommunityServiceImpl implements CommunityService {
         }
         return communityRepository.findAllByCommunityCategory(communityCategory, pageable).map(
                 community -> CommunityDTO.fromEntityForCommunityMain(community));
-    }
-
-    //회원별 작성글 보기....
-    @Override
-    public Page<CommunityDTO> getCommunityMemberPost(int pageNum, int pageSize, String memberId) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
-        return communityRepository.findAllByMember(memberId,pageable)
-                .map(community -> CommunityDTO.fromEntityForCommunityPosts(community));
     }
 
     @Override
@@ -83,22 +75,22 @@ public class CommunityServiceImpl implements CommunityService {
 
 
     @Override
-    public CommunityDTO loadCommunityPosts(Long communityId){
+    public CommunityDTO loadCommunityPosts(Long communityId) {
         return CommunityDTO.fromEntityForCommunityPosts(communityRepository.findById(communityId)
                 .orElseThrow(() -> new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다.")));
     }
 
     @Override
     public CommunityDTO loadCommunityUpdatePost(String memberId, Long communityId) {
-        return CommunityDTO.fromEntityForUpdatePost(communityRepository.findByCommunityIdAndMemberMemberId(communityId,memberId)
-                .orElseThrow(()->new NullPointerException(communityId+","+memberId+"-> 데이터베이스에서 찾을 수 없습니다.")));
+        return CommunityDTO.fromEntityForUpdatePost(communityRepository.findByCommunityIdAndMemberMemberId(communityId, memberId)
+                .orElseThrow(() -> new NullPointerException(communityId + "," + memberId + "-> 데이터베이스에서 찾을 수 없습니다.")));
     }
 
     @Override
     @Transactional
     public void updateCommunity(String memberId, CommunityRequestDTO.UpdateDTO updateDTO) {
         Community community = communityRepository.findById(updateDTO.getCommunityId())
-                .orElseThrow(()->new NullPointerException(updateDTO.getCommunityId()+","+memberId+"-> 데이터베이스에서 찾을 수 없습니다."));
+                .orElseThrow(() -> new NullPointerException(updateDTO.getCommunityId() + "," + memberId + "-> 데이터베이스에서 찾을 수 없습니다."));
         community.update(updateDTO.toEntity());
     }
 
@@ -144,11 +136,47 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public CommunityDTO getCommunityTitle(Long communityId) {
         Community community = communityRepository.findById(communityId)
-                .orElseThrow(()->new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다."));
+                .orElseThrow(() -> new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다."));
         return CommunityDTO.builder()
                 .communityTitle(community.getCommunityTitle())
                 .memberId(community.getMember().getMemberId())
                 .build();
     }
 
+    @Override
+    public Page<CommunityDTO> getSearchList(String type, CommunityRequestDTO.SearchDTO searchDTO) {
+        Pageable pageable = PageRequest.of(searchDTO.getPageNum(), searchDTO.getPageSize(), JpaSort.unsafe(searchDTO.getSort()).descending());
+        switch (type) {
+            case "titleContent":
+                return communityRepository.searchCommunityTitleContentList(searchDTO.getSearchContent(), pageable)
+                    .map(community -> CommunityDTO.fromEntityForSearchList(community));
+            case "title":
+                return communityRepository.searchCommunityTitle(searchDTO.getSearchContent(), pageable)
+                    .map(community -> CommunityDTO.fromEntityForSearchList(community));
+            case "writer":
+                return communityRepository.searchMemberIdList(searchDTO.getSearchContent(), pageable)
+                    .map(community -> CommunityDTO.fromEntityForSearchList(community));
+            default:
+                return communityRepository.searchCommunityIdList(Long.valueOf(searchDTO.getSearchContent()), pageable)
+                    .map(community -> CommunityDTO.fromEntityForSearchList(community));
+        }
+    }
+
+    @Override
+    public Page<CommunityDTO> getMemberWritingList(String type, String memberId, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
+        if(type.equals("comment")){
+            return communityRepository.getCommentWritingCommunityList(memberId, pageable)
+                    .map(community -> CommunityDTO.fromEntityForCommunityPosts(community));
+        }
+        return communityRepository.findAllByMemberMemberId(memberId,pageable)
+                .map(community -> CommunityDTO.fromEntityForSearchList(community));
+    }
+
+    @Override
+    public Page<CommunityDTO> getLoginMemberWritingList(String memberId, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
+        return communityRepository.findAllByMemberMemberId(memberId,pageable)
+                .map(community -> CommunityDTO.fromEntityForSearchList(community));
+    }
 }

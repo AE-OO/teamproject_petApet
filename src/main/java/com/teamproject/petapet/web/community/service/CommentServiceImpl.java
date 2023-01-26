@@ -9,8 +9,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     public Page<CommentDTO> getCommentPageList(Long communityId, int pageNum) {
         Pageable pageable = PageRequest.of(pageNum, 20,
                 Sort.by("replyId").ascending().and(Sort.by("createdDate")));
-        return commentRepository.test2(communityId,pageable)
+        return commentRepository.commentList(communityId,pageable)
                 .map(c -> CommentDTO.fromEntity(c));
     }
 
@@ -58,6 +56,13 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(updateDTO.getCommentId())
                 .orElseThrow(() -> new NullPointerException(updateDTO.getCommentId() + "-> 데이터베이스에서 찾을 수 없습니다."));
         comment.update(updateDTO.toEntity());
+    }
+
+    @Override
+    public Page<CommentDTO> getLoginMemberWritingList(String memberId, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("commentId").descending());
+        return commentRepository.findAllByMemberMemberId(memberId,pageable)
+                .map(comment -> CommentDTO.fromEntityForWritingList(comment));
     }
 
 }

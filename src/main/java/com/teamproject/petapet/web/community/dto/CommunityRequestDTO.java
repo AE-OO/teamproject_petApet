@@ -1,9 +1,15 @@
 package com.teamproject.petapet.web.community.dto;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.member.Member;
+import lombok.Builder;
 import lombok.Data;
+import net.bytebuddy.implementation.bind.annotation.Default;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -82,5 +88,13 @@ public class CommunityRequestDTO {
                     .build();
         }
 
+    }
+
+    @Data
+    public static class SearchDTO {
+        private String searchContent;
+        private int pageNum=0;
+        private int pageSize=20;
+        private String sort="createdDate";
     }
 }

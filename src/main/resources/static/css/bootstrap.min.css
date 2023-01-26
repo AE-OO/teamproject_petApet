@@ -10557,12 +10557,17 @@ textarea.form-control-lg {
 
 .text-lightGray {
   --bs-text-opacity: 1;
-  color: rgba(var(--bs-gray-500), var(--bs-text-opacity)) !important;
+  color: var(--bs-gray-500) !important;
+}
+
+.text-gray-400 {
+  --bs-text-opacity: 1;
+  color: var(--bs-gray-400) !important;
 }
 
 .text-gray-700 {
   --bs-text-opacity: 1;
-  color: rgba(var(--bs-gray-700), var(--bs-text-opacity)) !important;
+  color: var(--bs-gray-700) !important;
 }
 
 .text-body {

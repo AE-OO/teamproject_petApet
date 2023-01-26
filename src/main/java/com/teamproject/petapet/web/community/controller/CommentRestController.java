@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.community.controller;
 
 import com.teamproject.petapet.web.community.dto.CommentDTO;
 import com.teamproject.petapet.web.community.dto.CommentRequestDTO;
+import com.teamproject.petapet.web.community.dto.CommunityDTO;
 import com.teamproject.petapet.web.community.service.CommentService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -82,5 +84,19 @@ public class CommentRestController {
         }
         commentService.updateComment(updateDTO);
         new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/loginMemberWritingList")
+    public ResponseEntity<Page<CommentDTO>> getLoginMemberWritingList(Principal principal,
+                                                                        @RequestParam(defaultValue = "0") int pageNum,
+                                                                        @RequestParam(defaultValue = "20") int pageSize) {
+        return new ResponseEntity<>(commentService.getLoginMemberWritingList(principal.getName(), pageNum, pageSize), HttpStatus.OK);
+    }
+
+    @PostMapping("/myWritingDelete")
+    public void myWritingDelete(@RequestParam(value="deleteList[]") List<Long> deleteList) {
+        if(deleteList != null){
+            deleteList.forEach(lists -> commentService.deleteComment(lists));
+        }
     }
 }

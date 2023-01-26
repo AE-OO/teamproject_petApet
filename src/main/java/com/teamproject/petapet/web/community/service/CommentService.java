@@ -13,4 +13,6 @@ public interface CommentService {
     void deleteComment(Long commentId);
     void updateComment(CommentRequestDTO.UpdateDTO updateDTO);
 
+    Page<CommentDTO> getLoginMemberWritingList(String memberId, int pageNum, int pageSize);
+
 }

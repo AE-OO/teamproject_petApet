@@ -16,7 +16,6 @@ public interface CommunityService {
     void addCommunityReport(Long communityId);
     void insertCommunity(String memberId, CommunityRequestDTO.InsertDTO insertDTO);
     Page<CommunityDTO> getCommunityList(int pageNum, int pageSize, String communityCategory);
-    Page<CommunityDTO> getCommunityMemberPost(int pageNum, int pageSize, String memberId);
     Long countTodayCommunity(String communityCategory);
     void viewCountPlus(Long communityId);
     CommunityDTO loadCommunityPosts(Long communityId);
@@ -30,4 +29,7 @@ public interface CommunityService {
     void updateNotice(CommunityRequestDTO.registerNotice registerNotice);
     void deleteNotice(Long noticeId);
     CommunityDTO getCommunityTitle(Long communityId);
+    Page<CommunityDTO> getSearchList(String type, CommunityRequestDTO.SearchDTO searchDTO);
+    Page<CommunityDTO> getMemberWritingList(String type, String memberId, int pageNum, int pageSize);
+    Page<CommunityDTO> getLoginMemberWritingList(String memberId, int pageNum, int pageSize);
 }

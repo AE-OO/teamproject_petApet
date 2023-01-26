@@ -402,26 +402,6 @@ getCommentList = function () {
         }
     })
 }
-//로그인 정보 (아이디,권한) 가져오는 ajax - 타임리프 대신 사용
-// getLoginId = function () {
-//     $.ajax({
-//         url: "/getLoginId",
-//         type: "post",
-//         dateType: "json",
-//         async: false,
-//         success: function (data) {
-//             if (data.length > 0) {
-//                 loginId = data[0];
-//                 authorities = data[1];
-//             }
-//             // alert(data[1])
-//             // alert(data[0])
-//         }
-//         , error: function () {
-//             alert('오류');
-//         }
-//     })
-// }
 //댓글 페이지 선택
 goCommentPage = function (value) {
     $.ajax({
@@ -477,7 +457,7 @@ showList = function (data) {
                         <a href="javascript:" role="button" class="memberId" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
                         <ul class="dropdown-menu" style="min-width: auto;">
                         <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
-                        <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>`
+                        <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
                 if (val.memberId !== loginId) {
                     str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
                             <button type="button" class="dropdown-item memberReport" id="addProductReport"
@@ -540,7 +520,7 @@ showList = function (data) {
                     <a href="javascript:"  class="memberId" role="button" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
                     <ul class="dropdown-menu" style="min-width: auto;">
                     <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
-                    <li><a class="dropdown-item" href="javascript:">작성글보기</a></li>`
+                    <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
             if (val.memberId !== loginId) {
                 str += `<li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
                         <button type="button" class="dropdown-item memberReport" id="addProductReport"
