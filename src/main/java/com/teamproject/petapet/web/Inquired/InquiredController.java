@@ -47,7 +47,7 @@ public class InquiredController {
         String loginMember = checkMember(principal);
         List<Inquired> myInquiry = inquiredService.getMyInquired(loginMember);
         model.addAttribute("myInquiry", myInquiry);
-        return "mypage/inquiry";
+        return "/mypage/inquiry";
     }
 
 //    @GetMapping
@@ -81,4 +81,5 @@ public class InquiredController {
     private String checkMember(Principal principal) {
         return memberService.findOne(principal.getName()).getMemberId();
     }
+
 }
