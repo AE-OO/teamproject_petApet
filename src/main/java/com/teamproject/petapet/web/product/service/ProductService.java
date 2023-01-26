@@ -33,6 +33,8 @@ public interface ProductService {
 
     Optional<Product> findOne(Long id);
 
+    Product findId(Long id);
+
     Optional<Product> productSave(ProductInsertDTO productInsertDTO,List<UploadFile> uploadFiles);
 
     Optional<Product> findProductWithReview(Long id);

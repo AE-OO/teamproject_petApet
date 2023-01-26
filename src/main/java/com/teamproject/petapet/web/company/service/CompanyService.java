@@ -33,4 +33,6 @@ public interface CompanyService {
 
     //23.1.4 성현 추가
     Optional<Company> findOne(String id);
+
+    List<Company> findAllCompany();
 }

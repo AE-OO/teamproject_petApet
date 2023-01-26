@@ -102,6 +102,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product findId(Long id) {
+        return productRepository.findById(id).get();
+    }
+
+    @Override
     public Optional<Product> productSave(ProductInsertDTO insertDTO,List<UploadFile> uploadFiles) {
         ProductType productDiv = ProductType.valueOf(insertDTO.getProductDiv());
 

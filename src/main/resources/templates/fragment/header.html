@@ -72,5 +72,168 @@
     </header>
     <script th:src="@{/js/header.js}"></script>
 </th:block>
+<th:block th:fragment="header2">
+    <header class="header fixed-top py-0">
+        <div class="container-fluid header-expand-lg bg-white header-light p-0">
+            <a href="/" class="header-brand d-flex align-items-center px-5 py-0">
+                <img class="w-20" th:src="@{/img/logo.png}" alt="logo">
+            </a>
+            <button type="button" id="test" class="header-toggler me-4" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="header-toggler-icon"></span>
+            </button>
+            <div class="collapse header-collapse" id="navbarCollapse">
+                <div class="header-nav ms-auto">
+                    <a href="#l" class="nav-item nav-link">About</a>
+                    <div class="nav-item dropdown">
+                        <a th:href="@{/product/main}" class="nav-item nav-link dropdown-toggle">Product</a>
+                        <div class="dropdown-menu bg-light m-0">
+                            <a style="text-decoration: none" class="dropdown-item"
+                               th:href="@{/product(category=all)}">전체보기</a>
+                            <a style="text-decoration: none" class="dropdown-item"
+                               th:href="@{/product(category=food)}">사료</a>
+                            <a style="text-decoration: none" class="dropdown-item"
+                               th:href="@{/product(category=snack)}">간식</a>
+                            <a style="text-decoration: none" class="dropdown-item"
+                               th:href="@{/product(category=walking)}">산책용품</a>
+                            <a style="text-decoration: none" class="dropdown-item"
+                               th:href="@{/product(category=toy)}">장난감</a>
+                            <a style="text-decoration: none" class="dropdown-item"
+                               th:href="@{/product(category=fashion)}">패션/잡화</a>
+                            <a style="text-decoration: none" class="dropdown-item"
+                               th:href="@{/product(category=stroller)}">유모차</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>
+                        <div class="dropdown-menu bg-light m-0">
+                            <a href="#" class="dropdown-item">Test1</a>
+                            <a href="#" class="dropdown-item">Test2</a>
+                            <a href="#" class="dropdown-item">Test3</a>
+                            <a href="#" class="dropdown-item">Test5</a>
+                        </div>
+                    </div>
+                    <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
+                        <i class="fa fa-heart"></i></a>
+                    <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
+                        <i class="fa fa-shopping-bag"></i></a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link nav-link2 me-0 h-100" id="dropdownA" data-bs-toggle="dropdown">
+                            <i class="fa fa-user"></i></a>
+                        <div class="dropdown-menu bg-white text-center m-0" id="dropdownMenuDiv" style="right:0;">
+                            <a th:href="@{/login(redirectURL=${#request.requestURI})}" class="dropdown-item"
+                               sec:authorize="isAnonymous()">로그인</a>
+                            <a href="/join" class="dropdown-item" sec:authorize="isAnonymous()">회원가입</a>
+                            <a href="/admin/adminPage" class="dropdown-item" sec:authorize="hasRole('ADMIN')">관리자</a>
+                            <a href="/member/checkInfo" class="dropdown-item" sec:authorize="hasRole('MEMBER')">내 정보</a>
+                            <a href="/company/info" class="dropdown-item" sec:authorize="hasRole('COMPANY')">기업 정보</a>
+                            <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
+                            <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
+                            <a href="/logout" class="dropdown-item" sec:authorize="isAuthenticated()">로그아웃</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script th:src="@{/js/header.js}"></script>
+</th:block>
+<th:block th:fragment="sidebar">
+    <div id="pap-left-menu">
+        <div class="mypage-text">
+            <div class="mytext">
+                <span class="tspan">
+                    <span class="wspan">
+                        MY PAP
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div id="myMenu" class="myMenu">
+            <h2 class="sc-1flepkn-0 gvaWmd">petApet</h2>
+            <nav>
+                <div class="sc-1liba5b-5 jzNnfi">
+                    <div class="sc-1liba5b-6 OvTJQ">MY 쇼핑</div>
+                    <div class="sc-1liba5b-7 gvMCBX">
+                        <ul class="sc-1liba5b-8 McnCE">
+                            <li id="mc-order-carts-page" class="sc-1liba5b-9 bgmWPR selected"><a href="cart.html" th:href="@{/cart}"
+                                                                                                 title="장바구니" target="_self" class="sc-1liba5b-10 eLReSz">장바구니<span
+                                    class="sc-1liba5b-11 fBiFRr"></span></a>
+                            </li>
+                            <li id="mc-order-list-page" class="sc-1liba5b-9 bgmWPR selected"><a
+                                    href="buy.html" th:href="@{/buy}" title="주문목록/배송조회" target="_self"
+                                    class="sc-1liba5b-10 eLReSz">주문목록/배송조회<span class="sc-1liba5b-11 fBiFRr"></span></a>
+                            </li>
+                            <li id="mc-cancel-return-page" class="sc-1liba5b-9 bgmWPR"><a
+                                    href="" title="취소/반품/교환/환불내역" target="_self"
+                                    class="sc-1liba5b-10 eLReSz">취소/반품/교환/환불내역<span
+                                    class="sc-1liba5b-11 fBiFRr"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sc-1liba5b-5 jzNnfi">
+                    <div class="sc-1liba5b-6 OvTJQ">MY 활동</div>
+                    <div class="sc-1liba5b-7 gvMCBX">
+                        <ul class="sc-1liba5b-8 McnCE">
+                            <li id="mc-cs-main-page" class="sc-1liba5b-9 bgmWPR"><a href="inquiry.html" th:href="@{/inquiry}"
+                                                                                    title="문의하기" target="_self" class="sc-1liba5b-10 eLReSz">문의하기<span
+                                    class="sc-1liba5b-11 fBiFRr"></span></a></li>
+                            <li id="mc-product-inquiry-list-page" class="sc-1liba5b-9 bgmWPR"><a
+                                    href="inquiry.html" th:href="@{/inquiry}" title="문의내역 확인" target="_self"
+                                    class="sc-1liba5b-10 eLReSz">문의내역 확인<span class="sc-1liba5b-11 fBiFRr"></span></a>
+                            </li>
+                            <li id="mc-product-review-page" class="sc-1liba5b-9 bgmWPR"><a
+                                    href="" title="리뷰관리" target="_self"
+                                    class="sc-1liba5b-10 eLReSz">리뷰관리<span id="productReviewLnbMenuBadge"
+                                                                           class="sc-1liba5b-11 fBiFRr" style="display: inline-block;"></span></a></li>
+                            <li id="mc-product-wish-page" class="sc-1liba5b-9 bgmWPR"><a
+                                    href="" title="찜 리스트" target="_self"
+                                    class="sc-1liba5b-10 eLReSz">찜 리스트<span class="sc-1liba5b-11 fBiFRr"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sc-1liba5b-5 jzNnfi">
+                    <div class="sc-1liba5b-6 OvTJQ">MY 커뮤니티 활동</div>
+                    <div class="sc-1liba5b-7 gvMCBX">
+                        <ul class="sc-1liba5b-8 McnCE">
+                            <li id="" class="sc-1liba5b-9 bgmWPR"><a href=""
+                                                                     title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz">글 작성<span
+                                    class="sc-1liba5b-11 fBiFRr"></span></a></li>
+                            <li class="sc-1liba5b-9 bgmWPR"><a
+                                    href="" title="글 목록" target="_self"
+                                    class="sc-1liba5b-10 eLReSz">글 목록<span class="sc-1liba5b-11 fBiFRr"></span></a></li>
+                            <li class="sc-1liba5b-9 bgmWPR"><a
+                                    href="" title="쪽지함" target="_self"
+                                    class="sc-1liba5b-10 eLReSz">쪽지함<span class="sc-1liba5b-11 fBiFRr" style="display: inline-block;"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sc-1liba5b-5 fRuGsa">
+                    <div class="sc-1liba5b-6 OvTJQ">MY 정보</div>
+                    <div class="sc-1liba5b-7 gvMCBX">
+                        <ul class="sc-1liba5b-8 McnCE">
+                            <li id="mc-user-modify-page" class="sc-1liba5b-9 bgmWPR"><a
+                                    href="" title="개인정보확인/수정"
+                                    target="_self" class="sc-1liba5b-10 eLReSz">개인정보확인/수정<span
+                                    class="sc-1liba5b-11 fBiFRr"></span></a>
+                            </li>
+                            <li id="mc-address-book-page" class="sc-1liba5b-9 bgmWPR"><a
+                                    href=""
+                                    title="배송지 변경" target="_self" class="sc-1liba5b-10 eLReSz">배송지 변경<span
+                                    class="sc-1liba5b-11 fBiFRr"></span></a></li>
+                            <li id="mc-coupay-page" class="sc-1liba5b-9 bgmWPR">
+                                <a href="" title="회원탈퇴" target="_self"
+                                   class="sc-1liba5b-10 eLReSz">
+                                    회원 탈퇴<span class="sc-1liba5b-11 fBiFRr"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</th:block>
 </body>
 </html>

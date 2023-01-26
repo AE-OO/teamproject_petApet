@@ -57,32 +57,35 @@ public class CartController {
     @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
     public void productToCart(@RequestBody CartVO vo, Principal principal){
 
-        String loginMember = checkMember(principal);
-        Long product = vo.getProduct();
-        Long quantity = vo.getQuantity();
-        log.info("dd ={}", quantity);
-        Cart cart = new Cart(
-                memberService.findOne(loginMember),
-                productService.findOne(product).orElseThrow(NoSuchElementException::new),
-                quantity);
-
-        cartService.addCart(cart);
-
 //        String loginMember = checkMember(principal);
 //        Long product = vo.getProduct();
 //        Long quantity = vo.getQuantity();
 //        log.info("dd ={}", quantity);
-//        if (!cartService.checkDuplication(loginMember)){
-//            Cart cart = new Cart(
-//                    memberService.findOne(loginMember),
-//                    productService.findOne(product).orElseThrow(NoSuchElementException::new),
-//                    quantity);
+//        Cart cart = new Cart(
+//                memberService.findOne(loginMember),
+//                productService.findOne(product).orElseThrow(NoSuchElementException::new),
+//                quantity);
 //
-//            cartService.addCart(cart);
-//        } else {
-//            log.info("cartid ={}",);
-//            cartService.setQuan(vo.getQuantity(), vo.getCartId());
-//        }
+//        cartService.addCart(cart);
+
+        String loginMember = checkMember(principal);
+        Long product = vo.getProduct();
+        Long quantity = vo.getQuantity();
+        log.info("dd ={}", quantity);
+        log.info("dddd ={}", vo.getMemberId());
+        if (!cartService.checkDuplication(memberService.findOne(vo.getMemberId()))){
+            log.info("카트 상품없음");
+            Cart cart = new Cart(
+                    memberService.findOne(vo.getMemberId()),
+                    productService.findOne(product).orElseThrow(NoSuchElementException::new),
+                    quantity);
+
+            cartService.addCart(cart);
+        } else {
+            log.info("카트 상품있음");
+            log.info("cartIdd ={}", vo.getCartId());
+            cartService.setQuan(vo.getQuantity(), vo.getCartId());
+        }
     }
 
     @ResponseBody

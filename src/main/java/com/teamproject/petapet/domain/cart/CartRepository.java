@@ -1,5 +1,7 @@
 package com.teamproject.petapet.domain.cart;
 
+import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,12 +20,12 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query(value = "update Cart c set c.quantity =: quantity where c.cartId =: cartId")
+    @Query(value = "update Cart c set c.quantity =:quantity where c.cartId =:cartId")
     void setQuan(@Param("quantity") Long quantity, @Param("cartId") Long cartId);
 
     // 카트 상품 중복확인
-    @Query("select c.product from Cart c where c.member =: memberId")
-    boolean checkDuplication(@Param("memberId") String memberId);
+    @Query("select c.product from Cart c where c.member =:memberId")
+    boolean checkDuplication(@Param("memberId") Member memberId);
 
 //    @Transactional
 //    @Modifying
