@@ -73,19 +73,25 @@ public class CartController {
         Long quantity = vo.getQuantity();
         log.info("dd ={}", quantity);
         log.info("dddd ={}", vo.getMemberId());
-        if (!cartService.checkDuplication(memberService.findOne(vo.getMemberId()))){
-            log.info("카트 상품없음");
-            Cart cart = new Cart(
-                    memberService.findOne(vo.getMemberId()),
-                    productService.findOne(product).orElseThrow(NoSuchElementException::new),
-                    quantity);
+//        if (!cartService.checkDuplication(memberService.findOne(vo.getMemberId()))){
+//            log.info("카트 상품없음");
+//            Cart cart = new Cart(
+//                    memberService.findOne(vo.getMemberId()),
+//                    productService.findOne(product).orElseThrow(NoSuchElementException::new),
+//                    quantity);
+//
+//            cartService.addCart(cart);
+//        } else {
+//            log.info("카트 상품있음");
+//            log.info("cartIdd ={}", vo.getCartId());
+//            cartService.setQuan(vo.getQuantity(), vo.getCartId());
+//        }
+        Cart cart = new Cart(
+                memberService.findOne(loginMember),
+                productService.findOne(product).orElseThrow(NoSuchElementException::new),
+                quantity);
 
-            cartService.addCart(cart);
-        } else {
-            log.info("카트 상품있음");
-            log.info("cartIdd ={}", vo.getCartId());
-            cartService.setQuan(vo.getQuantity(), vo.getCartId());
-        }
+        cartService.addCart(cart);
     }
 
     @ResponseBody
