@@ -89,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findOne(String memberId) {
-        return memberRepository.findById(memberId).get();
+        return memberRepository.findById(memberId).orElse(null);
     }
 
     @Transactional
@@ -201,6 +201,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMemberImg(String memberId) {memberRepository.deleteMemberImg(memberId);}
+
+    @Override
+    public CommunityMemberDTO memberProfile(String memberId) {
+        return CommunityMemberDTO.fromEntity(memberRepository.findById(memberId)
+                .orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다.")));
+    }
 
 
 }

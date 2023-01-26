@@ -40,7 +40,6 @@ public class DibsProductController {
             dibsProductService.saveDibsProduct(new DibsProduct(id, member, product));
             return "ok";
         }
-        log.info("duplicate");
         return "duplicate";
     }
 

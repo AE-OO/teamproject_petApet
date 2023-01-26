@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 쪽지함</title>
+    <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script>
+        $(function () {
+            getLoginId();
+            getMessageRoomList(nowPage,nowPageSize)
+        })
+        let nowPage
+        let nowPageSize
+        getMessageRoomList = function (page,size) {
+            $.ajax({
+                url: "/message/getMessageRoomList",
+                type: "post",
+                data: {
+                    pageNum: page,
+                    pageSize:size
+                },
+                dateType: "json",
+                success: function (data) {
+                    if (data.number > data.totalPages - 1 && data.totalPages > 0) {
+                        getMessageRoomList(0, size);
+                        return;
+                    }
+                    nowPage = data.number;
+                    nowPageSize = data.size;
+                    showPage(data);
+                    $("#pageSize").text(data.size);
+
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        showPage = function (data) {
+            let str = '';
+            if (data.totalPages > 0) {
+                str += `<div aria-label="Page navigation"><ul class="pagination justify-content-center">`
+                if (data.first) {
+                    str += `<li id = "prevPage" class = "page-item disabled" >
+                            <a class = "page-link" href = "javascript:" style = "pointer-events: none;" >
+                            <span aria-hidden = "true"> <i class = "bi bi-chevron-left"></i></span>
+                            </a>
+                            </li>`
+                } else {
+                    str += `<li id = "prevPage" class = "page-item">
+                            <a class = "page-link" href = "javascript:">
+                            <span aria-hidden = "true"><i class = "bi bi-chevron-left"></i></span>
+                            </a>
+                            </li>`
+                }
+                if (data.totalPages <= 5) {
+                    for (var i = 1; i <= data.totalPages; i++) {
+                        str += `<li class = "page-item`
+                        if (data.number + 1 === i) {
+                            str += ` active`
+                        }
+                        str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                    }
+                }
+                if (data.totalPages > 5 && data.totalPages <= 10) {
+                    if (data.number + 1 <= 5) {
+                        for (var i = 1; i <= 5; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+
+                    }
+                    if (data.number + 1 > 5) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+                        for (var i = 6; i <= data.totalPages; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                    }
+                }
+                if (data.totalPages > 10) {
+                    if (data.number + 1 <= 5) {
+                        for (var i = 1; i <= 5; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+                    }
+                    if (data.number + 1 > 5 && data.number + 1 < data.totalPages - 4) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+                        for (var i = data.number + 1 - 2; i <= data.number + 1 + 2; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                        str += `<li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
+                    }
+                    if (data.number + 1 >= data.totalPages - 4) {
+                        str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>`
+
+                        for (var i = data.totalPages - 4; i <= data.totalPages; i++) {
+                            str += `<li class="page-item`
+                            if (data.number + 1 === i) {
+                                str += ` active`
+                            }
+                            str += `">
+                <a class="page-link selectPage" href="javascript:"><span>${i}</a>
+                </li>`
+                        }
+                    }
+                }
+
+                if (data.last) {
+                    str += `<li id="nextPage" class="page-item disabled">
+                <a class="page-link" href="javascript:" style="pointer-events: none;">
+                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                </a>
+                </li>`
+                } else {
+                    str += `<li id="nextPage" class="page-item">
+                <a class="page-link" href="javascript:">
+                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                </a>
+                </li>`
+                }
+                str += `</ul></div>`
+            }
+            $("#page").html(str);
+        }
+
+    </script>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+
+<div class="container-xxl px-0 mx-0">
+    <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
+    <div class="container py-7" style="right:0">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <div class="bg-white pt-5 pb-3">
+                    <h4 class="text-black ps-5 mb-0"><i class="bi bi-arrow-left"></i> 쪽지함</h4>
+                </div>
+                <div class="myinfo-item  d-flex">
+                    <div class="myinfo-text w-100 p-5">
+                        <div class="col-12 myWritingList">
+                            <div class="float-start">
+                                <p id="type" class="pt-2 mb-0 text-gray-400">
+                                    <button class="btn btn-link2 pe-1 dropdown-toggle" value="community">내가 쓴 게시글
+                                    </button>
+                                    |
+                                    <button class="btn btn-link2 px-1 dropdown-toggle" value="comment">내가 쓴 댓글</button>
+                                </p>
+                            </div>
+                            <div class="dropdown">
+                                <a class="btn btn-link dropdown-toggle float-end mt-2" href="javascript:" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">목록 <span id="pageSize">20</span>개</a>
+                                <ul id="pageSizeList" class="dropdown-menu" style="min-width: auto;">
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>10</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>20</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>30</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>40</span>개</a></li>
+                                    <li><a class="dropdown-item" href="javascript:">목록 <span>50</span>개</a></li>
+                                </ul>
+                            </div>
+<!--                            <div id="radioCheck" class="float-end mt-2">-->
+<!--                                <div class="form-check form-check-inline me-1 mt-1-7">-->
+<!--                                    <input class="form-check-input" type="radio" name="radioCheck" value="title"-->
+<!--                                           id="radio1">-->
+<!--                                    <label class="form-check-label" for="radio1">제목</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-check form-check-inline me-1">-->
+<!--                                    <input class="form-check-input" type="radio" name="radioCheck" value="titleContent"-->
+<!--                                           id="radio2"-->
+<!--                                           checked>-->
+<!--                                    <label class="form-check-label" for="radio2">제목+내용</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <table class="table table-borderless mb-0 text-start">
+                                <thead>
+                                <tr>
+                                    <td class="py-1">
+                                        <button id="allCheck" class="btn btn-outline-dark btn-sm"><i class="fa fa-check me-1" aria-hidden="true"></i>전체선택
+                                        </button>
+                                        <button id="deleteBtn" class="btn btn-outline-dark btn-sm">삭제</button>
+                                    </td>
+                                </tr>
+                                </thead>
+                            </table>
+                            <table id="list" class="table2 table-responsive list">
+                            </table>
+                            <div class="mt-4">
+                                <div id="page"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+</body>
+
+</html>

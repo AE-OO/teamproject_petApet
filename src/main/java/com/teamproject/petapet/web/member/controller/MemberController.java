@@ -1,6 +1,7 @@
 package com.teamproject.petapet.web.member.controller;
 
 import com.teamproject.petapet.jwt.JwtAuthenticationFilter;
+import com.teamproject.petapet.web.member.dto.MemberDTO;
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
@@ -178,5 +179,8 @@ public class MemberController {
                 .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
                 .body(resource);
     }
+
+    @GetMapping("/member/writingList")
+    public String writingList(){return "member/memberWritingList";}
 
 }

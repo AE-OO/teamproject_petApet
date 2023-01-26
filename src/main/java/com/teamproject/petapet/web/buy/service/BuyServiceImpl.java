@@ -38,8 +38,9 @@ public class BuyServiceImpl implements BuyService {
         return buyRepository.save(buy);
     }
 
+
     @Override
-    public boolean existsByBuyAndMember(Long buyId, String memberId) {
+    public boolean existsByPurchaseHistory(Long buyId, String memberId) {
         return buyRepository.existsByBuyIdAndMember(buyId, memberId);
     }
 
@@ -49,7 +50,7 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public List<Integer> getProductSales(String companyId) {
+    public List<List<String>> getProductSales(String companyId) {
         return buyRepository.getProductSales(companyId);
     }
 
@@ -68,5 +69,4 @@ public class BuyServiceImpl implements BuyService {
     public List<Integer> getMonthlySales(String companyId) {
         return buyRepository.getMonthlySales(companyId);
     }
-
 }

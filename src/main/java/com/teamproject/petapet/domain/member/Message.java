@@ -30,10 +30,10 @@ public class Message {
     @Column(length = 45, nullable = false)
     private String messageReceiver;
 
-    @Column(length = 45, nullable = false)
-    private String messageTitle;
+//    @Column(length = 45, nullable = false)
+//    private String messageTitle;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 200, nullable = false)
     private String messageContent;
 
     @CreationTimestamp
@@ -47,4 +47,8 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
+
+    @Column(nullable = false)
+    private int roomNumber;
+
 }

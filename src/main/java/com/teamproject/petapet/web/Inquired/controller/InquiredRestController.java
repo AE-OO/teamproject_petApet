@@ -1,14 +1,13 @@
 package com.teamproject.petapet.web.Inquired.controller;
 
 import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
+import com.teamproject.petapet.web.Inquired.dto.InquiryRequestDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -20,8 +19,15 @@ public class InquiredRestController {
 
     private final InquiredService inquiredService;
 
+    // 사업자 마이페이지에 문의 리스트 띄우기
     @GetMapping(value = "/manageInquiry", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<InquiryDTO>> getInquiryList(Principal principal){
         return new ResponseEntity<>(inquiredService.getCompanyPageInquiryList(principal.getName()), HttpStatus.OK);
+    }
+
+    // 사업자 마이페이지에서 문의 답변하기
+    @PostMapping("/addAnswer/{inquiredId}")
+    public void addAnswer(@PathVariable("inquiredId") Long inquiredId, @ModelAttribute("inquiredList") InquiryRequestDTO.GetAnswerDTO getAnswerDTO){
+        inquiredService.setInquiredCheck(inquiredId, getAnswerDTO.getAnswer());
     }
 }

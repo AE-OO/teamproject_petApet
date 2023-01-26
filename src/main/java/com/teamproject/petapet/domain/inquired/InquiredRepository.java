@@ -21,8 +21,8 @@ public interface InquiredRepository extends JpaRepository<Inquired, Long> {
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query(value = "update Inquired i set i.checked = true where i.inquiredId =: inquiredId")
-    void setCheck(@Param("inquiredId") Long inquiredId);
+    @Query(value = "update Inquired i set i.checked = true, i.answer =:answer where i.inquiredId =:inquiredId")
+    void setCheck(@Param("inquiredId") Long inquiredId, @Param("answer") String answer);
 
     List<Inquired> findAllByCompany_CompanyIdOrderByCheckedAscInquiredDate(String companyId);
 }

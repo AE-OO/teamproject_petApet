@@ -8,6 +8,7 @@ import com.teamproject.petapet.domain.community.Community;
 import com.teamproject.petapet.domain.dibs.DibsCommunity;
 import com.teamproject.petapet.domain.dibs.DibsProduct;
 import com.teamproject.petapet.domain.inquired.Inquired;
+import com.teamproject.petapet.domain.product.CouponBox;
 import com.teamproject.petapet.domain.product.Review;
 import com.teamproject.petapet.domain.report.Report;
 import lombok.*;
@@ -105,6 +106,14 @@ public class Member{
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Message> message;
 
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "member1", cascade = CascadeType.REMOVE)
+//    private List<MessageRoom> messageRoom1;
+//
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "member2", cascade = CascadeType.REMOVE)
+//    private List<MessageRoom> messageRoom2;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Inquired> inquired;
@@ -128,6 +137,10 @@ public class Member{
     @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<DibsCommunity> dibsCommunity;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<CouponBox> couponBox;
 
     public void addAuthority(Authority authority) {
         authorities.add(authority);

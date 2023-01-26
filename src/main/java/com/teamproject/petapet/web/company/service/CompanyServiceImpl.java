@@ -122,6 +122,11 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
+    public Optional<Company> findById(String companyId) {
+        return companyRepository.findById(companyId);
+    }
+
+    @Override
     public Optional<Company> findOne(String id) {
         return companyRepository.findById(id);
     }

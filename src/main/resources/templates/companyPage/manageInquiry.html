@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="inquiryDetailInfo" style="display: none">
+                <div class="row mb-3" id="inquiryDetailInfo" style="display: none">
                     <div class="col-md-12 stretch-card grid-margin">
                         <div class="card">
                             <div class="card-body">
@@ -65,13 +65,17 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 grid-margin stretch-card">
-                                            <!--                                        <div class="card">-->
-                                            <!--                                            <div class="card-body" id="detailChart">-->
                                             <div class="input-group input-group mb-3">
                                                 <span class="input-group-text">&nbsp;&nbsp;&nbsp;제목&nbsp;&nbsp;&nbsp;</span>
                                                 <input type="text" class="form-control"
                                                        aria-label="Sizing example input"
                                                        aria-describedby="inputGroup-sizing-sm" id="detailTitle" readonly>
+                                            </div>
+                                            <div class="input-group input-group mb-3">
+                                                <span class="input-group-text">문의번호</span>
+                                                <input type="text" class="form-control"
+                                                       aria-label="Sizing example input"
+                                                       aria-describedby="inputGroup-sizing-sm" id="detailNum" readonly>
                                             </div>
                                             <div class="input-group input-group mb-3">
                                                 <span class="input-group-text">&nbsp;작성자&nbsp;&nbsp;</span>
@@ -91,8 +95,6 @@
                                                        aria-label="Sizing example input"
                                                        aria-describedby="inputGroup-sizing-sm" id="detailDate" readonly>
                                             </div>
-                                            <!--                                            </div>-->
-                                            <!--                                        </div>-->
                                         </div>
                                         <div class="mb-3">
                                             <label for="detailContent" class="form-label">문의내용</label>
@@ -100,10 +102,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="answerPart">      <!--class="bg-lightGray" 추가하기-->
+                                <div id="answerPart">
                                     <div class="mb-3">
                                         <label for="answerContent" class="form-label">답변내용</label>
-                                        <textarea class="form-control" id="answerContent" rows="7" readonly></textarea>
+                                        <textarea class="form-control" id="answerContent" rows="7"></textarea>
                                     </div>
                                 </div>
                                 <div class="float-end">

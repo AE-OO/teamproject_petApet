@@ -106,6 +106,11 @@
                                 찜 리스트
                             </a>
                         </li>
+                        <li id="mc-product-coupon-page" class="sc-1liba5b-9 bgmWPR">
+                            <a th:href="@{/member/couponBox}" title="찜 리스트" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
+                                쿠폰함
+                            </a>
+                        </li>
                         <li class="sc-1liba5b-9 bgmWPR">
                             <a th:href="@{/company/manageInquiry}" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('COMPANY')">
                                 전체 문의
@@ -120,17 +125,17 @@
                 <div class="sc-1liba5b-7 gvMCBX">
                     <ul class="sc-1liba5b-8 McnCE">
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
+                            <a href="/community/insert" title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 글 작성
                             </a>
                         </li>
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="글 목록" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
+                            <a href="/member/writingList" title="글 목록" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 글 목록
                             </a>
                         </li>
                         <li class="sc-1liba5b-9 bgmWPR">
-                            <a href="" title="쪽지함" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
+                            <a href="/message" title="쪽지함" target="_self" class="sc-1liba5b-10 eLReSz" sec:authorize="hasRole('MEMBER')">
                                 쪽지함
                             </a>
                         </li>

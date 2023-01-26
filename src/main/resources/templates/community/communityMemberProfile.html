@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet - 회원정보</title>
+    <link>
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
+    <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
+
+    <script>
+        $(function () {
+            getMemberProfile();
+            getLoginId();
+            $("#closeBtn").click(function () {
+                window.close();
+            });
+            $("#addProductReport").click(function () {
+                window.resizeTo(650, 700);
+            });
+            $("#sendMessage").click(function () {
+                goMessagePage($("#memberId").text());
+                window.close();
+            });
+            $(".cancleBtn").click(function () {
+                window.resizeTo(400, 350);
+            });
+            $("#reportCancleBTN").click(function () {
+                window.resizeTo(400, 350);
+            });
+            if (loginId === $(location).attr('pathname').split("/")[3] || authorities !== "[ROLE_MEMBER]") {
+                $("#sendMessage").remove();
+                $("#addProductReport").remove();
+            }
+        });
+        getMemberProfile = function () {
+            $.ajax({
+                url: "/getMemberProfile",
+                type: "post",
+                data: {memberId: $(location).attr('pathname').split("/")[3]},
+                dateType: "json",
+                success: function (data) {
+                    showProfile(data);
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        showProfile = function (data) {
+            if (data.memberImg !== "0") {
+                $("#memberImg").attr("/image/" + data.memberImg);
+            }
+            $("#memberId").text(data.memberId);
+            $("#joinDate").text(data.memberJoinDate);
+            $("#communityCount").text(data.communityCount);
+            $("#commentCount").text(data.commentCount);
+        }
+    </script>
+
+</head>
+<body>
+<div class="px-3 bg-dark">
+    <span id="communityTitle" class="btn fs-5 px-0 text-white">회원정보</span>
+    <button type="button" id="closeBtn" class="btn btn-link p-0 float-end">
+        <i class="bi bi-x display-3 text-white"></i>
+    </button>
+</div>
+<div class="mx-5 my-4">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-4 text-end">
+                <img id="memberImg" src="/img/profile.jpg" width="80" height="80" class="rounded-3 border border-1"
+                     style="object-fit:cover">
+            </div>
+            <div class="col-8 memberDiv">
+                <p id="memberId" class="text-black fs-5 mb-2 memberId"></p>
+                <button type="button" id="sendMessage" class="btn btn-outline-dark btn-sm sendMessage">
+                    <i class="bi bi-chat-right-text me-1"></i>쪽지
+                </button>
+                <button type="button" id="addProductReport" class="btn btn-outline-dark btn-sm memberReport"
+                        data-bs-toggle="modal" data-bs-target="#addReportModal" title="신고하기">
+                    신고하기
+                </button>
+            </div>
+        </div>
+        <div class="row mt-4 text-center text-black">
+            <p class="col-4 my-2">가입일</p>
+            <p class="col-4 my-2">총 게시물</p>
+            <p class="col-4 my-2">총 댓글</p>
+        </div>
+        <hr class="m-0">
+        <div class="row text-center">
+            <p id="joinDate" class="col-4 my-2 p-0"></p>
+            <p id="communityCount" class="col-4 my-2"></p>
+            <p id="commentCount" class="col-4 my-2"></p>
+        </div>
+        <hr class="m-0">
+    </div>
+</div>
+<!-- 신고 모달 -->
+<th:block th:replace="~{fragment/reportModal :: reportModal}"></th:block>
+</body>
+</html>

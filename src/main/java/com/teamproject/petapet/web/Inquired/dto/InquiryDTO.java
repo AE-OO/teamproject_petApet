@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class InquiryDTO {
@@ -18,6 +17,7 @@ public class InquiryDTO {
     private String inquiredDate;
     private String inquiredContent;
     private boolean checked;
+    private String answer;
 
     public static InquiryDTO fromEntityForManageInquiry(Inquired inquired){
         return InquiryDTO.builder()
@@ -28,6 +28,7 @@ public class InquiryDTO {
                 .inquiredDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(inquired.getInquiredDate()))
                 .inquiredContent(inquired.getInquiredContent())
                 .checked(inquired.isChecked())
+                .answer(inquired.getAnswer())
                 .build();
     }
 

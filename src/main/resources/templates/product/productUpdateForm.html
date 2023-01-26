@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragment/heade :: head(productInsert)}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<hr class="mt-4">
+<form th:action="@{/product/update(productId=*{productId})}" id="submitForm" method="post" enctype="multipart/form-data" th:object="${ProductUpdateDTO}">
+    <div th:if="${#fields.hasGlobalErrors()}">
+        <p class="field-error" th:text="오류입니다">글로벌 오류 메시지</p>
+    </div>
+    <div class="container-xxl pt-5 px-5 mt-5">
+        <div class="d-flex flex-row m-lg-2">
+            <div class="d-flex col-6 justify-content-center">
+                <div class="portfolio-container">
+                    <div class="portfolio-item">
+                        <div class="portfolio">
+                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false">
+                                <div class="carousel-inner" id="thumbnailImg">
+                                    <div class="carousel-item" th:each="img, i : ${ProductUpdateDTO.getExistProductImg()}">
+                                        <a class="btn btn-link productImgModalBtn" data-bs-toggle="modal"
+                                           data-bs-target="#productImgModal">
+                                            <img th:src="|@{/product/images/{filename}(filename=${img.storeFileName})}|"
+                                                 style="max-width: 100%; height: auto; max-height: 30rem; vertical-align: bottom;"
+                                                 class="d-block w-auto myProductImg" th:id="|${'carousel-img'}${i.index}|" th:alt="${img.uploadFileName}"></a>
+                                        <div class="d-flex  justify-content-center">
+                                            <a type="button" class="btn btn-outline-danger deleteProductImg"
+                                               style="color: red" th:text="삭제"></a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex mx-3 mb-3">
+                    <div class="col-12 m-lg-1">
+                        <h6 th:value="*{productName}">상품명
+                            <div class="field-error text-secondary fs-6" th:errors="*{productName}"/>
+                        </h6>
+                        <input type="text" name="productName" placeholder="상품명을 입력하세요."
+                               th:field="*{productName}" style="width: 84%" required>
+                        <span class="validity"></span>
+
+                    </div>
+                </div>
+                <hr class="mb-4 mt-4">
+                <div class="d-flex mx-3 col">
+                    <div class="col-6 m-lg-1">
+                        <h6>할인율
+                            <div class="field-error text-secondary" style="font-size: 12px"
+                                 th:errors="*{productDiscountRate}"/>
+                        </h6>
+                        <input type="number" id="discountRate" min="0" max="99"
+                               onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+                               class="col-8" th:field="*{productDiscountRate}"
+                               placeholder="할인율" required>
+                        <span class="validity"></span>
+                        <h6 class="text-secondary" id="disRateMessage"></h6>
+                    </div>
+                    <div class="col-6 m-lg-1">
+                        <h6 class="">판매가
+                            <div class="field-error text-secondary" style="font-size: 12px"
+                                 th:errors="*{productUnitPrice}"/>
+                        </h6>
+                        <input type="number" id="productPrice" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+                               class="col-8" min="1000" max="9999999" th:field="*{productUnitPrice}" placeholder="가격"
+                               required>
+                        <span class="validity"></span>
+                        <h6 class="text-secondary" id="priceMessage" style="font-size: 12px"></h6>
+
+                    </div>
+                </div>
+                <hr class="mb-4 mt-4">
+                <div class="d-flex mx-3 col">
+                    <div class="d-flex flex-row col">
+                        <div class="col-6 m-lg-1">
+                            <h6>최종판매가
+                                <div class="field-error text-secondary" style="font-size: 12px"
+                                     th:errors="*{productPrice}"/>
+                            </h6>
+                        </div>
+                        <div class="col-6 m-lg-1">
+                            <input style="border: none; color: #347a5e" th:field="*{productPrice}" name="productPrice"
+                                   id="finalPrice" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex mx-3 col">
+                    <div class="d-flex flex-row col">
+                        <div class="col-6 m-lg-1">
+                            <h6>판매자</h6>
+                            <div class="field-error text-secondary" style="font-size: 12px"
+                                 th:errors="*{productSeller}"/>
+                        </div>
+                        <div class="col-6 m-lg-1">
+                            <input type="text" readonly style="border: none;" th:field="*{productSeller}"
+                                   name="productSeller" th:value="${#authentication.name}">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex mx-3 col">
+                    <div class="d-flex flex-row col">
+                        <div class="col-6 m-lg-1">
+                            <h6>재고
+                                <div class="field-error text-secondary fs-6" th:errors="*{productStock}"/>
+                            </h6>
+                        </div>
+                        <div class="col-6 m-lg-1">
+                            <input type="number" th:field="*{productStock}" min="100" max="9999"
+                                   class="col-8" id="productStock"
+                                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                   name="productStock" placeholder="재고" required>
+                            <span class="validity"></span>
+                            <h6 class="text-secondary" id="stockMessage"></h6>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mb-4 mt-4">
+                <div class="d-flex mx-3 col">
+                    <div class="d-flex flex-row col-6 m-lg-1">
+                        <h6>사진첨부
+                            <div class="field-error text-secondary fs-6" th:errors="*{productImg}"/>
+                        </h6>
+                    </div>
+                    <div class="d-flex flex-row col-6 m-lg-1">
+                        <input type="file" th:field="*{productImg}" multiple="multiple"
+                               name="productImg" onchange="setThumbnail(event);">
+                    </div>
+                </div>
+                <div class="d-flex mx-3 col">
+                    <div class="d-flex flex-row col-6 m-lg-1">
+                        <h6>상품상태
+                            <div th:errors="*{productStatus}" class="field-error text-secondary">
+                            </div>
+                        </h6>
+
+                    </div>
+                    <div class="d-flex flex-row col-5 m-lg-1 pe-4">
+                        <div class="input-group d-flex flex-row mb-3">
+                            <select type="input" class="form-select form-select-sm" th:field="*{productStatus}"
+                                    name="productStatus" id="productStatus" required>
+                                <option value="판매중">판매중</option>
+                                <option value="판매중지">판매중지</option>
+                                <option value="재고없음">재고없음</option>
+                                <option value="단종">단종</option>
+                            </select>
+                            <span class="validity"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex mx-3 col">
+                    <div class="d-flex flex-row col-6 m-lg-1">
+                        <h6>상품카테고리
+                            <div th:errors="*{productDiv}" class="field-error text-secondary">
+                            </div>
+                        </h6>
+
+                    </div>
+                    <div class="d-flex flex-row col-5 m-lg-1 pe-4">
+                        <div class="input-group d-flex flex-row mb-3">
+                            <input class="d-flex flex-row" type="hidden" th:field="*{productDiv}" id="productType"
+                                   value=""
+                                   name="productDiv" required>
+                            <select type="input" onchange="putValue(this)" class="form-select form-select-sm"
+                                    id="inputGroupSelect01" required>
+                                <option disabled selected></option>
+                                <option value="FOOD">사료</option>
+                                <option value="SNACK">간식</option>
+                                <option value="WALKING">산책용품</option>
+                                <option value="TOY">장난감</option>
+                                <option value="FASHION">패션/잡화</option>
+                                <option value="STROLLER">유모차</option>
+                            </select>
+                            <span class="validity"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <hr class="mb-4 mt-4">
+
+        <div class="flex-row p-3 mx-3" style="min-height: 10rem">
+            <h4>상품내용
+                <div class="field-error text-secondary fs-6" th:errors="*{productContent}"/>
+            </h4>
+            <div class="pt-3 flex-fill" style="min-height: 10rem;">
+                <textarea th:field="*{productContent}" id="productContent"
+                          name="productContent" class=""
+                          style="resize: none;"></textarea>
+
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row justify-content-center">
+        <button type="button" class="btn btn-info col-3 me-3" onclick="updateProduct()">상품등록</button>
+        <a th:href="@{/product}" class="btn btn-info col-3 ms-3">취소</a>
+    </div>
+</form>
+
+<hr class="p-3">
+<div class="container-xxl pb-3 px-5">
+    <div class="d-flex flex-row m-lg-2">
+        <hr class="my-4">
+
+        <div class="d-flex flex-row p-3">
+            <li class="product-etc">
+                <h5 class="prod-delivery-return-policy-title">배송정보</h5>
+                <table class="prod-delivery-return-policy-table return-policy-3p">
+                    <colgroup>
+                        <col width="150px">
+                        <col width="340px">
+                        <col width="150px">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>배송방법</th>
+                        <td class="return-policy-delivery-method">순차배송</td>
+                        <th rowspan="2">배송비</th>
+                        <td rowspan="2">
+                            3,000원<br>· 도서산간 추가 배송비<br>- 제주 지역: 5,000원<br>- 도서산간 지역: 5,000원
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>배송사</th>
+                        <td>한진택배</td>
+                    </tr>
+                    <tr>
+                        <th>묶음배송 여부</th>
+                        <td colspan="3">가능</td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+        </li>
+    </div>
+</div>
+<hr class="my-4">
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+</body>
+<!-- 상품 이미지 Modal -->
+<div class="modal fade" id="productImgModal" tabindex="-1" aria-labelledby="productImgModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="--bs-modal-bg: none; --bs-modal-border-width: 0">
+            <div class="modal-body">
+                <img class="modalImage" style="max-width: 40rem; height: auto;" data-bs-dismiss="modal"
+                     aria-label="Close">
+            </div>
+        </div>
+    </div>
+</div>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    $('.productImgModalBtn').click(function () {
+        let imgSrc = $(this).children(1).attr('src');
+        let $modalImage = $('.modalImage');
+        $modalImage.attr('src', imgSrc);
+    })
+
+    function moreProductImgModalBtn(src) {
+        let $modalImage = $('.modalImage');
+        $modalImage.attr('src', src);
+    }
+
+    $(function setProductType() {
+        let val = $('#productType').val();
+
+        if (val !== "") {
+            $('select option[value=' + val + ']').attr('selected', true);
+        }
+    })
+    $(function setCompanyId() {
+        let companyId = [[${#authentication.name}]];
+        $('#productSeller').val(companyId);
+    })
+    $(function () {
+        $('.carousel-inner > div:nth-child(1)').addClass('active');
+    });
+
+    function setThumbnail(event) {
+        let from = Array.from(event.target.files);
+        $.each(from, function (idx, el) {
+            const carouselHtml = `<div class="carousel-item" id="addImg${idx}"></div>`;
+            $('#thumbnailImg').append(carouselHtml);
+
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                let aTag = document.createElement('a');
+                aTag.setAttribute('class', 'btn btn-link productImgModalBtn');
+                aTag.setAttribute('data-bs-toggle', 'modal');
+                aTag.setAttribute('data-bs-target', '#productImgModal');
+
+                var img = document.createElement("img");
+                img.setAttribute("src", event.target.result);
+                img.setAttribute('onclick', 'moreProductImgModalBtn(this.src)');
+                img.setAttribute('style', 'max-width: 100%; height: auto; max-height: 30rem')
+
+                aTag.append(img);
+                document.querySelector("#addImg" + idx).appendChild(aTag);
+            };
+            reader.readAsDataURL(el);
+        })
+    }
+
+    $('.deleteProductImg').click(function () {
+        $(this).parent().parent().remove();
+        $('.carousel-inner > div:nth-child(1)').addClass('active');
+    })
+
+    async function updateProduct() {
+        let productId = [[${ProductUpdateDTO.productId}]];
+        let productReviewCount = [[${ProductUpdateDTO.productReviewCount}]];
+        let productReport = [[${ProductUpdateDTO.productReport}]];
+        let productViewCount = [[${ProductUpdateDTO.productViewCount}]];
+        let productSellCount = [[${ProductUpdateDTO.productSellCount}]];
+        let productRating = [[${ProductUpdateDTO.getProductRating}]];
+        let storeFileNameArr = new Array();
+        let uploadFileNameArr = new Array();
+        let myProductImg = $('.productImgModalBtn .myProductImg').length;
+        for(var i = 1; i <= myProductImg; i++){
+            let src = $('.carousel-inner > div:nth-child('+i+') a img').attr('src');
+            let uploadFileName = $('.carousel-inner > div:nth-child('+i+') a img').attr('alt');
+            let pos = src.lastIndexOf("/");
+            let storeFileName = src.substring(pos+1);
+            storeFileNameArr.push(storeFileName);
+            uploadFileNameArr.push(uploadFileName);
+        }
+        let formData = new FormData(document.getElementById("submitForm"));
+        for (var o = 0; o < storeFileNameArr.length; o++){
+            formData.append('storeFileName',storeFileNameArr[o])
+            formData.append('uploadFileName',uploadFileNameArr[o])
+        }
+        formData.append('productReviewCount',productReviewCount)
+        formData.append('productReport',productReport)
+        formData.append('productViewCount',productViewCount)
+        formData.append('productSellCount',productSellCount)
+        formData.append('productRating',productRating)
+        fetch('/product/update?productId='+productId, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                location.href = response.url
+            })
+            .then(data => {
+            })
+    }
+
+
+    $(document).ready(function () {
+        $('#productContent').summernote({
+            tabsize: 2,
+            placeholder: '내용을 작성하세요',
+            fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+            toolbar: [
+                ['font', ['fontname', 'fontsize', 'fontsizeunit']],
+                ['fontstyle', ['bold', 'italic', 'underline', 'strikethrough', 'forecolor', 'backcolor', 'superscript', 'subscript', 'clear']],
+                ['style', ['style']],
+                ['paragraph', ['paragraph', 'height', 'ul', 'ol']],
+                ['insert', ['table', 'hr', 'link', 'picture', 'video']],
+                ['codeview'],
+            ],
+            minHeight: 500,
+            maxHeight: null,
+            focus: true,
+            callbacks: {
+                onImageUpload: function (files, editor, welEditable) {
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        uploadSummernoteImageFile(files[i],
+                            this);
+                    }
+                }
+            }
+        })
+
+    });
+
+    function uploadSummernoteImageFile(file, el) {
+        data = new FormData();
+        data.append("file", file);
+        $.ajax({
+            data: data,
+            type: "POST",
+            url: "/product/image",
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (data) {
+                $(el).summernote('editor.insertImage', data.url);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#discountRate").on("propertychange change paste input", function () {
+            let price = fnReplace($("#productPrice").val());
+            let discountRate = fnReplace($("#discountRate").val());
+            if (discountRate > 99) {
+                $('#disRateMessage').text('0-99까지의 값을 입력하세요');
+            } else {
+                $('#disRateMessage').empty();
+            }
+            $('#finalPrice').val(Math.ceil(price - (price * (discountRate / 100))));
+        })
+        $("#productPrice").on("propertychange change paste input", function () {
+            let price = fnReplace($("#productPrice").val());
+            let discountRate = fnReplace($("#discountRate").val());
+            if (price > 9999999 || price < 1000) {
+                $('#priceMessage').text('1,000원 이상, 9,999,999원 이하의 금액이여야 합니다');
+            } else {
+                $('#priceMessage').empty();
+            }
+            $('#finalPrice').val(Math.ceil(price - (price * (discountRate / 100))));
+        })
+        $("#productStock").on("propertychange change paste input", function () {
+            let productStock = fnReplace($("#productStock").val());
+            if (productStock > 9999 || productStock < 100) {
+                $('#stockMessage').text('100-9999미만의 값을 입력하세요');
+            } else {
+                $('#stockMessage').empty();
+            }
+        })
+    })
+
+    function fnReplace(val) {
+        var ret = 0;
+        if (typeof val != "undefined" && val != null && val != "") {
+            ret = Number(val.replace(/,/gi, ''));
+        }
+        return ret;
+    }
+
+</script>
+
+<!-- Template Javascript -->
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/reviewContentStr.js}"></script>
+</html>
+</body>
+</html>

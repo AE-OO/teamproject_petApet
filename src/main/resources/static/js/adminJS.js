@@ -68,12 +68,12 @@ $(document).ready(function () {
     //회원 정지 버튼 클릭
     $(".confirmDisabledMember").click(function () {
         var memberId = $(this).attr("id");
-        console.log(memberId);
 
         $.ajax({
             url: "/admin/disabledMember/" + memberId,
             type: "get",
             success() {
+                alert("회원을 정지시켰습니다.");
                 getMemberList();
             }
         })
@@ -82,12 +82,12 @@ $(document).ready(function () {
     //회원 강제탈퇴 버튼 클릭
     $(".confirmMemberDelete").click(function () {
         var memberId = $(this).attr("id");
-        console.log(memberId);
 
         $.ajax({
             url: "/admin/deleteMember/" + memberId,
             type: "get",
             success() {
+                alert("회원을 강제탈퇴하였습니다.");
                 getMemberList();
             }, error() {
                 getMemberList();
@@ -399,7 +399,7 @@ function getMemberList() {
         if (result.length > 0) {
             $.each(result, function (idx, member) {
                 list += `<tr>
-                                            <td>` + idx + `</td>
+                                            <td>` + (idx + 1) + `</td>
                                             <td>${member.memberId}</td>
                                             <td>${member.memberName}</td>
                                             <td>${member.memberGender}</td>

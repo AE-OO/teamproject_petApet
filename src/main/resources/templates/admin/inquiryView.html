@@ -130,14 +130,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">이메일</label>
-                                            <div class="col-sm-9">
-                                                <div type="text" class="form-control" th:text="*{email}"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="col-md-6">-->
+<!--                                        <div class="form-group row">-->
+<!--                                            <label class="col-sm-3 col-form-label">이메일</label>-->
+<!--                                            <div class="col-sm-9">-->
+<!--                                                <div type="text" class="form-control" th:text="*{email}"></div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">답변 상태</label>
@@ -165,10 +165,21 @@
                                     <label for="exampleTextarea1">&nbsp;&nbsp;&nbsp;&nbsp;문의 내용</label>
                                     <textarea class="form-control" id="exampleTextarea1" rows="10" th:text="*{inquiredContent}" readonly></textarea>
                                 </div>
-                                <button class="btn btn-primary mr-2" type="submit" >승인하기</button>
-                                <a href="../index.html">
-                                    <button class="btn btn-light">취소</button>
-                                </a>
+                                <div class="form-group">
+                                    <label for="exampleTextarea1">&nbsp;&nbsp;&nbsp;&nbsp;답변 작성</label>
+                                    <textarea class="form-control" id="exampleTextarea2" rows="10" name="answer" th:text="*{answer}" th:readonly="*{checked}"></textarea>
+                                </div>
+                                <div th:if="!*{checked}">
+                                    <button class="btn btn-primary mr-2" type="submit" >답변작성완료</button>
+                                    <a href="../index.html">
+                                        <button class="btn btn-light">뒤로가기</button>
+                                    </a>
+                                </div>
+                                <div th:unless="!*{checked}">
+                                    <a href="../index.html">
+                                        <button class="btn btn-light">뒤로가기</button>
+                                    </a>
+                                </div>
                             </form>
                         </div>
 

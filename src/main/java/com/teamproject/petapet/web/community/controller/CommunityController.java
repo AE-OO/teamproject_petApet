@@ -1,7 +1,6 @@
 package com.teamproject.petapet.web.community.controller;
 
-import com.teamproject.petapet.web.community.communityDto.CommunityInsertDTO;
-import com.teamproject.petapet.web.community.communityDto.CommunityUpdateDTO;
+import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
@@ -22,36 +21,24 @@ public class CommunityController {
 
     private final FileService fileService;
     @GetMapping
-    public String communityMain(Model model){
-        model.addAttribute("todayPosts",communityService.countTodayCommunity("all"));
-        model.addAttribute("community",communityService.getCommunityList(0,20,"all"));
-        model.addAttribute("mainCategory","all");
-        return "community/communityMain";
-    }
+    public String communityMain(){ return "community/communityMain";}
 
-    @PostMapping
-    public String communityList(String communityCategory,int pageNum,int pageSize,Model model){
-        model.addAttribute("mainCategory",communityCategory);
-        model.addAttribute("todayPosts",communityService.countTodayCommunity(communityCategory));
-        if(!communityService.getCommunityList(pageNum,pageSize,communityCategory).hasContent()){
-            model.addAttribute("community",communityService.getCommunityList(0,pageSize,communityCategory));
-        }else{
-            model.addAttribute("community",communityService.getCommunityList(pageNum,pageSize,communityCategory));
-        }
-        return "community/communityMain";
+    @GetMapping("/search")
+    public String search(@RequestParam String type,@RequestParam String searchContent){
+        return "community/communitySearch";
     }
 
     @GetMapping("/insert")
     public String communityInsertForm(){return "community/communityInsert";}
 
     @PostMapping("/insert")
-    public String communityInsert(Principal principal, @Valid CommunityInsertDTO communityInsertDTO,
+    public String communityInsert(Principal principal, @Valid CommunityRequestDTO.InsertDTO insertDTO,
                                       BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
                 model.addAttribute("error", "내용을 다 채우세요");
                 return "community/communityInsert";
             }
-            communityService.insertCommunity(principal.getName(), communityInsertDTO);
+            communityService.insertCommunity(principal.getName(), insertDTO);
             return "redirect:/community";
         }
 
@@ -62,17 +49,17 @@ public class CommunityController {
     }
 
     @PostMapping("/update/result")
-    public String update(Principal principal, @Valid CommunityUpdateDTO communityUpdateDTO,
+    public String update(Principal principal, @Valid CommunityRequestDTO.UpdateDTO updateDTO,
                          BindingResult bindingResult, Model model){
-        if(communityUpdateDTO.getDeleteImg() != null){
-            communityUpdateDTO.getDeleteImg().forEach(img -> fileService.deleteFile(img));
-        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("error", "내용을 다 채우세요");
             return "community/communityUpdate";
         }
-        communityService.updateCommunity(principal.getName(), communityUpdateDTO);
-        return "redirect:/community/"+communityUpdateDTO.getCommunityId();
+        if(updateDTO.getDeleteImg() != null){
+            updateDTO.getDeleteImg().forEach(img -> fileService.deleteFile(img));
+        }
+        communityService.updateCommunity(principal.getName(), updateDTO);
+        return "redirect:/community/"+updateDTO.getCommunityId();
     }
 
     @GetMapping("/{communityId}")
@@ -81,10 +68,12 @@ public class CommunityController {
         model.addAttribute("posts",communityService.loadCommunityPosts(communityId));
         return "community/communityPosts";
     }
-
-    @GetMapping("/memberPost")
-    public String memberPost(Model model){
-        return "community/communityMemberPost";
+    @GetMapping("/memberWriting/{memberId}")
+    public String memberPost(@PathVariable String memberId){
+        return "community/communityMemberWriting";
     }
+
+    @GetMapping("/memberProfile/{memberId}")
+    public String memberProfile(@PathVariable String memberId){return "community/communityMemberProfile";}
 }
 

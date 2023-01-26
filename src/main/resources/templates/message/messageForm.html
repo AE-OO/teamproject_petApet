@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title></title>
+    <link>
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script>
+        $(function () {
+            getLoginId();
+            getMessageList(nowPage);
+
+            $("#messageDiv").outerHeight(window.screen.height - $("#messageHeader").outerHeight() - $("#messageFooter").outerHeight())
+            $("title").text("petApet - " + $(location).attr('pathname').split("/")[2] + " 쪽지대화");
+            $("#messageReceiver").text($(location).attr('pathname').split("/")[2]);
+            $("#sendMessage").click(function () {
+                if ($("#messageContent").val() === '' || $("#messageContent").val() === null) {
+                    alert("내용을 입력해주세요");
+                } else {
+                    sendMessage();
+                }
+            })
+
+            //엔터키 누르면 전송됨 줄바꿈은 Shift+Enter키 사용
+            $('#messageContent').keydown(function (event) {
+                if (event.keyCode == 13)
+                    if (!event.shiftKey) {
+                        event.preventDefault();
+                        if ($("#messageContent").val() === '' || $("#messageContent").val() === null) {
+                            alert("내용을 입력해주세요");
+                        } else {
+                            sendMessage();
+                        }
+                    }
+            });
+            $("#messageContent").focus();
+            $("#messageDiv").scroll(function () {
+                if (last) {
+                    return;
+                }
+                if (Math.floor($("#msgArea").height()) - $("#messageDiv").height() + $("#messageDiv").scrollTop() == 0) {
+                    getMessageList(nowPage + 1);
+                }
+            })
+        })
+        let nowPage;
+        let last;
+        sendMessage = function () {
+            $.ajax({
+                url: "/message/send",
+                type: "post",
+                data: JSON.stringify({
+                    messageContent: $("#messageContent").val(),
+                    messageReceiver: $(location).attr('pathname').split("/")[2],
+                }),
+                contentType: 'application/json',
+                dateType: "json",
+                success: function (data) {
+                    $("#messageContent").val('');
+                    getMessageList(0);
+
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        getMessageList = function (value) {
+            $.ajax({
+                url: "/message/getMessageList",
+                type: "post",
+                data: {
+                    messageReceiver: $(location).attr('pathname').split("/")[2],
+                    pageNum: value
+                },
+                dateType: "json",
+                success: function (data) {
+                    // console.log(data);
+                    nowPage = data.number;
+                    last = data.last;
+                    showMessageList(data,nowPage);
+
+                }
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
+        }
+        showMessageList = function (data,value) {
+            let str = '';
+            $.each(data.content.reverse(), function (idx, val) {
+                if (val.memberId === loginId) {
+                    str += `<div class="my-2 w-fit-content mx-auto me-0 text-end">
+                            <div class="d-inline-block align-bottom">`
+                    if (val.messageCheck === false) {
+                        str += `<p class="mb-0 text-danger" style="font-size:10px;">1</p>`
+                    }
+                    str += `<p class="mb-0 text-black" style="font-size:10px;">${val.messageDate}</p>
+                            </div>
+                            <div class="bg-info rounded-3 px-3 py-2 mw-80 d-inline-block text-start">
+                            <pre class="white-space-pre-wrap mb-0">${val.messageContent}</pre>
+                            </div>
+                            </div>`;
+                } else {
+                    str += `<div class="my-2 w-fit-content">
+                            <div class="bg-mainSecondary rounded-3 px-3 py-2 mw-80 d-inline-block text-justify">
+                            <pre class="white-space-pre-wrap mb-0">${val.messageContent}</pre>
+                            </div>
+                            <div class="d-inline-block align-bottom">
+                            <p class="mb-0 text-black" style="font-size:10px;">${val.messageDate}</p>
+                            </div>
+                            </div>`;
+                }
+            })
+            if (value == 0 || value == undefined) {
+                $("#msgArea").empty()
+            }
+            $("#msgArea").prepend(str);
+
+        }
+
+    </script>
+</head>
+<body>
+<div id="messageHeader" class="px-3 py-2 sticky-top bg-dark">
+    <span id="messageReceiver" class="text-white"></span>
+</div>
+<div id="messageDiv" class="px-4 py-3 text-white lh-sm overflow-y-auto d-flex flex-column-reverse">
+    <div id="msgArea">
+    </div>
+</div>
+<div id="messageFooter" class="pt-2 sticky-bottom w-100 px-4 pb-3 bg-dark">
+    <textarea id="messageContent" style="resize:none; height:80px; font-size:15px;"
+              class="form-control text-white lh-sm border-0 bg-dark px-1"
+              maxlength="300"></textarea>
+    <button type="button" id="sendMessage" class="btn btn-dark py-1 px-3 float-end">전송</button>
+</div>
+</body>
+</html>

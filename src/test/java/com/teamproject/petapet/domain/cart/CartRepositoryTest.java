@@ -64,10 +64,7 @@ class CartRepositoryTest {
     void test1(){
         String dd = "memberA";
         List<Cart> cartByMember1 = cartRepository.findCartByMember(dd);
-        cartByMember1.forEach(i->{
-            System.out.println("i.getCartId() = " + i.getCartId());
-            
-        });
+        cartByMember1.forEach(i-> System.out.println("i.getCartId() = " + i.getCartId()));
     }
 
     @Test

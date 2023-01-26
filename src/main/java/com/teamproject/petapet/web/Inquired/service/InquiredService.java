@@ -18,7 +18,7 @@ public interface InquiredService {
 
     void removeInquiredOne(Long inquiredId);
 
-//    void setInquiredCheck(Long inquiredId);
+    void setInquiredCheck(Long inquiredId, String answer);
 
     // 관리자 - VIEW
     Inquired findOne(Long id);
