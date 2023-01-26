@@ -44,4 +44,5 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     boolean existsByCompanyEmail(String CompanyEmail);
     boolean existsByCompanyPhoneNum(String CompanyPhoneNum);
 
+    List<Company> findAll();
 }

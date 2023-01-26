@@ -1,6 +1,8 @@
 package com.teamproject.petapet.web.util.email.service;
 
 import com.teamproject.petapet.domain.buy.Buy;
+import com.teamproject.petapet.domain.inquired.Inquired;
+import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.buy.service.BuyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,10 +21,13 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
+    private final InquiredService inquiredService;
+
     private final BuyService buyService;
 
+    // 구매 영수증 메일
     public void sendEmailMessage(String email, Long buyId) throws Exception {
-//        String code = createCode(); // 인증코드 생성
+//        String code = createCode(); // <- 인증코드 생성
         Buy buy = buyService.findById(buyId); // 결제메일 맵핑
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -37,11 +42,29 @@ public class EmailService {
         javaMailSender.send(message); // 이메일 전송
     }
 
-
     private String setContextBuy (Buy buy){// 타임리프 설정하는 코드
         Context context = new Context();
         context.setVariable("buy", buy); // Template에 전달할 데이터 설정
         return templateEngine.process("mypage/mail", context); // mail.html
+    }
+
+    // 문의 내용 답변 메일
+    public void sendEmailMessage2(String email, Long inquiredId) throws Exception {
+        Inquired inquired = inquiredService.findOne(inquiredId);
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        message.addRecipients(MimeMessage.RecipientType.TO, email);
+        message.setSubject("[문의 답변] 주식회사 petApet에서 발신한 메일 입니다");
+        message.setText(setContextInquired(inquired), "utf-8", "html");
+
+        javaMailSender.send(message);
+    }
+
+    private String setContextInquired(Inquired inquired) { // 타임리프 설정하는 코드
+        Context context = new Context();
+        context.setVariable("inquired", inquired); // Template에 전달할 데이터 설정
+        return templateEngine.process("mypage/mailInquired", context); // mail.html
     }
     private String setContext(String code) { // 타임리프 설정하는 코드
         Context context = new Context();

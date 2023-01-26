@@ -131,5 +131,10 @@ public class CompanyServiceImpl implements CompanyService{
         return companyRepository.findById(id);
     }
 
+    @Override
+    public List<Company> findAllCompany() {
+        return companyRepository.findAll();
+    }
+
 
 }

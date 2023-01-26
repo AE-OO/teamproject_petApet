@@ -26,6 +26,7 @@ div{
 
 #container{
   position: relative;
+  top: 70px;
   min-width: 980px;
   overflow: hidden;
 }
@@ -1646,7 +1647,6 @@ input[type="file"] {
   display: none;
 }
 label {
-  display: block;
   position: relative;
   background-color: #5fc8af;
 

@@ -48,4 +48,3 @@ public interface ProductService {
 
     void addProductReport(Long productId);
 }
-

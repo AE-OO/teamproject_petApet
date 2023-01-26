@@ -2,6 +2,8 @@ package com.teamproject.petapet.web.cart.service;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.cart.CartRepository;
+import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,5 +48,8 @@ public class CartServiceImpl implements CartService{
         cartRepository.setQuan(quantity, cartId);
     }
 
-
+    @Override
+    public boolean checkDuplication(Member memberId) {
+        return cartRepository.checkDuplication(memberId);
+    }
 }
