@@ -12,7 +12,7 @@
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <!-- start feature1 -->
-<hr class="mt-5">
+<hr class="mt-5 border-white">
 <div class="container-xxl ">
     <div class="container py-5">
         <div class="text-center">
@@ -20,52 +20,30 @@
             <h1 class="display-5 mb-3">통합검색</h1>
             <div class="mt-5 mb-2">
                 <div class="col-6 mx-auto mb-1 text-start">
-                    <strong id="searchContentRes" class="text-danger"></strong>
-                    <span id="typeRes" class="text-lightGray me-1"></span>
-                    <span class="text-dark">검색결과 (총 <span id="totalElements" class="text-danger"></span>건)</span>
+                    <strong id="searchContentRes" class="text-danger ms-1"></strong>
+                    <span class="text-dark">통합검색결과 (총 <span id="totalElements" class="text-danger"></span>건)</span>
                 </div>
-                <div class="row py-3 bg-light">
-                    <div class="col-2 mx-auto me-1 px-0">
-                        <select id="type" class="form-select">
-                            <option value="titleContent">제목+내용</option>
-                        </select>
-                    </div>
-                    <div class="col-3 mx-1 px-0">
+                <div class="py-3 bg-light mb-4 d-flex">
+                    <div class="col-6 ps-4 me-1 px-0 mx-auto">
                         <input id="searchContent" type="text" class="form-control">
                     </div>
-                    <div class="col-1 mx-auto ms-1 px-0 text-start">
-                        <button id="findBtn" class="btn btn-primary"><i class="fa fa-search m-0"></i></button>
+                    <div class="mx-auto ms-1 px-0 text-start">
+                        <button id="integratedSearchBtn" class="btn btn-primary"><i class="fa fa-search m-0"></i></button>
                     </div>
                 </div>
             </div>
 
             <div class="col-12 ">
-                <div class="float-start">
-                    <p id="sort" class="pt-2 mb-0 text-gray-400">
-                        <button class="btn btn-link2 pe-1 dropdown-toggle" value="createdDate">최신순</button>
-                        |
-                        <button class="btn btn-link2 px-1 dropdown-toggle" value="size(c.comment)">댓글순</button>
-                        |
-                        <button class="btn btn-link2 ps-1 dropdown-toggle" value="viewCount">조회순</button>
-                    </p>
+                <div class="mb-5">
+                    <h4 class="communitySearchConst">커뮤니티 검색 결과 <span class="communityTotalElements"></span></h4>
+                    <table id="list" class="table2 table-hover"></table>
+                    <div class="text-center">
+                        <a class="moveCommunityList">커뮤니티검색결과더보기</a>
+                    </div>
                 </div>
-                <table class="table2 table-responsive">
-                    <thead>
-                    <tr>
-                        <th class="col-md-1">번호</th>
-                        <th>제목</th>
-                        <th class="col-md-2">글쓴이</th>
-                        <th class="col-md-2">작성일</th>
-                        <th class="col-md-1">조회</th>
-                    </tr>
-                    </thead>
-                    <tbody id="list">
-
-                    </tbody>
-                </table>
                 <div class="mt-4">
                     <h4 class="productSearchConst">상품에 대한 검색 결과</h4>
-                    <table class="table2 table-responsive">
+                    <table class="table2 table-hover">
                         <thead>
                         <tr>
                             <th class="col-md-1">분류</th>
@@ -78,12 +56,9 @@
                         <tbody id="list_product">
                         </tbody>
                     </table>
-                        <div class="d-flex flex-row">
-                            <div class="col-12 row">
-                            <a class="moveProductList">상품검색결과더보기</a>
-                            </div>
-                        </div>
-                    <div id="page"></div>
+                    <div class="text-center">
+                        <a class="moveProductList">상품검색결과더보기</a>
+                    </div>
                 </div>
             </div>
         </div>

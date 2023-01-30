@@ -74,6 +74,7 @@
             $(document).on("click", ".zoom-in", function () {
                 $(this).attr("width", "");
                 $(this).attr("height", "");
+                $(this).css("max-width", $(".commentImgDiv").width());
                 $(this).toggleClass("zoom-in");
                 $(this).toggleClass("zoom-out");
             });
@@ -106,29 +107,43 @@
             $("#communityCount").text(data.communityCount);
             $("#commentCount").text(data.commentCount);
         }
-        myWritingDelete = function (value) {
-            let lists = [];
+        myWritingDelete = function (type) {
+            let id = [];
+            let img = [];
+            // while(extractUrl=regex.exec(image)){
+            //
+            //     console.log(extractUrl[1])
+            //
+            // }
             $("input[name='deleteCheck']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
-                lists.push($(this).val());
+                id.push($(this).val());
+                if($(this).closest(".communityTitle").find(".commentImg").attr("src")===undefined){
+                    return;
+                }
+                img.push($(this).closest(".communityTitle").find(".commentImg").attr("src").split("/")[2])
             });
 
-            $.ajax({
-                url: "/"+value+"/myWritingDelete",
-                type: "post",
-                data: {
-                    deleteList: lists
-                },
-                dateType: "json",
-                success: function () {
-                    getLoginMemberWritingList(nowPage, nowPageSize, value);
-                }
-                , error: function () {
-                    alert('오류가 발생하였습니다.');
-                }
-            })
+            // $.ajax({
+            //     url: "/"+type+"/myWritingDelete",
+            //     type: "post",
+            //     data: {
+            //         deleteId: id,
+            //         deleteImg: img
+            //     },
+            //     // contentType: "application/json",
+            //     dateType: "text",
+            //     success: function () {
+            //         getLoginMemberWritingList(nowPage, nowPageSize, value);
+            //     }
+            //     , error: function () {
+            //         alert('오류가 발생하였습니다.');
+            //     }
+            // })
 
         }
     </script>
+    <script th:src="@{/js/community/paginationJS.js}"></script>
+
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>

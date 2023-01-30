@@ -6,11 +6,12 @@
     <script th:src="@{/js/member/getLoginInfo.js}"></script>
     <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script th:src="@{/js/community/comment.js}"></script>
+    <script th:src="@{/js/community/paginationJS.js}"></script>
     <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
-<hr class="mt-5">
+<hr class="mt-5 border-white">
 <div class="container-xxl">
     <div class="container p-5">
         <div class="text-center mb-4">
@@ -90,7 +91,7 @@
             </div>
             <div class="bg-lightGray pt-1 pb-5">
                 <div id="commentList"></div>
-                <div id="commentPage"></div>
+                <div id="page" class="mt-4"></div>
                 <div class="bg-white m-5 p-4 pt-2" sec:authorize="hasAnyRole('MEMBER','ADMIN')">
                         <textarea id="commentContent" style="resize:none; height: 100px; border:none;"
                                   class="w-100 form-control px-1"

@@ -2,9 +2,8 @@
 package com.teamproject.petapet.web;
 
 
-import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
-import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
+import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.NoSuchElementException;
-
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -29,6 +26,7 @@ import java.util.NoSuchElementException;
 public class HomeController {
 
     private final ProductService productService;
+    private final CommunityService communityService;
 
     @GetMapping("/")
     public String index() {
@@ -40,14 +38,28 @@ public class HomeController {
         return "integratedSearch";
     }
 
+//    @GetMapping("/searchResult")
+//    @ResponseBody
+//    public ResponseEntity<Page<ProductListDTO.IntegratedSearchDTO>> searchResult(@RequestParam String searchContent) {
+//        Pageable pageable = PageRequest.of(0, 10);
+//        Page<Product> page = productService.findPage(searchContent, pageable);
+//        Page<ProductListDTO.IntegratedSearchDTO> content = getProductListDTO(page);
+//        long totalElements = content.getTotalElements();
+//        return ResponseEntity.ok().body(content);
+//    }
+
     @GetMapping("/searchResult")
     @ResponseBody
-    public ResponseEntity<Page<ProductListDTO.IntegratedSearchDTO>> searchResult(@RequestParam String searchContent) {
+    public ResponseEntity<Map<String, Object>> searchResult(@RequestParam String searchContent) {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Product> page = productService.findPage(searchContent, pageable);
         Page<ProductListDTO.IntegratedSearchDTO> content = getProductListDTO(page);
-        long totalElements = content.getTotalElements();
-        return ResponseEntity.ok().body(content);
+//        long totalElements = content.getTotalElements();
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("product",content);
+        pageMap.put("community",communityService.getSearchList("titleContent",searchContent,0,10,"communityId"));
+        return ResponseEntity.ok().body(pageMap);
     }
 
     private Page<ProductListDTO.IntegratedSearchDTO> getProductListDTO(Page<Product> productList) {

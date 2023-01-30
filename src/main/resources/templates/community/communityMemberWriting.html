@@ -7,10 +7,12 @@
     <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
     <script th:src="@{/js/community/community.js}"></script>
+    <script th:src="@{/js/community/paginationJS.js}"></script>
+
     <script>
         $(function () {
             getMemberProfile()
-            getMemberWritingList(nowPage,nowPageSize,"community")
+            getMemberWritingList(nowPage, nowPageSize, "community")
             $("input[name=radioCheck]").click(function () {
                 if ($("input[name=radioCheck]:checked").val() === "title") {
                     $(".communityContent").hide();
@@ -57,8 +59,8 @@
             $.ajax({
                 url: "/getMemberProfile",
                 type: "post",
-                data:{
-                    memberId:$(location).attr('pathname').split("/")[3],
+                data: {
+                    memberId: $(location).attr('pathname').split("/")[3],
                 },
                 dateType: "json",
                 success: function (data) {
@@ -82,7 +84,7 @@
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <!-- start feature1 -->
-<hr class="mt-5">
+<hr class="mt-5 border-white">
 <div class="container-xxl ">
     <div class="container py-5">
         <div class="text-center">
@@ -96,10 +98,11 @@
                     </div>
                     <div class="ms-2 d-inline-block align-middle">
                         <div class="mb-1">
-                        <strong id="memberId"></strong>
+                            <strong id="memberId"></strong>
                         </div>
                         <div style="font-size: 15px">
-                            <span class="me-2">총 게시물 <strong id="communityCount" class="text-danger ms-1"></strong>개</span>|
+                            <span class="me-2">총 게시물 <strong id="communityCount"
+                                                             class="text-danger ms-1"></strong>개</span>|
                             <span class="ms-1">총 댓글 <strong id="commentCount" class="text-danger ms-1"></strong>개</span>
                         </div>
                     </div>
@@ -136,18 +139,7 @@
                         <label class="form-check-label" for="radio2">제목+내용</label>
                     </div>
                 </div>
-                <table class="table2 table-responsive">
-                    <thead>
-                    <tr>
-                        <th class="col-md-1">번호</th>
-                        <th>제목</th>
-                        <th class="col-md-2">글쓴이</th>
-                        <th class="col-md-2">작성일</th>
-                        <th class="col-md-1">조회</th>
-                    </tr>
-                    </thead>
-                    <tbody id="list"></tbody>
-                </table>
+                <table id="list" class="table2 table-hover"></table>
                 <div class="mt-4">
                     <div id="page"></div>
                 </div>

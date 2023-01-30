@@ -4,11 +4,18 @@ let searchParam = urlSearchParams.get("searchContent");
 $.ajax({
     url: '/searchResult?searchContent=' + searchParam,
     success: function (data) {
-        $.each(data.content, function (idx, val) {
-            let productId = val.productId;
-            let productCategory = val.productCategory;
-            val.productPrice = priceToString(val.productPrice) + '원';
-            const html = `<tr class="productRow border-white">
+        let productRes = data.product;
+        let communityRes = data.community;
+
+        if (productRes.content.length == 0) {
+            const html = `<tr><td class="py-5" colspan="5"><strong>검색 결과가 없습니다</strong></td></tr>`
+            $('#list_product').append(html);
+        } else {
+            $.each(productRes.content, function (idx, val) {
+                let productId = val.productId;
+                let productCategory = val.productCategory;
+                val.productPrice = priceToString(val.productPrice) + '원';
+                const html = `<tr class="productRow">
                             <td class="productCategory">${val.productDiv}</td>
                             <td class="text-start">
                                 <a class="me-2 productName">${val.productName}</a></td>
@@ -30,10 +37,13 @@ $.ajax({
                             </td>
                             <td class="productViewCount">${val.productViewCount}</td>
                         </tr>`
-            setMoveProduct(productId, productCategory);
-            $('#list_product').append(html);
-        })
+                setMoveProduct(productId, productCategory);
+                $('#list_product').append(html);
+            })
+        }
         setHrefAndConst(searchParam);
+        setCommunityResult(communityRes);
+        setResult(productRes.totalElements, communityRes.totalElements);
         let size = $('p[class = star]').length;
         for (let i = 0; i < size; i++) {
             $('p[class = star]').eq(i).attr('id', "star" + i);
@@ -41,7 +51,6 @@ $.ajax({
             $("#star" + i).find(".my_star").filter(function (k, v) {
                 return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
             });
-
         }
     },
     error: function (error) {
@@ -63,3 +72,32 @@ function setMoveProduct(productId, productCategory) {
     $('.productName').prop('href', q);
 }
 
+function setResult(productTotalElements, communityTotalElements) {
+    const product = `<span class="ms-2 fw-normal text-body small">(총 ${productTotalElements}건)</span>`;
+    const community = `<span class="ms-2 fw-normal text-body small">(총 ${communityTotalElements}건)</span>`;
+
+    $("#searchContentRes").text(`'${searchParam}'`);
+    $("#totalElements").text(productTotalElements + communityTotalElements);
+    $("#searchContent").val(searchParam)
+    $('.productSearchConst').append(product);
+    $('.communitySearchConst').append(community);
+};
+
+function setCommunityResult(communityRes) {
+    const url = `/community/search?type=titleContent&searchContent=${searchParam}`;
+    $('.communitySearchConst').text(`'${searchParam}' 커뮤니티 검색 결과`)
+    $('.moveCommunityList').prop('href', url);
+    showCommunitySearchOrMemberWritingList(communityRes);
+    $(".communityContent").remove();
+    $("input[name=deleteCheck]").remove();
+}
+
+$(function () {
+    $("#integratedSearchBtn").click(function () {
+        if ($("#searchContent").val() === null || $("#searchContent").val() === '') {
+            alert("내용을 입력해 주세요.")
+        } else {
+            window.location = "/search?searchContent=" + $("#searchContent").val();
+        }
+    })
+});
