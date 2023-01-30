@@ -47,10 +47,6 @@ public class CommunityRestController {
         return new ResponseEntity<>(communityService.getCommunityTitle(communityId), HttpStatus.OK);
     }
 
-    @PostMapping("/getNotice")
-    public ResponseEntity<List<CommunityDTO>> getNotice() {
-        return new ResponseEntity<>(communityService.getCommunityMainNotice(), HttpStatus.OK);
-    }
 
     @PostMapping("/searchList")
     public ResponseEntity<Page<CommunityDTO>> getSearchList(@RequestParam String type,
