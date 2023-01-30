@@ -21,17 +21,7 @@ public class CommunityRestController {
     private final CommunityService communityService;
     private final FileService fileService;
 
-    @PostMapping("/getCommunityList")
-    public ResponseEntity<Page<CommunityDTO>> communityList(@RequestParam(defaultValue = "all") String communityCategory,
-                                                            @RequestParam(defaultValue = "0") int pageNum,
-                                                            @RequestParam(defaultValue = "20") int pageSize) {
-        return new ResponseEntity<>(communityService.getCommunityList(pageNum, pageSize, communityCategory), HttpStatus.OK);
-    }
 
-    @PostMapping("/todayPosts")
-    public ResponseEntity<Long> todayPosts(@RequestParam(defaultValue = "all") String communityCategory) {
-        return new ResponseEntity<>(communityService.countTodayCommunity(communityCategory), HttpStatus.OK);
-    }
 
     @PostMapping("/delete")
     public void commentDelete(@RequestParam Long communityId,
@@ -63,6 +53,11 @@ public class CommunityRestController {
                                                                    @RequestParam(defaultValue = "0") int pageNum,
                                                                    @RequestParam(defaultValue = "20") int pageSize) {
         return new ResponseEntity<>(communityService.getMemberWritingList(type, memberId, pageNum, pageSize), HttpStatus.OK);
+    }
+
+    @PostMapping("/getNotice")
+    public ResponseEntity<List<CommunityDTO>> getNotice() {
+        return new ResponseEntity<>(communityService.getCommunityMainNotice(), HttpStatus.OK);
     }
 
     @PostMapping("/loginMemberWritingList")
