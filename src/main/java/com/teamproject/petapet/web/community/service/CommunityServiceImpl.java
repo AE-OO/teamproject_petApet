@@ -100,7 +100,11 @@ public class CommunityServiceImpl implements CommunityService {
         return communityList.stream().map(list -> CommunityDTO.fromEntityForNotice(list)).collect(Collectors.toList());
     }
 
-
+    @Override
+    public List<CommunityDTO> getCommunityMainNotice() {
+        List<Community> communityList = communityRepository.getNotice();
+        return communityList.stream().map(list -> CommunityDTO.fromEntityForCommunityMain(list)).collect(Collectors.toList());
+    }
 
     @Override
     public void registerNotice(CommunityRequestDTO.registerNotice registerNotice) {
