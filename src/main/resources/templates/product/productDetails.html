@@ -87,6 +87,7 @@
                     <h6>재고</h6>
                 </div>
                 <div class="row m-lg-3 col-6">
+                    <input th:value="*{companyId}" type="hidden" id="companyId">
                     <h6 th:text="*{productSeller}">판매자</h6>
                     <h6 th:text="*{productStock}" id="remainStock">재고</h6>
                     <th:block th:if="*{productStock <= 10}">

@@ -30,4 +30,10 @@ public class InquiredRestController {
     public void addAnswer(@PathVariable("inquiredId") Long inquiredId, @ModelAttribute("inquiredList") InquiryRequestDTO.GetAnswerDTO getAnswerDTO){
         inquiredService.setInquiredCheck(inquiredId, getAnswerDTO.getAnswer());
     }
+
+    @PostMapping("/registerProductInquiry")
+    public ResponseEntity<String> registerProductInquiry(@RequestBody InquiryRequestDTO.RegisterInquiryToCompany inquiryRequestDTO){
+        inquiredService.registerProductInquiry(inquiryRequestDTO);
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
 }

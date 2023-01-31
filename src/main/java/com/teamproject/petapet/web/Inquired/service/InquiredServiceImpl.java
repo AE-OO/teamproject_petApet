@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.Inquired.service;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.inquired.InquiredRepository;
 import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
+import com.teamproject.petapet.web.Inquired.dto.InquiryRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,11 @@ public class InquiredServiceImpl implements InquiredService {
     public List<InquiryDTO> getCompanyPageInquiryList(String companyId) {
         List<Inquired> inquiredList = inquiredRepository.findAllByCompany_CompanyIdOrderByCheckedAscInquiredDate(companyId);
         return inquiredList.stream().map(list -> InquiryDTO.fromEntityForManageInquiry(list)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void registerProductInquiry(InquiryRequestDTO.RegisterInquiryToCompany inquiryRequestDTO) {
+        inquiredRepository.save(inquiryRequestDTO.toEntity());
     }
 
 }

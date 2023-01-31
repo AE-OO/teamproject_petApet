@@ -3,6 +3,7 @@ package com.teamproject.petapet.domain.product;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.company.Company;
+import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
@@ -85,6 +86,9 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Cart> cart;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    private List<Inquired> inquired;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "companyId")
@@ -96,6 +100,7 @@ public class Product {
                 .productId(product.getProductId())
                 .productStock(product.getProductStock())
                 .productName(product.getProductName())
+                .companyId(product.getCompany().getCompanyId())
                 .productSeller(product.getCompany().getCompanyName())
                 .productContent(product.getProductContent())
                 .productDiscountRate(product.getProductDiscountRate())

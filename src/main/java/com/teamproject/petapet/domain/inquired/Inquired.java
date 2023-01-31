@@ -3,6 +3,7 @@ package com.teamproject.petapet.domain.inquired;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -56,6 +57,10 @@ public class Inquired {
     @ManyToOne
     @JoinColumn(name = "companyId")
     private Company company;
+
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    private Product product;
 
     // 답변 활성화 컬럼
     @Column(nullable = false)

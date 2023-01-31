@@ -1,7 +1,9 @@
 package com.teamproject.petapet.web.Inquired.dto;
 
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import lombok.*;
 
 /**
@@ -27,12 +29,14 @@ public class InquiryRequestDTO {
         private Long productId;
 
         public Inquired toEntity(){
-            Inquired inquired = 
+            Inquired inquired =
                     Inquired.builder()
                             .inquiredCategory("상품문의")
                             .inquiredTitle(inquiredTitle)
                             .inquiredContent(inquiredContent)
                             .member(Member.builder().memberId(memberId).build())
+                            .product(Product.builder().productId(productId).build())
+                            .company(Company.builder().companyId(companyId).build())
                             .build();
 
             return inquired;
