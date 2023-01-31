@@ -45,21 +45,21 @@ public class PaymentsController {
 
     // productList or productDetail 페이지에서 direct checkout 페이지 뷰
     @RequestMapping(value = "/direct/checkout", method = {RequestMethod.GET})
-    public String getPayment2(@RequestParam("productId") Long productId, @RequestParam("quantity") Long quantity, Model model,
-    @ResponseBody
+//    public String getPayment2(@RequestParam("productId") Long productId, @RequestParam("quantity") Long quantity, Model model,
+//    @ResponseBody
     @GetMapping("/cart/checkout")
     public String getPayment3(@RequestParam String str) {
-        JSONArray objects = new JSONArray(str);
-        String s = objects.toString();
+//        JSONArray objects = new JSONArray(str);
+//        String s = objects.toString();
 //        JSONObject jsonObject = new JSONObject();
 //        String s = jsonObject.optString(str);
-        log.info("osh= {}",s);
-        return s;
+//        log.info("osh= {}",s);
+        return "";
     }
 
     // productList 페이지에서 checkout 페이지로 이동
     @GetMapping("/direct/checkout/{idx}")
-    public String getPayment2(@PathVariable("idx") Long productId, Model model,
+    public String getPayment2(@PathVariable("idx") Long productId,@RequestParam("quantity") Long quantity, Model model,
                               Principal principal){
         Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         String loginMember = checkMember(principal);
