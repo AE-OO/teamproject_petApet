@@ -34,6 +34,7 @@ public interface ProductService {
     void updateProductRating(Long productId);
 
     Optional<Product> findOne(Long id);
+    Long compareStock(Long id);
 
     Optional<Product> saveProduct(ProductInsertDTO productInsertDTO, List<UploadFile> uploadFiles, Company company);
 

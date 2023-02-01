@@ -326,9 +326,8 @@
                                                         th:value="*{product.productId}">장바구니
                                                     <input type="hidden" class="quan" value="1"/></button>
                                                 <button class="btn bg-secondary addBuy"
-                                                        th:onclick="|location.href='@{/direct/checkout/{idx}(idx=${product.productId})}'|">
+                                                        th:onclick="|location.href='@{/product/{productType}/{productId}/details(productType=${product.getProductDiv().name().toLowerCase()},productId=${product.productId})}'|">
                                                     바로구매
-                                                    <input type="hidden" class="quan" value="1"/></button>
                                             </div>
                                         </div>
                                     </div>

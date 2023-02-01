@@ -1,6 +1,7 @@
 package com.teamproject.petapet.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;

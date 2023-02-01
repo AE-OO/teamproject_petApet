@@ -116,6 +116,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Long compareStock(Long id) {
+        return productRepository.findQuantity(id);
+    }
+
+    @Override
     @Transactional
     public Optional<Product> saveProduct(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, Company company) {
         ProductType productDiv = ProductType.valueOf(insertDTO.getProductDiv());
@@ -161,6 +166,25 @@ public class ProductServiceImpl implements ProductService {
                 .fetch();
         Long totalCount = countProduct(category, productType, content, starRating, minPrice, maxPrice, isPriceRange);
         return new PageImpl<>(productList, pageable, totalCount);
+    }
+
+    private Long countProduct(String content) {
+        return jpaQueryFactory.select(product.count())
+                .where(isContent(content),
+                        product.productStatus.eq("판매중"))
+                .from(product)
+                .fetchFirst();
+    }
+
+    private Long countProduct(String category, ProductType productType, String content, Long starRating, String minPrice, String maxPrice, String isPriceRange) {
+        return jpaQueryFactory.select(product.count())
+                .where(isCategory(productType, category),
+                        isContent(content),
+                        isRating(starRating),
+                        isPriceRange(minPrice, maxPrice, isPriceRange),
+                        product.productStatus.eq("판매중"))
+                .from(product)
+                .fetchFirst();
     }
 
     @Override
