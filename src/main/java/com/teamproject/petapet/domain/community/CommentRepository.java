@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    Page<Comment> findAllByCommunityCommunityId(Long communityId, Pageable pageable);
-
     int countCommentByCommunityCommunityId(Long communityId);
 
     @Modifying
@@ -18,6 +16,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("update Comment c set c.replyId =:commentId where c.commentId =:commentId")
     void updateReplyId(Long commentId);
 
+    //댓글 리스트 -> 삭제된 부모댓글 표시하기위한 쿼리
     @Query(value = "SELECT IFNULL(b.result,0) AS depth, a.* " +
             "FROM Comment a " +
             "left JOIN " +

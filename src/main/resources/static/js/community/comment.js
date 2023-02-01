@@ -42,7 +42,7 @@ $(function () {
     });
 
     $("#backBtn").click(function () {
-        window.location = "/community";
+        history.go(-1);
     });
     //로그인 버튼
     $("#loginBtn").click(function () {
@@ -68,7 +68,7 @@ $(function () {
         let arr = [];
         $("#postsContent").find("img").each(function (index, item) {
             // arr[index] = $(this).attr('src').substr(16)
-            arr.push($(this).attr('src').substr(16))
+            arr.push($(this).attr('src').substring(16))
         });
         $.ajax({
             type: "POST",
@@ -132,6 +132,7 @@ $(function () {
     $(document).on("click", ".zoom-in", function () {
         $(this).attr("width", "");
         $(this).attr("height", "");
+        $(this).css("max-width", $(".commentImgDiv").width());
         $(this).toggleClass("zoom-in");
         $(this).toggleClass("zoom-out");
     });
@@ -496,7 +497,7 @@ showList = function (data) {
                     }
                 }
                 if (val.commentImg != 0) {
-                    str += `<div class="ms-6">
+                    str += `<div class="ms-6 commentImgDiv">
                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
                             </div>`
                 }
@@ -547,7 +548,7 @@ showList = function (data) {
                     str += `</ul></div>`
                 }
                 if (val.commentImg != 0) {
-                    str += `<div class="ms-5 ps-3 mt-2">
+                    str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
                             </div>`
                 }
@@ -562,7 +563,7 @@ showList = function (data) {
                             </ul></div>`
                 }
                 if (val.commentImg != 0) {
-                    str += `<div class="ms-6">
+                    str += `<div class="ms-6 commentImgDiv">
                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
                             </div>`
                 }
@@ -574,129 +575,7 @@ showList = function (data) {
     $("#commentListSize").text(data.length);
     $("#commentList").html(str);
 }
-//댓글 페이지네이션 태그
-showPage = function (data) {
-    let str = '';
-    if (data.totalPages > 0) {
-        str += `<div aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">`
-        if (data.first) {
-            str += `<li id="prevPage" class="page-item disabled">
-                    <a class="page-link" href="javascript:" style="pointer-events: none;">
-                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
-                    </a>
-                    </li>`
-        } else {
-            str += `<li id="prevPage" class="page-item">
-                    <a class="page-link" href="javascript:">
-                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
-                    </a>
-                    </li>`
-        }
 
-        if (data.totalPages <= 5) {
-            for (var i = 1; i <= data.totalPages; i++) {
-                str += `<li class="page-item`
-                if (data.number + 1 === i) {
-                    str += ` active`
-                }
-                str += `">
-                        <a class="page-link selectPage" href="javascript:"><span>${i}</a>
-                        </li>`
-            }
-        }
-        if (data.totalPages > 5 && data.totalPages <= 10) {
-            if (data.number + 1 <= 5) {
-                for (var i = 1; i <= 5; i++) {
-                    str += `<li class="page-item`
-                    if (data.number + 1 === i) {
-                        str += ` active`
-                    }
-                    str += `">'
-                            <a class="page-link selectPage" href="javascript:"><span>${i}</a>
-                            </li>`
-                }
-                str += `<li class="page-item disabled"><a class="page-link">...</a></li>
-                        <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
-
-            }
-            if (data.number + 1 > 5) {
-                str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>`
-                for (var i = 6; i <= data.totalPages; i++) {
-                    str += `<li class="page-item`
-                    if (data.number + 1 === i) {
-                        str += ` active`
-                    }
-                    str += `">
-                            <a class="page-link selectPage" href="javascript:"><span>${i}</a>
-                            </li>`
-                }
-            }
-        }
-        if (data.totalPages > 10) {
-            if (data.number + 1 <= 5) {
-                for (var i = 1; i <= 5; i++) {
-                    str += `<li class="page-item`
-                    if (data.number + 1 === i) {
-                        str += ` active`
-                    }
-                    str += `">
-                            <a class="page-link selectPage" href="javascript:"><span>${i}</a>
-                            </li>`
-                }
-                str += `<li class="page-item disabled"><a class="page-link">...</a></li>
-                        <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
-            }
-            if (data.number + 1 > 5 && data.number + 1 < data.totalPages - 4) {
-                str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>`
-                for (var i = data.number + 1 - 2; i <= data.number + 1 + 2; i++) {
-                    str += `<li class="page-item`
-                    if (data.number + 1 === i) {
-                        str += ` active`
-                    }
-                    str += `">
-                            <a class="page-link selectPage" href="javascript:"><span>${i}</a>
-                            </li>`
-                }
-                str += `<li class="page-item disabled"><a class="page-link">...</a></li>
-                        <li class="page-item"><a class="page-link selectPage" href="javascript:">${data.totalPages}</a></li>`
-            }
-            if (data.number + 1 >= data.totalPages - 4) {
-                str += `<li class="page-item"><a class="page-link selectPage" href="javascript:">1</a></li>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>`
-
-                for (var i = data.totalPages - 4; i <= data.totalPages; i++) {
-                    str += `<li class="page-item`
-                    if (data.number + 1 === i) {
-                        str += ` active`
-                    }
-                    str += `">
-                            <a class="page-link selectPage" href="javascript:"><span>${i}</a>
-                            </li>`
-                }
-            }
-        }
-
-        if (data.last) {
-            str += `<li id="nextPage" class="page-item disabled">
-                    <a class="page-link" href="javascript:" style="pointer-events: none;">
-                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                    </a>
-                    </li>`
-        } else {
-            str += `<li id="nextPage" class="page-item">
-                    <a class="page-link" href="javascript:">
-                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                    </a>
-                    </li>`
-        }
-        str += `</ul></div>`
-    }
-    $("#commentPage").html(str);
-}
-//대댓글, 댓글수정 태그
 commentForm = function () {
     $("#commentForm").remove();
     let str = '';

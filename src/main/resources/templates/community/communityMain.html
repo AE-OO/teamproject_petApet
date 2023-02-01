@@ -7,6 +7,8 @@
     <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
     <script th:src="@{/js/community/community.js}"></script>
+    <script th:src="@{/js/community/paginationJS.js}"></script>
+
     <script>
         $(function () {
             //게시판 List
@@ -48,7 +50,7 @@
             });
             //내글보기 버튼
             $("#myPostsBtn").click(function () {
-                window.location = "/community/memberWriting/"+loginId;
+                window.location = "member/writingList";
             });
 
             $("#noticeCheck").click(function () {
@@ -65,7 +67,7 @@
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <!-- start feature1 -->
-<hr class="mt-5">
+<hr class="mt-5 border-white">
 <div class="container-xxl ">
     <div class="container py-5">
         <div class="text-center">

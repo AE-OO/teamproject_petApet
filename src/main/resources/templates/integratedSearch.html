@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
+    <title>petApet</title>
+    <link th:href="@{/css/osh.css}" rel="stylesheet">
+    <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
+    <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
+    <script th:src="@{/js/community/community.js}"></script>
+    <script th:src="@{/js/integratedSearch/integratedSearch.js}"></script>
+</head>
+<body>
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<!-- start feature1 -->
+<hr class="mt-5 border-white">
+<div class="container-xxl ">
+    <div class="container py-5">
+        <div class="text-center">
+            <p class="fs-5 fw-bold text-primary">Pet A Pet</p>
+            <h1 class="display-5 mb-3">통합검색</h1>
+            <div class="mt-5 mb-2">
+                <div class="col-6 mx-auto mb-1 text-start">
+                    <strong id="searchContentRes" class="text-danger ms-1"></strong>
+                    <span class="text-dark">통합검색결과 (총 <span id="totalElements" class="text-danger"></span>건)</span>
+                </div>
+                <div class="py-3 bg-light mb-4 d-flex">
+                    <div class="col-6 ps-4 me-1 px-0 mx-auto">
+                        <input id="searchContent" type="text" class="form-control">
+                    </div>
+                    <div class="mx-auto ms-1 px-0 text-start">
+                        <button id="integratedSearchBtn" class="btn btn-primary"><i class="fa fa-search m-0"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 ">
+                <div class="mb-5">
+                    <h4 class="communitySearchConst">커뮤니티 검색 결과 <span class="communityTotalElements"></span></h4>
+                    <table id="list" class="table2 table-hover"></table>
+                    <div class="text-center">
+                        <a class="moveCommunityList">커뮤니티검색결과더보기</a>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <h4 class="productSearchConst">상품에 대한 검색 결과</h4>
+                    <table class="table2 table-hover">
+                        <thead>
+                        <tr>
+                            <th class="col-md-1">분류</th>
+                            <th>상품명</th>
+                            <th class="col-md-2">가격</th>
+                            <th class="col-md-2">평점</th>
+                            <th class="col-md-1">조회</th>
+                        </tr>
+                        </thead>
+                        <tbody id="list_product">
+                        </tbody>
+                    </table>
+                    <div class="text-center">
+                        <a class="moveProductList">상품검색결과더보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
+<!-- 신고 모달 -->
+<th:block th:replace="~{fragment/reportModal :: reportModal}"></th:block>
+</body>
+</html>

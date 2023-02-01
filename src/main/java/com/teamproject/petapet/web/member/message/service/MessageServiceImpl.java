@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.member.message.service;
 
+import com.teamproject.petapet.domain.member.Message;
 import com.teamproject.petapet.domain.member.MessageRepository;
 import com.teamproject.petapet.web.member.message.dto.MessageDTO;
 import com.teamproject.petapet.web.member.message.dto.MessageRequestDTO;
@@ -44,7 +45,8 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public Page<MessageDTO> getMessageRoomList(String memberId, int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("messageId").descending());
-        return messageRepository.getMessageRoomList(memberId,pageable).map(m -> MessageDTO.fromEntity(m));
+        return messageRepository.getMessageRoomList(memberId,pageable)
+                .map(m -> MessageDTO.fromEntityForMessageRoomList(m,messageRepository.unCheckedMessageSize(memberId,m.getRoomNumber())));
     }
 
 }

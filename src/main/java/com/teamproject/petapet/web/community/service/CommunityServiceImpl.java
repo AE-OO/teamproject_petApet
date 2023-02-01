@@ -144,20 +144,20 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public Page<CommunityDTO> getSearchList(String type, CommunityRequestDTO.SearchDTO searchDTO) {
-        Pageable pageable = PageRequest.of(searchDTO.getPageNum(), searchDTO.getPageSize(), JpaSort.unsafe(searchDTO.getSort()).descending());
+    public Page<CommunityDTO> getSearchList(String type,String searchContent, int pageNum, int pageSize, String sort) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, JpaSort.unsafe(sort).descending());
         switch (type) {
             case "titleContent":
-                return communityRepository.searchCommunityTitleContentList(searchDTO.getSearchContent(), pageable)
+                return communityRepository.searchCommunityTitleContentList(searchContent, pageable)
                     .map(community -> CommunityDTO.fromEntityForSearchList(community));
             case "title":
-                return communityRepository.searchCommunityTitle(searchDTO.getSearchContent(), pageable)
+                return communityRepository.searchCommunityTitle(searchContent, pageable)
                     .map(community -> CommunityDTO.fromEntityForSearchList(community));
             case "writer":
-                return communityRepository.searchMemberIdList(searchDTO.getSearchContent(), pageable)
+                return communityRepository.searchMemberIdList(searchContent, pageable)
                     .map(community -> CommunityDTO.fromEntityForSearchList(community));
             default:
-                return communityRepository.searchCommunityIdList(Long.valueOf(searchDTO.getSearchContent()), pageable)
+                return communityRepository.searchCommunityIdList(Long.valueOf(searchContent), pageable)
                     .map(community -> CommunityDTO.fromEntityForSearchList(community));
         }
     }
@@ -178,5 +178,11 @@ public class CommunityServiceImpl implements CommunityService {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("communityId").descending());
         return communityRepository.findAllByMemberMemberId(memberId,pageable)
                 .map(community -> CommunityDTO.fromEntityForSearchList(community));
+    }
+
+    @Override
+    public Page<CommunityDTO> getPopularList() {
+        Pageable pageable = PageRequest.of(0,5,Sort.by("viewCount").descending());
+        return communityRepository.getPopularList(pageable).map(community -> CommunityDTO.fromEntityForCommunityMain(community));
     }
 }

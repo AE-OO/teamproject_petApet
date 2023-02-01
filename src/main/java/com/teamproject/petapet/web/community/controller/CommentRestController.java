@@ -2,7 +2,6 @@ package com.teamproject.petapet.web.community.controller;
 
 import com.teamproject.petapet.web.community.dto.CommentDTO;
 import com.teamproject.petapet.web.community.dto.CommentRequestDTO;
-import com.teamproject.petapet.web.community.dto.CommunityDTO;
 import com.teamproject.petapet.web.community.service.CommentService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
@@ -94,9 +93,16 @@ public class CommentRestController {
     }
 
     @PostMapping("/myWritingDelete")
-    public void myWritingDelete(@RequestParam(value="deleteList[]") List<Long> deleteList) {
-        if(deleteList != null){
-            deleteList.forEach(lists -> commentService.deleteComment(lists));
-        }
+    public void myWritingDelete(@RequestParam(value="deleteId[]") List<Long> deleteId,
+                                @RequestParam(value="deleteImg[]") List<String> deleteImg) {
+        System.out.println(deleteId);
+        System.out.println(deleteImg);
+//        if(deleteImg != null){
+//            deleteImg.forEach(img -> fileService.deleteFile(img));
+//        }
+//        if(deleteId != null){
+//            deleteId.forEach(id -> commentService.deleteComment(id));
+//        }
     }
+
 }
