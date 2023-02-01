@@ -13,12 +13,12 @@ $.ajax({
         } else {
             $.each(productRes.content, function (idx, val) {
                 let productId = val.productId;
-                let productCategory = val.productCategory;
+                let productCategory = val.productCategory.toString().toLowerCase();
                 val.productPrice = priceToString(val.productPrice) + '원';
                 const html = `<tr class="productRow">
                             <td class="productCategory">${val.productDiv}</td>
                             <td class="text-start">
-                                <a class="me-2 productName">${val.productName}</a></td>
+                                <a class="me-2 productName" href="/product/${productCategory}/${productId}/details">${val.productName}</a></td>
                             <td class="productPrice">
                                ${val.productPrice}
                             </td>
@@ -37,7 +37,6 @@ $.ajax({
                             </td>
                             <td class="productViewCount">${val.productViewCount}</td>
                         </tr>`
-                setProductUrl(productId, productCategory);
                 $('#list_product').append(html);
             })
         }
@@ -65,11 +64,6 @@ function setHrefAndConst(searchParam) {
     const q = "/product?searchContent=" + searchParam;
     $('.productSearchConst').text("'" + searchParam + "' 상품 검색 결과")
     $('.moveProductList').prop('href', q);
-}
-
-function setProductUrl(productId, productCategory) {
-    const q = "/product/" + productCategory + "/" + productId + "/details";
-    $('.productName').prop('href', q);
 }
 
 function setResult(productTotalElements, communityTotalElements) {
