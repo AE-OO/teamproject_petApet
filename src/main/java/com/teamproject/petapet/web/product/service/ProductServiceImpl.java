@@ -168,25 +168,6 @@ public class ProductServiceImpl implements ProductService {
         return new PageImpl<>(productList, pageable, totalCount);
     }
 
-    private Long countProduct(String content) {
-        return jpaQueryFactory.select(product.count())
-                .where(isContent(content),
-                        product.productStatus.eq("판매중"))
-                .from(product)
-                .fetchFirst();
-    }
-
-    private Long countProduct(String category, ProductType productType, String content, Long starRating, String minPrice, String maxPrice, String isPriceRange) {
-        return jpaQueryFactory.select(product.count())
-                .where(isCategory(productType, category),
-                        isContent(content),
-                        isRating(starRating),
-                        isPriceRange(minPrice, maxPrice, isPriceRange),
-                        product.productStatus.eq("판매중"))
-                .from(product)
-                .fetchFirst();
-    }
-
     @Override
     @Transactional
     public void addProductReport(Long productId) {
