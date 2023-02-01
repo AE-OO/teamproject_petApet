@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
@@ -33,14 +32,17 @@ public class CouponBox {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime expirationDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "memberId")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "couponId")
     private Coupon coupons;
+
+    protected CouponBox(){
+    }
 
     public CouponBox(LocalDateTime expirationDate, Member member, Coupon coupons) {
         this.expirationDate = expirationDate;

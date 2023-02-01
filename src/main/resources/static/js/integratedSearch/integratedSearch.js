@@ -37,7 +37,7 @@ $.ajax({
                             </td>
                             <td class="productViewCount">${val.productViewCount}</td>
                         </tr>`
-                setMoveProduct(productId, productCategory);
+                setProductUrl(productId, productCategory);
                 $('#list_product').append(html);
             })
         }
@@ -67,7 +67,7 @@ function setHrefAndConst(searchParam) {
     $('.moveProductList').prop('href', q);
 }
 
-function setMoveProduct(productId, productCategory) {
+function setProductUrl(productId, productCategory) {
     const q = "/product/" + productCategory + "/" + productId + "/details";
     $('.productName').prop('href', q);
 }
