@@ -44,7 +44,7 @@ public class InquiredController {
 
     private final BuyService buyService;
 
-    public final String INQUIRED_CATEGORY1 = "문의";
+    public final String INQUIRED_CATEGORY1 = "기업 문의";
 
     @GetMapping()
     public String getMyInquiry(@ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
