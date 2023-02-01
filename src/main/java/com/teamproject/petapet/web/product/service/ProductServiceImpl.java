@@ -28,7 +28,6 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.teamproject.petapet.domain.buy.QBuy.buy;
 import static com.teamproject.petapet.domain.product.QProduct.product;
@@ -103,6 +102,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> findOne(Long id) {
         return productRepository.findById(id);
+    }
+
+    @Override
+    public Long compareStock(Long id) {
+        return productRepository.findQuantity(id);
     }
 
     @Override

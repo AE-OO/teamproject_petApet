@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -39,27 +41,27 @@ public class PaymentsController {
         Cart cart = cartService.findOne(cartId);
         model.addAttribute("cart", cart);
         model.addAttribute("localDate", LocalDate.now());
-        log.info("뷰 완료!!");
+        log.info("getPayment1 뷰 완료!!");
         return "mypage/cartCheckout";
     }
 
     // productList or productDetail 페이지에서 direct checkout 페이지 뷰
-    @RequestMapping(value = "/direct/checkout", method = {RequestMethod.GET})
-//    public String getPayment2(@RequestParam("productId") Long productId, @RequestParam("quantity") Long quantity, Model model,
-//    @ResponseBody
-    @GetMapping("/cart/checkout")
-    public String getPayment3(@RequestParam String str) {
-//        JSONArray objects = new JSONArray(str);
-//        String s = objects.toString();
-//        JSONObject jsonObject = new JSONObject();
-//        String s = jsonObject.optString(str);
-//        log.info("osh= {}",s);
-        return "";
-    }
+//    @RequestMapping(value = "/direct/checkout", method = {RequestMethod.GET})
+////    public String getPayment2(@RequestParam("productId") Long productId, @RequestParam("quantity") Long quantity, Model model,
+////    @ResponseBody
+//    @GetMapping("/cart/checkout")
+//    public String getPayment3(@RequestParam String str) {
+////        JSONArray objects = new JSONArray(str);
+////        String s = objects.toString();
+////        JSONObject jsonObject = new JSONObject();
+////        String s = jsonObject.optString(str);
+////        log.info("osh= {}",s);
+//        return "";
+//    }
 
     // productList 페이지에서 checkout 페이지로 이동
-    @GetMapping("/direct/checkout/{idx}")
-    public String getPayment2(@PathVariable("idx") Long productId,@RequestParam("quantity") Long quantity, Model model,
+    @GetMapping("/direct/checkout")
+    public String getPayment2(@RequestParam("productId") Long productId,@RequestParam("quantity") Long quantity, Model model,
                               Principal principal){
         Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         String loginMember = checkMember(principal);
@@ -73,17 +75,33 @@ public class PaymentsController {
         log.info("수량 ={}", quantity);
         return "mypage/directCheckout";
     }
-    @ResponseBody
-    @RequestMapping(value = "/direct/checkout/{idx}", method = { RequestMethod.POST }, produces = "application/json")
-    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId, Principal principal, Model model) {
+
+    @GetMapping("/direct/checkout/{idx}")
+    public String getPayment4(@PathVariable("idx") Long productId,@RequestParam("quantity") Long quantity, Model model,
+                              Principal principal){
+        Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         String loginMember = checkMember(principal);
-        Long getProduct = vo.getBuyProduct();
         Member member = memberService.findOne(loginMember);
-        Product product = productService.findOne(getProduct).orElseThrow(NoSuchElementException::new);
+        model.addAttribute("quantity", quantity);
         model.addAttribute("product", product);
         model.addAttribute("member", member);
+        model.addAttribute("localDate", LocalDate.now());
+        log.info("뷰 완료!!");
+
+        log.info("수량 ={}", quantity);
         return "mypage/directCheckout";
     }
+//    @ResponseBody
+//    @RequestMapping(value = "/direct/checkout/{idx}", method = { RequestMethod.POST }, produces = "application/json")
+//    public String buySuccess3(@RequestBody PaymentVO vo , @PathVariable("idx") Long productId, Principal principal, Model model) {
+//        String loginMember = checkMember(principal);
+//        Long getProduct = vo.getBuyProduct();
+//        Member member = memberService.findOne(loginMember);
+//        Product product = productService.findOne(getProduct).orElseThrow(NoSuchElementException::new);
+//        model.addAttribute("product", product);
+//        model.addAttribute("member", member);
+//        return "mypage/directCheckout";
+//    }
 
 
     // mail 전송 1
@@ -91,6 +109,9 @@ public class PaymentsController {
     @RequestMapping(value = "/checkout", method = { RequestMethod.POST }, produces = "application/json")
     public void buySuccess(@RequestBody PaymentVO vo,Principal principal, Model model) throws Exception {
         String loginMember = checkMember(principal);
+        Long currentQuantity = productService.compareStock(vo.getBuyProduct());
+        Long buyQuantity = vo.getBuyQuantity();
+        long remainQuantity = currentQuantity - buyQuantity;
         Buy buy = new Buy(
                 vo.getUid(),
                 vo.getBuyAddress(),
@@ -98,10 +119,16 @@ public class PaymentsController {
                 productService.findOne(vo.getBuyProduct()).orElseThrow(NoSuchElementException::new),
                 vo.getBuyQuantity()
         );
-        buyService.addBuy(buy);
-        log.info("구매 정보 저장 완료");
-        emailService.sendEmailMessage(vo.getBuyerEmail(), buy.getBuyId());
-        log.info("메일 전송 완료");
+
+        if ( currentQuantity >= buyQuantity){
+            buyService.addBuy(buy);
+            productService.updateProductStatus("판매중",remainQuantity, vo.getBuyProduct());
+            log.info("구매 정보 저장 완료");
+            emailService.sendEmailMessage(vo.getBuyerEmail(), buy.getBuyId());
+            log.info("메일 전송 완료");
+        } else {
+            log.info("품절 및 재고 부족");
+        }
     }
 
     // mail 전송 2
@@ -109,17 +136,26 @@ public class PaymentsController {
     @RequestMapping(value = "/checkout2", method = { RequestMethod.POST }, produces = "application/json")
     public void buySuccess2(@RequestBody PaymentVO vo,Principal principal, Model model) throws Exception {
         String loginMember = checkMember(principal);
+        Long currentQuantity = productService.compareStock(vo.getBuyProduct());
+        Long buyQuantity = vo.getBuyQuantity();
+        long remainQuantity = currentQuantity - buyQuantity;
         Buy buy = new Buy(
                 vo.getUid(),
                 vo.getBuyAddress(),
                 memberService.findOne(loginMember),
                 productService.findOne(vo.getBuyProduct()).orElseThrow(NoSuchElementException::new),
-                1L
+                vo.getBuyQuantity()
         );
-        buyService.addBuy(buy);
-        log.info("구매 정보 저장 완료");
-        emailService.sendEmailMessage(vo.getBuyerEmail(), buy.getBuyId());
-        log.info("메일 전송 완료");
+
+        if ( currentQuantity >= buyQuantity){
+            buyService.addBuy(buy);
+            productService.updateProductStatus("판매중",remainQuantity, vo.getBuyProduct());
+            log.info("구매 정보 저장 완료");
+            emailService.sendEmailMessage(vo.getBuyerEmail(), buy.getBuyId());
+            log.info("메일 전송 완료");
+        } else {
+            log.info("품절 및 재고 부족");
+        }
     }
 
     private String checkMember(Principal principal) {

@@ -275,10 +275,10 @@
                             </div>
                             <div class="d-flex flex-row">
                                 <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
-                                    <button type="button" class="btn bg-secondary me-1 addCart" value="${data[idx].productId}">장바구니
+                                    <button type="button" class="btn bg-secondary me-1 addCart" value="${data[idx].productId}" onclick="location.href='/product/food/${data[idx].productId}/details'">장바구니
                                         <input type="hidden" class="quan" value="1"></button>
-                                    <a class="btn bg-secondary me-1 addBuy" href="/direct/checkout/${data[idx].productId}">바로구매
-                                        <input type="hidden" class="quan" value="1"></a>
+                                    <a class="btn bg-secondary me-1 addBuy" href="/product/food/${data[idx].productId}/details">바로구매
+                                        <input type="hidden" class="quan" name="quantity" value="1"></a>
                                 </div>
                             </div>
                         </div>

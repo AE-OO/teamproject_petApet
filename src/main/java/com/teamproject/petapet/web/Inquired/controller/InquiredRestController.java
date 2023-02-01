@@ -32,6 +32,6 @@ public class InquiredRestController {
     @PostMapping("/addAnswer/{inquiredId}")
     public void addAnswer(@PathVariable("inquiredId") Long inquiredId, @ModelAttribute("inquiredList") InquiryRequestDTO.GetAnswerDTO getAnswerDTO) throws Exception {
         inquiredService.setInquiredCheck(inquiredId, getAnswerDTO.getAnswer());
-        emailService.sendEmailMessage2(getAnswerDTO.getAnswer(), inquiredId);
+        emailService.sendEmailMessage2(inquiredService.findOne(inquiredId).getMember().getMemberEmail(), inquiredId);
     }
 }
