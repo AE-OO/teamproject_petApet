@@ -47,6 +47,11 @@ $(document).ready(function(){
         //세부사항 정보를 다시 안보이게 함
         $("#productDetailInfo").css("display","none");
     })
+
+    $('#productUpdateBTN').click(function () {
+        let productId = $("#detailProductId").val();
+        location.href = '/product/update?productId=' + productId
+    })
 })
 
 //회사가 등록한 상품 리스트 출력
@@ -73,3 +78,4 @@ function getProductList(){
         $(".productData").html(list);
     })
 }
+

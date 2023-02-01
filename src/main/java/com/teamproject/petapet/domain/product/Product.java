@@ -23,7 +23,6 @@ import java.util.List;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(exclude = {"company", "review", "cart"})
 @Getter
 @DynamicInsert
@@ -87,9 +86,12 @@ public class Product {
     private List<Cart> cart;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId")
     private Company company;
+
+    protected Product() {
+    }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {
         return ProductDetailDTO.builder().productPrice(product.getProductPrice())

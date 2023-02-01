@@ -21,7 +21,6 @@ import java.util.List;
 @Entity
 @Builder
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
@@ -51,6 +50,8 @@ public class Coupon {
     @OneToMany(mappedBy = "coupons", cascade = CascadeType.REMOVE)
     private List<CouponBox> couponBoxes = new ArrayList<>();
 
+    protected Coupon(){
+    }
     public void updateCoupon(CouponDTO couponDTO) {
         this.couponId = couponDTO.getCouponId();
         this.couponName = couponDTO.getCouponName();

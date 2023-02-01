@@ -28,12 +28,14 @@ import static com.teamproject.petapet.domain.product.QCouponBox.couponBox;
 
 @Service
 @Slf4j
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CouponBoxServiceImpl implements CouponBoxService {
     private final CouponBoxRepository couponBoxRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
+    @Transactional
     public boolean save(Member member, Coupon coupon) {
         if (!duplicateCheckCoupon(coupon, member)) {
             CouponBox couponBox = new CouponBox(LocalDateTime.now().plusDays(7L), member, coupon);
@@ -41,10 +43,6 @@ public class CouponBoxServiceImpl implements CouponBoxService {
             return true;
         }
         return false;
-    }
-
-    private boolean duplicateCheckCoupon(Coupon coupon, Member member) {
-        return couponBoxRepository.existsByCouponsAndMember(coupon, member);
     }
 
     @Override
@@ -105,4 +103,8 @@ public class CouponBoxServiceImpl implements CouponBoxService {
         return null;
     }
 
+
+    private boolean duplicateCheckCoupon(Coupon coupon, Member member) {
+        return couponBoxRepository.existsByCouponsAndMember(coupon, member);
+    }
 }
