@@ -32,6 +32,7 @@
                         }
                     }
             });
+
             $("#messageContent").focus();
             $("#messageDiv").scroll(function () {
                 if (last) {
@@ -57,6 +58,7 @@
                 success: function (data) {
                     $("#messageContent").val('');
                     getMessageList(0);
+                    parentRefresh();
 
                 }
                 , error: function () {
@@ -78,6 +80,7 @@
                     nowPage = data.number;
                     last = data.last;
                     showMessageList(data,nowPage);
+                    parentRefresh()
 
                 }
                 , error: function () {
@@ -118,6 +121,12 @@
 
         }
 
+        //부모창 함수 가져옴 (부모창이 내정보-쪽지함일 경우 사용)
+        function parentRefresh(){
+            let parentPageNum=opener.parent.nowPage;
+            let parentPageSize=opener.parent.nowPageSize;
+            opener.parent.getMessageRoomList(parentPageNum, parentPageSize);
+        }
     </script>
 </head>
 <body>

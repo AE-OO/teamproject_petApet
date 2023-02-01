@@ -89,12 +89,4 @@ public class CommunityRequestDTO {
         }
 
     }
-
-    @Data
-    public static class SearchDTO {
-        private String searchContent;
-        private int pageNum=0;
-        private int pageSize=20;
-        private String sort="createdDate";
-    }
 }

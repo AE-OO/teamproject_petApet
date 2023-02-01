@@ -6,6 +6,7 @@
 div{ display: block;}
 
 body {
+    top: 100px;
     min-width: 1020px;
     background-color: #ffffff;
     display: block;
@@ -347,6 +348,7 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fi
 
 #container{
     position: relative;
+    top: 70px;
     min-width: 980px;
     overflow: hidden;
 }

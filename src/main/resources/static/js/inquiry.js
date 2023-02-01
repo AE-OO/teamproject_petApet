@@ -197,5 +197,5 @@ function fn_delete(){
 }
 
 const putValue = (target) => {
-    let value = $('#inputBuySelect01').val();
-    $('input[name=productDiv]').attr('value',value);}
+    let value = $('#companyId').val();
+    $('input[name=companyId]').attr('value',value);}

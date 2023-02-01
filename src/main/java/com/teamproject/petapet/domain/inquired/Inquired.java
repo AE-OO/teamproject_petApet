@@ -53,6 +53,12 @@ public class Inquired {
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
+//    // 구매한 상품
+//    @JsonBackReference
+//    @ManyToOne
+//    @JoinColumn(name = "memberId", nullable = false)
+//    private Buy buy;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "companyId")
@@ -70,10 +76,9 @@ public class Inquired {
     @CollectionTable(name = "InquiredImg", joinColumns = @JoinColumn(name = "inquiredImgId", referencedColumnName = "inquiredId"))
     private List<UploadFile> inquiredImg;
 
-    public Inquired(String inquiredTitle, String inquiredContent, String inquiredCategory, Member member, Company company, boolean checked) {
+    public Inquired(String inquiredTitle, String inquiredContent, Member member, Company company, boolean checked) {
         this.inquiredTitle = inquiredTitle;
         this.inquiredContent = inquiredContent;
-        this.inquiredCategory = inquiredCategory;
         this.member = member;
         this.company = company;
         this.checked = checked;

@@ -18,8 +18,9 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <h1 class="display-1 text-white mb-5 animated slideInDown">Welcome petApet</h1>
-                            <form class="d-flex">
-                                <input class="form-control me-sm-2" type="text" placeholder="찾고싶은 상품을 검색해 보세요!">
+                            <form class="d-flex" th:action="@{/search}">
+                                <input class="form-control me-sm-2" name="searchContent" type="text"
+                                       placeholder="찾고싶은 상품을 검색해 보세요!">
                                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                             </form>
                         </div>
@@ -31,63 +32,64 @@
 </div>
 <!-- Search End -->
 
-<!-- Top Feature Start -->
+<!-- CommunityList Start -->
 <div class="container-fluid top-feature py-5 pt-lg-0">
     <div class="container py-5 pt-lg-0">
-        <div class="row gx-0">
+        <div class="community row gx-0">
             <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
-                <div class="bg-white shadow d-flex align-items-center h-100 px-5" style="min-height: 160px;">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0 btn-lg-square rounded-circle bg-light">
-                            <i class="fa fa-times text-primary"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h4>No Hidden Cost</h4>
-                            <span>Clita erat ipsum lorem sit sed stet duo justo</span>
-                        </div>
+                <div class="bg-white shadow px-5 py-4" style="height: 240px;">
+                    <h4 class="mb-0 pb-2 border-bottom border-3">
+                        <span class="badge px-0 bg-light rounded-circle me-1" style="width:45px; height:45px;">
+                            <i class="fa fa-check fs-2 text-primary"></i>
+                        </span>
+                        최신글
+                    </h4>
+                    <div class="mb-0 mt-3 table">
+                        <ul id="latestList" class="m-0 p-0"></ul>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 wow fadeIn" data-wow-delay="0.3s">
-                <div class="bg-white shadow d-flex align-items-center h-100 px-5" style="min-height: 160px;">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0 btn-lg-square rounded-circle bg-light">
-                            <i class="fa fa-users text-primary"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h4>Dedicated Team</h4>
-                            <span>Clita erat ipsum lorem sit sed stet duo justo</span>
-                        </div>
+                <div class="bg-white shadow px-5 py-4" style="height: 240px;">
+                    <h4 class="mb-0 pb-2 border-bottom border-3">
+                        <span class="badge px-0 bg-light rounded-circle me-1" style="width:45px; height:45px;">
+                            <i class="bi bi-fire fs-2 text-primary"></i>
+                        </span>
+                        인기글
+                    </h4>
+                    <div class="mb-0 mt-3 table">
+                        <ul id="popularList" class="m-0 p-0"></ul>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 wow fadeIn" data-wow-delay="0.5s">
-                <div class="bg-white shadow d-flex align-items-center h-100 px-5" style="min-height: 160px;">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0 btn-lg-square rounded-circle bg-light">
-                            <i class="fa fa-phone text-primary"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h4>24/7 Available</h4>
-                            <span>Clita erat ipsum lorem sit sed stet duo justo</span>
-                        </div>
+                <div class="bg-white shadow px-5 py-4" style="height: 240px;">
+                    <h4 class="mb-0 pb-2 border-bottom border-3">
+                        <span class="badge px-0 bg-light rounded-circle me-1" style="width:45px; height:45px;">
+                            <i class="bi bi-megaphone-fill me-1 fs-3 text-primary"></i>
+                        </span>
+                        공지사항
+                    </h4>
+                    <div class="mb-0 mt-3 table">
+                        <ul id="noticeList" class="m-0 p-0"></ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Top Feature End -->
+<!-- CommunityList End -->
 
-<div
-        id="kakao-talk-channel-chat-button"
-        data-channel-public-id="_txnxixbxj"
-        data-title="consult"
-        data-size="small"
-        data-color="mono"
-        data-shape="pc"
-        data-support-multiple-densities="true"
-></div>
+<!--<div-->
+<!--        id="kakao-talk-channel-chat-button"-->
+<!--        data-channel-public-id="_txnxixbxj"-->
+<!--        data-title="consult"-->
+<!--        data-size="small"-->
+<!--        data-color="mono"-->
+<!--        data-shape="pc"-->
+<!--        data-support-multiple-densities="true"-->
+<!--        style="position: fixed; top: 53rem"-->
+<!--&gt;</div>-->
 
 <!-- Projects Start -->
 <div class="container-xxl py-5">
@@ -214,22 +216,22 @@
 <script src="js/main.js"></script>
 
 <script type="text/javascript" th:inline="javascript">
-    window.kakaoAsyncInit = function () {
-        Kakao.Channel.createChatButton({
-            container: '#kakao-talk-channel-chat-button',
-        });
-    };
+    // window.kakaoAsyncInit = function () {
+    //     Kakao.Channel.createChatButton({
+    //         container: '#kakao-talk-channel-chat-button',
+    //     });
+    // };
 
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.0.0/kakao.channel.min.js';
-        js.integrity = 'sha384-qN6njjEgLQzM0N/uuB26JXrlFnwdctF+owkJc/pTqUpi1Qrp9xAvRKYIkzH5XcJU';
-        js.crossOrigin = 'anonymous';
-        fjs.parentNode.insertBefore(js, fjs);
-    })(document, 'script', 'kakao-js-sdk');
+    // (function (d, s, id) {
+    //     var js, fjs = d.getElementsByTagName(s)[0];
+    //     if (d.getElementById(id)) return;
+    //     js = d.createElement(s);
+    //     js.id = id;
+    //     js.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.0.0/kakao.channel.min.js';
+    //     js.integrity = 'sha384-qN6njjEgLQzM0N/uuB26JXrlFnwdctF+owkJc/pTqUpi1Qrp9xAvRKYIkzH5XcJU';
+    //     js.crossOrigin = 'anonymous';
+    //     fjs.parentNode.insertBefore(js, fjs);
+    // })(document, 'script', 'kakao-js-sdk');
 
     $(document).ready(sortProduct('productViewCount'));
 
@@ -292,12 +294,45 @@
                         });
                     }
                     $('#appendTarget').append(productListHtml);
-                    $('#priceToString'+idx).text(priceToString(data[idx].productPrice)+'원')
+                    $('#priceToString' + idx).text(priceToString(data[idx].productPrice) + '원')
                 })
             });
     }
+
     function priceToString(price) {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    $(function () {
+        getIndexCommunityList();
+        // getPopularCommunityList();
+    });
+    getIndexCommunityList = function () {
+        $.getJSON('/community/getIndexList', function (data) {
+            showList(data.latest,"latest");
+            showList(data.popular,"popular");
+            showList(data.notice,"notice");
+        })
+    }
+
+    showList = function (data, classification) {
+        let str = ``
+        if (data.content.length === 0) {
+            str += `<li class="text-danger">작성된 글이 없습니다</li>`;
+        } else {
+            $.each(data.content, function (idx, val) {
+                str += `<li class="text-truncate">
+                        <span class="text-lightGray ps-0">${idx + 1}.</span>
+                        <a href="/community/${val.communityId}" class="ps-0 text-dark">
+                        <span class="text-danger me-2">${val.communityCategory}</span>`
+                if (val.communitySubCategory != null) {
+                    str += `<span class="text-lightGray me-2">${val.communitySubCategory}</span>`
+                }
+                str += `<span>${val.communityTitle}</span></a></li>`
+            })
+        }
+        $(`#${classification}List`).html(str);
+        // $('#' + classification + 'List').html(str);
     }
 
 </script>

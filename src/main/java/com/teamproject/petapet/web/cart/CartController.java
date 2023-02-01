@@ -57,10 +57,35 @@ public class CartController {
     @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
     public void productToCart(@RequestBody CartVO vo, Principal principal){
 
+//        String loginMember = checkMember(principal);
+//        Long product = vo.getProduct();
+//        Long quantity = vo.getQuantity();
+//        log.info("dd ={}", quantity);
+//        Cart cart = new Cart(
+//                memberService.findOne(loginMember),
+//                productService.findOne(product).orElseThrow(NoSuchElementException::new),
+//                quantity);
+//
+//        cartService.addCart(cart);
+
         String loginMember = checkMember(principal);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
         log.info("dd ={}", quantity);
+        log.info("dddd ={}", vo.getMemberId());
+//        if (!cartService.checkDuplication(memberService.findOne(vo.getMemberId()))){
+//            log.info("카트 상품없음");
+//            Cart cart = new Cart(
+//                    memberService.findOne(vo.getMemberId()),
+//                    productService.findOne(product).orElseThrow(NoSuchElementException::new),
+//                    quantity);
+//
+//            cartService.addCart(cart);
+//        } else {
+//            log.info("카트 상품있음");
+//            log.info("cartIdd ={}", vo.getCartId());
+//            cartService.setQuan(vo.getQuantity(), vo.getCartId());
+//        }
         Cart cart = new Cart(
                 memberService.findOne(loginMember),
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
@@ -85,13 +110,19 @@ public class CartController {
 
     }
 
-    // 카트페이지 주문수정 버튼 - 수량 변경
+    // 카트페이지 주문수정 버튼 - 수량 변경 - 미완
     @ResponseBody
     @RequestMapping(value = "/modify", method = { RequestMethod.POST } , produces = "application/json")
     public void modifyCart(@RequestBody CartVO vo){
         log.info("카트 번호>> ={}", vo.getCartId());
         log.info("수량 변경>> ={}", vo.getQuantity());
         cartService.setQuan(vo.getQuantity(), vo.getCartId());
+    }
+    // 상품 구매완료 후 장바구니 비우기
+    @ResponseBody
+    @RequestMapping(value = "/success", method = { RequestMethod.POST } , produces = "application/json")
+    public void successBuy(@RequestBody CartVO vo){
+        cartService.removeCartOne(vo.getCartId());
     }
 
     @ResponseBody

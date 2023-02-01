@@ -1162,3 +1162,8 @@ ul,li{
 .myWritingList .badge2{
     font-size:12px !important;
 }
+
+.community ul > li > a:hover{
+    color : var(--bs-gray-700);
+    text-decoration: underline;
+}

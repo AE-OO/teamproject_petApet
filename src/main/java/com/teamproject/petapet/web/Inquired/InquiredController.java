@@ -1,10 +1,13 @@
 package com.teamproject.petapet.web.Inquired;
 
 
+import com.teamproject.petapet.domain.buy.Buy;
+import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.Inquired.dto.InquiredSubmitDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
+import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
@@ -39,6 +42,8 @@ public class InquiredController {
 
     private final FileService fileService;
 
+    private final BuyService buyService;
+
     public final String INQUIRED_CATEGORY1 = "문의";
 
     @GetMapping()
@@ -47,7 +52,9 @@ public class InquiredController {
         String loginMember = checkMember(principal);
         List<Inquired> myInquiry = inquiredService.getMyInquired(loginMember);
         model.addAttribute("myInquiry", myInquiry);
-        return "/mypage/inquiry";
+        List<Buy> buyList = buyService.findAll(loginMember);
+        model.addAttribute("buyList", buyList);
+        return "mypage/inquiry";
     }
 
 //    @GetMapping
@@ -66,7 +73,6 @@ public class InquiredController {
         Inquired inquired = new Inquired(
                 inquiredSubmitDTO.getTitle(),
                 inquiredSubmitDTO.getInquiredContent(),
-                INQUIRED_CATEGORY1,
                 loginMember,
                 companyService.findOne(inquiredSubmitDTO.getCompanyId()).orElseThrow(NoSuchElementException::new),
                 false
@@ -81,5 +87,4 @@ public class InquiredController {
     private String checkMember(Principal principal) {
         return memberService.findOne(principal.getName()).getMemberId();
     }
-
 }

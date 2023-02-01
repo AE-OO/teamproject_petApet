@@ -38,6 +38,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query("select m from Message m where m.messageId in(select max(m1.messageId) from Message m1 group by m1.roomNumber) and (m.member.memberId=:memberId or m.messageReceiver=:memberId)")
     Page<Message> getMessageRoomList(String memberId,Pageable pageable);
 
-    @Query("select count(m) from Message m where m.messageReceiver=:memberId and m.messageCheck=true and m.roomNumber=:roomNumber")
-    int unCheckedMessageSize(String memberId);
+    @Query("select count(m) from Message m where m.messageReceiver=:memberId and m.messageCheck=false and m.roomNumber=:roomNumber")
+    int unCheckedMessageSize(String memberId,int roomNumber);
 }

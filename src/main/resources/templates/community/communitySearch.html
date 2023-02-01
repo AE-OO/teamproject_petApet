@@ -7,65 +7,14 @@
     <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
     <script th:src="@{/js/community/community.js}"></script>
-    <script>
-        $(function () {
-            getSearchList(nowPage, nowPageSize, "createdDate")
-            $("#type").val(type);
-            $("#searchContent").val(searchContent);
-            $("#typeRes").text("(" + typeRes(type) + ")");
-            $("#searchContentRes").text("'" + searchContent + "'");
-            $("input[name=radioCheck]").click(function () {
-                if ($("input[name=radioCheck]:checked").val() === "title") {
-                    $(".communityContent").hide();
-                    $(".communityTitle").removeClass("border-white")
-                } else {
-                    $(".communityContent").show();
-                    $(".communityTitle").addClass("border-white")
-                }
-            })
-            //목록 개수 선택
-            $("#pageSizeList").children().click(function () {
-                getSearchList(nowPage, $(this).find('span').text(), nowSort)
-            });
-            //최신순,조회순,댓글순  선택
-            $("#sort").children().click(function () {
-                getSearchList(nowPage, nowPageSize, $(this).val())
-            });
-            //댓글 보기
-            $(document).on("click", ".badge2", function () {
-                window.open("/comment/" + $(this).parent().prev().text().trim(), "_blank", "width=900,height=800,left=0,top=0,location=no");
-            });
-            //이전 페이지
-            $(document).on("click", "#prevPage", function () {
-                if ($(this).hasClass('disabled')) {
-                    return;
-                }
-                getSearchList(nowPage - 1, nowPageSize, nowSort);
-
-            });
-            //다음 페이지
-            $(document).on("click", "#nextPage", function () {
-                if ($(this).hasClass('disabled')) {
-                    return;
-                }
-                getSearchList(nowPage + 1, nowPageSize, nowSort);
-
-            });
-            //댓글 페이지선택
-            $(document).on("click", ".selectPage", function () {
-                if ($(this).parent().hasClass('active')) {
-                    return;
-                }
-                getSearchList($(this).text() - 1, nowPageSize, nowSort);
-            });
-        })
-
-    </script>
+    <script th:src="@{/js/community/paginationJS.js}"></script>
+    <script th:src="@{/js/community/communityResult.js}"></script>
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <!-- start feature1 -->
-<hr class="mt-5">
+<hr class="mt-5 border-white">
+
 <div class="container-xxl ">
     <div class="container py-5">
         <div class="text-center">
@@ -98,7 +47,7 @@
             <div class="col-12 ">
                 <div class="float-start">
                     <p id="sort" class="pt-2 mb-0 text-gray-400">
-                        <button class="btn btn-link2 pe-1 dropdown-toggle" value="createdDate">최신순</button>
+                        <button class="btn btn-link2 pe-1 dropdown-toggle" value="communityId">최신순</button>
                         |
                         <button class="btn btn-link2 px-1 dropdown-toggle" value="size(c.comment)">댓글순</button>
                         |
@@ -127,18 +76,7 @@
                         <label class="form-check-label" for="radio2">제목+내용</label>
                     </div>
                 </div>
-                <table class="table2 table-responsive">
-                    <thead>
-                    <tr>
-                        <th class="col-md-1">번호</th>
-                        <th>제목</th>
-                        <th class="col-md-2">글쓴이</th>
-                        <th class="col-md-2">작성일</th>
-                        <th class="col-md-1">조회</th>
-                    </tr>
-                    </thead>
-                    <tbody id="list"></tbody>
-                </table>
+                <table id="list" class="table2 table-responsive"></table>
                 <div class="mt-4">
                     <div id="page"></div>
                 </div>
