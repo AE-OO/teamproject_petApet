@@ -66,4 +66,10 @@ public class InquiredServiceImpl implements InquiredService {
         inquiredRepository.save(inquiryRequestDTO.toEntity());
     }
 
+    @Override
+    public List<InquiryDTO> getProductDetailPageInquiryList(Long productId) {
+        List<Inquired> inquiryDTOList = inquiredRepository.findAllByProduct_ProductIdOrderByInquiredDate(productId);
+        return inquiryDTOList.stream().map(list -> InquiryDTO.fromEntityForProductDetailPage(list)).collect(Collectors.toList());
+    }
+
 }

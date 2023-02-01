@@ -31,9 +31,16 @@ public class InquiredRestController {
         inquiredService.setInquiredCheck(inquiredId, getAnswerDTO.getAnswer());
     }
 
+    // 상품 상세 페이지에서 상품에 대한 문의 등록하기
     @PostMapping("/registerProductInquiry")
     public ResponseEntity<String> registerProductInquiry(@RequestBody InquiryRequestDTO.RegisterInquiryToCompany inquiryRequestDTO){
         inquiredService.registerProductInquiry(inquiryRequestDTO);
         return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+    
+    // 상품 상세 페이지에 상품에 대한 문의 리스트 띄우기
+    @GetMapping(value="/getProductInquiry/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InquiryDTO>> getProductDetailPageInquiryList(@PathVariable("productId") Long productId){
+        return new ResponseEntity<>(inquiredService.getProductDetailPageInquiryList(productId), HttpStatus.OK);
     }
 }

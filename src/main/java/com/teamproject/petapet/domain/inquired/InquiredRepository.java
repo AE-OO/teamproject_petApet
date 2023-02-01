@@ -25,4 +25,6 @@ public interface InquiredRepository extends JpaRepository<Inquired, Long> {
     void setCheck(@Param("inquiredId") Long inquiredId, @Param("answer") String answer);
 
     List<Inquired> findAllByCompany_CompanyIdOrderByCheckedAscInquiredDate(String companyId);
+
+    List<Inquired> findAllByProduct_ProductIdOrderByInquiredDate(Long productId);
 }

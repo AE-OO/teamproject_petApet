@@ -30,4 +30,6 @@ public interface InquiredService {
 
     //상품 문의 등록
     void registerProductInquiry(InquiryRequestDTO.RegisterInquiryToCompany inquiryRequestDTO);
+
+    List<InquiryDTO> getProductDetailPageInquiryList(Long productId);
 }
