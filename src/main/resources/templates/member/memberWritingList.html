@@ -51,21 +51,21 @@
                 getLoginMemberWritingList($(this).text() - 1, nowPageSize, nowSort);
             });
             $("#allCheck").click(function () {
-                if($("input[name='deleteCheck']:checked").length === $(".communityTitle").length){
-                    $("input[name='deleteCheck']").prop("checked",false)
-                }else{
+                if ($("input[name='deleteCheck']:checked").length === $(".communityTitle").length) {
+                    $("input[name='deleteCheck']").prop("checked", false)
+                } else {
 
-                    $("input[name='deleteCheck']").prop("checked",true)
+                    $("input[name='deleteCheck']").prop("checked", true)
                 }
             })
             $("#deleteBtn").click(function () {
-                if($("input[name='deleteCheck']:checked").length === 0){
+                if ($("input[name='deleteCheck']:checked").length === 0) {
                     alert("삭제할 게시물을 선택해 주세요.")
                     return;
                 }
-                if (confirm("정말로 삭제하시겠습니까?") == true){
+                if (confirm("정말로 삭제하시겠습니까?") == true) {
                     myWritingDelete(nowSort)
-                }else{
+                } else {
                     return;
                 }
             })
@@ -110,36 +110,41 @@
         myWritingDelete = function (type) {
             let id = [];
             let img = [];
-            // while(extractUrl=regex.exec(image)){
-            //
-            //     console.log(extractUrl[1])
-            //
-            // }
-            $("input[name='deleteCheck']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
-                id.push($(this).val());
-                if($(this).closest(".communityTitle").find(".commentImg").attr("src")===undefined){
-                    return;
+            if (type === "community") {
+                let communityImg = [];
+                $("input[name='deleteCheck']:checked").each(function () {
+                    let idx = $(this).closest(".communityTitle").next().find("a").attr("data-value")
+                    id.push($(this).val());
+                    if (communityContentParam[idx].length > 0) {
+                        communityImg.push(communityContentParam[idx])
+                    }
+                });
+                img = communityImg.join().split(",")
+            } else {
+                $("input[name='deleteCheck']:checked").each(function () {
+                    id.push($(this).val());
+                    if ($(this).closest(".communityTitle").find(".commentImg").attr("src") === undefined) {
+                        return;
+                    }
+                    img.push($(this).closest(".communityTitle").find(".commentImg").attr("src").split("/")[2])
+                });
+            }
+            $.ajax({
+                url: "/"+type+"/myWritingDelete",
+                type: "post",
+                data: {
+                    deleteId: id,
+                    deleteImg: img
+                },
+                // contentType: "application/json",
+                dateType: "text",
+                success: function () {
+                    getLoginMemberWritingList(nowPage, nowPageSize, type);
                 }
-                img.push($(this).closest(".communityTitle").find(".commentImg").attr("src").split("/")[2])
-            });
-
-            // $.ajax({
-            //     url: "/"+type+"/myWritingDelete",
-            //     type: "post",
-            //     data: {
-            //         deleteId: id,
-            //         deleteImg: img
-            //     },
-            //     // contentType: "application/json",
-            //     dateType: "text",
-            //     success: function () {
-            //         getLoginMemberWritingList(nowPage, nowPageSize, value);
-            //     }
-            //     , error: function () {
-            //         alert('오류가 발생하였습니다.');
-            //     }
-            // })
-
+                , error: function () {
+                    alert('오류가 발생하였습니다.');
+                }
+            })
         }
     </script>
     <script th:src="@{/js/community/paginationJS.js}"></script>
@@ -167,13 +172,16 @@
                                 </div>
                                 <div class="ms-2 d-inline-block align-middle">
                                     <div class="mb-1">
-                                        <strong id="memberId" class="me-1"></strong><a href="/member/checkInfo" class="ms-1" style="font-size:14px;">내 정보 수정</a>
+                                        <strong id="memberId" class="me-1"></strong><a href="/member/checkInfo"
+                                                                                       class="ms-1"
+                                                                                       style="font-size:14px;">내 정보
+                                        수정</a>
                                     </div>
                                     <div style="font-size: 15px">
                                         <span class="me-2">총 게시물<strong id="communityCount"
-                                                                         class="text-danger ms-1"></strong>개</span>|
+                                                                        class="text-danger ms-1"></strong>개</span>|
                                         <span class="ms-1">총 댓글<strong id="commentCount"
-                                                                        class="text-danger ms-1"></strong>개</span>
+                                                                       class="text-danger ms-1"></strong>개</span>
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +224,8 @@
                                 <thead>
                                 <tr>
                                     <td class="py-1">
-                                        <button id="allCheck" class="btn btn-outline-dark btn-sm"><i class="fa fa-check me-1" aria-hidden="true"></i>전체선택
+                                        <button id="allCheck" class="btn btn-outline-dark btn-sm"><i
+                                                class="fa fa-check me-1" aria-hidden="true"></i>전체선택
                                         </button>
                                         <button id="deleteBtn" class="btn btn-outline-dark btn-sm">삭제</button>
                                     </td>

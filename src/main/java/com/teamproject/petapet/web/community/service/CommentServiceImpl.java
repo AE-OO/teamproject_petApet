@@ -16,7 +16,6 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-
     @Override
     public void insertComment(String memberId, CommentRequestDTO.InsertDTO insertDTO) {
         commentRepository.updateReplyId(commentRepository.save(insertDTO.toEntity(memberId)).getCommentId());
@@ -28,11 +27,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Page<CommentDTO> getCommentPageList(Long communityId, int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum, 20,
-                Sort.by("replyId").ascending().and(Sort.by("createdDate")));
-        return commentRepository.commentList(communityId,pageable)
-                .map(c -> CommentDTO.fromEntity(c));
+    public Page<CommentDTO> getCommentList(Long communityId, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, 20, Sort.by("replyId").ascending().and(Sort.by("createdDate")));
+        return commentRepository.commentList(communityId,pageable).map(c -> CommentDTO.fromEntity(c));
     }
 
     @Override

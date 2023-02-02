@@ -39,22 +39,24 @@
             <div class="border p-5 pb-8">
                 <h5><span class="text-danger" th:text="${posts.communityCategory}"/></h5>
                 <h4>
-                    <span class="me-2" style="color:#888;" th:text="${posts.communitySubCategory}"/>
+                    <span class="me-2" style="color:#888;" th:unless="${posts.communitySubCategory} == null" th:text="${posts.communitySubCategory}"/>
                     [[${posts.communityTitle}]]</h4>
-                <img class="rounded-circle border border-1 me-1 my-1"
+                <img class="rounded-circle border border-1 me-1 my-1" th:if="${posts.communityCategory == '공지사항'}" src="/img/adminProfile.jpg"
+                     width="50" height="50" style="object-fit: cover;">
+                <img class="rounded-circle border border-1 me-1 my-1" th:unless="${posts.communityCategory == '공지사항'}"
                      th:src="${posts.memberImg}==0? '/img/profile.jpg':'/image/'+${posts.memberImg}"
                      width="50" height="50" style="object-fit: cover;">
-                <div class="dropdown mx-1 d-inline-block memberDiv">
+                <strong class="mx-1 text-dark" th:text="관리자" th:if="${posts.communityCategory == '공지사항'}"/>
+                <div class="dropdown mx-1 d-inline-block memberDiv" th:unless="${posts.communityCategory == '공지사항'}">
                     <a href="javascript:" id="postsMemberId" class="memberId" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false" th:text="${posts.memberId}"/>
                     <ul class="dropdown-menu" style="min-width: auto;">
                         <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
                         <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>
-                        <li th:unless="${#authentication.name == posts.memberId}">
+                        <li sec:authorize="hasRole('MEMBER')" th:unless="${#authentication.name == posts.memberId}">
                             <a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a>
                         </li>
-                        <li th:unless="${#authentication.name == posts.memberId}">
-                            <!--                            <a class="dropdown-item memberReport" href="javascript:">신고하기</a>-->
+                        <li sec:authorize="hasRole('MEMBER')" th:unless="${#authentication.name == posts.memberId}">
                             <button type="button" class="dropdown-item memberReport" id="addProductReport"
                                     data-bs-toggle="modal" data-bs-target="#addReportModal"
                                     title="신고하기">신고하기
@@ -71,7 +73,7 @@
                             type="button" class="btn btn-info" th:if="${#authentication.name == posts.memberId}">수정
                     </button>
                     <button id="postsDelete" type="button" class="btn btn-danger"
-                            th:if="${#authentication.name == posts.memberId}">삭제
+                            th:if="${#authentication.name == posts.memberId} or ${#strings.equals(#authentication.authorities,'[ROLE_ADMIN]')}">삭제
                     </button>
                     <div class="dropdown mx-1 d-inline-block">
                         <a href="javascript:" role="button" data-bs-toggle="dropdown" class="btn btn-link2 p-0"
@@ -83,6 +85,8 @@
                                         title="신고">신고
                                 </button>
                             </li>
+
+
                         </ul>
                     </div>
                 </div>
@@ -110,10 +114,10 @@
                             <i class="bi bi-image fs-4 mt-3"></i>
                         </button>
                         <span id="commentLength">0</span><span class="text-grey">/600</span>
-                        <button id="lockBtn" class="btn btn-link2 mx-2 p-0">
+                        <button sec:authorize="hasRole('MEMBER')" id="lockBtn" class="btn btn-link2 ms-2 p-0">
                             <i id="lockIcon" class="bi bi-unlock-fill fs-4 m-0"></i>
                         </button>
-                        <button type="button" id="commentSubmitBtn" class="btn btn-danger text-end">등록</button>
+                        <button type="button" id="commentSubmitBtn" class="btn btn-danger ms-2 text-end">등록</button>
                     </div>
                 </div>
             </div>

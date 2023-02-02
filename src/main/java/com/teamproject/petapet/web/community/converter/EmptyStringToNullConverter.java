@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+//controller로 받아온 값이 빈 문자열일 때 null로 바꿔줌
 @Converter
 public class EmptyStringToNullConverter implements AttributeConverter<String, String> {
     @Override

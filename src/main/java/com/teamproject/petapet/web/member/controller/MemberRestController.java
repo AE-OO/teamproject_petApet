@@ -27,7 +27,6 @@ public class MemberRestController {
 
     @Value("${editor.img.save.url}")
     private String saveUrl;
-
     private final MemberService memberService;
     private final FileService fileService;
 
@@ -43,11 +42,13 @@ public class MemberRestController {
         return memberService.checkMemberPw(principal.getName(), memberPw);
     }
 
+    //이메일 확인
     @PostMapping("/checkEmail")
     boolean checkMemberEmail(@RequestParam String memberEmail) {
         return memberService.duplicateCheckMemberEmail(memberEmail);
     }
 
+    //휴대전화 확인
     @PostMapping("/checkPhoneNum")
     boolean checkMemberPhoneNum(@RequestParam String memberPhoneNum) {
         return memberService.duplicateCheckMemberPhoneNum(memberPhoneNum);
@@ -62,6 +63,7 @@ public class MemberRestController {
         return false;
     }
 
+    //비밀번호 변경
     @PostMapping("/updateMemberPw")
     int updateMemberPw(Principal principal, @Valid @RequestBody MemberRequestDTO.UpdateMemberPwDTO updateMemberPwDTO) {
         if (!memberService.checkMemberPw(principal.getName(), updateMemberPwDTO.getNewMemberPw())) {
@@ -70,6 +72,7 @@ public class MemberRestController {
         return 0;
     }
 
+    //프로필 사진 변경
     @PostMapping("/updateMemberImg")
     void updateMemberImg(Principal principal, @RequestParam(required = false) MultipartFile memberImg) throws IOException {
         fileService.deleteFile(memberService.getOriginalMemberImg(principal.getName()));
@@ -92,11 +95,13 @@ public class MemberRestController {
         return new ResponseEntity<>(new String[]{userDetails.getUsername(), userDetails.getAuthorities().toString()}, HttpStatus.OK);
     }
 
+    //커뮤니티 회원정보
     @PostMapping("/getMemberProfile")
     public ResponseEntity<CommunityMemberDTO> getMemberProfile(String memberId){
         return new ResponseEntity<>(memberService.memberProfile(memberId),HttpStatus.OK);
     }
 
+    //내정보 - 글목록 회원정보
     @PostMapping("/getLoginMemberProfile")
     public ResponseEntity<CommunityMemberDTO> getLoginMemberProfile(Principal principal){
         return new ResponseEntity<>(memberService.memberProfile(principal.getName()),HttpStatus.OK);

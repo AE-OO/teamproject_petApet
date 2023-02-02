@@ -8,6 +8,7 @@ import com.teamproject.petapet.web.company.dto.CompanyDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.dto.MemberDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
+import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.report.dto.ReportDTO;
 import com.teamproject.petapet.web.report.dto.ReportTargetDTO;
@@ -37,6 +38,8 @@ public class AdminRestController {
     private final MemberService memberService;
     private final ReportService reportService;
     private final CompanyService companyService;
+
+    private final FileService fileService;
 
     //admin 페이지의 모든 리스트 출력 (이하 8개 메소드)
     @GetMapping(value = "/getNoticeList", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -144,19 +147,23 @@ public class AdminRestController {
 
     //커뮤니티 강제 삭제
     @GetMapping("/deleteCommunity/{communityId}")
-    public void deleteCommunity(@PathVariable("communityId") Long communityId){
+    public void deleteCommunity(@PathVariable("communityId") Long communityId) {
+        //communityContent에 있는 img 파일명 가져와 삭제하기
+        communityService.getCommunityContentImg(communityId).forEach(img -> fileService.deleteFile(img));
         communityService.deleteCommunity(communityId);
     }
 
     //공지사항 삭제
     @GetMapping("/deleteNotice/{noticeId}")
-    public void deleteFAQ(@PathVariable("noticeId") Long noticeId){
+    public void deleteFAQ(@PathVariable("noticeId") Long noticeId) {
+        //communityContent에 있는 img 파일명 가져와 삭제하기
+        communityService.getCommunityContentImg(noticeId).forEach(img -> fileService.deleteFile(img));
         communityService.deleteNotice(noticeId);
     }
 
     //회원 강제탈퇴 기능 구현
     @GetMapping("/deleteMember/{memberId}")
-    public void deleteMember(@PathVariable("memberId") String memberId){
+    public void deleteMember(@PathVariable("memberId") String memberId) {
         memberService.deleteMember(memberId);
     }
 

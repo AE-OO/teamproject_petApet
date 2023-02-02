@@ -5,7 +5,7 @@ showPage = function (data) {
         str += `<div aria-label="Page navigation"><ul class="pagination justify-content-center">`
         if (data.first) {
             str += `<li id = "prevPage" class = "page-item disabled" >
-                            <a class = "page-link" href = "javascript:" style = "pointer-events: none;" >
+                            <a class = "page-link pe-none" href = "javascript:">
                             <span aria-hidden = "true"> <i class = "bi bi-chevron-left"></i></span>
                             </a>
                             </li>`
@@ -103,7 +103,7 @@ showPage = function (data) {
 
         if (data.last) {
             str += `<li id="nextPage" class="page-item disabled">
-                <a class="page-link" href="javascript:" style="pointer-events: none;">
+                <a class="page-link pe-none" href="javascript:">
                 <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
                 </a>
                 </li>`

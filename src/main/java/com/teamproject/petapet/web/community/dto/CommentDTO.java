@@ -24,6 +24,7 @@ public class CommentDTO {
 
     private int commentListSize;
     private Long communityId;
+    private String memberRole;
 
     public static CommentDTO fromEntity(final Comment comment) {
         return CommentDTO.builder()
@@ -38,6 +39,7 @@ public class CommentDTO {
                 .replyId(comment.getReplyId())
                 .memberId(comment.getMember().getMemberId())
                 .memberImg(comment.getMember().getMemberImg()==null?"0":comment.getMember().getMemberImg())
+                .memberRole(comment.getMember().getAuthorities().stream().iterator().next().getAuthority())
                 .build();
     }
 
