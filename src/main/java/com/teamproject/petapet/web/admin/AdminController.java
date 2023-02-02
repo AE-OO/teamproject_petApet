@@ -60,7 +60,6 @@ public class AdminController {
     //공지사항 등록
     @PostMapping("/registerNotice") 
     public String registerNotice(Principal principal, @Valid CommunityRequestDTO.InsertDTO insertDTO, BindingResult bindingResult, Model model){
-        System.out.println(insertDTO);
         if(bindingResult.hasErrors()){
             model.addAttribute("error", "제목과 내용을 모두 작성해주세요");
             return "admin/registerNotice";
