@@ -4,6 +4,7 @@ import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 import com.teamproject.petapet.web.Inquired.dto.InquiryRequestDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,8 @@ public class InquiredRestController {
     }
     
     // 상품 상세 페이지에 상품에 대한 문의 리스트 띄우기
-    @GetMapping(value="/getProductInquiry/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InquiryDTO>> getProductDetailPageInquiryList(@PathVariable("productId") Long productId){
-        return new ResponseEntity<>(inquiredService.getProductDetailPageInquiryList(productId), HttpStatus.OK);
+    @GetMapping(value="/getProductInquiry/{productId}/{pageNum}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<InquiryDTO>> getProductDetailPageInquiryList(@PathVariable("productId") Long productId, @PathVariable("pageNum") int pageNum){
+        return new ResponseEntity<>(inquiredService.getProductDetailPageInquiryList(productId, pageNum), HttpStatus.OK);
     }
 }

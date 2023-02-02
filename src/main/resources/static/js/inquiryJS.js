@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    getInquiryList();
+    let page = 0;
+    getInquiryList(page);
 
     $(document).on("click", ".productInquiry", function() {
         $("#modalTargetProductId").val($("#productId").val());
@@ -23,6 +24,7 @@ $(document).ready(function () {
                 if(result === 'success'){
                     alert("문의가 등록되었습니다.")
                     modalClear();
+                    getInquiryList();
                 }
             }
         })
@@ -43,6 +45,28 @@ $(document).ready(function () {
             $("#answer" + showId).css("display", "none");
         }
     })
+
+    //이전 페이지
+    $(document).on("click", "#prevPage", function () {
+        if ($(this).hasClass('disabled')) {
+            return;
+        }
+        getInquiryList(nowPage - 1);
+    });
+    //다음 페이지
+    $(document).on("click", "#nextPage", function () {
+        if ($(this).hasClass('disabled')) {
+            return;
+        }
+        getInquiryList(nowPage + 1);
+    });
+    //댓글 페이지선택
+    $(document).on("click", ".selectPage", function () {
+        if ($(this).parent().hasClass('active')) {
+            return;
+        }
+        getInquiryList($(this).text() - 1)
+    });
 })
 
 // 모달 초기화 메소드
@@ -52,11 +76,12 @@ function modalClear(){
 }
 
 // 등록된 문의 리스트 가져오는 메소드
-function getInquiryList() {
-    $.getJSON('/inquiry/getProductInquiry/' + $("#productId").val(), function (result) {
+function getInquiryList(page) {
+    $.getJSON('/inquiry/getProductInquiry/' + $("#productId").val() + '/' + page, function (result) {
         var list = '';
-        if (result.length > 0) {
-            $.each(result, function (idx, inquiry) {
+        nowPage = result.number;
+        if (result.content.length > 0) {
+            $.each(result.content, function (idx, inquiry) {
                 list += `<tr id="inquiryData" clicked="false" showId="`+idx+`">
                             <td class="text-center">${inquiry.checked ? "답변완료" : "답변예정"}</td>
                             <td style="cursor: pointer">${inquiry.inquiredTitle}</td>
@@ -78,5 +103,6 @@ function getInquiryList() {
             })
         }
         $(".inquiryData").html(list);
+        showPage(result);
     })
 }

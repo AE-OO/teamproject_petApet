@@ -4,6 +4,7 @@ package com.teamproject.petapet.web.Inquired.service;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.web.Inquired.dto.InquiryDTO;
 import com.teamproject.petapet.web.Inquired.dto.InquiryRequestDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -31,5 +32,5 @@ public interface InquiredService {
     //상품 문의 등록
     void registerProductInquiry(InquiryRequestDTO.RegisterInquiryToCompany inquiryRequestDTO);
 
-    List<InquiryDTO> getProductDetailPageInquiryList(Long productId);
+    Page<InquiryDTO> getProductDetailPageInquiryList(Long productId, int pageNum);
 }
