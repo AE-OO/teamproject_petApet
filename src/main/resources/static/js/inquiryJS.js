@@ -27,6 +27,22 @@ $(document).ready(function () {
             }
         })
     })
+
+    $(document).on("click", "#inquiryData", function(){
+        var tr = $(this);
+        var showId = tr.attr("showId");
+        
+        // 문의 제목 클릭했을 때 문의 내용과 답변 내용 띄움 (토글)
+        if(tr.attr("clicked") === "false"){
+            tr.attr("clicked", "true");
+            $("#content" + showId).css({"display": "", "background-color":"#f7f8fa"});
+            $("#answer" + showId).css({"display":"", "background-color":"#f7f8fa"});
+        }else{
+            tr.attr("clicked", "false");
+            $("#content" + showId).css("display", "none");
+            $("#answer" + showId).css("display", "none");
+        }
+    })
 })
 
 // 모달 초기화 메소드
@@ -41,31 +57,26 @@ function getInquiryList() {
         var list = '';
         if (result.length > 0) {
             $.each(result, function (idx, inquiry) {
-                list += `<em class="prod-inquiry-item__label">질문</em>
-                                <div class="prod-inquiry-item__wrap">
-                                    <strong class="prod-inquiry-item__author">${inquiry.memberId}</strong>
-                                    <div class="prod-inquiry-item__title">${inquiry.inquiredTitle}</div>
-                                    <div class="prod-inquiry-item__content">${inquiry.inquiredContent}</div>
-                                    <div class="prod-inquiry-item__time">${inquiry.inquiredDate}</div>
-                                </div>
-
-                                <div class="prod-inquiry-item__reply">
-                                    <i class="prod_inquiry-item__reply__icon"></i>
-                                    <em class="prod-inquiry-item__reply__label">답변</em>
-                                    <div class="prod-inquiry-item__reply__wrap">
-                                        <div class="prod-inquiry-item__reply__content">`;
-
-                if(inquiry.checked === false){
-                    list += `답변이 아직 등록되지 않았습니다.`;
-                }else{
-                    list += `${inquiry.answer}`;
-                }
-                    list += `</div>
-                                    </div>
-                                </div>
-                                <hr />`
+                list += `<tr id="inquiryData" clicked="false" showId="`+idx+`">
+                            <td class="text-center">${inquiry.checked ? "답변완료" : "답변예정"}</td>
+                            <td style="cursor: pointer">${inquiry.inquiredTitle}</td>
+                            <td class="text-center">${inquiry.memberId}</td>
+                            <td class="text-center">${inquiry.inquiredDate}</td>
+                        </tr>
+                        <tr id="content`+idx+`" style="display: none">
+                            <td style="border-bottom: none"></td>
+                            <td>${inquiry.inquiredContent}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr id="answer`+idx+`" style="display: none">
+                            <td></td>
+                            <td>${inquiry.answer === null ? "└ 아직 답변이 등록되지 않았습니다." : "└ " + inquiry.answer}</td>
+                            <td class="text-center">${inquiry.checked ? "판매자" : ""}</td>
+                            <td></td>
+                        </tr>`;
             })
         }
-        $(".prod-inquiry-item").html(list);
+        $(".inquiryData").html(list);
     })
 }
