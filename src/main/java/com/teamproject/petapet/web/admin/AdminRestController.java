@@ -151,7 +151,7 @@ public class AdminRestController {
     //공지사항 삭제
     @GetMapping("/deleteNotice/{noticeId}")
     public void deleteFAQ(@PathVariable("noticeId") Long noticeId){
-        communityService.deleteNotice(noticeId);
+        communityService.deleteCommunity(noticeId);
     }
 
     //회원 강제탈퇴 기능 구현

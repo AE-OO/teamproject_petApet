@@ -24,10 +24,7 @@ public interface CommunityService {
 
     List<CommunityDTO> getNotice();
     List<CommunityDTO> getCommunityMainNotice();
-    void registerNotice(CommunityRequestDTO.registerNotice registerNotice);
     CommunityDTO getOneNotice(Long noticeId);
-    void updateNotice(CommunityRequestDTO.registerNotice registerNotice);
-    void deleteNotice(Long noticeId);
     CommunityDTO getCommunityTitle(Long communityId);
     Page<CommunityDTO> getSearchList(String type,String searchContent ,int pageNum, int pageSize,String sort);
     Page<CommunityDTO> getMemberWritingList(String type, String memberId, int pageNum, int pageSize);
