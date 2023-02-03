@@ -26,7 +26,7 @@ public class CommunityRestController {
     public ResponseEntity<Page<CommunityDTO>> communityList(@RequestParam(defaultValue = "all") String communityCategory,
                                                             @RequestParam(defaultValue = "0") int pageNum,
                                                             @RequestParam(defaultValue = "20") int pageSize) {
-        return new ResponseEntity<>(communityService.getCommunityList(pageNum, pageSize, communityCategory), HttpStatus.OK);
+        return ResponseEntity.ok().body(communityService.getCommunityList(pageNum, pageSize, communityCategory));
     }
 
     //오늘 작성한 게시글 수

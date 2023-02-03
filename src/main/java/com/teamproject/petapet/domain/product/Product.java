@@ -1,6 +1,7 @@
 package com.teamproject.petapet.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
@@ -22,7 +23,6 @@ import java.util.List;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(exclude = {"company", "review", "cart"})
 @Getter
 @DynamicInsert
@@ -86,9 +86,12 @@ public class Product {
     private List<Cart> cart;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId")
     private Company company;
+
+    protected Product() {
+    }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {
         return ProductDetailDTO.builder().productPrice(product.getProductPrice())

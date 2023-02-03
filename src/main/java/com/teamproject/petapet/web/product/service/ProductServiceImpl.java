@@ -28,7 +28,6 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.teamproject.petapet.domain.buy.QBuy.buy;
 import static com.teamproject.petapet.domain.product.QProduct.product;
@@ -39,7 +38,7 @@ import static com.teamproject.petapet.domain.product.QProduct.product;
 
 @Slf4j
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
@@ -48,9 +47,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> getCompanyProductList(String companyId) {
         List<ProductDTO> productDTOList = jpaQueryFactory
-                .select(Projections.bean(
-                        ProductDTO.class, product.productId, product.productName, product.productDiv,
-                        product.productPrice, product.productReport, product.productStock, product.productStatus, buy.count().as("totalBuy")))
+                .select(Projections.bean(ProductDTO.class,
+                        product.productId,
+                        product.productName,
+                        product.productDiv,
+                        product.productPrice,
+                        product.productReport,
+                        product.productStock,
+                        product.productStatus,
+                        buy.count().as("totalBuy")))
                 .from(product, buy)
                 .where(product.productId.eq(buy.product.productId), product.company.companyId.eq(companyId))
                 .groupBy(buy.product.productId)
@@ -69,12 +74,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void updateProductStatus(String selectStatus, Long productStock, Long productId) {
         productRepository.updateProductStatus(selectStatus, productStock, productId);
 
     }
 
     @Override
+    @Transactional
     public void updateProductInfo(String type, Long productId, Long productStock, String productStatus) {
         if (type.equals("stock")) {
             productRepository.updateProductStock(productStock, productId);
@@ -84,11 +91,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void updateProductReviewCount(Long productId, Long reviewCount) {
         productRepository.updateProductReviewCount(productId, reviewCount);
     }
 
     @Override
+    @Transactional
     public void updateProductStatusOutOfStock(List<String> productId) {
         for (String id : productId) {
             productRepository.updateProductStatus("재고없음", 0L, Long.valueOf(id));
@@ -96,6 +105,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void updateProductRating(Long productId) {
         productRepository.updateProductRating(productId);
     }
@@ -106,6 +116,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Long compareStock(Long id) {
+        return productRepository.findQuantity(id);
+    }
+
+    @Override
+    @Transactional
     public Optional<Product> saveProduct(ProductInsertDTO insertDTO, List<UploadFile> uploadFiles, Company company) {
         ProductType productDiv = ProductType.valueOf(insertDTO.getProductDiv());
 
@@ -152,31 +168,14 @@ public class ProductServiceImpl implements ProductService {
         return new PageImpl<>(productList, pageable, totalCount);
     }
 
-    private Long countProduct(String content) {
-        return jpaQueryFactory.select(product.count())
-                .where(isContent(content),
-                        product.productStatus.eq("판매중"))
-                .from(product)
-                .fetchFirst();
-    }
-
-    private Long countProduct(String category, ProductType productType, String content, Long starRating, String minPrice, String maxPrice, String isPriceRange) {
-        return jpaQueryFactory.select(product.count())
-                .where(isCategory(productType, category),
-                        isContent(content),
-                        isRating(starRating),
-                        isPriceRange(minPrice, maxPrice, isPriceRange),
-                        product.productStatus.eq("판매중"))
-                .from(product)
-                .fetchFirst();
-    }
-
     @Override
+    @Transactional
     public void addProductReport(Long productId) {
         productRepository.addProductReport(productId);
     }
 
     @Override
+    @Transactional
     public void updateCounterView(Long productId) {
         jpaQueryFactory.update(product)
                 .set(product.productViewCount, product.productViewCount.add(1))
@@ -185,6 +184,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void updateCounterSell(Long productId) {
         jpaQueryFactory.update(product)
                 .set(product.productSellCount, product.productSellCount.add(1))
@@ -230,7 +230,6 @@ public class ProductServiceImpl implements ProductService {
 
     private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable, String sortType) {
         List<OrderSpecifier> ORDERS = new ArrayList<>();
-
         if (!ObjectUtils.isEmpty(pageable.getSort())) {
             for (Sort.Order order : pageable.getSort()) {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
@@ -241,6 +240,25 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return ORDERS;
+    }
+
+    private Long countProduct(String content) {
+        return jpaQueryFactory.select(product.count())
+                .where(isContent(content),
+                        product.productStatus.eq("판매중"))
+                .from(product)
+                .fetchFirst();
+    }
+
+    private Long countProduct(String category, ProductType productType, String content, Long starRating, String minPrice, String maxPrice, String isPriceRange) {
+        return jpaQueryFactory.select(product.count())
+                .where(isCategory(productType, category),
+                        isContent(content),
+                        isRating(starRating),
+                        isPriceRange(minPrice, maxPrice, isPriceRange),
+                        product.productStatus.eq("판매중"))
+                .from(product)
+                .fetchFirst();
     }
 
 }

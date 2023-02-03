@@ -42,7 +42,7 @@ $(function () {
     });
 
     $("#backBtn").click(function () {
-        window.location = "/community";
+        history.go(-1);
     });
     //로그인 버튼
     $("#loginBtn").click(function () {

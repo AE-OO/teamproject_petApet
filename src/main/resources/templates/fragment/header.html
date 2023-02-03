@@ -44,7 +44,7 @@
                     <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
                         <i class="fa fa-shopping-bag"></i></a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link nav-link2 me-0 h-100" id="dropdownA" data-bs-toggle="dropdown">
+                        <a href="/cart" class="nav-link nav-link2 me-0 h-100" id="dropdownA" data-bs-toggle="dropdown">
                             <i class="fa fa-user"></i></a>
                         <div class="dropdown-menu bg-white text-center m-0" id="dropdownMenuDiv" style="right:0;">
                             <a th:href="@{/login(redirectURL=${#request.requestURI})}" class="dropdown-item"
@@ -53,7 +53,7 @@
                             <a href="/admin/adminPage" class="dropdown-item" sec:authorize="hasRole('ADMIN')">관리자</a>
                             <a href="/member/checkInfo" class="dropdown-item" sec:authorize="hasRole('MEMBER')">내 정보</a>
                             <a href="/company/manageProduct" class="dropdown-item" sec:authorize="hasRole('COMPANY')">기업 정보</a>
-                            <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
+                            <a href="/cart" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
                             <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
                             <a th:href="@{/member/couponBox}" class="dropdown-item" sec:authorize="hasRole('MEMBER')">쿠폰함</a>
                             <a href="/message" class="dropdown-item" sec:authorize="hasRole('MEMBER')">쪽지함</a>
@@ -84,7 +84,7 @@
                     <div class="sc-1liba5b-6 OvTJQ">MY 쇼핑</div>
                     <div class="sc-1liba5b-7 gvMCBX">
                         <ul class="sc-1liba5b-8 McnCE">
-                            <li id="mc-order-carts-page" class="sc-1liba5b-9 bgmWPR selected"><a href="cart.html" th:href="@{/cart}"
+                            <li id="mc-order-carts-page" class="sc-1liba5b-9 bgmWPR selected"><a th:href="@{/cart}"
                                                                                                  title="장바구니" target="_self" class="sc-1liba5b-10 eLReSz">장바구니<span
                                     class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>

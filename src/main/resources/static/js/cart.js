@@ -2,7 +2,6 @@
 const card = $('.store_container--382-BRTlye');  // 상품 박스
 const cards = $('#cards'); // 상품 박스 부모
 const removeCard = $('.product-removal > button'); // 상품 박스 >  삭제 버튼
-const modifyCard = $('.order_buttons--2Fb79h6uWq > button.modify');
 const checkbox = $("button[role='checkbox']");
 const checkboxAll = $('button#check-all');
 const checkboxAllTarget = 'btn_check--31ufZfaM8S';
@@ -15,21 +14,25 @@ const btnMinus = $('.number .minus_btn');
 const btnPlus = $('.number .plus_btn');
 const input = $('.number > input');
 
+const icoCheck = $('.checked--2A5fgfRoYJ');
+
 const selectedPrice =$('.num--37aOyGmdW1.dd'); // <- 작업해야함
-const productPrice = $('.productValue'); // 상품 개별 단가
+const productPrice = $('.price--2Uv-07hf78'); // 상품 개별 단가
 const totalProductPrice = $('.product-price>span'); // 상품 개별 총금액
 const selectDeleteCards = $('.btn_delete--3P5eHI2eDa'); // 상품 삭제 선택
+
 /* 상품 */
 const productQuntity = $('em.quan > .num--37aOyGmdW1'); // 상품 주문 수량
 const productTotalFn = $('em.totalFn > .num--37aOyGmdW1'); // 상품 총 금액
-const cartTotalQuan = $('em#cartTotalQuan'); //  x 건 주문하기 <- x
-const fadeTime = 300;
 
 /* 주문 */
 const addBuy = $('.addBuy');
 
+//fade time 값을 넣으면 지연 동작함. 일단 0으로 세팅
+let fadeTime = 0;
 
-$(document).ready(function() {
+$(totalFnAll);
+
     // function cal_fn(){
     //     const quantity = $(card).children().find(productQuntity).get().val();
     //     const price = parseInt($(card).children().find(productPrice).get.text());
@@ -46,12 +49,15 @@ $(document).ready(function() {
         if (this.className == checkboxAllTargeted){
             $(this).attr('class', checkboxAllTarget);
             $(checkbox).attr('class', checkboxAllTarget);
+            $(checkbox).attr('aria-checked', false);
             $(buy).attr('class', offBuy);
         } else{
             $(this).attr('class', checkboxAllTargeted);
             $(checkbox).attr('class', checkboxAllTargeted);
+            $(checkbox).attr('aria-checked', true);
             $(buy).attr('class', onBuy);
         }
+            totalFnAll();
     });
 
     // 개별 선택
@@ -66,13 +72,15 @@ $(document).ready(function() {
             $(selectDeleteCards).click(function(){
                 $(this).parents().eq(4).children().find(cards).remove();
                 $(this).parents().eq(4).children().find(input).val(0);
-                console.log("val", $(input).val());
+                // console.log("val", $(input).val());
             });
         } else{
             // const quan = [[${cart.quantity}]];
             $(this).attr('class', checkboxAllTargeted);
+            $(this).attr('aria-checked', true);
             $(this).parents().eq(11).children().find(buy).attr('class', onBuy);
         }
+            totalFnAll();
     })
 
     // 수량
@@ -88,14 +96,14 @@ $(document).ready(function() {
         var $input = $(this).parent().find('input');
         $input.val(parseInt($input.val()) + 1);
         $input.change();
-        console.log($input.change());
+        // console.log($input.change());
     });
 
 
-    $(input).change( function() {
+    $(input).change( function () {
         updateQuantity(this);
-        // totalFnAll();
-        console.log("click:!", $(this).val());
+        totalFnAll();
+        // console.log("click:!", $(this).val());
 
     });
 
@@ -104,13 +112,16 @@ $(document).ready(function() {
     function updateQuantity(quantityInput)
     {
         const productRow = $(quantityInput).parents().eq(13);
-        const price = (productRow.children().find(productPrice)).val();
+        let eachPrice = productRow.children().find(productPrice).text();
+        let price = parseInt(eachPrice.replaceAll('원','').replaceAll(',',''));
+        // const price = parseInt(productRow.children().find(productPrice).text());
+
         const quantity = $(quantityInput).val();
-        const linePrice = price * quantity;
+        const linePrice = (price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         //
-        console.log('가격', price);
-        console.log('수량', quantity);
-        console.log('총가격', linePrice)
+        // console.log('가격', price);
+        // console.log('수량', quantity);
+        // console.log('총가격', linePrice)
 
         // totalFnAll();
 
@@ -137,7 +148,7 @@ $(document).ready(function() {
 
         /* 수량 */
         productRow.children().find(productQuntity).each(function () {
-            console.log('vv',this);
+            // console.log('vv',this);
             // $(this).text(quantity);
             // totalFnAll();
             $(this).fadeOut(fadeTime, function() {
@@ -148,7 +159,7 @@ $(document).ready(function() {
         });
 
         productRow.children().find(productTotalFn).each(function () {
-            console.log('vv',this);
+            // console.log('vv',this);
             // $(this).text(linePrice);
             // totalFnAll();
             $(this).fadeOut(fadeTime, function() {
@@ -157,71 +168,14 @@ $(document).ready(function() {
                 $(this).fadeIn(fadeTime);
             });
         });
-
-        /* x건 주문하기 */
-        productRow.children().find(cartTotalQuan).each(function () {
-            console.log('vv',this);
-            // $(this).text(linePrice);
-            // totalFnAll();
-            $(this).fadeOut(fadeTime, function() {
-                $(this).text(quantity);
-                // recalculateCart();
-                $(this).fadeIn(fadeTime);
-            });
-        });
     }
 
     /* Set rates + misc */
-    var fadeTime = 300;
+
 
 
     /* Recalculate cart */
-    function totalFnAll()
-    {
-        let subtotal = 0
 
-        $(card).each(function () {
-            subtotal += parseInt($(this).children().find(totalProductPrice).text());
-        });
-        console.log('>>subtotal:type:',typeof subtotal);
-        console.log('>>subtotal',subtotal);
-
-        $('.num--2CYvhIm-m6').fadeOut(fadeTime, function() {
-            $('#cart-total').text(subtotal);
-            // $('#cart-total').html(subtotal);
-            // if(subtotal == 0){
-            //     $(card).fadeOut(fadeTime);
-            // }else{
-            //     $(card).fadeIn(fadeTime);
-            // }
-            $('.num--2CYvhIm-m6').fadeIn(fadeTime);
-        });
-    }
-
-    const quanVal = $('#quantity');
-    const cartId = $('#cartId');
-
-    // 주문 수정
-    $(modifyCard).on("click", card , function (e){
-
-        console.log("수정 수량 : ", quanVal.val());
-        console.log("카트 번호 : ", cartId.val());
-        const param = { "quantity" : quanVal.val(), "cartId" : cartId.val() }
-        $.ajax({
-            url: "/cart/modify",
-            type: "POST",
-            data: JSON.stringify(param),
-            dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
-            success: function (data) {
-                alert("수량 수정 되었음!! ")
-            },
-            error: function (jqXHR, status, errorThrown) {
-                alert("에러");
-            }
-        })
-    });
 
     // 선택 삭제
     $(removeCard).on("click", card, function(e){
@@ -297,9 +251,70 @@ $(document).ready(function() {
         // });
     });
 
-});
+function totalFnAll()
+{
+    let subtotal = 0
 
+        $(icoCheck).parents().find(totalProductPrice).each(function () {
+            let checked = $(this).parents().eq(5).children(5).children().children().children().children().eq(0).attr('aria-checked');
+            if (checked === 'true') {
+            subtotal += parseInt($(this).text().replaceAll(',',''));
+            }
+        });
 
+    // $(card).children().find(totalProductPrice).each(function () {
+    //     subtotal += parseInt($(this).text().replaceAll(',',''));
+        // subtotal += parseInt($(this).children().find(totalProductPrice).text());
+    // });
+    // console.log('>>subtotal:type:',typeof subtotal);
+    // console.log('>>subtotal',subtotal);
+
+    $('.num--2CYvhIm-m6').fadeOut(fadeTime, function() {
+        let replaceTotalPrice = subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        $(this).text(replaceTotalPrice);
+        // $('#cart-total').html(subtotal);
+        // if(subtotal == 0){
+        //     $(card).fadeOut(fadeTime);
+        // }else{
+        //     $(card).fadeIn(fadeTime);
+        // }
+        $('.num--2CYvhIm-m6').fadeIn(fadeTime);
+    });
+}
+
+$('.link_buy--jXvxZ8Agr-').click(function () {
+    let buyArray = new Array() ;
+    $('.check--2EZEnyir5V').children(0).each(function () {
+    if ($(this).attr('aria-checked') === 'true') {
+        let cartId = $(this).parents().eq(1).children().find($('.remove-product')).val();
+        let productName = $(this).parent().next().children().find($('.ico_npay_plus--37zciz9t8T')).text();
+        let productPrice = $(this).parents().eq(10).children().find($('.totalFn')).children(0).text().replace(',','');
+        let quantity = $(this).parents().eq(10).children().find($('.quan')).children(0).text();
+
+        let buy = {} ;
+
+        buy.cartId = cartId ;
+        buy.productName = productName ;
+        buy.productPrice = productPrice ;
+        buy.quantity = quantity ;
+
+        buyArray.push(buy) ;
+
+    }})
+
+    $.ajax({
+        url: "/cart/checkout?str="+ encodeURI(JSON.stringify(buyArray)),
+        type: "GET",
+        contentType : "application/json",
+        success: function(data){
+            let parse = JSON.parse(data);
+            console.log(parse);
+        },
+        error: function (error){
+            alert('삭제 실패했습니다.');
+        }
+    });
+})
 // function deleteNotices(){
 //     var deleteList = [];
 //     $("input[name='']:checked").each(function(){

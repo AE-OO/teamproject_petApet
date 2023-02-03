@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.util.excel;
 import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
+import com.teamproject.petapet.web.buy.dto.BuyDTO;
 import com.teamproject.petapet.web.buy.service.BuyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -59,29 +61,33 @@ public class ExcelController {
     }
 
 
-    @GetMapping("/excel")
-    public void downloadMemberExcel(HttpServletResponse response) throws IOException {
-
+    @GetMapping("/downloadListExcel")
+    public void downloadMemberExcel(HttpServletResponse response, Principal principal) throws IOException {
+        String filename = "판매 목록";
         Workbook workbook = new HSSFWorkbook();
-        Sheet sheet = workbook.createSheet("회원 목록");
+        Sheet sheet = workbook.createSheet(filename);
         int rowNo = 0;
 
         Row headerRow = sheet.createRow(rowNo++);
-        headerRow.createCell(0).setCellValue("회원 번호");
-        headerRow.createCell(1).setCellValue("회원 이름");
-        headerRow.createCell(2).setCellValue("회원 성별");
-        headerRow.createCell(3).setCellValue("회원 생일");
+        headerRow.createCell(0).setCellValue("주문 번호");
+        headerRow.createCell(1).setCellValue("상품명");
+        headerRow.createCell(2).setCellValue("구매자");
+        headerRow.createCell(3).setCellValue("구매 날짜");
+        headerRow.createCell(4).setCellValue("구매 상세");
+        headerRow.createCell(5).setCellValue("주문 금액");
 
-        List<Member> list = memberRepository.findAll();
-        for (Member member : list) {
+        List<BuyDTO> companyPageSalesList = buyService.getCompanyPageSalesList(principal.getName());
+        for (BuyDTO buyDTO : companyPageSalesList) {
             Row row = sheet.createRow(rowNo++);
-            row.createCell(0).setCellValue(member.getMemberId());
-            row.createCell(1).setCellValue(member.getMemberName());
-            row.createCell(2).setCellValue(member.getMemberGender());
-            row.createCell(3).setCellValue(member.getMemberBirthday());
+            row.createCell(0).setCellValue(buyDTO.getMerchantUID());
+            row.createCell(1).setCellValue(buyDTO.getProductName());
+            row.createCell(2).setCellValue(buyDTO.getMemberId());
+            row.createCell(3).setCellValue(buyDTO.getBuyDate());
+            row.createCell(4).setCellValue(buyDTO.getBuyDetail());
+            row.createCell(5).setCellValue(buyDTO.getTotalPrice());
         }
         response.setContentType("ms-vnd/excel");
-        response.setHeader("Content-Disposition", "attachment;filename=memberlist.xls");
+        response.setHeader("Content-Disposition", "attachment;filename=list.xls");
 
         workbook.write(response.getOutputStream());
         workbook.close();

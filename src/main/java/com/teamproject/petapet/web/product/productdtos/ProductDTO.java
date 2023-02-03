@@ -1,8 +1,6 @@
 package com.teamproject.petapet.web.product.productdtos;
 
-import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.ProductType;
-import lombok.Builder;
 import lombok.Data;
 
 /**

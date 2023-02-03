@@ -32,7 +32,19 @@ $('div.sc-1bmxn32-1 button').click(function(){
     $(this).addClass('current');
     $("#"+btn_id).addClass('current');
 })
+// sc-r1vows-1 hQgEoq
+// sc-10d7xix-0 p-3 myInquiry
+$('.myInquiry').click(function (){
+    console.log("click");
+    var btn_id = $(this).attr('data-btn');
 
+    $('.sc-4clfj5-0.hTYEBQ.s1').addClass('ddd');
+    $('.sc-4clfj5-0.hTYEBQ.s1').addClass('ddd');
+
+    $(this).removeClass('ddd');
+    $('.sc-4clfj5-0.hTYEBQ.s1').removeClass('ddd');
+
+});
 
 
 $('ul.sc-nly1np-0.belqZG > li').on("click", function(e){
@@ -198,4 +210,7 @@ function fn_delete(){
 
 const putValue = (target) => {
     let value = $('#companyId').val();
-    $('input[name=companyId]').attr('value',value);}
+    $('input[name=companyId]').attr('value',value);
+    console.log("companyId => ",value);
+}
+
