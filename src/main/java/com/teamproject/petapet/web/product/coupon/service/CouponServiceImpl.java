@@ -88,7 +88,8 @@ public class CouponServiceImpl implements CouponService {
                         coupon.couponAcceptType,
                         coupon.couponActive,
                         coupon.couponDiscRate,
-                        coupon.couponType))
+                        coupon.couponType,
+                        coupon.couponAcceptPrice))
                 .from(coupon)
                 .where(isAcceptType(acceptType), isActive(isActive), isSearchContent(searchContent))
                 .offset(pageable.getOffset())

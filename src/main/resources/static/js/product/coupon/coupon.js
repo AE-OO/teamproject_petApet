@@ -20,7 +20,7 @@ $("input[name=couponType]:radio").change(function () {
     }
     if (couponType === 'percentDisc') {
         $("#couponDiscRate").on("propertychange change paste input", function () {
-            $('.field-error[id=valid_couponDiscRate]').empty();
+            $('input[name=couponDiscRate]').next().empty();
             let rate = $inputDiscRate.val();
             const regEx = /^\d{1,2}$/;
             let boolean = regEx.test(rate);
@@ -74,6 +74,7 @@ $('.modalBtn').click(function () {
     let couponDiscRate = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponDiscRate').text()
     let couponActive = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponActive').attr('value')
     let couponStock = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponStock').text()
+    let couponAcceptPrice = $(this).parents('div').parents('.pricing-card-body').children().children().children('.couponAcceptPrice').text().replaceAll(',','').replace('원','')
     if (couponStock === '무제한') couponStock = '0개';
     if (couponDiscRate.includes('%')) {
         let discLastIndexOf = couponDiscRate.lastIndexOf('%');
@@ -98,6 +99,7 @@ $('.modalBtn').click(function () {
     $('#couponEndDate').val(EndDateSubstr);
     $('#couponAcceptType').val(couponAcceptType)
     $('#couponActive').val(couponActive)
+    $('#couponAcceptPrice').val(couponAcceptPrice)
     let couponId = $(this).attr('id');
     $('#updateCouponBtn').attr('value', couponId);
 })

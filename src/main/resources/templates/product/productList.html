@@ -39,6 +39,9 @@
             <li class="mx-2" value="stroller"><a style="text-decoration: none"
                                                  th:href="#{product.querystring(${'stroller'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">유모차</a>
             </li>
+            <li class="mx-2" value="etc"><a style="text-decoration: none"
+                                                 th:href="#{product.querystring(${'etc'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">기타</a>
+            </li>
         </ul>
     </div>
 </div>
@@ -104,6 +107,9 @@
                                         </li>
                                         <li value="stroller"><a style="text-decoration: none"
                                                                 th:href="#{product.querystring(${'stroller'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">유모차</a>
+                                        </li>
+                                        <li value="stroller"><a style="text-decoration: none"
+                                                                th:href="#{product.querystring(${'etc'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">기타</a>
                                         </li>
                                     </ul>
                                 </div>

@@ -137,7 +137,9 @@ public class ProductRestController {
     //23.01.23 박채원 수정 - getProductList 메소드 (querydsl로 데이터 가져옴)
     @GetMapping(value="/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProductDTO>> getProductList(Principal principal){
-        return new ResponseEntity<>(productService.getCompanyProductList(principal.getName()), HttpStatus.OK);
+        List<ProductDTO> companyProductList = productService.getCompanyProductList(principal.getName());
+        log.info("companyProductLis={}",companyProductList);
+        return new ResponseEntity<>(companyProductList, HttpStatus.OK);
     }
 
     @PostMapping("/updateStock/{productId}")

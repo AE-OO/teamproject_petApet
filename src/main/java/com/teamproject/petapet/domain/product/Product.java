@@ -90,7 +90,24 @@ public class Product {
     @JoinColumn(name = "companyId")
     private Company company;
 
-    protected Product() {
+    public Product() {
+    }
+
+    public Product(String productName, Long productPrice, Long productStock, Long productDiscountRate, Long productUnitPrice, String productStatus, ProductType productDiv, String productContent, Long productRating, Long productReviewCount, Long productViewCount, Long productSellCount, Company company,List<UploadFile> productImg) {
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productStock = productStock;
+        this.productDiscountRate = productDiscountRate;
+        this.productUnitPrice = productUnitPrice;
+        this.productStatus = productStatus;
+        this.productDiv = productDiv;
+        this.productContent = productContent;
+        this.productRating = productRating;
+        this.productReviewCount = productReviewCount;
+        this.productViewCount = productViewCount;
+        this.productSellCount = productSellCount;
+        this.company = company;
+        this.productImg = productImg;
     }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {

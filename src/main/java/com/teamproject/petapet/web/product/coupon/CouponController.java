@@ -38,13 +38,14 @@ public class CouponController {
 
     @PostMapping("/admin/registerCoupon")
     public String registerCoupon(@Validated @ModelAttribute CouponDTO couponDTO, BindingResult bindingResult) {
-        if (couponDTO.getCouponType().equals("percentDisc") && couponDTO.getCouponDiscRate() > 50) {
-            bindingResult.addError(new FieldError("couponDTO", "couponDiscRate", couponDTO.getCouponDiscRate(), false, null, null, "5-50의 값을 입력하세요"));
-        }
-
         if (bindingResult.hasErrors()) {
             return "/admin/coupon/registerCoupon";
         }
+        if (couponDTO.getCouponType().equals("percentDisc") && couponDTO.getCouponDiscRate() > 50 ) {
+            bindingResult.addError(new FieldError("couponDTO", "couponDiscRate", couponDTO.getCouponDiscRate(), false, null, null, "5-50의 값을 입력하세요"));
+            return "/admin/coupon/registerCoupon";
+        }
+
         couponService.createCoupon(couponDTO);
         return "redirect:/admin/coupon";
     }

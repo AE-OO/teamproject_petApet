@@ -5,7 +5,6 @@ import com.teamproject.petapet.web.product.coupon.coupondtos.CouponDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,12 +45,28 @@ public class Coupon {
     @Column(length = 5)
     private Long couponDiscRate;
 
+    @Column
+    private Long couponAcceptPrice;
+
     @JsonBackReference
     @OneToMany(mappedBy = "coupons", cascade = CascadeType.REMOVE)
     private List<CouponBox> couponBoxes = new ArrayList<>();
 
-    protected Coupon(){
+    public Coupon() {
     }
+
+    public Coupon(Long couponId, String couponName, LocalDateTime couponEndDate, Long couponStock, ProductType couponAcceptType, boolean couponActive, String couponType, Long couponDiscRate, Long couponAcceptPrice) {
+        this.couponId = couponId;
+        this.couponName = couponName;
+        this.couponEndDate = couponEndDate;
+        this.couponStock = couponStock;
+        this.couponAcceptType = couponAcceptType;
+        this.couponActive = couponActive;
+        this.couponType = couponType;
+        this.couponDiscRate = couponDiscRate;
+        this.couponAcceptPrice = couponAcceptPrice;
+    }
+
     public void updateCoupon(CouponDTO couponDTO) {
         this.couponId = couponDTO.getCouponId();
         this.couponName = couponDTO.getCouponName();
@@ -67,6 +82,7 @@ public class Coupon {
         this.couponActive = couponDTO.isCouponActive();
         this.couponType = couponDTO.getCouponType();
         this.couponDiscRate = couponDTO.getCouponDiscRate();
+        this.couponAcceptPrice = couponDTO.getCouponAcceptPrice();
     }
 
     public Coupon(CouponDTO couponDTO) {

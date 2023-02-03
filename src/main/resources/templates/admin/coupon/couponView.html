@@ -176,6 +176,16 @@
                                                             재고</h5>
                                                     </div>
                                                 </div>
+                                                <div class="row pb-2">
+                                                    <div class="col-6">
+                                                        <h5>적용 최소 금액</h5>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <h5 class="couponAcceptPrice text-center"
+                                                            th:fo
+                                                            th:text="|${{coupon.couponAcceptPrice}}원|"></h5>
+                                                    </div>
+                                                </div>
                                                 <div class="d-flex flex-column">
                                                     <button class="btn btn-sm btn-primary modalBtn"
                                                             data-bs-toggle="modal"
@@ -294,6 +304,25 @@
                     </div>
                     <div class="d-flex">
                         <div class="form-group col-6">
+                            <label for="couponAcceptPrice">적용 최소 금액</label>
+                            <div class="form-group">
+                                <input type="number" name="couponAcceptPrice" class="form-control" placeholder="쿠폰이 적용 될 최소 금액입니다."
+                                       id="couponAcceptPrice" th:field="*{couponAcceptPrice}" th:errorclass="field-error">
+                                <div class="field-error" th:errors="*{couponAcceptPrice}"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="couponDiscRate">할인율</label>
+                            <div class="form-group">
+                                <input type="number" name="couponDiscRate" class="form-control"
+                                       id="couponDiscRate" th:field="*{couponDiscRate}" th:errorclass="field-error">
+                                <div class="field-error" id="valid_couponDiscRate"></div>
+                                <p class="text-secondary text-danger" id="validMsg"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group col-6">
                             <label>할인종류</label>
                             <div class="d-inline-flex col">
                                 <div class="form-check col-6">
@@ -308,15 +337,6 @@
                                 </div>
                             </div>
                             <div class="field-error" id="valid_couponType"></div>
-                        </div>
-                        <div class="form-group col-6">
-                            <label for="couponDiscRate">할인율</label>
-                            <div class="form-group">
-                                <input type="number" name="couponDiscRate" class="form-control"
-                                       id="couponDiscRate" th:field="*{couponDiscRate}" th:errorclass="field-error">
-                                <div class="field-error" id="valid_couponDiscRate"></div>
-                                <p class="text-secondary text-danger" id="validMsg"></p>
-                            </div>
                         </div>
                     </div>
                 </div>
