@@ -2,7 +2,11 @@ $(function () {
     getLoginId();
     //댓글 보기
     $(document).on("click", ".badge2", function () {
-        window.open("/comment/" + $(this).parent().prev().text().trim(), "_blank", "width=900,height=800,left=0,top=0,location=no");
+        let communityId = $(this).parent().prev().text().trim();
+        if(communityId ==="공지사항"){
+            communityId = $(this).attr("data-value");
+        }
+        window.open("/comment/" + communityId, "_blank", "width=900,height=800,left=0,top=0,location=no");
     });
     //찾기버튼
     $("#findBtn").click(function () {
@@ -25,8 +29,6 @@ let searchParams = new URLSearchParams(location.search)
 let type = searchParams.get("type")
 let searchContent = searchParams.get("searchContent");
 let communityContentParam = []
-let aaa = `<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>`;
-let pattern = '/<img[^>]+src=["\']?([^>"\']+)["\']?[^>]*>/i';
 //게시글 List 가져오는 ajax
 getCommunityList = function (category, page, size) {
     $.ajax({
@@ -87,7 +89,7 @@ showCommunityList = function (data) {
                 str += `<ul class="dropdown-menu" style="min-width: auto;">
                         <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
                         <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
-                if (val.memberId !== loginId) {
+                if (val.memberId !== loginId && authorities==="[ROLE_MEMBER]") {
                     str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
                             <li><button type="button" class="dropdown-item memberReport" id="addProductReport"
                                     data-bs-toggle="modal" data-bs-target="#addReportModal" title="신고하기">신고하기</button></li>`
@@ -106,10 +108,10 @@ getTodayPosts = function (category) {
     $.ajax({
         url: "/community/todayPosts",
         type: "post",
-        data: {communityCategory: category},
+        data: {communityCategory: category.toLowerCase()},
         dateType: "json",
         success: function (data) {
-            $("#totayPosts").text(data);
+            $("#todayPosts").text(data);
         }
         , error: function () {
             alert('오류가 발생하였습니다.');
@@ -139,13 +141,13 @@ showNoticeList = function (data) {
     let str = '';
     $.each(data, function (idx, val) {
         str += `<tr class="bg-light fw-bold">
-                        <td class="py-1"><botton class="btn btn-dark btn-sm">${val.communityCategory}</botton></td>
+                        <td class="py-1"><button class="btn btn-dark btn-sm pe-none">${val.communityCategory}</button></td>
                         <td class="text-start">
                         <a href="/community/${val.communityId}" class="mx-2">${val.communityTitle}</a>`
         if (val.commentListSize > 0) {
-            str += `<span class="badge2" role="button">${val.commentListSize}</span>`
+            str += `<span class="badge2" role="button" data-value="${val.communityId}">${val.commentListSize}</span>`
         }
-        str += `<td>관리자</td>
+        str += `</td><td>관리자</td>
                         <td>${val.modifiedDate}</td>
                         <td>${val.viewCount}</td>
                         </tr>
@@ -164,7 +166,7 @@ getSearchList = function (page, size, sort) {
         url: "/community/searchList",
         type: "post",
         data: {
-            type:type,
+            type: type,
             searchContent: searchContent,
             pageNum: page,
             pageSize: size,
@@ -199,7 +201,7 @@ getMemberWritingList = function (page, size, type) {
         type: "post",
         data: {
             memberId: $(location).attr('pathname').split("/")[3],
-            type:type,
+            type: type,
             pageNum: page,
             pageSize: size,
         },
@@ -241,8 +243,6 @@ showCommunitySearchOrMemberWritingList = function (data) {
         str += `<tr><td class="py-5" colspan="5"><strong>검색 결과가 없습니다</strong></td></tr>`;
     } else {
         $.each(data.content, function (idx, val) {
-            communityContentParam.push(val.communityContent);
-
             if ($("input[name=radioCheck]:checked").val() === "titleContent") {
                 str += `<tr class="communityTitle border-white">`
             } else {
@@ -268,7 +268,7 @@ showCommunitySearchOrMemberWritingList = function (data) {
                 str += `<ul class="dropdown-menu" style="min-width: auto;">
                         <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
                         <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
-                if (val.memberId !== loginId) {
+                if (val.memberId !== loginId && authorities==="[ROLE_MEMBER]") {
                     str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
                             <li><button type="button" class="dropdown-item memberReport" id="addProductReport"
                                     data-bs-toggle="modal" data-bs-target="#addReportModal" title="신고하기">신고하기</button></li>`
@@ -284,9 +284,13 @@ showCommunitySearchOrMemberWritingList = function (data) {
                 str += `<tr class="communityContent" style="display: none">`
             }
             str += `<td class="pt-0"></td>
-                    <td class="pt-0 text-start small" colspan="3">
-                    <a href="/community/${val.communityId}" class="me-2 text-lightGray communityContent">` + val.communityContent.replace(/<[^>]*>?/g, '') + `</a></td>
-                    <td class="pt-0"></td>
+                    <td class="pt-0 text-start small" colspan="3">`
+            if(val.communityContent.replace(/<[^>]*>?/g, '') ===''){
+                str += `<a href="/community/${val.communityId}" class="me-2 text-lightGray" data-value="${idx}">[내용없음]</a></td>`
+            }else{
+                str += `<a href="/community/${val.communityId}" class="me-2 text-lightGray" data-value="${idx}">` + val.communityContent.replace(/<[^>]*>?/g, '') + `</a></td>`
+            }
+            str += `<td class="pt-0"></td>
                     </tr>`
         });
     }
@@ -294,11 +298,15 @@ showCommunitySearchOrMemberWritingList = function (data) {
 }
 
 typeRes = function (type) {
-    switch (type){
-        case "titleContent": return "제목+내용";
-        case "title": return "글제목";
-        case "writer": return "글작성자";
-        case "no": return "글번호";
+    switch (type) {
+        case "titleContent":
+            return "제목+내용";
+        case "title":
+            return "글제목";
+        case "writer":
+            return "글작성자";
+        case "no":
+            return "글번호";
     }
 }
 
@@ -322,6 +330,7 @@ getLoginMemberWritingList = function (page, size, communityOrComment) {
             nowSort = communityOrComment;
             if (communityOrComment === "community") {
                 showCommunitySearchOrMemberWritingList(data);
+                communityImgDummyArrSave(data.content);
             } else {
                 showLoginMemberCommentWritingList(data);
             }
@@ -362,16 +371,28 @@ showLoginMemberCommentWritingList = function (data) {
                     원문제목 : <span class="text-lightGray" style="font-size:12px !important;">${val.communityTitle}</span>
                     <span class="text-danger" style="font-size:12px !important;">[${val.commentListSize}]</span>
                     </a></div>`
-                if(val.commentImg !== "0"){
-                    str += `<div class="commentImgDiv">
+            if (val.commentImg !== "0") {
+                str += `<div class="commentImgDiv">
                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="70" height="70" style="object-fit: cover;">
                             </div>`
-                }
-                str += `</div></td></tr>`
+            }
+            str += `</div></td></tr>`
         });
     }
     str += `</tbody>`
     $("#list").html(str);
+}
+
+communityImgDummyArrSave = function (data) {
+    let dummy = document.createElement("div");
+    $.each(data, function (idx, val) {
+        dummy.innerHTML = val.communityContent;
+        let images = Array.from(dummy.querySelectorAll("img[src]"));
+        let sources = images.map(function (item) {
+            return item.src.split("/").pop();
+        });
+        communityContentParam.push(sources)
+    })
 }
 
 

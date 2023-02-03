@@ -43,10 +43,6 @@ public class Community extends BaseTimeEntity {
     @Convert(converter = EmptyStringToNullConverter.class)
     private String communitySubCategory;
 
-//    @Lob
-//    @Column(columnDefinition = "BLOB")
-//    private byte[] communityImg;
-
     @Column(columnDefinition = "bigint(3) default 0")
     private Long communityReport;
 
