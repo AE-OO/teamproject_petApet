@@ -75,9 +75,9 @@
                 </div>
                 <div class="col-8 m-lg-1 text-end">
                     <th:block th:if="*{productDiscountRate>0}">
-                    <span style="text-decoration: line-through;"><i><h5 class="me-3" th:text="|*{productUnitPrice}원|">price</h5></i></span>
+                    <span style="text-decoration: line-through;"><i><h5 class="me-3" th:text="|*{{productUnitPrice}}원|">price</h5></i></span>
                     </th:block>
-                    <h4 class="me-3" th:text="|*{productPrice}원|">price</h4>
+                    <h4 class="me-3" th:text="|*{{productPrice}}원|">price</h4>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
