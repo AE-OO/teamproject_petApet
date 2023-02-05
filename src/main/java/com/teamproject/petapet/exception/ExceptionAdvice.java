@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.IOException;
+
 /**
  * 장사론 22.11.04 작성
  * 로그인시 비밀번호 틀렸을 때..null에러로 반환되서....exception처리함......
@@ -17,7 +19,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @RequiredArgsConstructor
 public class ExceptionAdvice {
 
-    @ExceptionHandler(NullPointerException.class)
+    @ExceptionHandler({IOException.class})
+    public Object iOException(Exception e) {
+        System.err.println(e.getClass());
+        return "redirect:/";
+    }
+
+    @ExceptionHandler({NullPointerException.class})
     public Object nullException(Exception e) {
         System.err.println(e.getClass());
         return "redirect:/";

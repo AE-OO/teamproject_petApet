@@ -21,7 +21,6 @@ import java.util.List;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @DynamicUpdate
 @ToString(exclude = {"member", "product", "reviewImg"})
@@ -50,13 +49,16 @@ public class Review {
     private List<UploadFile> reviewImg;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
     private Product product;
+
+    protected Review() {
+    }
 
     public static ReviewDTO toReviewDTO(Review review) {
         return ReviewDTO.builder().reviewImg(review.getReviewImg())

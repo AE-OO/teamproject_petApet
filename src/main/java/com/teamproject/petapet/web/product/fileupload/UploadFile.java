@@ -15,6 +15,6 @@ public class UploadFile {
         this.storeFileName = storeFileName;
     }
 
-    public UploadFile() {
+    protected UploadFile() {
     }
 }

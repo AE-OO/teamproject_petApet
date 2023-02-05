@@ -36,13 +36,14 @@ import static com.teamproject.petapet.domain.product.QCoupon.coupon;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
+    @Transactional
     public void createCoupon(CouponDTO couponDTO) {
         Coupon coupon = new Coupon(couponDTO);
         couponRepository.save(coupon);
@@ -87,7 +88,8 @@ public class CouponServiceImpl implements CouponService {
                         coupon.couponAcceptType,
                         coupon.couponActive,
                         coupon.couponDiscRate,
-                        coupon.couponType))
+                        coupon.couponType,
+                        coupon.couponAcceptPrice))
                 .from(coupon)
                 .where(isAcceptType(acceptType), isActive(isActive), isSearchContent(searchContent))
                 .offset(pageable.getOffset())
@@ -96,6 +98,33 @@ public class CouponServiceImpl implements CouponService {
                 .fetch();
         long totalCount = countCoupon(acceptType, isActive, searchContent);
         return new PageImpl<>(couponDTOList, pageable, totalCount);
+    }
+
+    @Override
+    @Transactional
+    public void updateCoupon(CouponDTO couponDTO) {
+        Coupon coupon = couponRepository.findById(couponDTO.getCouponId()).orElseThrow(NoSuchFieldError::new);
+        coupon.updateCoupon(couponDTO);
+    }
+
+    @Override
+    @Transactional
+    public Long activeCoupon() {
+        LocalDateTime now = LocalDateTime.now();
+        return jpaQueryFactory.update(coupon)
+                .set(coupon.couponActive, false)
+                .where(coupon.couponEndDate.before(now).and(coupon.couponActive.eq(true)))
+                .execute();
+    }
+
+    public Map<String, String> validateHandling(BindingResult bindingResult) {
+        Map<String, String> validatorResult = new HashMap<>();
+        //필드 에러
+        for (FieldError error : bindingResult.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
     }
 
     private Order getOrder(String sortStr) {
@@ -182,30 +211,5 @@ public class CouponServiceImpl implements CouponService {
             return coupon.couponEndDate.between(LocalDateTime.now(), LocalDateTime.now().plusDays(3L));
         }
         return null;
-    }
-
-    @Override
-    public void updateCoupon(CouponDTO couponDTO) {
-        Coupon coupon = couponRepository.findById(couponDTO.getCouponId()).orElseThrow(NoSuchFieldError::new);
-        coupon.updateCoupon(couponDTO);
-    }
-
-    @Override
-    public Long activeCoupon() {
-        LocalDateTime now = LocalDateTime.now();
-        return jpaQueryFactory.update(coupon)
-                .set(coupon.couponActive, false)
-                .where(coupon.couponEndDate.before(now).and(coupon.couponActive.eq(true)))
-                .execute();
-    }
-
-    public Map<String, String> validateHandling(BindingResult bindingResult) {
-        Map<String, String> validatorResult = new HashMap<>();
-        //필드 에러
-        for (FieldError error : bindingResult.getFieldErrors()) {
-            String validKeyName = String.format("valid_%s", error.getField());
-            validatorResult.put(validKeyName, error.getDefaultMessage());
-        }
-        return validatorResult;
     }
 }

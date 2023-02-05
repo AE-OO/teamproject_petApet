@@ -9,15 +9,15 @@ import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.dibs.service.DibsProductService;
 import com.teamproject.petapet.web.member.service.MemberService;
-import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
-import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
-import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
-import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
-import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
-import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
+import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
+import com.teamproject.petapet.web.product.reviewdto.ReviewDTO;
+import com.teamproject.petapet.web.product.reviewdto.ReviewInsertDTO;
+import com.teamproject.petapet.web.product.service.ProductService;
 import com.teamproject.petapet.web.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,6 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -53,7 +52,6 @@ import java.util.stream.IntStream;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 @RequestMapping("/product")
 public class ProductController {
 
@@ -104,16 +102,6 @@ public class ProductController {
         return "product/productList";
     }
 
-    private Sort getSort(String sortType) {
-        Sort sort = Sort.by(sortType).descending();
-        if (sortType.equals("salePriceAsc")) {
-            sort = Sort.by("productPrice").ascending();
-        } else if (sortType.equals("salePriceDesc")) {
-            sort = Sort.by("productPrice").descending();
-        }
-        return sort;
-    }
-
     @GetMapping("/update")
     public String productUpdateForm(@ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO
             , @RequestParam("productId") Long productId, Model model, Principal principal) {
@@ -128,9 +116,10 @@ public class ProductController {
 
     @PostMapping("/update")
     @ResponseBody
-    public ResponseEntity<?> productUpdate(@Validated @ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO,
+    @Transactional
+    public ResponseEntity<?> updateProduct(@Validated @ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO,
                                            BindingResult bindingResult,
-                                           Principal principal) throws IOException {
+                                           Principal principal) {
         HttpHeaders headers = new HttpHeaders();
         if (bindingResult.hasGlobalErrors()) {
         }
@@ -188,7 +177,7 @@ public class ProductController {
 
     @PostMapping("/insert")
     public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO,
-                                BindingResult bindingResult, Principal principal) throws IOException {
+                                BindingResult bindingResult, Principal principal) {
 
         if (productInsertDTO.getProductImg().get(0).isEmpty()) {
             bindingResult.addError(new FieldError("productInsertDTO", "productImg", "1장 이상의 사진을 올려주세요"));
@@ -261,7 +250,7 @@ public class ProductController {
     public String insertReview(@ModelAttribute ReviewInsertDTO reviewInsertDTO,
                                @RequestParam String requestURI,
                                @PathVariable("productId") Long productId,
-                               Principal principal) throws IOException {
+                               Principal principal) {
 
         List<MultipartFile> reviewImg = reviewInsertDTO.getReviewImg();
         List<UploadFile> uploadFiles = fileService.storeFiles(reviewImg);
@@ -314,6 +303,16 @@ public class ProductController {
         return ProductType.valueOf(category);
     }
 
+
+    private Sort getSort(String sortType) {
+        Sort sort = Sort.by(sortType).descending();
+        if (sortType.equals("salePriceAsc")) {
+            sort = Sort.by("productPrice").ascending();
+        } else if (sortType.equals("salePriceDesc")) {
+            sort = Sort.by("productPrice").descending();
+        }
+        return sort;
+    }
 }
 
 

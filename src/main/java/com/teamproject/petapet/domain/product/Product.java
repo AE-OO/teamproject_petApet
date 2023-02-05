@@ -1,6 +1,7 @@
 package com.teamproject.petapet.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.inquired.Inquired;
@@ -23,7 +24,6 @@ import java.util.List;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(exclude = {"company", "review", "cart"})
 @Getter
 @DynamicInsert
@@ -90,9 +90,29 @@ public class Product {
     private List<Inquired> inquired;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId")
     private Company company;
+
+    public Product() {
+    }
+
+    public Product(String productName, Long productPrice, Long productStock, Long productDiscountRate, Long productUnitPrice, String productStatus, ProductType productDiv, String productContent, Long productRating, Long productReviewCount, Long productViewCount, Long productSellCount, Company company,List<UploadFile> productImg) {
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productStock = productStock;
+        this.productDiscountRate = productDiscountRate;
+        this.productUnitPrice = productUnitPrice;
+        this.productStatus = productStatus;
+        this.productDiv = productDiv;
+        this.productContent = productContent;
+        this.productRating = productRating;
+        this.productReviewCount = productReviewCount;
+        this.productViewCount = productViewCount;
+        this.productSellCount = productSellCount;
+        this.company = company;
+        this.productImg = productImg;
+    }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {
         return ProductDetailDTO.builder().productPrice(product.getProductPrice())

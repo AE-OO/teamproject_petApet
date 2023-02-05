@@ -5,6 +5,7 @@ import com.teamproject.petapet.web.Inquired.dto.InquiryRequestDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
+import com.teamproject.petapet.web.util.email.service.EmailService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+
+import javax.validation.constraints.Email;
 
 
 /**
@@ -30,6 +33,7 @@ public class AdminController {
     private final InquiredService inquiredService;
     private final CommunityService communityService;
     private final FileService fileService;
+    private final EmailService emailService;
 
     @GetMapping("/adminPage")
     public String adminPage(){
@@ -46,8 +50,9 @@ public class AdminController {
     
     // 문의사항에 답변 달기
     @PostMapping("/{idx}/edit")
-    public String updateCheckInquiry(@PathVariable("idx") Long inquiredId, @ModelAttribute("inquiredList") InquiryRequestDTO.GetAnswerDTO getAnswerDTO){
+    public String updateCheckInquiry(@PathVariable("idx") Long inquiredId, @ModelAttribute("inquiredList") InquiryRequestDTO.GetAnswerDTO getAnswerDTO) throws Exception {
         inquiredService.setInquiredCheck(inquiredId, getAnswerDTO.getAnswer());
+        emailService.sendEmailMessage2(getAnswerDTO.getAnswer(),inquiredId); // 문의 내용 이메일 전송
         return "redirect:/admin/adminPage";
     }
 

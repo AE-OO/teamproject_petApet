@@ -28,9 +28,9 @@ public class CompanyController {
     private final CompanyService companyService;
     private final MemberService memberService;
 
+    //기업 회원가입
     @GetMapping("/companyJoin")
     public String companyJoinForm(CompanyRequestDTO.JoinDTO joinDTO){return "company/companyJoin";}
-
     @PostMapping("/companyJoin")
     public String join(@Valid CompanyRequestDTO.JoinDTO joinDTO, BindingResult bindingResult, Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -46,6 +46,7 @@ public class CompanyController {
         return "redirect:/";
     }
 
+    //기업 회원 로그인
     @GetMapping("/companyLogin")
     public String companyLoginForm(){return "redirect:/login";}
 
@@ -68,6 +69,7 @@ public class CompanyController {
         return "redirect:/";
     }
 
+    //아이디 찾기
     @PostMapping("/findCompanyId")
     public String findCompanyId(@Valid CompanyRequestDTO.FindCompanyIdDTO findCompanyIdDTO,BindingResult bindingResult,Model model){
         if (bindingResult.hasErrors()) {
@@ -81,6 +83,7 @@ public class CompanyController {
         return "findId";
     }
 
+    //비밀번호 찾기
     @PostMapping("/findCompanyPw")
     public String findMemberPw(@Valid CompanyRequestDTO.FindCompanyPwDTO findCompanyPwDTO, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
@@ -94,6 +97,7 @@ public class CompanyController {
         return "findPw";
     }
 
+    //기업 정보
     @GetMapping("/company/info")
     public String companyInfoForm(){return "company/checkCompanyInfo";}
 
@@ -103,6 +107,7 @@ public class CompanyController {
         return "company/modifyCompanyInfo";
     }
 
+    //기업정보 수정
     @PostMapping("/company/modifyInfo")
     public String UpdateCompanyInfo(Principal principal, @Valid CompanyRequestDTO.UpdateCompanyInfo updateCompanyInfo,
                                     BindingResult bindingResult){
@@ -113,7 +118,7 @@ public class CompanyController {
         return "redirect:/company/info";
     }
 
-    //회원탈퇴
+    //기업 회원탈퇴
     @GetMapping("/company/withdrawal")
     public String withdrawalPage(){ return "company/companyWithdrawal";}
 

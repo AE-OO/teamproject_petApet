@@ -62,35 +62,38 @@ $(function () {
         opener.parent.location.href = '/join'
         window.close();
     });
-
     //게시물 삭제버튼
     $("#postsDelete").click(function () {
         let arr = [];
-        $("#postsContent").find("img").each(function (index, item) {
-            // arr[index] = $(this).attr('src').substr(16)
-            arr.push($(this).attr('src').substring(16))
-        });
-        $.ajax({
-            type: "POST",
-            url: "/community/delete",
-            data: {
-                communityId: $(location).attr('pathname').split("/")[2],
-                deleteImg: arr,
-            },
-            dataType: "json",
-            success: function (result) {
-                alert("삭제가 완료되었습니다.");
-                window.location = "/community";
-            },
-            // error: function () {
-            //     alert("오류가 발생했습니다.");
-            // },
-            complete: function (data) {
-                alert("삭제가 완료되었습니다.");
-                window.location = "/community";
-                //  실패했어도 완료가 되었을 때 처리
-            }
-        });
+        if (confirm("정말로 삭제하시겠습니까?") == true) {
+            $("#postsContent").find("img").each(function () {
+                arr.push($(this).attr('src').substring(16))
+            });
+            $.ajax({
+                type: "POST",
+                url: "/community/delete",
+                data: {
+                    communityId: $(location).attr('pathname').split("/")[2],
+                    deleteImg: arr,
+                },
+                dataType: "json",
+                success: function () {
+                    alert("삭제가 완료되었습니다.");
+                    window.location = "/community";
+                },
+                // error: function () {
+                //     alert("오류가 발생했습니다.");
+                // },
+                complete: function (data) {
+                    alert("삭제가 완료되었습니다.");
+                    window.location = "/community";
+                    //  실패했어도 완료가 되었을 때 처리
+                }
+            });
+        } else {
+            return;
+        }
+
     });
     //게시물 수정버튼
     $("#postsUpdate").click(function () {
@@ -145,16 +148,15 @@ $(function () {
     });
     //댓글 삭제 버튼
     $(document).on("click", ".commentDelete", function () {
-        if ($(this).closest('.memberDiv').find(".memberId").text() === loginId) {
+        if (confirm("정말로 삭제하시겠습니까?") == true) {
             let cImg = $(this).closest('.memberDiv').find(".commentImg").attr("src") === undefined ? undefined : $(this).closest('.memberDiv').find(".commentImg").attr("src").substring(7);
-            // console.log($(this).closest('.memberDiv').find(".sideMenu").attr('id'))
             $.ajax({
                 url: "/comment/delete",
                 type: "delete",
                 dateType: "json",
                 data: {
                     commentId: $(this).closest('.memberDiv').find(".sideMenu").attr('id'),
-                    memberId: $(this).closest('.memberDiv').find(".memberId").text(),
+                    memberId: loginId,
                     commentImg: cImg
                 },
                 success: function (data) {
@@ -165,47 +167,48 @@ $(function () {
                     alert('오류');
                 }
             })
+        } else {
+            return;
         }
+
     });
     //댓글 수정 버튼
     $(document).on("click", ".commentUpdate", function () {
-        if ($(this).closest('.memberDiv').find(".memberId").text() === loginId) {
-            $(this).closest('.memberDiv').append(commentForm())
-            $("#commentContent2").val($(this).closest('.memberDiv').find(".commentContent").text());
-            if ($(this).closest('.memberDiv').find(".commentImg").attr("src") !== undefined) {
-                $("#thumbnailImg2").attr("src", $(this).closest('.memberDiv').find(".commentImg").attr("src"));
-                $("#thumbnailImgDiv2").removeClass('d-none');
-            }
-            if ($(this).closest('.memberDiv').find("i").hasClass('bi-lock-fill')) {
-                $("#lockIcon2").toggleClass("bi-unlock-fill");
-                $("#lockIcon2").toggleClass("text-gray");
-                $("#lockIcon2").toggleClass("bi-lock-fill");
-                $("#lockIcon2").toggleClass("text-danger");
-            }
-            $("#lockBtn2").next().next().attr("id", "updateCommentBtn");
-            $("#commentLength2").text($("#commentContent2").val().length);
+        $(this).closest('.memberDiv').append(commentForm())
+        $("#commentContent2").val($(this).closest('.memberDiv').find(".commentContent").text());
+        if ($(this).closest('.memberDiv').find(".commentImg").attr("src") !== undefined) {
+            $("#thumbnailImg2").attr("src", $(this).closest('.memberDiv').find(".commentImg").attr("src"));
+            $("#thumbnailImgDiv2").removeClass('d-none');
         }
+        if ($(this).closest('.memberDiv').find("i").hasClass('bi-lock-fill')) {
+            $("#lockIcon2").toggleClass("bi-unlock-fill");
+            $("#lockIcon2").toggleClass("text-gray");
+            $("#lockIcon2").toggleClass("bi-lock-fill");
+            $("#lockIcon2").toggleClass("text-danger");
+        }
+        if (authorities === "[ROLE_ADMIN]") {
+            $("#lockBtn2").remove()
+        }
+        $("#cancelBtn").next().attr("id", "updateCommentBtn");
+        $("#commentLength2").text($("#commentContent2").val().length);
     });
     //댓글 수정 등록 버튼
     $(document).on("click", "#updateCommentBtn", function () {
-        if ($(this).closest('.memberDiv').find(".memberId").text() === loginId) {
-            if ($("#commentContent2").val() == '') {
-                alert("내용을 입력해주세요");
-                return;
-            } else {
-                // alert($(this).closest('.memberDiv').find(".commentImg").attr("src"));
-                // alert($(this).closest('.memberDiv').find(".sideMenu").attr('id'));
-                // alert($(this).closest('.memberDiv').find(".memberId").text());
-                submitUpdateComment($(this).closest('.memberDiv').find(".sideMenu").attr('id'),
-                    $(this).closest('.memberDiv').find(".memberId").text(),
-                    $(this).closest('.memberDiv').find(".commentImg").attr("src"));
-            }
+        if ($("#commentContent2").val() == '') {
+            alert("내용을 입력해주세요");
+            return;
+        } else {
+            submitUpdateComment($(this).closest('.memberDiv').find(".sideMenu").attr('id'),loginId,
+                $(this).closest('.memberDiv').find(".commentImg").attr("src"));
         }
     });
     //댓글 답글(대댓글) 달기 버튼
     $(document).on("click", ".recomment", function () {
         $(this).closest('.memberDiv').append(commentForm())
-        $("#lockBtn2").next().next().attr("id", "recommentBtn");
+        if (authorities === "[ROLE_ADMIN]") {
+            $("#lockBtn2").remove()
+        }
+        $("#cancelBtn").next().attr("id", "recommentBtn");
     });
     //댓글 답글(대댓글) 등록 버튼
     $(document).on("click", "#recommentBtn", function () {
@@ -243,9 +246,8 @@ $(function () {
         $("#commentLength2").text($("#commentContent2").val().length)
     });
 });
-// let loginId;
-// let authorities;
 let nowPage;
+let postsMemberId;
 //댓글 이미지 썸네일
 setThumbnail = function (event) {
     let from = Array.from(event.target.files);
@@ -285,7 +287,6 @@ submitComment = function () {
         commentContent: $("#commentContent").val(),
         commentSecret: commentSercretRes,
     }
-    // alert($('#inputFile').val())
     let formData = new FormData();
     formData.append("commentInsertDTO", new Blob([JSON.stringify(submitData)], {type: "application/json"}));
     formData.append("commentImg", $('#inputFile').get(0).files[0]);
@@ -423,159 +424,179 @@ goCommentPage = function (value) {
         }
     });
 }
+
 //댓글 리스트 태그
-showList = function (data) {
-    let str = '';
-    $.each(data.content, function (idx, val) {
-        if (val.isDeleted === 1) {
-            str += `<div class="memberDiv px-5 py-2">
-                    <div class="d-inline-block align-middle py-2">
-                    <i class="bi bi-exclamation-circle me-1"></i>
-                    <span class="pt-0 m-0">삭제된 댓글입니다.</span>
-                    </div>
-                    </div><hr class="m-0">`
-        }
+// showList = function (data) {
+//     let str = '';
+//     $.each(data.content, function (idx, val) {
+//         //부모 댓글이 삭제되었을 때
+//         if (val.isDeleted === 1) {
+//             str += `<div class="memberDiv px-5 py-2">
+//                     <div class="d-inline-block align-middle py-2">
+//                     <i class="bi bi-exclamation-circle me-1"></i>
+//                     <span class="pt-0 m-0">삭제된 댓글입니다.</span>
+//                     </div>
+//                     </div><hr class="m-0">`
+//         }
+//
+//         //본인이 작성한 댓글이면 댓글 배경색 다르게 구현
+//         str += `<div class="memberDiv px-5 py-2`
+//         if (val.memberId === loginId) {
+//             str += ` bg-light`
+//         }
+//         str += `">`
+//
+//         //대댓글이면 아이콘 추가
+//         if (val.commentId !== val.replyId) {
+//             str += `<i class="bi bi-arrow-return-right fs-5 px-3 align-middle"></i>`
+//         }
+//
+//         //비밀 댓글일 때
+//         if (val.commentSecret === "Y") {
+//             //관리자, 댓글,게시글 작성자만 댓글 확인 가능
+//             if (val.memberId === loginId || postsMemberId === loginId || authorities === "[ROLE_ADMIN]") {
+//                 str += `<div class="d-inline-block me-2">`
+//                 //프로필 사진이 0이면 기본 프로필사진, 0이 아니면 DB에 저장된 memberImg 가져옴
+//                 if (val.memberRole === "ROLE_ADMIN") {
+//                     str += `<img class="rounded-circle border border-1" src="/img/adminProfile.jpg" width="50" height="50" style="object-fit:cover">`
+//                 } else if (val.memberImg == 0) {
+//                     str += `<img class="rounded-circle border border-1" src="/img/profile.jpg" width="50" height="50" style="object-fit:cover">`
+//                 } else {
+//                     str += `<img class="rounded-circle border border-1" src="/image/${val.memberImg}" width="50" height="50" style="object-fit:cover">`
+//                 }
+//                 str += `</div>
+//                         <div class="d-inline-block align-middle">
+//                         <div class="dropdown me-1 d-inline-block">
+//                         <a href="javascript:" role="button" class="memberId" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
+//                         <ul class="dropdown-menu" style="min-width: auto;">
+//                         <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
+//                         <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
+//
+//                 //권한 = MEMBER 이면서 본인이 작성한 댓글이 아닐 시
+//                 if (val.memberId !== loginId && authorities === "[ROLE_MEMBER]") {
+//                     str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
+//                             <button type="button" class="dropdown-item memberReport" id="addProductReport"
+//                                     data-bs-toggle="modal" data-bs-target="#addReportModal"
+//                                     title="신고하기">신고하기
+//                             </button>`
+//                 }
+//                 str += `</ul>
+//                         </div>
+//                         <span class="float-none mx-1">${val.modifiedDate}</span>
+//                         <p class="pt-0 m-0">
+//                         <i class="bi bi-lock-fill text-secondary me-1"></i>
+//                         <span class="commentContent">${val.commentContent}</span>
+//                         </p>
+//                         </div>`
+//                 //대댓글인 경우
+//                 if (val.commentId === val.replyId) {
+//                     str += `<div class="dropdown mt-1 float-end">
+//                         <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
+//                         <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
+//                         <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;">
+//                         <li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
+//                     if (val.memberId === loginId) {
+//                         str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
+//                             <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
+//                     }
+//                     str += '</ul></div>'
+//                 } else {
+//                     if (val.memberId === loginId) {
+//                         str += `<div class="dropdown mt-1 float-end">
+//                             <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
+//                             <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
+//                             <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
+//                             <li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
+//                             <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
+//                             </ul></div>`
+//                     }
+//                 }
+//                 if (val.commentImg != 0) {
+//                     str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
+//                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
+//                             </div>`
+//                 }
+//             } else {
+//                 str += `<div class="d-inline-block align-middle py-2">
+//                         <i class="bi bi-lock-fill text-secondary me-1"></i>
+//                         <span class="pt-0 m-0">해당 댓글은 작성자와 운영자만 볼 수 있습니다.</span>
+//                         <span class="float-none mx-1">${val.modifiedDate}</span>
+//                         </div>`
+//             }
+//
+//             //비밀 댓글이 아닐 때
+//         } else if (val.commentSecret === "N") {
+//             str += `<div class="d-inline-block me-2">`
+//             if (val.memberRole === "ROLE_ADMIN") {
+//                 str += `<img class="rounded-circle border border-1" src="/img/adminProfile.jpg" width="50" height="50" style="object-fit:cover">`
+//             } else if (val.memberImg == 0) {
+//                 str += `<img class="rounded-circle border border-1" src="/img/profile.jpg" width="50" height="50" style="object-fit:cover">`
+//             } else {
+//                 str += `<img class="rounded-circle border border-1" src="/image/${val.memberImg}" width="50" height="50" style="object-fit:cover">`
+//             }
+//             str += `</div>
+//                     <div class="d-inline-block align-middle">
+//                     <div class="dropdown me-1 d-inline-block">
+//                     <a href="javascript:"  class="memberId" role="button" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
+//                     <ul class="dropdown-menu" style="min-width: auto;">
+//                     <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
+//                     <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
+//             if (val.memberId !== loginId && authorities === "[ROLE_MEMBER]") {
+//                 str += `<li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
+//                         <button type="button" class="dropdown-item memberReport" id="addProductReport"
+//                                     data-bs-toggle="modal" data-bs-target="#addReportModal"
+//                                     title="신고하기">신고하기
+//                         </button>`
+//             }
+//             str += `</ul>
+//                     </div>
+//                     <span class="float-none mx-1">${val.modifiedDate}</span>
+//                     <p class="pt-0 m-0"><span class="commentContent">${val.commentContent}</span></p>
+//                     </div>`
+//             if (val.commentId === val.replyId) {
+//                 if (authorities === "[ROLE_MEMBER]" || authorities === "[ROLE_ADMIN]") {
+//                     str += `<div class="dropdown mt-1 float-end">
+//                             <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
+//                             <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
+//                             <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
+//                             <li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
+//                     if (val.memberId === loginId) {
+//                         str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
+//                                 <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
+//                     }
+//                     str += `</ul></div>`
+//                 }
+//                 if (val.commentImg != 0) {
+//                     str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
+//                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
+//                             </div>`
+//                 }
+//             } else {
+//                 if (val.memberId === loginId) {
+//                     str += `<div class="dropdown mt-1 float-end">
+//                             <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
+//                             <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
+//                             <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
+//                             <li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
+//                             <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
+//                             </ul></div>`
+//                 }
+//                 if (val.commentImg != 0) {
+//                     str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
+//                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
+//                             </div>`
+//                 }
+//             }
+//         }
+//         str += `</div>
+//                 <hr class="m-0">`
+//     });
+//     $("#commentListSize").text(data.length);
+//     $("#commentList").html(str);
+// }
 
-        str += `<div class="memberDiv px-5 py-2`
-        if (val.memberId === loginId) {
-            str += ` bg-light`
-        }
-        str += `">`
-        if (val.commentId !== val.replyId) {
-            str += `<i class="bi bi-arrow-return-right fs-5 px-3 align-middle"></i>`
-        }
-        if (val.commentSecret === "Y") {
-            if (val.memberId === loginId || $("#postsMemberId").text() === loginId || authorities === "[ROLE_ADMIN]") {
-                str += `<div class="d-inline-block me-2">`
-                if (val.memberImg == 0) {
-                    str += `<img class="rounded-circle border border-1" src="/img/profile.jpg" width="50" height="50" style="object-fit:cover">`
-                } else {
-                    str += `<img class="rounded-circle border border-1" src="/image/${val.memberImg}" width="50" height="50" style="object-fit:cover">`
-                }
-                str += `</div>
-                        <div class="d-inline-block align-middle">
-                        <div class="dropdown me-1 d-inline-block">
-                        <a href="javascript:" role="button" class="memberId" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
-                        <ul class="dropdown-menu" style="min-width: auto;">
-                        <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
-                        <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
-                if (val.memberId !== loginId) {
-                    str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
-                            <button type="button" class="dropdown-item memberReport" id="addProductReport"
-                                    data-bs-toggle="modal" data-bs-target="#addReportModal"
-                                    title="신고하기">신고하기
-                            </button>`
-                }
-                str += `</ul>
-                        </div>
-                        <span class="float-none mx-1">${val.modifiedDate}</span>
-                        <p class="pt-0 m-0">
-                        <i class="bi bi-lock-fill text-secondary me-1"></i>
-                        <span class="commentContent">${val.commentContent}</span>
-                        </p>
-                        </div>`
-                if (val.commentId === val.replyId) {
-                    str += `<div class="dropdown mt-1 float-end">
-                        <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-                        <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;">
-                        <li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
-                    if (val.memberId === loginId) {
-                        str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
-                            <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
-                    }
-                    str += '</ul></div>'
-                } else {
-                    if (val.memberId === loginId) {
-                        str += `<div class="dropdown mt-1 float-end">
-                            <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-                            <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
-                            <li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
-                            <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
-                            </ul></div>`
-                    }
-                }
-                if (val.commentImg != 0) {
-                    str += `<div class="ms-6 commentImgDiv">
-                            <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
-                            </div>`
-                }
-            } else {
-                str += `<div class="d-inline-block align-middle py-2">
-                        <i class="bi bi-lock-fill text-secondary me-1"></i>
-                        <span class="pt-0 m-0">해당 댓글은 작성자와 운영자만 볼 수 있습니다.</span>
-                        <span class="float-none mx-1">${val.modifiedDate}</span>
-                        </div>`
-            }
-        } else if (val.commentSecret === "N") {
-            str += `<div class="d-inline-block me-2">`
-            if (val.memberImg == 0) {
-                str += `<img class="rounded-circle border border-1" src="/img/profile.jpg" width="50" height="50" style="object-fit:cover">`
-            } else {
-                str += `<img class="rounded-circle border border-1" src="/image/${val.memberImg}" width="50" height="50" style="object-fit:cover">`
-            }
-            str += `</div>
-                    <div class="d-inline-block align-middle">
-                    <div class="dropdown me-1 d-inline-block">
-                    <a href="javascript:"  class="memberId" role="button" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
-                    <ul class="dropdown-menu" style="min-width: auto;">
-                    <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
-                    <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
-            if (val.memberId !== loginId) {
-                str += `<li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
-                        <button type="button" class="dropdown-item memberReport" id="addProductReport"
-                                    data-bs-toggle="modal" data-bs-target="#addReportModal"
-                                    title="신고하기">신고하기
-                        </button>`
-            }
-            str += `</ul>
-                    </div>
-                    <span class="float-none mx-1">${val.modifiedDate}</span>
-                    <p class="pt-0 m-0"><span class="commentContent">${val.commentContent}</span></p>
-                    </div>`
-            if (val.commentId === val.replyId) {
-                if (authorities === "[ROLE_MEMBER]" || authorities === "[ROLE_ADMIN]") {
-                    str += `<div class="dropdown mt-1 float-end">
-                            <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-                            <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
-                            <li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
-                    if (val.memberId === loginId) {
-                        str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
-                                <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
-                    }
-                    str += `</ul></div>`
-                }
-                if (val.commentImg != 0) {
-                    str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
-                            <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
-                            </div>`
-                }
-            } else {
-                if (val.memberId === loginId) {
-                    str += `<div class="dropdown mt-1 float-end">
-                            <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-                            <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
-                            <li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
-                            <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
-                            </ul></div>`
-                }
-                if (val.commentImg != 0) {
-                    str += `<div class="ms-6 commentImgDiv">
-                            <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
-                            </div>`
-                }
-            }
-        }
-        str += `</div>
-                <hr class="m-0">`
-    });
-    $("#commentListSize").text(data.length);
-    $("#commentList").html(str);
-}
 
+//댓글 태그 (댓글 수정, 대댓글용)
 commentForm = function () {
     $("#commentForm").remove();
     let str = '';
@@ -595,12 +616,138 @@ commentForm = function () {
             <i class="bi bi-image fs-4 mt-3"></i>
             </button>
             <span id="commentLength2">0</span><span class="text-grey">/600</span>
-            <button id="lockBtn2" class="btn btn-link2 mx-2 p-0">
+            <button id="lockBtn2" class="btn btn-link2 ms-2 p-0">
             <i id="lockIcon2" class="bi bi-unlock-fill fs-4 m-0"></i>
             </button>
-            <button type="button" id="cancelBtn" class="btn btn-info text-end">취소</button>
+            <button type="button" id="cancelBtn" class="btn btn-info ms-2 text-end">취소</button>
             <button type="button" class="btn btn-danger text-end">등록</button>
             </div>
             </div>`
     return str;
 }
+
+showList = function (data) {
+    let str = '';
+    $.each(data.content, function (idx, val) {
+        //부모 댓글이 삭제되었을 때
+        if (val.isDeleted === 1) {
+            str += `<div class="memberDiv px-5 py-2">
+                    <div class="d-inline-block align-middle py-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    <span class="pt-0 m-0">삭제된 댓글입니다.</span>
+                    </div>
+                    </div><hr class="m-0">`
+        }
+
+        //본인이 작성한 댓글이면 댓글 배경색 다르게 구현
+        str += `<div class="memberDiv px-5 py-2`
+        if (val.memberRole === "ROLE_ADMIN") {
+            str += ` bg-info bg-opacity-10`
+        } else if (val.memberId === loginId) {
+            str += ` bg-light`
+        }
+        str += `">`
+
+        //대댓글이면 아이콘 추가
+        if (val.commentId !== val.replyId) {
+            str += `<i class="bi bi-arrow-return-right fs-5 px-3 align-middle"></i>`
+        }
+
+        //비밀댓글 + 댓글 작성자, 게시글 작성자, 권한이 관리자가 아닐 때
+        if (val.commentSecret === "Y" && !(val.memberId === loginId || postsMemberId === loginId || authorities === "[ROLE_ADMIN]")) {
+            str += `<div class="d-inline-block align-middle py-2">
+                        <i class="bi bi-lock-fill text-secondary me-1"></i>
+                        <span class="pt-0 m-0">해당 댓글은 작성자와 운영자만 볼 수 있습니다.</span>
+                        <span class="float-none mx-1">${val.modifiedDate}</span>
+                        </div>`
+            //공개댓글 or 비밀 댓글이면서 댓글 작성자, 게시글 작성자, 권한이 관리자일 때
+        } else {
+            str += `<div class="d-inline-block me-2">`
+
+            //관리자가 작성한 댓글일 때 프로필 사진
+            if (val.memberRole === "ROLE_ADMIN") {
+                str += `<img class="rounded-circle border border-1" src="/img/adminProfile.jpg" width="50" height="50" style="object-fit:cover">`
+                //개인 회원이 작성한 댓글 + 프로필 사진 null일 때 기본 프로필로 설정
+            } else if (val.memberImg == 0) {
+                str += `<img class="rounded-circle border border-1" src="/img/profile.jpg" width="50" height="50" style="object-fit:cover">`
+                //개인 회원이면서 프로필 사진을 지정했을 때
+            } else {
+                str += `<img class="rounded-circle border border-1" src="/image/${val.memberImg}" width="50" height="50" style="object-fit:cover">`
+            }
+
+            str += `</div>
+                    <div class="d-inline-block align-middle">`
+            if (val.memberRole === "ROLE_ADMIN") {
+                str += `<div class="me-1 d-inline-block "><strong class="text-dark">관리자</strong>`
+            } else {
+                str += `<div class="dropdown me-1 d-inline-block">
+                        <a href="javascript:" role="button" class="memberId" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
+                        <ul class="dropdown-menu" style="min-width: auto;">
+                        <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
+                        <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
+                if (val.memberId !== loginId && authorities === "[ROLE_MEMBER]") {
+                    str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
+                            <button type="button" class="dropdown-item memberReport" id="addProductReport"
+                                    data-bs-toggle="modal" data-bs-target="#addReportModal"
+                                    title="신고하기">신고하기
+                            </button></ul>`
+
+                }
+            }
+            str += `</div>
+                    <span class="float-none mx-1">${val.modifiedDate}</span>
+                    <p class="pt-0 m-0">`
+            //비밀 댓글일 경우 자물쇠 아이콘 추가
+            if (val.commentSecret === "Y") {
+                str += `<i class="bi bi-lock-fill text-secondary me-1"></i>`
+            }
+            str += `<span class="commentContent">${val.commentContent}</span>
+                    </p>
+                    </div>`
+            //부모 댓글일 경우
+            if (val.commentId === val.replyId) {
+                str += `<div class="dropdown mt-1 float-end">
+                        <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
+                        <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;">
+                        <li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
+                if (val.memberId === loginId) {
+                    str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
+                            <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
+                } else if(authorities === "[ROLE_ADMIN]"){
+                    str += `<li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
+                }
+                str += '</ul></div>'
+
+                //대댓글일 경우
+            } else {
+                if (val.memberId === loginId) {
+                    str += `<div class="dropdown mt-1 float-end">
+                            <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
+                            <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
+                            <li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
+                            <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
+                            </ul></div>`
+                }else if(authorities === "[ROLE_ADMIN]"){
+                    str += `<div class="dropdown mt-1 float-end">
+                            <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
+                            <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
+                            <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
+                            </ul></div>`
+                }
+            }
+            if (val.commentImg != 0) {
+                str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
+                            <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
+                            </div>`
+            }
+        }
+        str += `</div>
+                <hr class="m-0">`
+    });
+    $("#commentListSize").text(data.length);
+    $("#commentList").html(str);
+}
+

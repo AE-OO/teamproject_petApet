@@ -29,6 +29,6 @@ public interface CommunityService {
     Page<CommunityDTO> getSearchList(String type,String searchContent ,int pageNum, int pageSize,String sort);
     Page<CommunityDTO> getMemberWritingList(String type, String memberId, int pageNum, int pageSize);
     Page<CommunityDTO> getLoginMemberWritingList(String memberId, int pageNum, int pageSize);
-
-    Page<CommunityDTO> getPopularList();
+    Page<CommunityDTO> getPopularCommunityList();
+    List<String> getCommunityContentImg(Long communityId);
 }

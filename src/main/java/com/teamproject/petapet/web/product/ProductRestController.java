@@ -39,7 +39,6 @@ import static com.teamproject.petapet.web.product.productdtos.ProductMainPageLis
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Transactional
 @RequestMapping("/product")
 public class ProductRestController {
 
@@ -97,7 +96,7 @@ public class ProductRestController {
     }
 
     @PostMapping("/updateReview")
-    public void updateReview(@ModelAttribute ReviewInsertDTO reviewInsertDTO, @RequestParam("productId") Long productId, Principal principal) throws IOException {
+    public void updateReview(@ModelAttribute ReviewInsertDTO reviewInsertDTO, @RequestParam("productId") Long productId, Principal principal) {
         Review review = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
         List<UploadFile> storeFiles = fileService.storeFiles(reviewInsertDTO.getReviewImg());
         ArrayList<UploadFile> uploadFiles = new ArrayList<>();
@@ -112,10 +111,11 @@ public class ProductRestController {
         List<UploadFile> uploadFileList = uploadFiles.stream().distinct().collect(Collectors.toList());
         uploadFileList.addAll(storeFiles);
 
-        review.updateReview(reviewInsertDTO.getReviewTitle(), reviewInsertDTO.getReviewContent(), LocalDateTime.now(), reviewInsertDTO.getReviewRating(), uploadFileList);
+        reviewService.updateReview(review, reviewInsertDTO.getReviewTitle(), reviewInsertDTO.getReviewContent(), LocalDateTime.now(), reviewInsertDTO.getReviewRating(), uploadFileList);
     }
 
     @PostMapping("/deleteReviewImg")
+    @Transactional
     public void deleteReviewImg(@RequestBody String imgData, @RequestParam("productId") Long productId, Principal principal) {
         Review review = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
         List<UploadFile> reviewImg = review.getReviewImg();
@@ -137,7 +137,9 @@ public class ProductRestController {
     //23.01.23 박채원 수정 - getProductList 메소드 (querydsl로 데이터 가져옴)
     @GetMapping(value="/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProductDTO>> getProductList(Principal principal){
-        return new ResponseEntity<>(productService.getCompanyProductList(principal.getName()), HttpStatus.OK);
+        List<ProductDTO> companyProductList = productService.getCompanyProductList(principal.getName());
+        log.info("companyProductLis={}",companyProductList);
+        return new ResponseEntity<>(companyProductList, HttpStatus.OK);
     }
 
     @PostMapping("/updateStock/{productId}")

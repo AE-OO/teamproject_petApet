@@ -39,6 +39,9 @@
             <li class="mx-2" value="stroller"><a style="text-decoration: none"
                                                  th:href="#{product.querystring(${'stroller'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">유모차</a>
             </li>
+            <li class="mx-2" value="etc"><a style="text-decoration: none"
+                                                 th:href="#{product.querystring(${'etc'},${size},${'1'},${sortType},${'false'},${starRating},${isPriceRange},${minPrice},${maxPrice})}">기타</a>
+            </li>
         </ul>
     </div>
 </div>
@@ -104,6 +107,9 @@
                                         </li>
                                         <li value="stroller"><a style="text-decoration: none"
                                                                 th:href="#{product.querystring(${'stroller'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">유모차</a>
+                                        </li>
+                                        <li value="stroller"><a style="text-decoration: none"
+                                                                th:href="#{product.querystring(${'etc'},${size},${'1'},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">기타</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -326,9 +332,8 @@
                                                         th:value="*{product.productId}">장바구니
                                                     <input type="hidden" class="quan" value="1"/></button>
                                                 <button class="btn bg-secondary addBuy"
-                                                        th:onclick="|location.href='@{/direct/checkout/{idx}(idx=${product.productId})}'|">
+                                                        th:onclick="|location.href='@{/product/{productType}/{productId}/details(productType=${product.getProductDiv().name().toLowerCase()},productId=${product.productId})}'|">
                                                     바로구매
-                                                    <input type="hidden" class="quan" value="1"/></button>
                                             </div>
                                         </div>
                                     </div>

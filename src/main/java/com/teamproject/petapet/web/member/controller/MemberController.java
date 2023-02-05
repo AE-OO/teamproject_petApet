@@ -136,7 +136,7 @@ public class MemberController {
         return "findPw";
     }
 
-
+    //회원정보 수정 전 비밀번호 확인
     @GetMapping("/member/checkInfo")
     public String myInfo(){return "member/checkInfo";}
 
@@ -146,6 +146,7 @@ public class MemberController {
         return "member/modifyInfo";
     }
 
+    //회원정보 수정
     @PostMapping("/member/modifyInfo")
     public String modifyInfo(Principal principal, @Valid MemberRequestDTO.UpdateMemberInfo updateMemberInfo,
                              BindingResult bindingResult) {
@@ -170,6 +171,7 @@ public class MemberController {
         return "redirect:/";
     }
 
+    //멤버 프로필사진 url
     @GetMapping(value = "/image/{memberImg}")
     public ResponseEntity<Resource> downloadImageV2(@PathVariable String memberImg) throws IOException {
         String fullPath = fileService.getFullPath(memberImg);
@@ -180,6 +182,7 @@ public class MemberController {
                 .body(resource);
     }
 
+    //내정보 - 글목록
     @GetMapping("/member/writingList")
     public String writingList(){return "member/memberWritingList";}
 

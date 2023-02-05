@@ -8,11 +8,10 @@ import org.springframework.data.domain.Page;
 public interface CommentService {
     void insertComment(String memberId, CommentRequestDTO.InsertDTO insertDTO);
     void insertReply(String memberId, CommentRequestDTO.InsertReplyDTO insertReplyDTO);
-    Page<CommentDTO> getCommentPageList(Long communityId, int pageNum);
+    Page<CommentDTO> getCommentList(Long communityId, int pageNum);
     int totalPages(Long communityId);
     void deleteComment(Long commentId);
     void updateComment(CommentRequestDTO.UpdateDTO updateDTO);
-
     Page<CommentDTO> getLoginMemberWritingList(String memberId, int pageNum, int pageSize);
 
 }

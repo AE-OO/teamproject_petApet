@@ -13,7 +13,7 @@ getLoginId = function () {
             }
         }
         , error: function () {
-            alert('오류');
+            console.log('로그인 아이디 오류');
         }
     })
 }

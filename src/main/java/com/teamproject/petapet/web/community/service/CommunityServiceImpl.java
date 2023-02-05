@@ -14,7 +14,10 @@ import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -161,8 +164,22 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public Page<CommunityDTO> getPopularList() {
+    public Page<CommunityDTO> getPopularCommunityList() {
         Pageable pageable = PageRequest.of(0,5,Sort.by("viewCount").descending());
         return communityRepository.getPopularList(pageable).map(community -> CommunityDTO.fromEntityForCommunityMain(community));
+    }
+
+    //communityContent에서 img 파일명 꺼내오기
+    @Override
+    public List<String> getCommunityContentImg(Long communityId) {
+        String communityContent = communityRepository.findById(communityId)
+                .orElseThrow(() -> new NullPointerException(communityId + "-> 데이터베이스에서 찾을 수 없습니다."))
+                .getCommunityContent();
+//        Pattern pattern = Pattern.compile("(<img[^>]*src\\s*=\\s*[\"']?([^>\"\']+)[\"']?[^>]*>)");
+        Pattern pattern = Pattern.compile("(<img[^>]*src\\s*=\\s*[\"']/product/images/?([^>\"\']+)[\"']?[^>]*>)");
+        Matcher matcher = pattern.matcher(communityContent);
+        List<String> result = new ArrayList<>();
+        while(matcher.find()){result.add(matcher.group(2));}
+        return result;
     }
 }
