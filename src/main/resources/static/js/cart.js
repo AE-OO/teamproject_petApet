@@ -231,7 +231,6 @@ $(totalFnAll);
         var productId = $(this).val();
         var quantity = $(this).parents().eq(2).find().children('.qtt').text();
         var urlBuy =  "/buy/add";
-
         var param = {"product": productId, "quantity":quantity};
         console.log("product : " + productId);
         console.log("quantity : " + quantity);

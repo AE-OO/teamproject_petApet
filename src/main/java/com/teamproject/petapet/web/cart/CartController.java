@@ -2,20 +2,19 @@ package com.teamproject.petapet.web.cart;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.cart.dto.CartDTO;
 import com.teamproject.petapet.web.cart.dto.CartVO;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.security.Principal;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -31,16 +30,15 @@ public class CartController {
 
     /**
      * 회원 장바구니
-     * @param principal
+     *
      * @param model
-     * @return
-     * 추가할것 - 로그인한 회원 일치 검증 에러처리
+     * @return 추가할것 - 로그인한 회원 일치 검증 에러처리
      */
     @GetMapping()
-    public String mycart(Principal principal,Model model){
+    public String mycart(Authentication authentication, Model model) {
 
-        if(principal != null) {
-            String loginMember = checkMember(principal);
+        if (authentication != null) {
+            String loginMember = checkMember(authentication);
 
             // 세션 유지되면 로그인으로 이동
             List<Cart> carts = cartService.findAll(loginMember);
@@ -54,38 +52,13 @@ public class CartController {
 
     // 상품 페이지 -> 장바구니 담기
     @ResponseBody
-    @RequestMapping(value = "/add", method = { RequestMethod.POST }, produces = "application/json")
-    public void productToCart(@RequestBody CartVO vo, Principal principal){
+    @RequestMapping(value = "/add", method = {RequestMethod.POST}, produces = "application/json")
+    public void productToCart(@RequestBody CartVO vo, Authentication authentication) throws IOException {
 
-//        String loginMember = checkMember(principal);
-//        Long product = vo.getProduct();
-//        Long quantity = vo.getQuantity();
-//        log.info("dd ={}", quantity);
-//        Cart cart = new Cart(
-//                memberService.findOne(loginMember),
-//                productService.findOne(product).orElseThrow(NoSuchElementException::new),
-//                quantity);
-//
-//        cartService.addCart(cart);
-
-        String loginMember = checkMember(principal);
+        String loginMember = checkMember(authentication);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
-        log.info("dd ={}", quantity);
-        log.info("dddd ={}", vo.getMemberId());
-//        if (!cartService.checkDuplication(memberService.findOne(vo.getMemberId()))){
-//            log.info("카트 상품없음");
-//            Cart cart = new Cart(
-//                    memberService.findOne(vo.getMemberId()),
-//                    productService.findOne(product).orElseThrow(NoSuchElementException::new),
-//                    quantity);
-//
-//            cartService.addCart(cart);
-//        } else {
-//            log.info("카트 상품있음");
-//            log.info("cartIdd ={}", vo.getCartId());
-//            cartService.setQuan(vo.getQuantity(), vo.getCartId());
-//        }
+
         Cart cart = new Cart(
                 memberService.findOne(loginMember),
                 productService.findOne(product).orElseThrow(NoSuchElementException::new),
@@ -95,10 +68,10 @@ public class CartController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/buyToCart", method = { RequestMethod.POST }, produces = "application/json")
-    public void buyToCart(@RequestBody CartVO vo, Principal principal){
+    @RequestMapping(value = "/buyToCart", method = {RequestMethod.POST}, produces = "application/json")
+    public void buyToCart(@RequestBody CartVO vo, Authentication authentication) {
 
-        String loginMember = checkMember(principal);
+        String loginMember = checkMember(authentication);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
         Cart cart = new Cart(
@@ -112,45 +85,53 @@ public class CartController {
 
     // 카트페이지 주문수정 버튼 - 수량 변경 - 미완
     @ResponseBody
-    @RequestMapping(value = "/modify", method = { RequestMethod.POST } , produces = "application/json")
-    public void modifyCart(@RequestBody CartVO vo){
+    @RequestMapping(value = "/modify", method = {RequestMethod.POST}, produces = "application/json")
+    public void modifyCart(@RequestBody CartVO vo) {
         log.info("카트 번호>> ={}", vo.getCartId());
         log.info("수량 변경>> ={}", vo.getQuantity());
         cartService.setQuan(vo.getQuantity(), vo.getCartId());
     }
+
     // 상품 구매완료 후 장바구니 비우기
     @ResponseBody
-    @RequestMapping(value = "/success", method = { RequestMethod.POST } , produces = "application/json")
-    public void successBuy(@RequestBody CartVO vo){
+    @RequestMapping(value = "/success", method = {RequestMethod.POST}, produces = "application/json")
+    public void successBuy(@RequestBody CartVO vo) {
         cartService.removeCartOne(vo.getCartId());
     }
 
     @ResponseBody
-    @RequestMapping(value = "/removeOne" , method = { RequestMethod.POST }, produces = "application/json")
-    public void removeCartOne(@RequestBody CartVO vo){
+    @RequestMapping(value = "/removeOne", method = {RequestMethod.POST}, produces = "application/json")
+    public void removeCartOne(@RequestBody CartVO vo) {
         log.info(">> ={}", vo.getCartId());
         cartService.removeCartOne(vo.getCartId());
     }
 
     @ResponseBody
-    @RequestMapping(value = "/removeAll", method = {RequestMethod.POST} , produces = "application/json")
-    public void removeCartAll(@RequestBody CartVO vo, Principal principal){
-        String loginMember = checkMember(principal);
-        cartService.removeCartAll(vo.getMemberId());
+    @RequestMapping(value = "/removeAll", method = {RequestMethod.POST}, produces = "application/json")
+    public void removeCartAll(@RequestBody CartVO vo, Authentication authentication) {
+        String loginMember = checkMember(authentication);
+        cartService.removeCartAll(loginMember);
     }
 
     @ResponseBody
-    @RequestMapping(value = "checkout", method = {RequestMethod.POST} , produces = "application/json")
-    public void checkoutOne(@RequestBody CartVO vo, Principal principal){
-        String loginMember = checkMember(principal);
-        cartService.removeCartAll(vo.getMemberId());
+    @RequestMapping(value = "checkout", method = {RequestMethod.POST}, produces = "application/json")
+    public void checkoutOne(@RequestBody CartVO vo, Authentication authentication) {
+        String loginMember = checkMember(authentication);
+        cartService.removeCartAll(loginMember);
     }
 
 
-
-    private String checkMember(Principal principal) {
-        return memberService.findOne(principal.getName()).getMemberId();
+    private String checkMember(Authentication authentication) {
+        if (authentication == null) {
+            throw new IllegalStateException("로그인이 필요한 서비스입니다.");
+        }
+        User user = (User) authentication.getPrincipal();
+        String role = user.getAuthorities().stream().findAny().orElseThrow(NoSuchElementException::new).getAuthority();
+        if (role.equals("ROLE_ADMIN") || role.equals("ROLE_COMPANY")) {
+            throw new IllegalStateException("일반회원만 가능한 기능입니다.");
+        }
+        Member member = memberService.findOne(user.getUsername());
+        return member.getMemberId();
     }
-
 
 }

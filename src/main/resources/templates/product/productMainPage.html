@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragment/heade :: head(product)}">
+<head th:replace="~{fragment/heade :: head(petApet)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -23,11 +23,12 @@
         </div>
         <div class="col-lg col-md portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
             <div class="portfolio-inner rounded">
-                <img width="1300" height="100" th:src="@{/img/petFood.jpg}" alt="">
+                <div style="background-color: #78C2AD; height: 100px;width: 1300px;">
                 <div class="portfolio-text" style="opacity: 1;">
                     <h1 class="text-white text-center">
                         <a style="text-decoration: none" class="text-white"
-                           th:href="@{/product(category=food)}">전체상품</a></h1>
+                           th:href="@{/product(category=all)}">전체상품</a></h1>
+                </div>
                 </div>
             </div>
         </div>
@@ -100,18 +101,8 @@
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/wow/wow.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="lib/counterup/counterup.min.js"></script>
-<script src="lib/parallax/parallax.min.js"></script>
-<script src="lib/isotope/isotope.pkgd.min.js"></script>
-<script src="lib/lightbox/js/lightbox.min.js"></script>
 
 <!-- Template Javascript -->
-<script src="js/main.js"></script>
 
 </html>

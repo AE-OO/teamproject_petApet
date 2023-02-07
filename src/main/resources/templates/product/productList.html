@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragment/heade :: head(product)}">
+<head th:replace="~{fragment/heade :: head(petApet)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body class="">
-<input type="hidden" id="memberId" th:text="${#authentication.name}" >
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <hr class="mt-5">
 <div class="text-center mx-auto mt-5">
@@ -332,8 +331,7 @@
                                                         th:value="*{product.productId}">장바구니
                                                     <input type="hidden" class="quan" value="1"/></button>
                                                 <button class="btn bg-secondary addBuy"
-                                                        th:onclick="|location.href='@{/product/{productType}/{productId}/details(productType=${product.getProductDiv().name().toLowerCase()},productId=${product.productId})}'|">
-                                                    바로구매
+                                                        th:onclick="|location.href='@{/product/{productType}/{productId}/details(productType=${product.getProductDiv().name().toLowerCase()},productId=${product.productId})}'|">바로구매</button>
                                             </div>
                                         </div>
                                     </div>
@@ -354,12 +352,10 @@
             <li class="page-item" th:if="${start > 5}">
                 <a class="page-link"
                    th:href="#{product.querystring(${category},${size},${start - 5},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">이전</a>
-                <!--                   th:href="@{/product(category=${#request.getParameter('category')},page=${start - 5},size=${#request.getParameter('size')})}">이전</a>-->
             </li>
             <li class="page-item" id="pageNumber" th:value="${number}"
                 th:classappend="${productList.getNumber()==number}"
                 th:each="number : ${#numbers.sequence(start,end)}">
-                <!--                <a class="page-link" th:href="@{/product(category=${#request.getParameter('category')},page=${number},size=${#request.getParameter('size')})}"-->
                 <a class="page-link"
                    th:href="#{product.querystring(${category},${size},${number},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}"
                    th:text="${number}"></a>
@@ -367,7 +363,6 @@
             <li class="page-item" th:if="${end < productList.totalPages}">
                 <a class="page-link"
                    th:href="#{product.querystring(${category},${size},${start + 5},${sortType},${searchContent},${starRating},${isPriceRange},${minPrice},${maxPrice})}">다음</a>
-                <!--                   th:href="@{/product(category=${#request.getParameter('category')},page=${start + 5},size=${#request.getParameter('size')})}">다음</a>-->
             </li>
         </ul>
     </nav>
@@ -376,7 +371,6 @@
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:inline="javascript">
     var size = $('p[class = star]').length;
@@ -413,15 +407,11 @@
     const addCartBtn = $('.addCart');  // 상품 리스트에서 장바구니로 상품을 추가하는 기능
 
     var postUrl = "cart";
-    var memberId = $('#memberId').text();
 
     $(addCartBtn).click(function () {
         var productId = $(this).val();
         var quantity = $(this).children('.quan').val();
-        var param = {"product": productId, "quantity": quantity , "memberId" : [[${#authentication.name}]]};
-        console.log("product : " + productId);
-        console.log("quantity : " + quantity);
-        console.log("memberId : " + param.memberId);
+        var param = {"product": productId, "quantity": quantity};
         $.ajax({
             url: "/cart/add",
             type: "POST",
@@ -437,7 +427,7 @@
                 }
             },
             error: function (jqXHR, status, errorThrown) {
-                alert("에러");
+                alert(jqXHR.responseText);
             }
         });
     });
@@ -535,5 +525,4 @@ function isSearch() {
 </script>
 
 <!-- Template Javascript -->
-<script th:src="@{/js/main.js}"></script>
 </html>
