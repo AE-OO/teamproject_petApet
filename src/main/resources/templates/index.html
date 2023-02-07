@@ -165,9 +165,9 @@
                 <img class="img-fluid rounded" data-wow-delay="0.1s" src="img/placeinfo.jpg">
             </div>
             <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
-                <h1 class="display-3 text-primary mb-0">이달의 추천 플레이스</h1>
+                <h1 class="display-4 text-primary mb-0">이달의 추천 플레이스</h1>
                 <h1 class="display-6 mb-4">Poison PetCafe</h1>
-                <p class="mb-4">서울 근교에서 가장 가까운 애견카페
+                <p class="mb-4">서울 근교에서 가까운 애견카페
                     'Poison PetCafe' 입니다.
                     고양시 덕양구 이케아 인근에 위치해 있으며,
                     반려인을 위한 도심 속 힐링 반려견동반 카페 겸 반려견호텔&유치원을 별도로 운영하고 있습니다.
@@ -184,7 +184,7 @@
                                 <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                             </svg>
                             <h4 class="row mb-3">업체 정보</h4>
-                            <span class="row">경기 고양시 덕양구 1층</span>
+                            <span class="row">경기 고양시 덕양구</span>
                             <span class="row">0000-0000-0000</span>
                         </div>
                     </div>
@@ -201,7 +201,6 @@
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 
 <!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="lib/wow/wow.min.js"></script>
 <script src="lib/easing/easing.min.js"></script>
@@ -213,129 +212,9 @@
 <script src="lib/lightbox/js/lightbox.min.js"></script>
 
 <!-- Template Javascript -->
-<script src="js/main.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/index.js"></script>
 
-<script type="text/javascript" th:inline="javascript">
-    // window.kakaoAsyncInit = function () {
-    //     Kakao.Channel.createChatButton({
-    //         container: '#kakao-talk-channel-chat-button',
-    //     });
-    // };
-
-    // (function (d, s, id) {
-    //     var js, fjs = d.getElementsByTagName(s)[0];
-    //     if (d.getElementById(id)) return;
-    //     js = d.createElement(s);
-    //     js.id = id;
-    //     js.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.0.0/kakao.channel.min.js';
-    //     js.integrity = 'sha384-qN6njjEgLQzM0N/uuB26JXrlFnwdctF+owkJc/pTqUpi1Qrp9xAvRKYIkzH5XcJU';
-    //     js.crossOrigin = 'anonymous';
-    //     fjs.parentNode.insertBefore(js, fjs);
-    // })(document, 'script', 'kakao-js-sdk');
-
-    $(document).ready(sortProduct('productViewCount'));
-
-    async function sortProduct(sortType) {
-        $('#appendTarget').empty();
-        fetch('/product/sort?sortType=' + sortType, {
-            method: 'GET',
-        })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                $.each(data, function (idx) {
-                    const productListHtml = `
-                <div class="col-lg-3 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
-                <div class="portfolio rounded">
-                    <img class="" src="/product/images/${data[idx].productImg.storeFileName}" width="300" height="300" alt="">
-                    <div class="portfolio-text" style="opacity: 1;">
-                        <h1 class="text-start rounded ms-2">
-                            <a style="text-decoration: none;" class="text-dark fs-5" href="/product/food/${data[idx].productId}/details">${data[idx].productName}</a>
-                        </h1>
-                        <div class="d-flex flex-row">
-                            <div>
-                                <fieldset class="p-1 col">
-                                    <div class="d-flex flex-row" style="max-height: 1rem; margin-top: 0.1rem">
-                                        <p class="star" value="${data[idx].productRating}" id="star0">
-                                            <a class="my_star" value="1">★</a>
-                                            <a class="my_star" value="2">★</a>
-                                            <a class="my_star" value="3">★</a>
-                                            <a class="my_star" value="4">★</a>
-                                            <a class="my_star" value="5">★</a>
-                                        </p><p>
-                                    </p></div>
-                                </fieldset>
-                            </div>
-                            <h6 class="align-self-center mt-2">(${data[idx].productReview})</h6>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <div class="col">
-                                <h1 class="fs-6 text-end" id="priceToString${idx}"></h1>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
-                                    <button type="button" class="btn bg-secondary me-1 addCart" value="${data[idx].productId}" onclick="location.href='/product/food/${data[idx].productId}/details'">장바구니
-                                        <input type="hidden" class="quan" value="1"></button>
-                                    <a class="btn bg-secondary me-1 addBuy" href="/product/food/${data[idx].productId}/details">바로구매
-                                        <input type="hidden" class="quan" name="quantity" value="1"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-                    var size = $('p[class = star]').length;
-                    for (var i = 0; i < size; i++) {
-                        $('p[class = star]').eq(i).attr('id', "moreRating" + i);
-
-                        $("#moreRating" + i).find(".my_star").filter(function (k, v) {
-                            return $(v).attr("value") <= $("#moreRating" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
-                        });
-                    }
-                    $('#appendTarget').append(productListHtml);
-                    $('#priceToString' + idx).text(priceToString(data[idx].productPrice) + '원')
-                })
-            });
-    }
-
-    function priceToString(price) {
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
-
-    $(function () {
-        getIndexCommunityList();
-        // getPopularCommunityList();
-    });
-    getIndexCommunityList = function () {
-        $.getJSON('/community/getIndexList', function (data) {
-            showList(data.latest,"latest");
-            showList(data.popular,"popular");
-            showList(data.notice,"notice");
-        })
-    }
-
-    showList = function (data, classification) {
-        let str = ``
-        if (data.content.length === 0) {
-            str += `<li class="text-danger">작성된 글이 없습니다</li>`;
-        } else {
-            $.each(data.content, function (idx, val) {
-                str += `<li class="text-truncate">
-                        <span class="text-lightGray ps-0">${idx + 1}.</span>
-                        <a href="/community/${val.communityId}" class="ps-0 text-dark">
-                        <span class="text-danger me-2">${val.communityCategory}</span>`
-                if (val.communitySubCategory != null) {
-                    str += `<span class="text-lightGray me-2">${val.communitySubCategory}</span>`
-                }
-                str += `<span>${val.communityTitle}</span></a></li>`
-            })
-        }
-        $(`#${classification}List`).html(str);
-        // $('#' + classification + 'List').html(str);
-    }
-
-</script>
 </body>
 
 </html>

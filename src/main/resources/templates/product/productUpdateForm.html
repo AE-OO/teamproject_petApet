@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragment/heade :: head(productInsert)}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="~{fragment/heade :: head(petApet)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <hr class="mt-4">
-<form th:action="@{/product/update(productId=*{productId})}" id="submitForm" method="post" enctype="multipart/form-data" th:object="${ProductUpdateDTO}">
+<form th:action="@{/product/update(productId=*{productId})}" id="submitForm" method="post" enctype="multipart/form-data"
+      th:object="${ProductUpdateDTO}">
     <div th:if="${#fields.hasGlobalErrors()}">
         <p class="field-error" th:text="오류입니다">글로벌 오류 메시지</p>
     </div>
     <div class="container-xxl pt-5 px-5 mt-5">
+        <div class="flex-row justify-content-center">
+            <h1 class="text-center mb-5">상품 수정 페이지</h1>
+        </div>
         <div class="d-flex flex-row m-lg-2">
             <div class="d-flex col-6 justify-content-center">
                 <div class="portfolio-container">
@@ -20,12 +23,15 @@
                         <div class="portfolio">
                             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false">
                                 <div class="carousel-inner" id="thumbnailImg">
-                                    <div class="carousel-item" th:each="img, i : ${ProductUpdateDTO.getExistProductImg()}">
+                                    <div class="carousel-item"
+                                         th:each="img, i : ${ProductUpdateDTO.getExistProductImg()}">
                                         <a class="btn btn-link productImgModalBtn" data-bs-toggle="modal"
                                            data-bs-target="#productImgModal">
                                             <img th:src="|@{/product/images/{filename}(filename=${img.storeFileName})}|"
                                                  style="max-width: 100%; height: auto; max-height: 30rem; vertical-align: bottom;"
-                                                 class="d-block w-auto myProductImg" th:id="|${'carousel-img'}${i.index}|" th:alt="${img.uploadFileName}"></a>
+                                                 class="d-block w-auto myProductImg"
+                                                 th:id="|${'carousel-img'}${i.index}|"
+                                                 th:alt="${img.uploadFileName}"></a>
                                         <div class="d-flex  justify-content-center">
                                             <a type="button" class="btn btn-outline-danger deleteProductImg"
                                                style="color: red" th:text="삭제"></a>
@@ -51,7 +57,7 @@
             <div class="col-6">
                 <div class="d-flex mx-3 mb-3">
                     <div class="col-12 m-lg-1">
-                        <h6 th:value="*{productName}">상품명
+                        <h6 th:value="*{productName}" class="productTitle" th:data-id="*{productId}">상품명
                             <div class="field-error text-secondary fs-6" th:errors="*{productName}"/>
                         </h6>
                         <input type="text" name="productName" placeholder="상품명을 입력하세요."
@@ -141,7 +147,7 @@
                     </div>
                     <div class="d-flex flex-row col-6 m-lg-1">
                         <input type="file" th:field="*{productImg}" multiple="multiple"
-                               name="productImg" onchange="setThumbnail(event);">
+                               name="productImg">
                     </div>
                 </div>
                 <div class="d-flex mx-3 col">
@@ -256,7 +262,6 @@
 <hr class="my-4">
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>
-<!-- 상품 이미지 Modal -->
 <div class="modal fade" id="productImgModal" tabindex="-1" aria-labelledby="productImgModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" style="--bs-modal-bg: none; --bs-modal-border-width: 0">
@@ -272,190 +277,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
 
-    $('.productImgModalBtn').click(function () {
-        let imgSrc = $(this).children(1).attr('src');
-        let $modalImage = $('.modalImage');
-        $modalImage.attr('src', imgSrc);
-    })
-
-    function moreProductImgModalBtn(src) {
-        let $modalImage = $('.modalImage');
-        $modalImage.attr('src', src);
-    }
-
-    $(function setProductType() {
-        let val = $('#productType').val();
-
-        if (val !== "") {
-            $('select option[value=' + val + ']').attr('selected', true);
-        }
-    })
     $(function setCompanyId() {
         let companyId = [[${#authentication.name}]];
         $('#productSeller').val(companyId);
     })
-    $(function () {
-        $('.carousel-inner > div:nth-child(1)').addClass('active');
-    });
-
-    function setThumbnail(event) {
-        let from = Array.from(event.target.files);
-        $.each(from, function (idx, el) {
-            const carouselHtml = `<div class="carousel-item" id="addImg${idx}"></div>`;
-            $('#thumbnailImg').append(carouselHtml);
-
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                let aTag = document.createElement('a');
-                aTag.setAttribute('class', 'btn btn-link productImgModalBtn');
-                aTag.setAttribute('data-bs-toggle', 'modal');
-                aTag.setAttribute('data-bs-target', '#productImgModal');
-
-                var img = document.createElement("img");
-                img.setAttribute("src", event.target.result);
-                img.setAttribute('onclick', 'moreProductImgModalBtn(this.src)');
-                img.setAttribute('style', 'max-width: 100%; height: auto; max-height: 30rem')
-
-                aTag.append(img);
-                document.querySelector("#addImg" + idx).appendChild(aTag);
-            };
-            reader.readAsDataURL(el);
-        })
-    }
-
-    $('.deleteProductImg').click(function () {
-        $(this).parent().parent().remove();
-        $('.carousel-inner > div:nth-child(1)').addClass('active');
-    })
-
-    async function updateProduct() {
-        let productId = [[${ProductUpdateDTO.productId}]];
-        let productReviewCount = [[${ProductUpdateDTO.productReviewCount}]];
-        let productReport = [[${ProductUpdateDTO.productReport}]];
-        let productViewCount = [[${ProductUpdateDTO.productViewCount}]];
-        let productSellCount = [[${ProductUpdateDTO.productSellCount}]];
-        let productRating = [[${ProductUpdateDTO.getProductRating}]];
-        let storeFileNameArr = new Array();
-        let uploadFileNameArr = new Array();
-        let myProductImg = $('.productImgModalBtn .myProductImg').length;
-        for(var i = 1; i <= myProductImg; i++){
-            let src = $('.carousel-inner > div:nth-child('+i+') a img').attr('src');
-            let uploadFileName = $('.carousel-inner > div:nth-child('+i+') a img').attr('alt');
-            let pos = src.lastIndexOf("/");
-            let storeFileName = src.substring(pos+1);
-            storeFileNameArr.push(storeFileName);
-            uploadFileNameArr.push(uploadFileName);
-        }
-        let formData = new FormData(document.getElementById("submitForm"));
-        for (var o = 0; o < storeFileNameArr.length; o++){
-            formData.append('storeFileName',storeFileNameArr[o])
-            formData.append('uploadFileName',uploadFileNameArr[o])
-        }
-        formData.append('productReviewCount',productReviewCount)
-        formData.append('productReport',productReport)
-        formData.append('productViewCount',productViewCount)
-        formData.append('productSellCount',productSellCount)
-        formData.append('productRating',productRating)
-        fetch('/product/update?productId='+productId, {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => {
-                location.href = response.url
-            })
-            .then(data => {
-            })
-    }
-
-
-    $(document).ready(function () {
-        $('#productContent').summernote({
-            tabsize: 2,
-            placeholder: '내용을 작성하세요',
-            fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
-            toolbar: [
-                ['font', ['fontname', 'fontsize', 'fontsizeunit']],
-                ['fontstyle', ['bold', 'italic', 'underline', 'strikethrough', 'forecolor', 'backcolor', 'superscript', 'subscript', 'clear']],
-                ['style', ['style']],
-                ['paragraph', ['paragraph', 'height', 'ul', 'ol']],
-                ['insert', ['table', 'hr', 'link', 'picture', 'video']],
-                ['codeview'],
-            ],
-            minHeight: 500,
-            maxHeight: null,
-            focus: true,
-            callbacks: {
-                onImageUpload: function (files, editor, welEditable) {
-                    for (var i = files.length - 1; i >= 0; i--) {
-                        uploadSummernoteImageFile(files[i],
-                            this);
-                    }
-                }
-            }
-        })
-
-    });
-
-    function uploadSummernoteImageFile(file, el) {
-        data = new FormData();
-        data.append("file", file);
-        $.ajax({
-            data: data,
-            type: "POST",
-            url: "/product/image",
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function (data) {
-                $(el).summernote('editor.insertImage', data.url);
-            }
-        });
-    }
-
-    $(document).ready(function () {
-        $("#discountRate").on("propertychange change paste input", function () {
-            let price = fnReplace($("#productPrice").val());
-            let discountRate = fnReplace($("#discountRate").val());
-            if (discountRate > 99) {
-                $('#disRateMessage').text('0-99까지의 값을 입력하세요');
-            } else {
-                $('#disRateMessage').empty();
-            }
-            $('#finalPrice').val(Math.ceil(price - (price * (discountRate / 100))));
-        })
-        $("#productPrice").on("propertychange change paste input", function () {
-            let price = fnReplace($("#productPrice").val());
-            let discountRate = fnReplace($("#discountRate").val());
-            if (price > 9999999 || price < 1000) {
-                $('#priceMessage').text('1,000원 이상, 9,999,999원 이하의 금액이여야 합니다');
-            } else {
-                $('#priceMessage').empty();
-            }
-            $('#finalPrice').val(Math.ceil(price - (price * (discountRate / 100))));
-        })
-        $("#productStock").on("propertychange change paste input", function () {
-            let productStock = fnReplace($("#productStock").val());
-            if (productStock > 9999 || productStock < 100) {
-                $('#stockMessage').text('100-9999미만의 값을 입력하세요');
-            } else {
-                $('#stockMessage').empty();
-            }
-        })
-    })
-
-    function fnReplace(val) {
-        var ret = 0;
-        if (typeof val != "undefined" && val != null && val != "") {
-            ret = Number(val.replace(/,/gi, ''));
-        }
-        return ret;
-    }
-
 </script>
 
-<!-- Template Javascript -->
-<script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/reviewContentStr.js}"></script>
-</html>
-</body>
+<script th:src="@{/js/product/productUpdate.js}"></script>
 </html>

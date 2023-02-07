@@ -138,7 +138,6 @@ public class ProductRestController {
     @GetMapping(value="/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProductDTO>> getProductList(Principal principal){
         List<ProductDTO> companyProductList = productService.getCompanyProductList(principal.getName());
-        log.info("companyProductLis={}",companyProductList);
         return new ResponseEntity<>(companyProductList, HttpStatus.OK);
     }
 
