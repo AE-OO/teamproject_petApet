@@ -102,81 +102,13 @@ public class ProductController {
         return "product/productList";
     }
 
-    @GetMapping("/update")
-    public String productUpdateForm(@ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO
-            , @RequestParam("productId") Long productId, Model model, Principal principal) {
-        Product findProduct = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
-        productUpdateDTO = ProductUpdateDTO.convertToProductUpdateDTO(findProduct);
-        if (!principal.getName().equals(findProduct.getCompany().getCompanyId())) {
-            return "/error/404";
-        }
-        model.addAttribute("ProductUpdateDTO", productUpdateDTO);
-        return "/product/productUpdateForm";
-    }
-
-    @PostMapping("/update")
-    @ResponseBody
-    @Transactional
-    public ResponseEntity<?> updateProduct(@Validated @ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO,
-                                           BindingResult bindingResult,
-                                           Principal principal) {
-        HttpHeaders headers = new HttpHeaders();
-        if (bindingResult.hasGlobalErrors()) {
-        }
-        if (!productUpdateDTO.getProductSeller().equals(principal.getName())) {
-            bindingResult.addError(new FieldError("productInsertDTO", "productSeller", "판매자명이 잘못됐습니다."));
-        }
-
-        if (bindingResult.hasErrors()) {
-            headers.setLocation(URI.create("/update?productId=" + productUpdateDTO.getProductId()));
-            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
-        }
-
-        Company company = companyService.findById(principal.getName()).orElseThrow(NoSuchElementException::new);
-        Product findProduct = productService.findOne(productUpdateDTO.getProductId()).orElseThrow(NoSuchElementException::new);
-
-        // 페이지에서 가져온 이미지
-        List<UploadFile> existProductImg = new ArrayList<>();
-        if (productUpdateDTO.getStoreFileName() != null) {
-            IntStream.range(0, productUpdateDTO.getStoreFileName().size()).forEach(i -> {
-                UploadFile uploadFile = new UploadFile(productUpdateDTO.getUploadFileName().get(i), productUpdateDTO.getStoreFileName().get(i));
-                existProductImg.add(uploadFile);
-            });
-        }
-        // 영속성 객체 이미지
-        List<UploadFile> findProductImg = findProduct.getProductImg();
-        if (existProductImg.size() != findProductImg.size()) {
-            findProductImg.removeAll(existProductImg);
-            for (UploadFile uploadFile : findProductImg) {
-                File localFile = new File(saveUrl + uploadFile.getStoreFileName());
-                localFile.delete();
-            }
-        }
-        // 새로 받아 온 이미지
-        List<MultipartFile> productImg = productUpdateDTO.getProductImg();
-        if (!productImg.get(0).isEmpty()) {
-            List<UploadFile> newUploadFiles = fileService.storeFiles(productUpdateDTO.getProductImg());
-            existProductImg.addAll(newUploadFiles);
-        }
-        Product updateProduct = productUpdateDTO.convertToEntityByUpdateDTO(productUpdateDTO, existProductImg, company);
-        productService.saveProduct(updateProduct);
-
-        String redirectURL = "/product/" +
-                updateProduct.getProductDiv().name().toLowerCase() + "/" +
-                updateProduct.getProductId() + "/" + "details";
-
-
-        headers.setLocation(URI.create(redirectURL));
-        return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER);
-    }
-
     @GetMapping("/insert")
-    public String productInsertForm(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) {
+    public String addProductForm(@ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO) {
         return "/product/productInsertForm";
     }
 
     @PostMapping("/insert")
-    public String productInsert(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO,
+    public String addProduct(@Validated @ModelAttribute("ProductInsertDTO") ProductInsertDTO productInsertDTO,
                                 BindingResult bindingResult, Principal principal) {
         log.info("ProductInsertDTO={}", productInsertDTO);
         if (productInsertDTO.getProductImg().get(0).isEmpty()) {
@@ -204,6 +136,52 @@ public class ProductController {
                 savedProduct.getProductId() + "/" + "details";
 
         return "redirect:" + redirectURL;
+    }
+
+    @GetMapping("/update")
+    public String updateProductForm(@ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO
+            , @RequestParam("productId") Long productId, Model model, Principal principal) {
+        Product findProduct = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
+        productUpdateDTO = ProductUpdateDTO.convertToProductUpdateDTO(findProduct);
+        if (!principal.getName().equals(findProduct.getCompany().getCompanyId())) {
+            throw new IllegalStateException("권한이 없는 접근입니다.");
+        }
+        model.addAttribute("ProductUpdateDTO", productUpdateDTO);
+        return "/product/productUpdateForm";
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    @Transactional
+    public ResponseEntity<?> updateProduct(@Validated @ModelAttribute("ProductUpdateDTO") ProductUpdateDTO productUpdateDTO,
+                                           BindingResult bindingResult,
+                                           Principal principal) {
+        HttpHeaders headers = new HttpHeaders();
+
+        if (bindingResult.hasGlobalErrors()) {
+        }
+        if (!productUpdateDTO.getProductSeller().equals(principal.getName())) {
+            bindingResult.addError(new FieldError("productInsertDTO", "productSeller", "판매자명이 잘못됐습니다."));
+        }
+
+        if (bindingResult.hasErrors()) {
+            headers.setLocation(URI.create("/update?productId=" + productUpdateDTO.getProductId()));
+            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
+        }
+
+        Product findProduct = productService.findOne(productUpdateDTO.getProductId()).orElseThrow(NoSuchElementException::new);
+
+        List<UploadFile> updateImages = updateImage(productUpdateDTO, findProduct);
+
+        Product updateProduct = findProduct.updateProduct(productUpdateDTO, updateImages);
+
+        String redirectURL = "/product/" +
+                updateProduct.getProductDiv().name().toLowerCase() + "/" +
+                updateProduct.getProductId() + "/" + "details";
+
+        headers.setLocation(URI.create(redirectURL));
+
+        return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER);
     }
 
     @GetMapping(value = "/images/{filename}")
@@ -312,6 +290,32 @@ public class ProductController {
             sort = Sort.by("productPrice").descending();
         }
         return sort;
+    }
+
+    private List<UploadFile> updateImage(ProductUpdateDTO productUpdateDTO, Product findProduct) {
+        List<UploadFile> existProductImg = new ArrayList<>();
+        if (productUpdateDTO.getStoreFileName() != null) {
+            IntStream.range(0, productUpdateDTO.getStoreFileName().size()).forEach(i -> {
+                UploadFile uploadFile = new UploadFile(productUpdateDTO.getUploadFileName().get(i), productUpdateDTO.getStoreFileName().get(i));
+                existProductImg.add(uploadFile);
+            });
+        }
+        // 영속성 객체 이미지
+        List<UploadFile> findProductImg = findProduct.getProductImg();
+        if (existProductImg.size() != findProductImg.size()) {
+            findProductImg.removeAll(existProductImg);
+            for (UploadFile uploadFile : findProductImg) {
+                File localFile = new File(saveUrl + uploadFile.getStoreFileName());
+                localFile.delete();
+            }
+        }
+        // 새로 받아 온 이미지
+        List<MultipartFile> productImg = productUpdateDTO.getProductImg();
+        if (!productImg.get(0).isEmpty()) {
+            List<UploadFile> newUploadFiles = fileService.storeFiles(productUpdateDTO.getProductImg());
+            existProductImg.addAll(newUploadFiles);
+        }
+        return existProductImg;
     }
 }
 

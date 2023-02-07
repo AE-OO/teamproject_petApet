@@ -75,24 +75,4 @@ public class ProductUpdateDTO {
                 .build();
     }
 
-    public Product convertToEntityByUpdateDTO(ProductUpdateDTO productUpdateDTO, List<UploadFile> imgList, Company company) {
-        return Product.builder().productId(productUpdateDTO.getProductId())
-                .productImg(imgList)
-                .productUnitPrice(productUpdateDTO.getProductUnitPrice())
-                .productDiscountRate(productUpdateDTO.getProductDiscountRate())
-                .productContent(productUpdateDTO.getProductContent())
-                .productDiv(ProductType.valueOf(productUpdateDTO.getProductDiv()))
-                .productStatus(productUpdateDTO.getProductStatus())
-                .productStock(productUpdateDTO.getProductStock())
-                .productPrice(productUpdateDTO.getProductPrice())
-                .productName(productUpdateDTO.getProductName())
-                .productId(productUpdateDTO.getProductId())
-                .productReviewCount(productUpdateDTO.getProductReviewCount())
-                .productReport(productUpdateDTO.getProductReport())
-                .productViewCount(productUpdateDTO.getProductViewCount())
-                .productSellCount(productUpdateDTO.getProductSellCount())
-                .productRating(productUpdateDTO.getProductRating())
-                .company(company)
-                .build();
-    }
 }

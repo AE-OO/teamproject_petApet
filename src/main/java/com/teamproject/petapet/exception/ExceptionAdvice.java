@@ -24,18 +24,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ExceptionAdvice {
 
-    @ExceptionHandler({IllegalStateException.class})
-    public ResponseEntity<String> illegalStateException(IllegalStateException e) {
-        log.error("error = {}", e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
-
-    @ExceptionHandler({IOException.class})
-    public ModelAndView iOException(IOException e) {
-        log.error("error = {}", e.getMessage(), e);
-        return new ModelAndView("error/5xx");
-    }
-
     @ExceptionHandler({NullPointerException.class})
     public ResponseEntity<String> nullException(NullPointerException e) {
         log.error("error = {}", e.getMessage(), e);

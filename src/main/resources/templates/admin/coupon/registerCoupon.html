@@ -2,23 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>petApet 관리자용</title>
-    <!-- plugins:css -->
     <link rel="stylesheet" href="/vendors/feather/feather.css">
     <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
-<!--    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">-->
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
     <link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" type="text/css" href="/js/select.dataTables.min.css">
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
     <link rel="stylesheet" href="/css/vertical-layout-light/style.css">
-    <!-- endinject -->
     <link rel="shortcut icon" href="/images/favicon.png"/>
 
     <style rel="stylesheet">
@@ -37,7 +29,6 @@
 </head>
 <body th:object="${couponDTO}">
 <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
             Admin Page - 쿠폰 관리
@@ -50,10 +41,7 @@
             </a>
         </div>
     </nav>
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-        <!-- partial -->
-        <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item">
@@ -76,7 +64,6 @@
                 </li>
             </ul>
         </nav>
-        <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
                 <div class="col-12 grid-margin">
@@ -141,8 +128,10 @@
                                     <div class="form-group col-6">
                                         <label for="couponDiscRate">할인율</label>
                                         <div class="form-group">
-                                            <input type="number" name="couponDiscRate" class="form-control" placeholder="정가할인 5자리, 백분율 범위 5 - 50 %"
-                                                   id="couponDiscRate" th:field="*{couponDiscRate}" th:errorclass="field-error">
+                                            <input type="number" name="couponDiscRate" class="form-control"
+                                                   placeholder="정가할인 5자리, 백분율 범위 5 - 50 %"
+                                                   id="couponDiscRate" th:field="*{couponDiscRate}"
+                                                   th:errorclass="field-error">
                                             <div class="field-error" th:errors="*{couponDiscRate}"/>
                                             <p class="text-secondary text-danger" id="validMsg"></p>
                                         </div>
@@ -150,10 +139,11 @@
                                     <div class="form-group col-6">
                                         <label for="couponAcceptPrice">적용 최소 금액</label>
                                         <div class="form-group">
-                                            <input type="number" name="couponAcceptPrice" class="form-control" placeholder="쿠폰이 적용 될 최소 금액입니다."
-                                                   id="couponAcceptPrice" th:field="*{couponAcceptPrice}" th:errorclass="field-error">
+                                            <input type="number" name="couponAcceptPrice" class="form-control"
+                                                   placeholder="쿠폰이 적용 될 최소 금액입니다."
+                                                   id="couponAcceptPrice" th:field="*{couponAcceptPrice}"
+                                                   th:errorclass="field-error">
                                             <div class="field-error" th:errors="*{couponAcceptPrice}"/>
-<!--                                            <p class="text-secondary text-danger" id="validMsg"></p>-->
                                         </div>
                                     </div>
                                 </div>
@@ -163,12 +153,14 @@
                                         <div class="d-inline-flex col">
                                             <div class="form-check col-6">
                                                 <input type="radio" name="couponType" th:field="*{couponType}"
-                                                       id="inlineRadio1" value="regularDisc" th:errorclass="field-error">
+                                                       id="inlineRadio1" value="regularDisc"
+                                                       th:errorclass="field-error">
                                                 <label for="inlineRadio1">정가할인</label>
                                             </div>
                                             <div class="form-check col-6">
                                                 <input type="radio" name="couponType" th:field="*{couponType}"
-                                                       id="inlineRadio2" value="percentDisc" th:errorclass="field-error">
+                                                       id="inlineRadio2" value="percentDisc"
+                                                       th:errorclass="field-error">
                                                 <label for="inlineRadio2">백분율할인</label>
                                             </div>
                                         </div>
@@ -187,8 +179,6 @@
             </div>
         </div>
     </div>
-    <!-- content-wrapper ends -->
-    <!-- partial:partials/_footer.html -->
     <footer class="footer">
         <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a
@@ -201,42 +191,11 @@
                     href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
         </div>
     </footer>
-    <!-- partial -->
 </div>
-<!-- main-panel ends -->
-</div>
-<!-- page-body-wrapper ends -->
-</div>
-<!-- container-scroller -->
-<!-- 부트스트랩 CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
-<!-- plugins:js -->
-<!--<script src="/vendors/js/vendor.bundle.base.js"></script>-->
-<!-- endinject -->
-<!-- Plugin js for this page -->
-<!--<script src="/vendors/chart.js/Chart.min.js"></script>-->
-<!--<script src="/vendors/datatables.net/jquery.dataTables.js"></script>-->
-<!--<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>-->
-<!--<script src="/js/dataTables.select.min.js"></script>-->
-
-<!-- End plugin js for this page -->
-<!-- inject:js -->
-<!--<script src="/js/off-canvas.js"></script>-->
-<!--<script src="/js/hoverable-collapse.js"></script>-->
-<!--<script src="/js/template.js"></script>-->
-<!--<script src="/js/settings.js"></script>-->
-<!-- endinject -->
-<!-- Custom js for this page-->
-<!--<script src="/js/dashboard.js"></script>-->
-<!--<script src="/js/Chart.roundedBarCharts.js"></script>-->
-
-<!-- Custom js for this page-->
-<!--<script src="/js/chart/chart.js"></script>-->
-<!-- End custom js for this page-->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<!--<link rel="stylesheet" href="/resources/demos/style.css">-->
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 </body>

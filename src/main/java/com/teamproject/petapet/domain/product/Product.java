@@ -1,13 +1,13 @@
 package com.teamproject.petapet.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDetailDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
+import com.teamproject.petapet.web.product.productdtos.ProductUpdateDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -97,7 +97,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productName, Long productPrice, Long productStock, Long productDiscountRate, Long productUnitPrice, String productStatus, ProductType productDiv, String productContent, Long productRating, Long productReviewCount, Long productViewCount, Long productSellCount, Company company,List<UploadFile> productImg) {
+    public Product(String productName, Long productPrice, Long productStock, Long productDiscountRate, Long productUnitPrice, String productStatus, ProductType productDiv, String productContent, Long productRating, Long productReviewCount, Long productViewCount, Long productSellCount, Company company, List<UploadFile> productImg) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;
@@ -143,4 +143,18 @@ public class Product {
                 .productUnitPrice(insertDTO.getProductUnitPrice())
                 .build();
     }
+
+    public Product updateProduct(ProductUpdateDTO productUpdateDTO, List<UploadFile> imgList) {
+        this.productName = productUpdateDTO.getProductName();
+        this.productPrice = productUpdateDTO.getProductPrice();
+        this.productStock = productUpdateDTO.getProductStock();
+        this.productDiscountRate = productUpdateDTO.getProductDiscountRate();
+        this.productUnitPrice = productUpdateDTO.getProductUnitPrice();
+        this.productImg = imgList;
+        this.productStatus = productUpdateDTO.getProductStatus();
+        this.productContent = productUpdateDTO.getProductContent();
+        this.productDiv = ProductType.valueOf(productUpdateDTO.getProductDiv());
+        return this;
+    }
 }
+
