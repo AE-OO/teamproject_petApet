@@ -9,3 +9,4 @@ v 0. 1. 1 2023/02/07
   addAllowedOrigin(“\*”) -> addAllowedOriginPattern(“*”)
 - Product 장바구니 담기, 바로구매 수정
 - 상품 등록 시 이미지 파일 검증 추가 및 사이즈 제한
+  src/main/resources/application.properties
