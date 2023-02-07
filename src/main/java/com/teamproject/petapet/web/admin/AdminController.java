@@ -6,11 +6,16 @@ import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.community.dto.CommunityRequestDTO;
 import com.teamproject.petapet.web.community.service.CommunityService;
 import com.teamproject.petapet.web.util.email.service.EmailService;
+import com.teamproject.petapet.web.product.fileupload.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.security.Principal;
 
 import javax.validation.constraints.Email;
 
@@ -27,7 +32,7 @@ public class AdminController {
 
     private final InquiredService inquiredService;
     private final CommunityService communityService;
-
+    private final FileService fileService;
     private final EmailService emailService;
 
     @GetMapping("/adminPage")
@@ -59,8 +64,12 @@ public class AdminController {
 
     //공지사항 등록
     @PostMapping("/registerNotice") 
-    public String registerNotice(CommunityRequestDTO.registerNotice registerNotice){
-        communityService.registerNotice(registerNotice);
+    public String registerNotice(Principal principal, @Valid CommunityRequestDTO.InsertDTO insertDTO, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("error", "제목과 내용을 모두 작성해주세요");
+            return "admin/registerNotice";
+        }
+        communityService.insertCommunity(principal.getName(), insertDTO);
         return "redirect:/admin/adminPage";
     }
 
@@ -73,8 +82,15 @@ public class AdminController {
 
     //공지사항 수정
     @PostMapping("/updateNotice")
-    public String updateFAQ(CommunityRequestDTO.registerNotice registerNotice){
-        communityService.updateNotice(registerNotice);
+    public String updateFAQ(Principal principal, CommunityRequestDTO.UpdateDTO updateDTO, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "내용을 다 채우세요");
+            return "admin/updateNotice";
+        }
+        if(updateDTO.getDeleteImg() != null){
+            updateDTO.getDeleteImg().forEach(img -> fileService.deleteFile(img));
+        }
+        communityService.updateCommunity(principal.getName(), updateDTO);
         return "redirect:/admin/adminPage";
     }
 

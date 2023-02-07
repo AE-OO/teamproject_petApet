@@ -11,7 +11,7 @@ $(document).ready(function () {
         var returnConfirm = confirm("삭제하시겠습니까?");
         if (returnConfirm) {
             $.ajax({
-                url: "/admin/deleteNotice/" + id,
+                url: "/admin/deleteCommunity/" + id,
                 type: "get",
                 success() {
                     getNoticeList();

@@ -74,8 +74,7 @@
                 </div>
                 <div class="col-8 m-lg-1 text-end">
                     <th:block th:if="*{productDiscountRate>0}">
-                        <span style="text-decoration: line-through;"><i><h5 class="me-3"
-                                                                            th:text="|*{{productUnitPrice}}원|">price</h5></i></span>
+                    <span style="text-decoration: line-through;"><i><h5 class="me-3" th:text="|*{productUnitPrice}원|">price</h5></i></span>
                     </th:block>
                     <h4 class="me-3" th:text="|*{{productPrice}}원|">price</h4>
                 </div>
@@ -87,6 +86,7 @@
                     <h6>재고</h6>
                 </div>
                 <div class="row m-lg-3 col-6">
+                    <input th:value="*{companyId}" type="hidden" id="companyId">
                     <h6 th:text="*{productSeller}">판매자</h6>
                     <h6 th:text="*{productStock}" id="remainStock">재고</h6>
                     <th:block th:if="*{productStock <= 10}">
@@ -198,9 +198,7 @@
     <div class="d-flex flex-row">
         <div class="btn-group col-12">
             <button onclick="productDetail_scroll_move()" class="btn text-dark col-3"> 상품상세</button>
-            <button onclick="review_scroll_move()" class="btn text-dark col-3">
-                상품평([[${findProduct.productReviewCount}]])
-            </button>
+            <button onclick="review_scroll_move()" class="btn text-dark col-3">상품평([[${findProduct.productReviewCount}]])</button>
             <button onclick="productInquiry_scroll_move()" class="btn text-dark col-3"> 상품문의</button>
             <button onclick="shipping_scroll_move()" class="btn text-dark col-3"> 배송/교환/반품</button>
         </div>
@@ -213,8 +211,7 @@
                     <div class="row mb-4" id="reviews">
                         <h4>상품평</h4>
                     </div>
-                    <th:block sec:authorize="isAuthenticated()"
-                              th:if="${existsByPurchaseHistory && !existByReviewHistory}">
+                    <th:block sec:authorize="isAuthenticated()" th:if="${existsByPurchaseHistory && !existByReviewHistory}">
                         <h5>상품평 작성</h5>
                         <form enctype="multipart/form-data" method="post"
                               th:action="@{/product/{productId}/reviewInsert(productId=${productId},requestURI = ${#request.requestURI})}">
@@ -223,9 +220,8 @@
                                     <img th:src="@{/img/petSnack.jpg}" class="img-fluid" style="">
                                 </div>
                                 <div class="col-1 mt-2">
-                                    <h5 sec:authentication="name"></h5>
-                                    <h6 style="font-size: 0.5rem" class="text-secondary mt-1"
-                                        th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
+                                        <h5 sec:authentication="name"></h5>
+                                    <h6 style="font-size: 0.5rem" class="text-secondary mt-1" th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
                                 </div>
                                 <div class="col-9 myform">
                                     <fieldset class="p-1 col">
@@ -297,19 +293,16 @@
                                             for="rate10">★</label>
                                     </fieldset>
                                 </div>
-                                <div class="col-7 myReviewImg">
-                                    <th:block th:each="reviewImage, i : ${existReview.reviewImg}">
-                                        <button type="button" class="btn btn-sm btn-link" th:id="|${'osh'}${i.index}|"
-                                                onclick="deleteReviewImg(this.id)" style="position: absolute;">X
-                                        </button>
-                                        <a class="btn btn-link reviewImgModalBtn" data-bs-toggle="modal"
-                                           data-bs-target="#reviewImgModal">
-                                            <img
-                                                    th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
-                                                    width="100" height="100" th:alt="${reviewImage.uploadFileName}"
-                                                    class="reviewImage" th:id="|${'reviewImage'}${i.index}|"></a>
-                                    </th:block>
-                                </div>
+                                        <div class="col-7 myReviewImg">
+                                            <th:block th:each="reviewImage, i : ${existReview.reviewImg}">
+                                                <button type="button" class="btn btn-sm btn-link" th:id="|${'osh'}${i.index}|"  onclick="deleteReviewImg(this.id)" style="position: absolute;">X</button>
+                                                <a class="btn btn-link reviewImgModalBtn" data-bs-toggle="modal" data-bs-target="#reviewImgModal">
+                                                    <img
+                                                            th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
+                                                            width="100" height="100" th:alt="${reviewImage.uploadFileName}"
+                                                            class="reviewImage" th:id="|${'reviewImage'}${i.index}|"></a>
+                                            </th:block>
+                                    </div>
                                 <div class="col-1 text-end">
                                     <button role="button" type="button" onclick="updateReview()"
                                             class="btn btn-sm btn-secondary">수정
@@ -318,8 +311,7 @@
                                 <div class="d-flex flex-row my-2">
                                     <div class="col d-flex">
                                         <h6 class="mt-1 me-5">제목</h6>
-                                        <input class="ms-2 flex-fill" type="text" name="reviewTitle"
-                                               th:value="${existReview.reviewTitle}">
+                                        <input class="ms-2 flex-fill" type="text" name="reviewTitle" th:value="${existReview.reviewTitle}">
                                     </div>
                                 </div>
                                 <div class="d-flex flex-row">
@@ -472,7 +464,10 @@
                             <h4>상품문의</h4>
                         </div>
                         <div class="col-1 text-end">
-                            <a>문의하기</a>
+                            <button type="button" class="btn btn-outline-primary productInquiry" id="addProductInquiry"
+                                    data-bs-toggle="modal" data-bs-target="#registerInquiryModal"
+                                    title="문의하기">문의하기
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -492,6 +487,20 @@
 
                         <div class="prod-inquiry-items">
 
+                            <div class="prod-inquiry-item"></div>
+                            <table class="table" id="inquiryList">
+                                <thead class="text-center">
+                                <tr>
+                                    <th class="pl-0  pb-2 border-bottom">답변상태</th>
+                                    <th class="border-bottom pb-2 w-60">문의제목</th>
+                                    <th class="border-bottom pb-2">작성자</th>
+                                    <th class="border-bottom pb-2">작성일</th>
+                                </tr>
+                                </thead>
+                                <tbody class="inquiryData">
+                                </tbody>
+                            </table>
+                            <div id="page"></div>
 
                             <div class="d-flex flex-row border mt-3">
                                 <div class="d-flex flex-row col m-2 mx-2">
@@ -510,7 +519,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <hr class="my-4">
@@ -668,6 +676,8 @@
 
 <!-- 신고 모달 -->
 <th:block th:replace="~{fragment/reportModal :: reportModal}"></th:block>
+<!-- 문의 등록 모달 -->
+<th:block th:replace="~{fragment/registerInquiryModal :: inquiryModal}"></th:block>
 
 <!-- 리뷰 이미지 Modal -->
 <div class="modal fade" id="reviewImgModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="reviewImgModalLabel"
@@ -683,6 +693,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/js/reportJS.js"></script>
+<script type="text/javascript" src="/js/inquiryJS.js"></script>
+<script type="text/javascript" src="/js/community/paginationJS.js"></script>
 
 <script th:src="@{/js/reviewContentStr.js}"></script>
 <script th:src="@{/js/product/productDetails.js}"></script>

@@ -38,6 +38,7 @@ public class CommunityDTO {
                 .communityId(community.getCommunityId())
                 .communityTitle(community.getCommunityTitle())
                 .communityContent(community.getCommunityContent())
+                .communityCategory(community.getCommunityCategory())
                 .build();
     }
 

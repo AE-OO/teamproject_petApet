@@ -21,23 +21,6 @@ import java.util.List;
  */
 
 public class CommunityRequestDTO {
-    @Data
-    public class registerNotice {
-        private Long communityId;
-        private String communityTitle;
-        private String communityContent;
-        public Community toEntity(){
-            Community community = Community.builder()
-                    .communityId(communityId)
-                    .communityTitle(communityTitle)
-                    .communityContent(communityContent)
-                    .communityCategory("공지사항")
-                    .member(Member.builder().memberId("admin").build())
-                    .build();
-            return community;
-        }
-    }
-
     //커뮤니티 게시글 작성 DTO
     @Data
     public class InsertDTO {

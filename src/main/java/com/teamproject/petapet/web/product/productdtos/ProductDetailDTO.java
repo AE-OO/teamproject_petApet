@@ -14,6 +14,7 @@ public class ProductDetailDTO {
     private Long productId;
     private String productContent;
     private List<UploadFile> productImg;
+    private String companyId;
     private String productName;
     private String productSeller;
     @NumberFormat(pattern = "###,###")

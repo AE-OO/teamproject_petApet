@@ -34,7 +34,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
             "select ifnull(R.product,0) from T\n" +
             "left outer join(\n" +
             "select date_format(buyDate, \"%Y-%m\") as buy_date, count(b.productId) as product \n" +
-            "from buy b, (select productId from product where companyId = ?1) c \n" +
+            "from buy b, (select productId from Product where companyId = ?1) c \n" +
             "where b.productId in (c.productId)\n" +
             "group by buy_date) R on date_format(T.startMonth, \"%Y-%m\") = R.buy_date;", nativeQuery = true)
     List<Integer> getTotalSalesPerMonth(String companyId);

@@ -18,6 +18,7 @@ public class InquiryDTO {
     private String inquiredContent;
     private boolean checked;
     private String answer;
+    private Long productId;
 
     public static InquiryDTO fromEntityForManageInquiry(Inquired inquired){
         return InquiryDTO.builder()
@@ -38,6 +39,19 @@ public class InquiryDTO {
                 .inquiredTitle(inquired.getInquiredTitle())
                 .inquiredCategory(inquired.getInquiredCategory())
                 .checked(inquired.isChecked())
+                .build();
+    }
+
+    public static InquiryDTO fromEntityForProductDetailPage(Inquired inquired){
+        return InquiryDTO.builder()
+                .inquiredId(inquired.getInquiredId())
+                .productId(inquired.getProduct().getProductId())
+                .inquiredTitle(inquired.getInquiredTitle())
+                .memberId(inquired.getMember().getMemberId())
+                .inquiredDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(inquired.getInquiredDate()))
+                .inquiredContent(inquired.getInquiredContent())
+                .checked(inquired.isChecked())
+                .answer(inquired.getAnswer())
                 .build();
     }
 }
