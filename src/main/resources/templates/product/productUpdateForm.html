@@ -143,7 +143,7 @@
                     </div>
                     <div class="d-flex flex-row col-6 m-lg-1">
                         <input type="file" th:field="*{productImg}" multiple="multiple"
-                               name="productImg" onchange="setThumbnail(event);">
+                               name="productImg">
                     </div>
                 </div>
                 <div class="d-flex mx-3 col">
@@ -258,7 +258,6 @@
 <hr class="my-4">
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>
-<!-- 상품 이미지 Modal -->
 <div class="modal fade" id="productImgModal" tabindex="-1" aria-labelledby="productImgModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" style="--bs-modal-bg: none; --bs-modal-border-width: 0">
@@ -300,7 +299,8 @@
         $('.carousel-inner > div:nth-child(1)').addClass('active');
     });
 
-    function setThumbnail(event) {
+    $('input[name=productImg]').change(function (event) {
+        $('#addImg'+${idx})
         let from = Array.from(event.target.files);
         $.each(from, function (idx, el) {
             const carouselHtml = `<div class="carousel-item" id="addImg${idx}"></div>`;
@@ -323,7 +323,7 @@
             };
             reader.readAsDataURL(el);
         })
-    }
+    })
 
     $('.deleteProductImg').click(function () {
         $(this).parent().parent().remove();
@@ -455,8 +455,5 @@
 
 </script>
 
-<!-- Template Javascript -->
 <script th:src="@{/js/reviewContentStr.js}"></script>
-</html>
-</body>
 </html>
