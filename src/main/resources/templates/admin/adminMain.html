@@ -1,140 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>petApet 관리자용</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="/vendors/feather/feather.css">
-    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
-    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" type="text/css" href="/js/select.dataTables.min.css">
-    <!-- End plugin css for this page -->
-
-    <!-- Template Stylesheet -->
-    <link href="/css/style.css" rel="stylesheet">
-    <!--  &lt;!&ndash; inject:css &ndash;&gt;-->
-    <link rel="stylesheet" href="/css/vertical-layout-light/style.css">
-    <!-- endinject -->
-    <link rel="shortcut icon" href="/images/favicon.png"/>
-    <!-- JQUERY CDN -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <!-- AJAX CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<head th:replace="fragment/admin_fragment :: head(~{::title})">
+    <title>petApet - 관리자 페이지</title>
 </head>
 <body>
 <div class="container-scroller">
-    partial:partials/_navbar.html
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-            petApet Admin Page
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-            <a th:href="@{/logout}">
-                <button class="btn btn-light" type="button">
-                    Logout
-                </button>
-            </a>
-        </div>
-    </nav>
-    <!--    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">-->
-    <!--      <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">-->
-    <!--        <img scr="#" alt="logo"> <h1 class="m-0">petApet</h1>-->
-    <!--      </a>-->
-    <!--      <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">-->
-    <!--        <span class="navbar-toggler-icon"></span>-->
-    <!--      </button>-->
-    <!--      <div class="collapse navbar-collapse" id="navbarCollapse">-->
-    <!--        <div class="navbar-nav ms-auto p-4 p-lg-0">-->
-    <!--          <a href="about.html" class="nav-item nav-link">About</a>-->
-    <!--          <a href="service.html" class="nav-item nav-link">Services</a>-->
-    <!--          <a href="project.html" class="nav-item nav-link">Product</a>-->
-    <!--          <div class="nav-item dropdown">-->
-    <!--            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Community</a>-->
-    <!--            <div class="dropdown-menu bg-light m-0">-->
-    <!--              <a href="feature.html" class="dropdown-item">Test1</a>-->
-    <!--              <a href="quote.html" class="dropdown-item">Test2</a>-->
-    <!--              <a href="team.html" class="dropdown-item">Test3</a>-->
-    <!--              <a href="testimonial.html" class="dropdown-item">Test5</a>-->
-    <!--              <a href="404.html" class="dropdown-item">404 Page</a>-->
-    <!--            </div>-->
-    <!--          </div>-->
-    <!--          <a href="contact.html" class="nav-item nav-link">Contact</a>-->
-    <!--          <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login</a>-->
-    <!--          <a href="" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Cart</a>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </nav>-->
-
-
+    <div th:replace="fragment/admin_fragment :: navbar"></div>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <!-- partial -->
         <!-- partial:partials/_sidebar.html -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="nav float_sidebar">
-                <li class="nav-item">
-                    <a class="nav-link" href="../index.html">
-                        <i class="icon-grid menu-icon"></i>
-                        <span class="menu-title">Main</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/registerProduct}">
-                        <i class="icon-grid-2 menu-icon"></i>
-                        <span class="menu-title">상품 등록</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/coupon}">
-                        <i class="icon-grid-2 menu-icon"></i>
-                        <span class="menu-title">쿠폰 관리</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/registerNotice}">
-                        <i class="icon-paper menu-icon"></i>
-                        <span class="menu-title">공지사항 등록</span>
-                    </a>
-                </li>
-                <li class="nav-item" id="goInquiryManage">
-                    <a class="nav-link">
-                        <i class="icon-paper menu-icon"></i>
-                        <span class="menu-title">문의 관리</span>
-                    </a>
-                </li>
-                <li class="nav-item" id="goReportManage">
-                    <a class="nav-link">
-                        <i class="icon-paper menu-icon"></i>
-                        <span class="menu-title">신고 관리</span>
-                    </a>
-                </li>
-                <li class="nav-item" id="goProductManage">
-                    <a class="nav-link">
-                        <i class="icon-paper menu-icon"></i>
-                        <span class="menu-title">상품 관리</span>
-                    </a>
-                </li>
-                <li class="nav-item" id="goCommunityManage">
-                    <a class="nav-link">
-                        <i class="icon-paper menu-icon"></i>
-                        <span class="menu-title">커뮤니티 관리</span>
-                    </a>
-                </li>
-                <li class="nav-item" id="goMemberManage">
-                    <a class="nav-link">
-                        <i class="icon-paper menu-icon"></i>
-                        <span class="menu-title">회원 관리</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <div th:replace="fragment/admin_fragment :: sidebar1"></div>
+
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
@@ -506,18 +383,8 @@
             </div>
             <!-- content-wrapper ends -->
             <!-- partial:partials/_footer.html -->
-            <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a
-                            href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
-                            class="ti-heart text-danger ml-1"></i></span>
-                </div>
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a
-                            href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
-                </div>
-            </footer>
+            <div th:replace="fragment/admin_fragment :: footer"></div>
+
             <!-- partial -->
         </div>
         <!-- main-panel ends -->

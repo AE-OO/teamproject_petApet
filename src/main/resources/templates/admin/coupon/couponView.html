@@ -25,41 +25,11 @@
 </head>
 <body>
 <div class="container-scroller">
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-            Admin Page - 쿠폰 관리
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-            <a th:href="@{/logout}">
-                <button class="btn btn-light" type="button">
-                    Logout
-                </button>
-            </a>
-        </div>
-    </nav>
+    <div th:replace="fragment/admin_fragment :: navbar"></div>
+
     <div class="container-fluid page-body-wrapper">
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/adminPage}">
-                        <i class="icon-grid menu-icon"></i>
-                        <span class="menu-title">Main</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/registerCoupon}">
-                        <i class="icon-grid-2 menu-icon"></i>
-                        <span class="menu-title">쿠폰 등록</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/coupon}">
-                        <i class="icon-paper menu-icon"></i>
-                        <span class="menu-title">쿠폰 조회</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <div th:replace="fragment/admin_fragment :: sidebar3"></div>
+
         <div class="main-panel">
             <div class="content-wrapper">
                 <div class="col-12 grid-margin">
@@ -226,18 +196,8 @@
             </div>
         </div>
     </div>
-    <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a
-                    href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
-                    class="ti-heart text-danger ml-1"></i></span>
-        </div>
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a
-                    href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
-        </div>
-    </footer>
+    <div th:replace="fragment/admin_fragment :: footer"></div>
+
 </div>
 </body>
 <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

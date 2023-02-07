@@ -68,7 +68,7 @@ $(document).ready(function () {
         var reportProductDTO = {
             reportReason : $("#reportProductReason option:selected").val(),
             reportReasonDetail : $("textarea[name=reportReasonDetail]").val(),
-            productId : $("#productId").val()
+            productId : $('.productTitle').attr('data-id')
         }
 
         $.ajax({

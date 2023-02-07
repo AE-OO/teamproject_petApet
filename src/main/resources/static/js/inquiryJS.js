@@ -3,7 +3,7 @@ $(document).ready(function () {
     getInquiryList(page);
 
     $(document).on("click", ".productInquiry", function() {
-        $("#modalTargetProductId").val($("#productId").val());
+        $("#modalTargetProductId").val($('.productTitle').attr('data-id'));
     })
 
     $(document).on("click", "#registerInquiryBTN", function() {
@@ -77,7 +77,7 @@ function modalClear(){
 
 // 등록된 문의 리스트 가져오는 메소드
 function getInquiryList(page) {
-    $.getJSON('/inquiry/getProductInquiry/' + $("#productId").val() + '/' + page, function (result) {
+    $.getJSON('/inquiry/getProductInquiry/' + $('.productTitle').attr('data-id') + '/' + page, function (result) {
         var list = '';
         nowPage = result.number;
         if (result.content.length > 0) {
