@@ -1,0 +1,25 @@
+<!-- 문의 등록 Modal -->
+<div class="modal" id="registerInquiryModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" th:fragment="inquiryModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-center" id="inquiryModalTitle">문의하기</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="reportCancleBTN"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modalTargetProductId"> <!-- 문의 대상인 상품 id -->
+        <h6>문의 제목</h6>
+        <input class="form-control" name="inquiryTitle" id="inquiryTitle" placeholder="문의 제목을 입력해 주세요">
+        <hr>
+        <h6>문의 내용</h6>
+        <textarea class="form-control" name="inquiryContent" rows="10" id="inquiryContent"
+                  placeholder="문의 내용을 입력해 주세요"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary cancleBtn" data-bs-dismiss="modal" id="reportCancleBTN">취소</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="registerInquiryBTN">문의등록</button>
+      </div>
+    </div>
+  </div>
+</div>

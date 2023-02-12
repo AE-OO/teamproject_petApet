@@ -32,13 +32,13 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/admin")
 public class AdminRestController {
+
     private final InquiredService inquiredService;
     private final ProductService productService;
     private final CommunityService communityService;
     private final MemberService memberService;
     private final ReportService reportService;
     private final CompanyService companyService;
-
     private final FileService fileService;
 
     //admin 페이지의 모든 리스트 출력 (이하 8개 메소드)
@@ -151,14 +151,6 @@ public class AdminRestController {
         //communityContent에 있는 img 파일명 가져와 삭제하기
         communityService.getCommunityContentImg(communityId).forEach(img -> fileService.deleteFile(img));
         communityService.deleteCommunity(communityId);
-    }
-
-    //공지사항 삭제
-    @GetMapping("/deleteNotice/{noticeId}")
-    public void deleteFAQ(@PathVariable("noticeId") Long noticeId) {
-        //communityContent에 있는 img 파일명 가져와 삭제하기
-        communityService.getCommunityContentImg(noticeId).forEach(img -> fileService.deleteFile(img));
-        communityService.deleteNotice(noticeId);
     }
 
     //회원 강제탈퇴 기능 구현

@@ -110,30 +110,10 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public void registerNotice(CommunityRequestDTO.registerNotice registerNotice) {
-        log.info("========== 공지사항 등록 ==========");
-        Community community = registerNotice.toEntity();
-        communityRepository.save(community);
-    }
-
-    @Override
     public CommunityDTO getOneNotice(Long noticeId) {
         Community community = communityRepository.getOne(noticeId);
         CommunityDTO communityDTO = CommunityDTO.fromEntityForNotice(community);
         return communityDTO;
-    }
-
-    @Override
-    public void updateNotice(CommunityRequestDTO.registerNotice registerNotice) {
-        log.info("========== 공지사항 수정 ==========");
-        Community community = registerNotice.toEntity();
-        communityRepository.updateNotice(community.getCommunityTitle(), community.getCommunityContent(), community.getCommunityId());
-    }
-
-    @Override
-    public void deleteNotice(Long noticeId) {
-        log.info("========== 공지사항 삭제 ==========");
-        communityRepository.deleteById(noticeId);
     }
 
     @Override

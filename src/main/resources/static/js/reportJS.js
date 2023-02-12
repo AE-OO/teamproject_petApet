@@ -18,7 +18,6 @@ $(document).ready(function () {
     //회원 신고 버튼 클릭시 모달 구성
     $(document).on("click", ".memberReport", function () {
         let reportMemberId = $(this).closest(".memberDiv").find(".memberId").text().trim();
-        alert("회원 신고 테스트, 회원 아이디 : " + reportMemberId);
 
         $("#reportModalTitle").text("회원신고");
         $("#modalTargetId").val(reportMemberId);
@@ -69,7 +68,7 @@ $(document).ready(function () {
         var reportProductDTO = {
             reportReason : $("#reportProductReason option:selected").val(),
             reportReasonDetail : $("textarea[name=reportReasonDetail]").val(),
-            productId : $("#productId").val()
+            productId : $('.productTitle').attr('data-id')
         }
 
         $.ajax({

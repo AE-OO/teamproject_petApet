@@ -47,18 +47,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> getCompanyProductList(String companyId) {
         List<ProductDTO> productDTOList = jpaQueryFactory
-                .select(Projections.bean(ProductDTO.class,
-                        product.productId,
-                        product.productName,
-                        product.productDiv,
-                        product.productPrice,
-                        product.productReport,
-                        product.productStock,
-                        product.productStatus,
-                        buy.count().as("totalBuy")))
-                .from(product, buy)
-                .where(product.productId.eq(buy.product.productId), product.company.companyId.eq(companyId))
-                .groupBy(buy.product.productId)
+                .select(Projections.bean(
+                        ProductDTO.class, product.productId, product.productName, product.productDiv,
+                        product.productPrice, product.productReport, product.productStock, product.productStatus, buy.count().as("totalBuy")))
+                .from(product)
+                .leftJoin(buy).on(buy.product.productId.eq(product.productId)).groupBy(product.productId)
+                .where(product.company.companyId.eq(companyId))
                 .fetch();
         return productDTOList;
     }

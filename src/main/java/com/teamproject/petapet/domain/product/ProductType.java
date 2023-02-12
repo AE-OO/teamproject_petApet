@@ -7,7 +7,8 @@ public enum ProductType {
     WALKING("산책용품"),
     TOY("장난감"),
     FASHION("패션/잡화"),
-    STROLLER("유모차");
+    STROLLER("유모차"),
+    ETC("기타");
 
     private final String productCategory;
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragment/heade :: head(product)}">
+<head th:replace="~{fragment/heade :: head(petApet)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -39,8 +39,6 @@
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
-
-                        <!--                        <img class="img-fluid" th:src="@{/img/petSnack.jpg}" style="width: 27rem;">-->
                     </div>
                 </div>
             </div>
@@ -48,18 +46,19 @@
         <div class="col-6">
             <div class="d-flex m-lg-3">
                 <div class="col-11">
-                    <h2 th:text="*{productName}">상품명</h2>
+                    <h2 class="productTitle" th:text="*{productName}" th:aria-label="${productType}"
+                        th:data-id="${productId}">상품명</h2>
                 </div>
                 <div class="col-1 text-center mt-1">
                     <th:block sec:authorize="!isAuthenticated()">
-                        <p style="font-size: 1.5rem"><a role="button" style="color: red">♡</a></p>
+                        <p style="font-size: 1.5rem"><a role="button" class="addDibs" style="color: red">♡</a></p>
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">
                         <th:block th:if="${existsDibsProduct}">
                             <p style="font-size: 1.5rem"><a role="button" style="color: red">♥︎</a></p>
                         </th:block>
                         <th:block th:if="${!existsDibsProduct}">
-                            <p style="font-size: 1.5rem"><a role="button" onclick="addDibs(productId)"
+                            <p style="font-size: 1.5rem"><a role="button" class="addDibs"
                                                             style="color: red">♡</a></p>
                         </th:block>
                     </th:block>
@@ -69,15 +68,15 @@
             <div class="d-flex m-lg-4">
                 <div class="col-4 m-lg-1">
                     <th:block th:if="*{productDiscountRate>0}">
-                    <h5>할인율</h5>
-                    <h6 class="text-secondary" th:text="|*{productDiscountRate}%|">0%</h6>
+                        <h5>할인율</h5>
+                        <h6 class="text-secondary" th:text="|*{productDiscountRate}%|">0%</h6>
                     </th:block>
                 </div>
                 <div class="col-8 m-lg-1 text-end">
                     <th:block th:if="*{productDiscountRate>0}">
                     <span style="text-decoration: line-through;"><i><h5 class="me-3" th:text="|*{productUnitPrice}원|">price</h5></i></span>
                     </th:block>
-                    <h4 class="me-3" th:text="|*{productPrice}원|">price</h4>
+                    <h4 class="me-3" th:text="|*{{productPrice}}원|">price</h4>
                 </div>
             </div>
             <hr class="mb-4 mt-4">
@@ -87,10 +86,11 @@
                     <h6>재고</h6>
                 </div>
                 <div class="row m-lg-3 col-6">
+                    <input th:value="*{companyId}" type="hidden" id="companyId">
                     <h6 th:text="*{productSeller}">판매자</h6>
                     <h6 th:text="*{productStock}" id="remainStock">재고</h6>
                     <th:block th:if="*{productStock <= 10}">
-                    <h6 class="text-secondary" th:text="|*재고가 *{productStock}개 남았습니다*|"></h6>
+                        <h6 class="text-secondary" th:text="|*재고가 *{productStock}개 남았습니다*|"></h6>
                     </th:block>
                 </div>
             </div>
@@ -99,7 +99,6 @@
                 <div class="col-4">
                     <div class="m-lg-2 d-flex">
                         <div class="col-9" id="quantityInputBox">
-                            <input id="productId" type="hidden" th:value="*{productId}"/>
                             <input id="quantity" type="text" style="height: 100%" class="col-12" value="1" maxlength="6"
                                    autocomplete="off"/>
                         </div>
@@ -116,16 +115,13 @@
                 <div class="col-8">
                     <div class="m-lg-2 d-flex flex-row">
                         <div class="col-6 d-grid">
-                            <button id="addCart" class="btn btn-info ms-3" th:onclick="'javascript:addCart()'"> 장바구니&nbsp;담기</button>
+                            <button id="addCart" class="btn btn-info ms-3"> 장바구니&nbsp;담기</button>
                         </div>
-                        <form class="col-6 d-grid" th:action="@{/direct/checkout}">
-                            <input type="hidden" th:value="${productId}" th:name="productId"/>
-                            <input type="hidden" id="productQuan" value="1" th:name="quantity"/>
-                            <button type="submit" class="btn btn-info ms-3" id="addBuy">
+                        <div class="col-6 d-grid">
+                            <button class="btn btn-info ms-3" id="addBuyBtn">
                                 바로 구매
-<!--                                <a class="btn btn-info ms-3" th:href="@{/direct/checkout}">바로구매</a>-->
                             </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -269,7 +265,8 @@
                             </article>
                         </form>
                     </th:block>
-                    <th:block sec:authorize="isAuthenticated()" th:if="${existsByPurchaseHistory && existByReviewHistory}">
+                    <th:block sec:authorize="isAuthenticated()"
+                              th:if="${existsByPurchaseHistory && existByReviewHistory}">
                         <h5>내가 작성한 상품평</h5>
                         <form enctype="multipart/form-data" method="post" id="myReviewForm" style="display: none"
                               th:action="@{/product/{productId}/reviewInsert(productId=${productId},requestURI = ${#request.requestURI})}">
@@ -279,7 +276,8 @@
                                 </div>
                                 <div class="col-1 mt-2">
                                     <h5 sec:authentication="name"></h5>
-                                    <h6 style="font-size: 0.5rem" class="text-secondary mt-1" th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
+                                    <h6 style="font-size: 0.5rem" class="text-secondary mt-1"
+                                        th:text="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">2000.00.00</h6>
                                 </div>
                                 <div class="col-2 myform">
                                     <fieldset class="p-1 col">
@@ -325,7 +323,8 @@
                                 </div>
                                 <div class="">
                                     <div class="d-flex">
-                                <textarea name="reviewContent" class="d-flex flex-fill" th:text="${existReview.reviewContent}"
+                                <textarea name="reviewContent" class="d-flex flex-fill"
+                                          th:text="${existReview.reviewContent}"
                                           style="resize: none; min-height: 10rem"></textarea>
 
                                     </div>
@@ -352,7 +351,8 @@
                                 <p>
                             </div>
                             <div class="col-7">
-                                <a class="btn btn-link reviewImgModalBtn" data-bs-toggle="modal" data-bs-target="#reviewImgModal"
+                                <a class="btn btn-link reviewImgModalBtn" data-bs-toggle="modal"
+                                   data-bs-target="#reviewImgModal"
                                    th:each="reviewImage : ${existReview.reviewImg}">
                                     <img
                                             th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
@@ -361,7 +361,7 @@
                             </div>
                             <div class="col text-end">
                                 <button type="button" class="btn btn-outline-secondary mb-1" th:text="수정"
-                                        onclick="updateReviewForm()"id="reviewUpdateBtn">
+                                        onclick="updateReviewForm()" id="reviewUpdateBtn">
                                 </button>
                                 <button type="button" class="btn btn-danger" th:text="삭제"
                                         id="reviewDeleteBtn">
@@ -410,16 +410,18 @@
                             <p>
                         </div>
                         <div class="col-7" th:value="${review.reviewImg}">
-                            <a class="btn btn-link reviewImgModalBtn" data-bs-toggle="modal" data-bs-target="#reviewImgModal" th:each="reviewImage : ${review.reviewImg}">
+                            <a class="btn btn-link reviewImgModalBtn" data-bs-toggle="modal"
+                               data-bs-target="#reviewImgModal" th:each="reviewImage : ${review.reviewImg}">
                                 <img
-                                 th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
-                                 width="100" height="100"
-                                 class="reviewImage"></a>
+                                        th:src="|@{/product/images/{filename}(filename=${reviewImage.storeFileName})}|"
+                                        width="100" height="100"
+                                        class="reviewImage"></a>
                         </div>
                         <div class="col text-end">
                             <div>
                                 <th:block th:if="${#authentication.name != review.member.memberId}">
-                                    <button type="button" class="btn btn-outline-primary memberReport" id="addMemberReport"
+                                    <button type="button" class="btn btn-outline-primary memberReport"
+                                            id="addMemberReport"
                                             data-bs-toggle="modal" data-bs-target="#addReportModal"
                                             title="신고">신고
                                     </button>
@@ -448,7 +450,7 @@
                     <th:block
                             th:if="${reviews.hasNext()}">
                         <a role="button" onclick="moreReview()" class="m-lg-1 fs-5 text-center" id="moreReview"
-                       >▼ 댓글 더보기</a>
+                        >▼ 댓글 더보기</a>
                     </th:block>
                 </div>
             </div>
@@ -462,7 +464,10 @@
                             <h4>상품문의</h4>
                         </div>
                         <div class="col-1 text-end">
-                            <a>문의하기</a>
+                            <button type="button" class="btn btn-outline-primary productInquiry" id="addProductInquiry"
+                                    data-bs-toggle="modal" data-bs-target="#registerInquiryModal"
+                                    title="문의하기">문의하기
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -482,42 +487,20 @@
 
                         <div class="prod-inquiry-items">
 
-                            <div class="prod-inquiry-item">
-                                <em class="prod-inquiry-item__label">질문</em>
-                                <div class="prod-inquiry-item__wrap">
-                                    <strong class="prod-inquiry-item__author">ake***@na</strong>
-                                    <div class="prod-inquiry-item__selected-option">거꾸로 장우산 | 블랙&nbsp;&nbsp;누림무역
-                                    </div>
-                                    <div class="prod-inquiry-item__content">9월 14일에 우산을 구매해서 한동안 비가 안오길래 집에 내비두고 사용
-                                        안하고있었는데
-                                        10월4일 오늘 우산을 처음 사용했는데 우산손잡이가 달랑달랑 거리다가 나중가서는 손잡이가 빠지고 다시 제대로 안끼워지네요 .. 손잡이잡고
-                                        들고다니면
-                                        손잡이랑
-                                        우산이랑 계속 분해되는데 환불가능한가요 ?
-                                    </div>
-
-                                    <div class="prod-inquiry-item__time">2022/10/04 21:58:38</div>
-                                </div>
-
-                                <div class="prod-inquiry-item__reply">
-                                    <i class="prod_inquiry-item__reply__icon"></i>
-                                    <em class="prod-inquiry-item__reply__label">답변</em>
-                                    <div class="prod-inquiry-item__reply__wrap">
-                                        <strong class="prod-inquiry-item__reply__author">누림무역</strong>
-                                        <div class="prod-inquiry-item__reply__content">고객님 교환은 가능하지만 환불은 7일이 경과 되어서
-                                            불가합니다.
-                                            그리고
-                                            9월14일에 구매하신 제품을 이제와서 처음 사용하셨다고 했는데 불량이라고 하시면 저희도 난감합니다. 입장을 바꿔놓고 생각해보시면
-                                            좋겠습니다.
-                                            저희가
-                                            제품 출고전에 전수 검수를 하고 출고합니다. 010-5450-4651 번으로 내일 전화주세요
-                                        </div>
-                                        <div class="prod-inquiry-item__reply__time">2022/10/04 22:20:11</div>
-                                    </div>
-                                </div>
-
-                            </div>
-
+                            <div class="prod-inquiry-item"></div>
+                            <table class="table" id="inquiryList">
+                                <thead class="text-center">
+                                <tr>
+                                    <th class="pl-0  pb-2 border-bottom">답변상태</th>
+                                    <th class="border-bottom pb-2 w-60">문의제목</th>
+                                    <th class="border-bottom pb-2">작성자</th>
+                                    <th class="border-bottom pb-2">작성일</th>
+                                </tr>
+                                </thead>
+                                <tbody class="inquiryData">
+                                </tbody>
+                            </table>
+                            <div id="page"></div>
 
                             <div class="d-flex flex-row border mt-3">
                                 <div class="d-flex flex-row col m-2 mx-2">
@@ -525,18 +508,17 @@
                                         <p class="m-0">판매 부적격 상품 또는 허위과장광고 및 지식재산권을 침해하는 상품의 경우 신고하여 주시기 바랍니다.</p>
                                     </div>
                                     <div class="col-1 text-end">
-                                        <button type="button" class="btn btn-outline-primary productReport" id="addProductReport"
+                                        <button type="button" class="btn btn-outline-primary productReport"
+                                                id="addProductReport"
                                                 data-bs-toggle="modal" data-bs-target="#addReportModal"
                                                 title="신고하기">신고하기
                                         </button>
-                                        <!--                                        <a href="javascript:" class="" id="" title="신고하기">신고하기</a>-->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <hr class="my-4">
@@ -570,7 +552,7 @@
                     </tr>
                     <tr>
                         <th>배송사</th>
-                        <td>한진택배</td>
+                        <td>petApet택배</td>
                     </tr>
                     <tr>
                         <th>묶음배송 여부</th>
@@ -675,68 +657,6 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="product-item__table product-seller mt-3">
-                    <p class="prod-delivery-return-policy-title">판매자 정보</p>
-                    <table class="prod-delivery-return-policy-table">
-                        <colgroup>
-                            <col width="150px">
-                            <col width="340px">
-                            <col width="150px">
-                            <col width="*">
-                        </colgroup>
-                        <tbody>
-                        <tr>
-                            <th>
-                                <div>상호/대표자</div>
-                            </th>
-                            <td>누림무역 / 최영제</td>
-                            <th>
-                                <div>사업장 소재지</div>
-                            </th>
-                            <td>대전광역시 서구 벌곡로 1074 747-7</td>
-                        </tr>
-
-                        <tr>
-                            <th>
-                                <div>e-mail</div>
-                            </th>
-                            <td>yjc255@hanmail.net</td>
-                            <th>
-                                <div>연락처</div>
-                            </th>
-                            <td>010-5450-4651</td>
-                        </tr>
-
-                        <tr>
-                            <th>
-                                <div>통신판매업 신고번호</div>
-                            </th>
-                            <td>2017-대전서구-0660</td>
-                            <th>
-                                <div>사업자번호</div>
-                            </th>
-                            <td>488-66-00133</td>
-                        </tr>
-
-                        <tr>
-                            <th>
-                                <div>구매안전 서비스</div>
-                            </th>
-                            <td colspan="3">
-                                <p>02-006-00042 <a class="service-join__btn"
-                                                   target="_blank">서비스 가입사실 확인 &gt;</a></p>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <p class="prod-minor-notice">
-                        미성년자가 체결한 계약은 법정대리인이 동의하지 않는 경우 본인 또는 법정대리인이 취소할 수 있습니다. PetAPet은 통신판매중개자로서 통신판매의 당사자가 아니며,
-                        광고,
-                        상품
-                        주문, 배송 및 환불의 의무와 책임은 각 판매자에 있습니다.
-                    </p>
-                </div>
             </li>
         </div>
     </div>
@@ -744,9 +664,6 @@
 <hr class="my-4">
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 
-<!-- Footer End -->
-
-<!-- Copyright Start -->
 <div class="container-fluid text-center copyright p-2" style="background-color: #78c2ad">
     <div class="container ">
         <div class="row ">
@@ -759,9 +676,12 @@
 
 <!-- 신고 모달 -->
 <th:block th:replace="~{fragment/reportModal :: reportModal}"></th:block>
+<!-- 문의 등록 모달 -->
+<th:block th:replace="~{fragment/registerInquiryModal :: inquiryModal}"></th:block>
 
 <!-- 리뷰 이미지 Modal -->
-<div class="modal fade" id="reviewImgModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="reviewImgModalLabel" aria-hidden="true">
+<div class="modal fade" id="reviewImgModal" tabindex="-1" data-bs-backdrop="false" aria-labelledby="reviewImgModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" style="--bs-modal-bg: none; --bs-modal-border-width: 0">
             <div class="modal-body">
@@ -771,334 +691,13 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/js/reportJS.js"></script>
-
-
-<script th:inline="javascript" type="text/javascript">
-    let totalPage = 10;
-
-    function updateReviewForm() {
-        $('.myReview').remove();
-        $('#myReviewForm').attr('style', 'display: ');
-    }
-
-    $('#reviewDeleteBtn').click(function () {
-        {
-            fetch('/product/deleteReview', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/text",
-                },
-                body: productId,
-            })
-                .then(response => {
-                    // return response.json();
-                })
-                .then(data => {
-
-                })
-        }
-        let productType = [[${productType}]];
-        window.location.href = '/product/' + productType + '/' + productId + '/details';
-    })
-    $('.reviewImgModalBtn').click(function () {
-        let imgSrc = $(this).children(1).attr('src');
-        let $modalImage = $('.modalImage');
-        $modalImage.attr('src', imgSrc);
-    })
-
-    function moreReviewImgModalBtn(src) {
-        let lastIndex = src.lastIndexOf("/");
-        let s = src.substring(lastIndex + 1);
-        let $modalImage = $('.modalImage');
-        $modalImage.attr('src', '/product/images/' + s);
-    }
-
-    function deleteReviewImg(id) {
-        let productId = $("#productId").val();
-        let $this = $('#' + id);
-        let next = $this.next(1).children(1);
-        let attrSrc = next.attr('src');
-        let attrAlt = next.attr('alt');
-        let pos = attrSrc.lastIndexOf("/");
-        let substringSrc = attrSrc.substring(pos + 1);
-        fetch('/product/deleteReviewImg?productId=' + productId, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                substringSrc: substringSrc,
-                attrAlt: attrAlt,
-            }),
-        })
-            .then(response => {
-                // return response.json();
-            })
-            .then(data => {
-
-            })
-        next.remove()
-        $this.remove()
-    }
-
-    async function updateReview() {
-        let productId = $("#productId").val();
-        let storeFileNameArr = new Array();
-        let uploadFileNameArr = new Array();
-        let myReviewImgSize = $('.myReviewImg img[class=reviewImage]').length;
-        for (var i = 0; i < myReviewImgSize; i++) {
-            let src = $('.myReviewImg img[id=reviewImage' + i + ']').attr('src');
-            let uploadFileName = $('.myReviewImg img[id=reviewImage' + i + ']').attr('alt');
-            let pos = src.lastIndexOf("/");
-            let storeFileName = src.substring(pos + 1);
-            storeFileNameArr.push(storeFileName);
-            uploadFileNameArr.push(uploadFileName);
-        }
-        $('#appendTarget').empty();
-        let formData = new FormData(document.getElementById("myReviewForm"));
-        for (var o = 0; o < storeFileNameArr.length; o++) {
-            formData.append('storeFileName', storeFileNameArr[o])
-            formData.append('uploadFileName', uploadFileNameArr[o])
-            formData.append('uploadFile', 'UploadFile(uploadFileName=' + uploadFileNameArr[o] + ', storeFileName=' + storeFileNameArr[o] + ') ')
-        }
-        fetch('/product/updateReview?productId=' + productId, {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => {
-                // return response.json();
-            })
-            .then(data => {
-
-            })
-        let productType = [[${productType}]];
-        window.location.href = '/product/' + productType + '/' + productId + '/details';
-    }
-
-    function addDibs(id) {
-        $.ajax({
-            type: 'post',
-            url: '/product/dibs/add',
-            async: true,
-            dataType: 'text',
-            data: {"productId": id},
-            success: function (result) {
-                if (result === 'login') {
-                    location.href = '/login'
-                }
-                if (result === 'duplicate') {
-                } else {
-                }
-            },
-            error: function (request, status, error) {
-            }
-        })
-    }
-
-    function review_scroll_move() {
-        let offset = $("#reviews").offset();
-        $("html, body").animate({scrollTop: offset.top});
-    };
-
-    function shipping_scroll_move() {
-        let offset = $("#shipping").offset();
-        $("html, body").animate({scrollTop: offset.top});
-    };
-
-    function productInquiry_scroll_move() {
-        let offset = $("#productInquiry").offset();
-        $("html, body").animate({scrollTop: offset.top});
-    };
-
-    function productDetail_scroll_move() {
-        let offset = $("#productDetail").offset();
-        $("html, body").animate({scrollTop: offset.top});
-    };
-
-    $('.carousel-inner > div:nth-child(1)').addClass('active');
-    $('.carousel-indicators > button:nth-child(1)').addClass('active');
-
-    function setThumbnail(event) {
-        for (var image of event.target.files) {
-            var reader = new FileReader();
-
-            reader.onload = function (event) {
-                var img = document.createElement("img");
-                img.setAttribute("src", event.target.result);
-                img.width = 100;
-                img.height = 100;
-                document.querySelector("div #myform").appendChild(img);
-            };
-            reader.readAsDataURL(image);
-        }
-    }
-
-    $(document).ready(function () {
-
-        var size = $('p[class = star]').length;
-        for (var i = 0; i < size; i++) {
-            $('p[class = star]').eq(i).attr('id', "star" + i);
-
-            $("#star" + i).find(".my_star").filter(function (k, v) {
-                return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
-            });
-        }
-    })
-
-
-    function moreReview() {
-        let nextPage = (totalPage / 10);
-        let productId = [[${productId}]];
-        let url = '/product/moreReview?productId=' + productId + '&page=' + nextPage;
-        $.getJSON(url,
-            function (result) {
-                $.each(result, function (idx, el) {
-                    let reviewHtml =
-                        `<div class="col-1">
-                            <img src="/img/petSnack.jpg" class="img-fluid">
-                        </div>
-                        <div class="col-1 me-2">
-                            <h6>${result[idx].reviewMember}</h6>
-                            <h6 style="font-size: 0.5rem" class="text-secondary mt-1">${result[idx].reviewDate}</h6>
-                        </div>
-                        <div class="col-2" style="position: center">
-                            <p class="star" id="moreRating">
-                                <a class="my_star" value="1">★</a>
-                                <a class="my_star" value="2">★</a>
-                                <a class="my_star" value="3">★</a>
-                                <a class="my_star" value="4">★</a>
-                                <a class="my_star" value="5">★</a>
-                            </p>
-                        </div>
-                        <div class="col-7" id="imgArea${idx}">
-                        </div>
-                        <div class="col text-end">
-                            <button type="button" class="btn btn-outline-primary" id="addMemberReport"
-                                    data-bs-toggle="modal" data-bs-target="#addMemberReportModal"
-                                    title="신고">신고
-                            </button>
-                        </div>
-                        <div class="d-flex mt-2">
-                            <div class="me-2">
-                                <h6>상품명</h6>
-                            </div>
-                            <div class="col-3">
-                                <h6 class="opacity-75">${result[idx].reviewProduct}</h6>
-                            </div>
-                        </div>
-                        <div class="review_comment">
-                            <div class="review_content">
-                                <div class="contentStr">
-                                ${result[idx].reviewContent}
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="my-4">`;
-                    $('#tagArea:last').append(reviewHtml);
-                    $.each(result[idx].reviewImg, function (index) {
-                        let aTag = document.createElement('a');
-                        aTag.setAttribute('class', 'btn btn-link');
-                        aTag.setAttribute('data-bs-toggle', 'modal');
-                        aTag.setAttribute('data-bs-target', '#reviewImgModal');
-                        let moreReviewImg = document.createElement('img');
-                        moreReviewImg.setAttribute('class', 'reviewImage');
-                        moreReviewImg.setAttribute('onclick', 'moreReviewImgModalBtn(this.src)');
-                        moreReviewImg.src = '/product/images/' + result[idx].reviewImg[index].storeFileName;
-                        moreReviewImg.width = 100;
-                        moreReviewImg.height = 100;
-                        $('#imgArea' + idx).append(aTag);
-                        aTag.appendChild(moreReviewImg);
-                    })
-
-                    $('#moreRating').attr('value', result[idx].reviewRating);
-                    $('#moreReviewProduct').text(result[idx].reviewProduct);
-                    $('#moreReview').attr('id', 'moreReview');
-                    var size = $('p[class = star]').length;
-                    for (var i = 0; i < size; i++) {
-                        $('p[class = star]').eq(i).attr('id', "moreRating" + i);
-
-                        $("#moreRating" + i).find(".my_star").filter(function (k, v) {
-                            return $(v).attr("value") <= $("#moreRating" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
-                        });
-                    }
-                })
-                if (result.length == 0) {
-                    let noMoreReview =
-                        `<div><h6 class="m-lg-1 fs-5 text-center">더 이상 리뷰가 존재하지 않습니다.</h6></div>`;
-                    $('#moreReview').hide();
-                    $('#tagArea:last').append(noMoreReview);
-                }
-            }
-        )
-        totalPage += 10;
-    }
-
-    const btnMinus = $('#minus');
-    const btnPlus = $('#plus');
-    const quantity = $('#quantity');
-    var urlCart = "/cart/add";
-    var productId = $("#productId").val();
-
-    $(btnMinus).click(function () {
-        var $input = $(this).parents().eq(2).find(quantity);
-        console.log("빼기 >>", $input.val());
-        var count = parseInt($input.val()) - 1;
-        count = count < 1 ? 1 : count;
-        $input.val(count).change();
-        $('#productQuan').val(count).change();
-    });
-
-    $(btnPlus).click(function () {
-        var $input = $(this).parents().eq(2).find(quantity);
-        let remainStock = $('#remainStock').text();
-        let quantityVal = $("#quantity").val();
-        if (parseInt(quantityVal) < parseInt(remainStock)) {
-            $input.val(parseInt($input.val()) + 1).change();
-            $('#productQuan').val(parseInt($input.val())).change();
-
-        } else {
-            const excessQuantityHtml = `
-            <h6 class="text-secondary osh">재고가 부족합니다</h6>`;
-            $('.osh').remove()
-            $('#quantityInputBox').append(excessQuantityHtml);
-        }
-        console.log("더하기 >>", $input.val());
-    });
-
-    var postUrl = "/cart";
-
-    var urlCart = "/cart/add";
-    var urlBuy = "/buy/addByProduct";
-    var productId = $("#productId").val();
-    var quantityVal = $("#quantity").val();
-    var param = {"product": productId, "quantity": quantityVal};
-
-    function addCart() {
-        alert("실행");
-        var param = {"product": productId, "quantity": quantity.val()};
-        $.ajax({
-            url: urlCart,
-            type: "POST",
-            data: JSON.stringify(param),
-            dataType: "text",
-            contentType: "application/json",
-            charset: "UTF-8",
-            success: function (data) {
-                window.location.href= postUrl ;
-            },
-            error: function (jqXHR, status, errorThrown) {
-
-            }
-        });
-    }
-
-</script>
+<script type="text/javascript" src="/js/inquiryJS.js"></script>
+<script type="text/javascript" src="/js/community/paginationJS.js"></script>
 
 <script th:src="@{/js/reviewContentStr.js}"></script>
-<!-- Template Javascript -->
-<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/product/productDetails.js}"></script>
+
 </body>
 </html>
