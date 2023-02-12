@@ -47,7 +47,7 @@ public class MemberController {
     //회원가입
     @GetMapping("/join")
     public String joinForm(Principal principal, MemberRequestDTO.JoinDTO joinDTO) {
-        if (principal instanceof Principal) {
+        if (principal != null) {
             return "redirect:/";
         }
         return "join";
@@ -74,7 +74,7 @@ public class MemberController {
     //로그인
     @GetMapping("/login")
     public String loginForm(Principal principal) {
-        if (principal instanceof Principal) {
+        if (principal != null) {
             return "redirect:/";
         }
         return "login";
@@ -91,12 +91,13 @@ public class MemberController {
         }
 
         TokenDTO tokenDTO = memberService.login(loginDTO);
+        System.out.println(tokenDTO.getToken());
         //토큰 쿠키에 저장
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer" + tokenDTO.getToken());
         cookie.setPath("/");
 //        cookie.setMaxAge(60 * 60 * 24); //유효기간 24시간
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+//        cookie.setSecure(true);
         response.addCookie(cookie);
 
         return "redirect:/";
