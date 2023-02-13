@@ -45,19 +45,6 @@ public class ProductServiceImpl implements ProductService {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ProductDTO> getCompanyProductList(String companyId) {
-        List<ProductDTO> productDTOList = jpaQueryFactory
-                .select(Projections.bean(
-                        ProductDTO.class, product.productId, product.productName, product.productDiv,
-                        product.productPrice, product.productReport, product.productStock, product.productStatus, buy.count().as("totalBuy")))
-                .from(product)
-                .leftJoin(buy).on(buy.product.productId.eq(product.productId)).groupBy(product.productId)
-                .where(product.company.companyId.eq(companyId))
-                .fetch();
-        return productDTOList;
-    }
-
-    @Override
     public Page<Product> getProductPage(Pageable pageable) {
         return productRepository.findAllByProductStatus(pageable, "판매중");
     }
@@ -127,11 +114,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> saveProduct(Product product) {
-        return Optional.of(productRepository.save(product));
-    }
-
-    @Override
     public Page<Product> findPage(String searchContent, Pageable pageable) {
         List<Product> productList = jpaQueryFactory.select(product)
                 .from(product)
@@ -166,24 +148,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void addProductReport(Long productId) {
         productRepository.addProductReport(productId);
-    }
-
-    @Override
-    @Transactional
-    public void updateCounterView(Long productId) {
-        jpaQueryFactory.update(product)
-                .set(product.productViewCount, product.productViewCount.add(1))
-                .where(product.productId.eq(productId))
-                .execute();
-    }
-
-    @Override
-    @Transactional
-    public void updateCounterSell(Long productId) {
-        jpaQueryFactory.update(product)
-                .set(product.productSellCount, product.productSellCount.add(1))
-                .where(product.productId.eq(productId))
-                .execute();
     }
 
     private BooleanExpression isContent(String content) {

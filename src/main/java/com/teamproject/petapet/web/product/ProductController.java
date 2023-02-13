@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.product;
 
+import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
@@ -81,6 +82,7 @@ public class ProductController {
                                  @RequestParam(value = "maxPrice", defaultValue = "", required = false) String maxPrice,
                                  @RequestParam(value = "rating", defaultValue = "0", required = false) Long starRating,
                                  Model model, Principal principal) {
+
         Sort sort = getSort(sortType);
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         String property = pageable.getSort().get().findFirst().orElseThrow(NoSuchElementException::new).getProperty();
@@ -199,10 +201,10 @@ public class ProductController {
             , @PathVariable("productId") Long productId
             , Principal principal, Model model) {
         Product findProduct = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
+        findProduct.increaseViewCount();
         ProductDetailDTO productDetailDTO = findProduct.toProductDetailDTO(findProduct);
         Sort sort = Sort.by("reviewId").descending();
-        Pageable pageable = PageRequest.of(0, 10, sort);
-        Slice<Review> reviews = reviewService.requestMoreReview(productId, pageable);
+        Slice<Review> reviews = reviewService.requestMoreReview(productId, PageRequest.of(0, 10, sort));
         model.addAttribute("findProduct", productDetailDTO);
         model.addAttribute("reviews", reviews);
 
@@ -219,7 +221,7 @@ public class ProductController {
                 model.addAttribute("existReview", reviewDTO);
             }
         }
-        productService.updateCounterView(productId);
+
         return "/product/productDetails";
     }
 
