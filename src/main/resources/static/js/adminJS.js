@@ -95,21 +95,6 @@ $(document).ready(function () {
         })
     });
 
-    // $(".setProductStatus").click(function () {
-    //     var productId = $(this).attr("value");
-    //     var selectedStatus = $(this).parent().parent().find("select[name=productStatus]").val();
-    //     var productStock = $(this).parent().parent().find("input[name=productStock]").val();
-    //
-    //     $.ajax({
-    //         url: "/admin/updateProductStatus/" + productId,
-    //         type: "get",
-    //         data: {status: selectedStatus, stock: productStock},
-    //         success() {
-    //             location.href = "/admin/adminPage";
-    //         }
-    //     })
-    // });
-
     //신고 승인 버튼 클릭
     $("#acceptReportBtn").click(function () {
         if ($("#modalTargetType").val() === "community") {
@@ -343,7 +328,7 @@ function getCompanyJoinAcceptList() {
         if (result.length > 0) {
             $.each(result, function (idx, company) {
                 list += `<tr>
-                                            <td>` + idx + `</td>
+                                            <td>` + (idx + 1) + `</td>
                                             <td>${company.companyName}</td>
                                             <td>${company.companyNumber}</td>
                                             <td>
@@ -372,7 +357,7 @@ function getCommunityList() {
                 list += `<div>
                                             <tr th:id="${community.communityId}">
                                                 <td>${community.communityId}</td>
-                                                <td><a href="#">${community.communityTitle}</a></td>
+                                                <td><a href="/community/${community.communityId}">${community.communityTitle}</a></td>
                                                 <td>${community.memberId}</td>
                                                 <td>${community.communityCategory}</td>
                                                 <td>${community.communityDate}</td>
@@ -405,12 +390,13 @@ function getMemberList() {
                                             <td>${member.memberGender}</td>
                                             <td>${member.memberJoinDate}</td>
                                             <td class="text-success" id="report">${member.memberReport}</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm memberModal" type="button"
-                                                        id="${member.memberId}">회원탈퇴/정지
-                                                </button>
-                                            </td>
-                                        </tr>`;
+                                            <td>`;
+                if (member.memberActivated) {
+                    list += `<button class="btn btn-danger btn-sm memberModal" type="button" id="${member.memberId}">회원탈퇴/정지</button>`
+                } else {
+                    list += `<button class="btn btn-secondary btn-sm" type="button" disabled>~ ${member.memberStopDate}</button>`
+                }
+                list += `</td></tr>`;
             })
         }
 

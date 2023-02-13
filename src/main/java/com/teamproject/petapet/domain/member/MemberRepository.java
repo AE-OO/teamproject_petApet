@@ -75,4 +75,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query("update Member m set m.memberImg=null where m.memberId=:memberId")
     void deleteMemberImg(String memberId);
 
+    @Query("select m from Member m where m.memberId not like 'admin%' order by m.activated, m.memberReport desc")
+    List<Member> findMemberExceptAdmin();
 }

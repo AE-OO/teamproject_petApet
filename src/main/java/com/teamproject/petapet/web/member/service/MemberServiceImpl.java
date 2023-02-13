@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberDTO> getMemberList() {
-        List<Member> memberList = memberRepository.findAll(Sort.by(Sort.Direction.DESC, "memberReport"));
+        List<Member> memberList = memberRepository.findMemberExceptAdmin();
         return memberList.stream().map(list -> MemberDTO.fromEntityForMemberListOfAdminPage(list)).collect(Collectors.toList());
     }
 

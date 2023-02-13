@@ -11,10 +11,9 @@ $(document).ready(function () {
             inquiredTitle : $("#inquiryTitle").val(),
             inquiredContent : $("textarea[name=inquiryContent]").val(),
             productId : $("#modalTargetProductId").val(),
-            companyId : $("#companyId").val(),
+            companyId : $('.productSeller').attr('data-id'),
             memberId : "member010"                     //여기 세션에서 값 가져오는 걸로 수정하기
         }
-        console.log(inquiryRequestDTO);
         $.ajax({
             url: "/inquiry/registerProductInquiry",
             type: "post",

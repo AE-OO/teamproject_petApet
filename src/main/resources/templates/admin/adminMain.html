@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="fragment/admin_fragment :: head(~{::title})">
     <title>petApet - 관리자 페이지</title>
 </head>
+
 <body>
 <div class="container-scroller">
     <div th:replace="fragment/admin_fragment :: navbar"></div>
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-        <!-- partial -->
-        <!-- partial:partials/_sidebar.html -->
         <div th:replace="fragment/admin_fragment :: sidebar1"></div>
 
-        <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
                 <div class="row">
@@ -47,15 +45,15 @@
                         <div class="card">
                             <div class="card-body">
                                 <div>
-                                    <p class="card-title mb-0" style="float: left;">공지사항 관리</p>
+                                    <p class="card-title mb-0">공지사항 관리</p>
                                     <a href="/admin/registerNotice">
-                                        <button type="button" class="btn btn-primary btn-sm" style="float: right;">
+                                        <button type="button" class="btn btn-primary btn-sm registerBtn">
                                             공지사항등록
                                         </button>
                                     </a>
                                 </div>
-                                <div class="table-responsive" style="height: 400px;">
-                                    <table class="table table-hover" style="text-align: center;">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
                                         <thead>
                                         <tr>
                                             <th class="pl-0  pb-2 border-bottom">공지사항 번호</th>
@@ -75,8 +73,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <p class="card-title mb-0">문의관리</p>
-                                <div class="table-responsive" style="height: 400px;">
-                                    <table class="table table-hover" style="text-align: center;">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
                                         <thead>
                                         <tr>
                                             <th class="pl-0  pb-2 border-bottom">문의번호</th>
@@ -98,10 +96,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <div>
-                                    <p class="card-title mb-0" style="float: left;">커뮤니티 신고관리</p>
+                                    <p class="card-title mb-0">커뮤니티 신고관리</p>
                                 </div>
-                                <div class="table-responsive" style="height: 400px;">
-                                    <table class="table table-hover" style="text-align: center;">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
                                         <thead>
                                         <tr>
                                             <th class="pl-0  pb-2 border-bottom">신고번호</th>
@@ -121,10 +119,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <div>
-                                    <p class="card-title mb-0" style="float: left;">회원 신고관리</p>
+                                    <p class="card-title mb-0">회원 신고관리</p>
                                 </div>
-                                <div class="table-responsive" style="height: 400px;">
-                                    <table class="table table-hover" style="text-align: center;">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
                                         <thead>
                                         <tr>
                                             <th class="pl-0  pb-2 border-bottom">신고번호</th>
@@ -146,10 +144,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <div>
-                                    <p class="card-title mb-0" style="float: left;">상품 신고관리</p>
+                                    <p class="card-title mb-0">상품 신고관리</p>
                                 </div>
-                                <div class="table-responsive" style="height: 400px;">
-                                    <table class="table table-hover" style="text-align: center;">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
                                         <thead>
                                         <tr>
                                             <th class="pl-0  pb-2 border-bottom">신고번호</th>
@@ -169,10 +167,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <div>
-                                    <p class="card-title mb-0" style="float: left;">사업자 가입관리</p>
+                                    <p class="card-title mb-0">사업자 가입관리</p>
                                 </div>
-                                <div class="table-responsive" style="height: 400px;">
-                                    <table class="table table-hover" style="text-align: center;">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
                                         <thead>
                                         <tr>
                                             <th class="pl-0  pb-2 border-bottom">#</th>
@@ -194,8 +192,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">전체 커뮤니티관리</h4>
-                                <div class="table-responsive" style="height: 435px;">
-                                    <table class="table table-hover" style="text-align: center;">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
                                         <thead>
                                         <tr>
                                             <th>게시글번호</th>
@@ -220,8 +218,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">전체 회원관리</h4>
-                                <div class="table-responsive" style="height: 435px;">
-                                    <table class="table table-hover" style="text-align: center;">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
                                         <thead>
                                         <tr>
                                             <th>#</th>
@@ -251,7 +249,7 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="staticBackdropLabel">커뮤니티 글 삭제</h1>
                         </div>
-                        <div class="modal-body communityDelete" style="text-align: center">
+                        <div class="modal-body communityDelete text-center">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -272,7 +270,7 @@
                             <h1 class="modal-title fs-5" id="staticBackdropLabel">회원 정지/탈퇴</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body memberDelete" style="text-align: center">
+                        <div class="modal-body memberDelete text-center">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary confirmDisabledMember"
@@ -299,6 +297,9 @@
                             <input type="hidden" id="modalReportId">
                             <input type="hidden" id="modalTargetType">
                             <input type="hidden" id="modalTargetId">
+                            <h4 class="text-left font-weight-bold">신고대상</h4>
+                            <input class="form-control form-control-sm" id="reportTargetContent" value="" readonly>
+                            <br>
                             <h4 class="text-left font-weight-bold">신고 사유</h4>
                             <input class="form-control form-control-sm" id="reportReason" value="" readonly>
                             <br>
@@ -381,45 +382,25 @@
                     </div>
                 </div>
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:partials/_footer.html -->
             <div th:replace="fragment/admin_fragment :: footer"></div>
-
-            <!-- partial -->
         </div>
-        <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
 </div>
-<!-- container-scroller -->
-<!-- 부트스트랩 CDN -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-        crossorigin="anonymous"></script>
-<!-- plugins:js -->
 <script src="/vendors/js/vendor.bundle.base.js"></script>
-<!-- endinject -->
-<!-- Plugin js for this page -->
+
 <script src="/vendors/chart.js/Chart.min.js"></script>
 <script src="/vendors/datatables.net/jquery.dataTables.js"></script>
 <script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
 <script src="/js/dataTables.select.min.js"></script>
 
-<!-- End plugin js for this page -->
-<!-- inject:js -->
 <script src="/js/off-canvas.js"></script>
 <script src="/js/hoverable-collapse.js"></script>
 <script src="/js/template.js"></script>
-<!-- endinject -->
-<!-- Custom js for this page-->
 <script src="/js/dashboard.js"></script>
 <script src="/js/Chart.roundedBarCharts.js"></script>
 
-<!-- Custom js for this page-->
 <script src="/js/chart/chart.js"></script>
-<!-- End custom js for this page-->
 <script type="text/javascript" src="/js/adminJS.js"></script>
 </body>
-
 </html>
 

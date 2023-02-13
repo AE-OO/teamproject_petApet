@@ -64,7 +64,7 @@ public class CompanyController {
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer" + tokenDTO.getToken());
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+//        cookie.setSecure(true);
         response.addCookie(cookie);
         return "redirect:/";
     }

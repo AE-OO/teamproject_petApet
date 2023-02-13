@@ -68,4 +68,6 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Query(value = "select * from Community where createdDate between date_add(now(),interval -1 week) and now() and communityCategory not in ('공지사항')",nativeQuery = true)
     Page<Community> getPopularList(Pageable pageable);
 
+    List<Community> findAllByCommunityCategoryIsNotContainingOrderByCommunityReportDesc(String category);
+
 }
