@@ -119,7 +119,7 @@ public class PaymentsController {
                 responseDTO.getTotalPrice()
         );
         buyService.addBuy(buy);
-//        emailService.sendEmailMessage(responseDTO.getBuyerEmail(), buy.getBuyId());
+        emailService.sendEmailMessage(responseDTO.getBuyerEmail(), buy.getBuyId());
     }
 
     @GetMapping("/direct/checkout")
@@ -183,7 +183,7 @@ public class PaymentsController {
                 responseDTO.getTotalPrice()
         );
         buyService.addBuy(buy);
-//        emailService.sendEmailMessage(responseDTO.getBuyerEmail(), buy.getBuyId());
+        emailService.sendEmailMessage(responseDTO.getBuyerEmail(), buy.getBuyId());
     }
     @GetMapping("/direct/checkout/checkLogin")
     @ResponseBody

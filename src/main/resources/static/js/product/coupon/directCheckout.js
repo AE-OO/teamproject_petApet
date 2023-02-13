@@ -58,7 +58,7 @@ getAvailableCoupons('/checkout/getAvailableCoupons', productIdList).then((coupon
         requestPayment("/direct/request/checkout", param)
             .then((data) => {
 
-                let IMP = window.IMP; // 생략가능
+                var IMP = window.IMP; // 생략가능
                 IMP.init('imp34631730'); // <-- 본인 가맹점 식별코드 삽입
 
                 let uid = "order_" + new Date().getTime(); // <- 주문번호 생성
@@ -89,26 +89,26 @@ getAvailableCoupons('/checkout/getAvailableCoupons', productIdList).then((coupon
                     "totalPrice": data.totalPrice,
                 }
 
-                // requestPay();
+                requestPay();
 
                 function requestPay() {
                     IMP.request_pay(kakaoApiParam, function (rsp) { // callback
                         if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
-                            // jQuery로 HTTP 요청
-                            // window.location.replace(postUrl)
-                            // addBuyDB();
+                            saveBuy('/direct/checkout/success', saveBuyParam).then((data) => {
+                                console.log(data)
+                                window.location.replace(postUrl)
+                            });
                         } else {
                             alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
                         }
                     });
                 }
 
-                saveBuy('/direct/checkout/success', saveBuyParam).then((data) => {
-                    console.log(data)
-                });
+
             })
     })
 })
+
 async function saveBuy(url = '', data = {}) {
     const response = await fetch(url, {
         method: 'POST',
