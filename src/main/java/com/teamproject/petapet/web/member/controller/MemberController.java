@@ -1,12 +1,10 @@
 package com.teamproject.petapet.web.member.controller;
 
 import com.teamproject.petapet.jwt.JwtAuthenticationFilter;
-import com.teamproject.petapet.web.member.dto.MemberDTO;
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
 import com.teamproject.petapet.web.member.dto.TokenDTO;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;

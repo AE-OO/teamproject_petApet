@@ -265,11 +265,11 @@ $(document).ready(function () {
         }
     });
 
-    if($("#findMemberIdResult").val().length > 0){
+    if($("#findMemberIdResult").text().length > 0){
         $("#staticBackdrop").modal('show');
     }
 
-    if($("#findCompanyIdResult").val().length > 0){
+    if($("#findCompanyIdResult").text().length > 0){
         $("#staticBackdrop2").modal('show');
     }
 

@@ -6,9 +6,12 @@
     <script src="/js/member/modifyInfo.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
     <script th:inline="javaScript">
-        let originalMemberEmail = [[${memberDTO.memberEmail}]];
-        let originalMemberPhoneNum = [[${memberDTO.memberPhoneNum}]]
-        let memberImg = [[${memberDTO.memberImg}]];
+        // let originalMemberEmail = [[${memberDTO.memberEmail}]];
+        let originalMemberEmail = $("input[name=memberEmail]").val();
+        // let originalMemberPhoneNum = [[${memberDTO.memberPhoneNum}]];
+        let originalMemberPhoneNum = $("input[name=memberPhoneNum]").val();
+        // let memberImg = [[${memberDTO.memberImg}]];
+        let memberImg = $("#profileImg").attr("src");
     </script>
 </head>
 <body>
