@@ -96,7 +96,7 @@ getAvailableCoupons('/checkout/getAvailableCoupons', productIdList).then((coupon
                         if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
                             saveBuy('/direct/checkout/success', saveBuyParam).then((data) => {
                                 console.log(data)
-                                window.location.replace(postUrl)
+                                window.location.replace("/buy")
                             });
                         } else {
                             alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
@@ -122,7 +122,7 @@ async function saveBuy(url = '', data = {}) {
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(data),
     });
-    return response.json();
+    return response.text();
 }
 
 async function getAvailableCoupons(url = '', data = {}) {

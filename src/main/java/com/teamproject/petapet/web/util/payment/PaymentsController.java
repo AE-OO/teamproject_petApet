@@ -94,7 +94,7 @@ public class PaymentsController {
     @PostMapping("/cart/checkout/success")
     @Transactional
     @ResponseBody
-    public void addBuy(@RequestBody PaymentVO.PaymentResponseDTO responseDTO, Authentication authentication) {
+    public ResponseEntity<?> addBuy(@RequestBody PaymentVO.PaymentResponseDTO responseDTO, Authentication authentication) {
         Member member = memberService.findOne(checkMember(authentication));
 
         List<Cart> cartList = responseDTO.getBuyCartIds().stream()
@@ -111,6 +111,7 @@ public class PaymentsController {
             cart.getProduct().subtractStock(cart.getQuantity());
             cart.getProduct().increaseSellCount(cart.getQuantity());
             buyProducts.add(buyProduct);
+            cartService.removeCartOne(cart.getCartId());
         }
         Buy buy = new Buy(responseDTO.getUid(),
                 responseDTO.getBuyAddress(),
@@ -120,6 +121,7 @@ public class PaymentsController {
         );
         buyService.addBuy(buy);
         emailService.sendEmailMessage(responseDTO.getBuyerEmail(), buy.getBuyId());
+        return ResponseEntity.ok().body("ok");
     }
 
     @GetMapping("/direct/checkout")
@@ -165,7 +167,7 @@ public class PaymentsController {
     @PostMapping("/direct/checkout/success")
     @Transactional
     @ResponseBody
-    public void addBuyByDirect(@RequestBody PaymentVO.PaymentResponseDTO responseDTO, Authentication authentication) {
+    public ResponseEntity<?> addBuyByDirect(@RequestBody PaymentVO.PaymentResponseDTO responseDTO, Authentication authentication) {
         Member member = memberService.findOne(checkMember(authentication));
 
         if (responseDTO.getCouponId() != null) couponBoxService.modifyUsedByIdAndUser(responseDTO.getCouponId(), authentication);
@@ -184,6 +186,7 @@ public class PaymentsController {
         );
         buyService.addBuy(buy);
         emailService.sendEmailMessage(responseDTO.getBuyerEmail(), buy.getBuyId());
+        return ResponseEntity.ok().body("ok");
     }
     @GetMapping("/direct/checkout/checkLogin")
     @ResponseBody
