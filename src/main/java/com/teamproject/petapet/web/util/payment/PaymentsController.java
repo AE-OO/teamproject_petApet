@@ -21,6 +21,7 @@ import com.teamproject.petapet.web.util.payment.dto.PaymentRequestDTO;
 import com.teamproject.petapet.web.util.payment.dto.PaymentVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -45,6 +46,8 @@ public class PaymentsController {
     private final EmailService emailService;
     private final CouponBoxService couponBoxService;
     private final BuyProductService buyProductService;
+    @Value("${imp.val}")
+    private String IMPORT;
 
     @GetMapping("/cart/checkout")
     public String checkoutByCartsForm(@RequestParam String carts, Model model, Authentication authentication) {
@@ -87,21 +90,23 @@ public class PaymentsController {
                         member.getMemberId(),
                         paymentDTO.getProductIds(),
                         paymentDTO.getCartIds(),
-                        paymentDTO.getCouponId()));
+                        paymentDTO.getCouponId(),
+                        IMPORT));
 
     }
 
     @PostMapping("/cart/checkout/success")
     @Transactional
     @ResponseBody
-    public void addBuy(@RequestBody PaymentVO.PaymentResponseDTO responseDTO, Authentication authentication) {
+    public ResponseEntity<?> addBuy(@RequestBody PaymentVO.PaymentResponseDTO responseDTO, Authentication authentication) {
         Member member = memberService.findOne(checkMember(authentication));
 
         List<Cart> cartList = responseDTO.getBuyCartIds().stream()
                 .map(cartId -> cartService.findOne(cartId, member))
                 .collect(Collectors.toList());
 
-        if (responseDTO.getCouponId() != null) couponBoxService.modifyUsedByIdAndUser(responseDTO.getCouponId(), authentication);
+        if (responseDTO.getCouponId() != null)
+            couponBoxService.modifyUsedByIdAndUser(responseDTO.getCouponId(), authentication);
 
         List<BuyProduct> buyProducts = new ArrayList<>();
 
@@ -111,6 +116,7 @@ public class PaymentsController {
             cart.getProduct().subtractStock(cart.getQuantity());
             cart.getProduct().increaseSellCount(cart.getQuantity());
             buyProducts.add(buyProduct);
+            cartService.removeCartOne(cart.getCartId());
         }
         Buy buy = new Buy(responseDTO.getUid(),
                 responseDTO.getBuyAddress(),
@@ -120,12 +126,13 @@ public class PaymentsController {
         );
         buyService.addBuy(buy);
         emailService.sendEmailMessage(responseDTO.getBuyerEmail(), buy.getBuyId());
+        return ResponseEntity.ok().body("ok");
     }
 
     @GetMapping("/direct/checkout")
     public String directCheckoutForm(@RequestParam("productId") Long productId,
-                              @RequestParam("quantity") Long quantity,
-                              Model model, Principal principal) {
+                                     @RequestParam("quantity") Long quantity,
+                                     Model model, Principal principal) {
 
         Product product = productService.findOne(productId).orElseThrow(NoSuchElementException::new);
         String loginMember = checkMember(principal);
@@ -145,7 +152,7 @@ public class PaymentsController {
 
         Member member = memberService.findOne(checkMember(authentication));
         List<Product> productList = List.of(productService.findOne(paymentDTO.getProductId()).orElseThrow());
-        Long totalAmount = productList.stream().mapToLong(product -> product.getProductPrice()*paymentDTO.getQuantity()).sum() - getCouponDiscRate(paymentDTO.getCouponId(), authentication);
+        Long totalAmount = productList.stream().mapToLong(product -> product.getProductPrice() * paymentDTO.getQuantity()).sum() - getCouponDiscRate(paymentDTO.getCouponId(), authentication);
         Long totalQuantity = paymentDTO.getQuantity();
         return ResponseEntity.ok().body(
                 new PaymentRequestDTO(
@@ -158,17 +165,19 @@ public class PaymentsController {
                         totalQuantity,
                         member.getMemberId(),
                         Collections.singletonList(paymentDTO.getProductId()),
-                       null,
-                        paymentDTO.getCouponId()));
+                        null,
+                        paymentDTO.getCouponId(),
+                        IMPORT));
     }
 
     @PostMapping("/direct/checkout/success")
     @Transactional
     @ResponseBody
-    public void addBuyByDirect(@RequestBody PaymentVO.PaymentResponseDTO responseDTO, Authentication authentication) {
+    public ResponseEntity<?> addBuyByDirect(@RequestBody PaymentVO.PaymentResponseDTO responseDTO, Authentication authentication) {
         Member member = memberService.findOne(checkMember(authentication));
 
-        if (responseDTO.getCouponId() != null) couponBoxService.modifyUsedByIdAndUser(responseDTO.getCouponId(), authentication);
+        if (responseDTO.getCouponId() != null)
+            couponBoxService.modifyUsedByIdAndUser(responseDTO.getCouponId(), authentication);
 
         List<BuyProduct> buyProducts = new ArrayList<>();
         for (Long aLong : responseDTO.getBuyProducts()) {
@@ -184,7 +193,9 @@ public class PaymentsController {
         );
         buyService.addBuy(buy);
         emailService.sendEmailMessage(responseDTO.getBuyerEmail(), buy.getBuyId());
+        return ResponseEntity.ok().body("ok");
     }
+
     @GetMapping("/direct/checkout/checkLogin")
     @ResponseBody
     public String checkLoginByRest(Authentication authentication) {

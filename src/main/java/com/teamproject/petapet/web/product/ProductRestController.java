@@ -97,24 +97,6 @@ public class ProductRestController {
         return getProductMainPageListDTOS(productList);
     }
 
-//    @PostMapping("/updateReview")
-//    public void updateReview(@ModelAttribute ReviewInsertDTO reviewInsertDTO, @RequestParam("productId") Long productId, Principal principal) {
-//        Review review = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
-//        List<UploadFile> storeFiles = fileService.storeFiles(reviewInsertDTO.getReviewImg());
-//        ArrayList<UploadFile> uploadFiles = new ArrayList<>();
-//        List<UploadFile> reviewImg = review.getReviewImg();
-//        if (reviewInsertDTO.getStoreFileName() != null) {
-//            IntStream.range(0, reviewInsertDTO.getStoreFileName().size()).forEach(i -> {
-//                UploadFile uploadFile = new UploadFile(reviewInsertDTO.getUploadFileName().get(i), reviewInsertDTO.getStoreFileName().get(i));
-//                uploadFiles.add(uploadFile);
-//            });
-//        }
-//        uploadFiles.addAll(reviewImg);
-//        List<UploadFile> uploadFileList = uploadFiles.stream().distinct().collect(Collectors.toList());
-//        uploadFileList.addAll(storeFiles);
-//
-//        reviewService.updateReview(review, reviewInsertDTO.getReviewTitle(), reviewInsertDTO.getReviewContent(), LocalDateTime.now(), reviewInsertDTO.getReviewRating(), uploadFileList);
-//    }
 @PostMapping("/updateReview")
     public void updateReview(@ModelAttribute ReviewInsertDTO reviewInsertDTO,
                              @RequestParam("productId") Long productId,

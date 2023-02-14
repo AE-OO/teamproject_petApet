@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.util.payment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -19,4 +20,5 @@ public class PaymentRequestDTO {
     private List<Long> productIds;
     private List<Long> cartIds;
     private Long couponId;
+    private String importId;
 }
