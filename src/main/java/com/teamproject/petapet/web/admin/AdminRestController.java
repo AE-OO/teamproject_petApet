@@ -18,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -89,9 +90,14 @@ public class AdminRestController {
         memberService.updateMemberStopDate(memberId);
     }
 
+    @ExceptionHandler(Exception.class)
+    public String catcher(){
+        return "error";
+    }
     //커뮤니티 신고 승인
     @GetMapping("/acceptCommunityReport/{reportId}")
-    public void acceptCommunityReport(@PathVariable("reportId") Long reportId, @RequestParam("communityId") Long communityId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void acceptCommunityReport(@PathVariable("reportId") Long reportId, @RequestParam("communityId") Long communityId) throws Exception {
         communityService.addCommunityReport(communityId);
         reportService.setResponseStatusCommunity(reportId);
     }
