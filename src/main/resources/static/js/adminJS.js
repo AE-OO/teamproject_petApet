@@ -194,24 +194,23 @@ function getNoticeList() {
         if (result.length > 0) {
             $.each(result, function (idx, notice) {
                 list += `<tr>
-                                            <td class="pl-0">${notice.communityId}</td>
-                                            <td><a href="/admin/updateNoticeForm/${notice.communityId}">${notice.communityTitle}</a>
-                                            </td>
-                                            <td>
-                                                <a href="/admin/updateNoticeForm/${notice.communityId}">
-                                                    <button class="btn btn-success btn-sm updateFAQ" type="button">수정
-                                                    </button>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm deleteNotice" type="button"
-                                                        id="${notice.communityId}">삭제
-                                                </button>
-                                            </td>
-                                        </tr>`;
+                            <td class="pl-0">${notice.communityId}</td>
+                            <td><a href="/admin/updateNoticeForm/${notice.communityId}">${notice.communityTitle}</a>
+                            </td>
+                            <td>
+                                <a href="/admin/updateNoticeForm/${notice.communityId}">
+                                    <button class="btn btn-success btn-sm updateFAQ" type="button">수정
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm deleteNotice" type="button"
+                                        id="${notice.communityId}">삭제
+                                </button>
+                            </td>
+                        </tr>`;
             })
         }
-
         $(".noticeList").html(list);
     })
 }
@@ -223,11 +222,11 @@ function getOtherInquiryList() {
         if (result.length > 0) {
             $.each(result, function (idx, other) {
                 list += `<tr>
-                                            <td class="pl-0">${other.inquiredId}</td>
-                                            <td><a href="/admin/${other.inquiredId}/edit">${other.inquiredTitle}</a>
-                                            </td>
-                                            <td>${other.inquiredCategory}</td>
-                                            <td>`;
+                            <td class="pl-0">${other.inquiredId}</td>
+                            <td><a href="/admin/${other.inquiredId}/edit">${other.inquiredTitle}</a>
+                            </td>
+                            <td>${other.inquiredCategory}</td>
+                            <td>`;
 
                 if(other.checked == 0){
                     list += `<label class="badge badge-danger">답변대기</label>`;
@@ -250,18 +249,18 @@ function getCommunityReportList() {
         if (result.length > 0) {
             $.each(result, function (idx, communityReport) {
                 list += `<tr>
-                                            <td class="pl-0" id="communityReportId">${communityReport.reportId}</td>
-                                            <td id="communityId">${communityReport.communityId}</td>
-                                            <td>${communityReport.reportReason}</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" id="showCommunityReportModal"
-                                                        onclick="getReportReason(${communityReport.reportId}, 'community');"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirmReportModal"
-                                                        type="button">승인
-                                                </button>
-                                            </td>
-                                        </tr>`;
+                            <td class="pl-0" id="communityReportId">${communityReport.reportId}</td>
+                            <td id="communityId">${communityReport.communityId}</td>
+                            <td>${communityReport.reportReason}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" id="showCommunityReportModal"
+                                        onclick="getReportReason(${communityReport.reportId}, 'community');"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmReportModal"
+                                        type="button">승인
+                                </button>
+                            </td>
+                        </tr>`;
             })
         }
 
@@ -276,21 +275,20 @@ function getMemberReportList() {
         if (result.length > 0) {
             $.each(result, function (idx, memberReport) {
                 list += `<tr>
-                                            <td class="pl-0" id="memberReportId">${memberReport.reportId}</td>
-                                            <td id="memberId">${memberReport.memberId}</td>
-                                            <td>${memberReport.reportReason}</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" id="showMemberReportModal"
-                                                        onclick="getReportReason(${memberReport.reportId}, 'member');"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirmReportModal"
-                                                        type="button">승인
-                                                </button>
-                                            </td>
-                                        </tr>`;
+                            <td class="pl-0" id="memberReportId">${memberReport.reportId}</td>
+                            <td id="memberId">${memberReport.memberId}</td>
+                            <td>${memberReport.reportReason}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" id="showMemberReportModal"
+                                        onclick="getReportReason(${memberReport.reportId}, 'member');"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmReportModal"
+                                        type="button">승인
+                                </button>
+                            </td>
+                        </tr>`;
             })
         }
-
         $(".memberReport").html(list);
     })
 }
@@ -302,21 +300,20 @@ function getProductReportList() {
         if (result.length > 0) {
             $.each(result, function (idx, productReport) {
                 list += `<tr>
-                                            <td class="pl-0" id="productReportId">${productReport.reportId}</td>
-                                            <td id="productId">${productReport.productId}</td>
-                                            <td>${productReport.reportReason}</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" id="showProductReportModal"
-                                                        onclick="getReportReason(${productReport.reportId}, 'product');"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirmReportModal"
-                                                        type="button">승인
-                                                </button>
-                                            </td>
-                                        </tr>`;
+                            <td class="pl-0" id="productReportId">${productReport.reportId}</td>
+                            <td id="productId">${productReport.productId}</td>
+                            <td>${productReport.reportReason}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" id="showProductReportModal"
+                                        onclick="getReportReason(${productReport.reportId}, 'product');"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmReportModal"
+                                        type="button">승인
+                                </button>
+                            </td>
+                        </tr>`;
             })
         }
-
         $(".productReport").html(list);
     })
 }
@@ -328,22 +325,21 @@ function getCompanyJoinAcceptList() {
         if (result.length > 0) {
             $.each(result, function (idx, company) {
                 list += `<tr>
-                                            <td>` + (idx + 1) + `</td>
-                                            <td>${company.companyName}</td>
-                                            <td>${company.companyNumber}</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm"
-                                                        onclick="getCompanyInfo('${company.companyId}')"
-                                                        id="showCompanyInfoModal"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirmCompanyInfoModal"
-                                                        type="button">승인
-                                                </button>
-                                            </td>
-                                        </tr>`;
+                            <td>` + (idx + 1) + `</td>
+                            <td>${company.companyName}</td>
+                            <td>${company.companyNumber}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm"
+                                        onclick="getCompanyInfo('${company.companyId}')"
+                                        id="showCompanyInfoModal"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmCompanyInfoModal"
+                                        type="button">승인
+                                </button>
+                            </td>
+                        </tr>`;
             })
         }
-
         $(".companyJoinAccept").html(list);
     })
 }
@@ -355,21 +351,21 @@ function getCommunityList() {
         if (result.length > 0) {
             $.each(result, function (idx, community) {
                 list += `<div>
-                                            <tr th:id="${community.communityId}">
-                                                <td>${community.communityId}</td>
-                                                <td><a href="/community/${community.communityId}">${community.communityTitle}</a></td>
-                                                <td>${community.memberId}</td>
-                                                <td>${community.communityCategory}</td>
-                                                <td>${community.communityDate}</td>
-                                                <td class="text-success" id="report">${community.communityReport}
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-danger btn-sm communityModal" type="button"
-                                                            id="${community.communityId}">게시글 삭제
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </div>`;
+                        <tr th:id="${community.communityId}">
+                            <td>${community.communityId}</td>
+                            <td><a href="/community/${community.communityId}">${community.communityTitle}</a></td>
+                            <td>${community.memberId}</td>
+                            <td>${community.communityCategory}</td>
+                            <td>${community.communityDate}</td>
+                            <td class="text-success" id="report">${community.communityReport}
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm communityModal" type="button"
+                                        id="${community.communityId}">게시글 삭제
+                                </button>
+                            </td>
+                        </tr>
+                    </div>`;
             })
         }
 
@@ -384,13 +380,14 @@ function getMemberList() {
         if (result.length > 0) {
             $.each(result, function (idx, member) {
                 list += `<tr>
-                                            <td>` + (idx + 1) + `</td>
-                                            <td>${member.memberId}</td>
-                                            <td>${member.memberName}</td>
-                                            <td>${member.memberGender}</td>
-                                            <td>${member.memberJoinDate}</td>
-                                            <td class="text-success" id="report">${member.memberReport}</td>
-                                            <td>`;
+                            <td>` + (idx + 1) + `</td>
+                            <td>${member.memberId}</td>
+                            <td>${member.memberName}</td>
+                            <td>${member.memberGender}</td>
+                            <td>${member.memberJoinDate}</td>
+                            <td class="text-success" id="report">${member.memberReport}</td>
+                            <td>`;
+
                 if (member.memberActivated) {
                     list += `<button class="btn btn-danger btn-sm memberModal" type="button" id="${member.memberId}">회원탈퇴/정지</button>`
                 } else {
@@ -493,6 +490,7 @@ function getReportReason(targetId, type) {
     });
 }
 
+// 사업자 가입 안됨
 //사업자 정보 불러오는 모달
 function getCompanyInfo(companyId) {
     $.getJSON("/getCompanyInfo/" + companyId, function (data) {

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -39,7 +40,7 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     @Modifying
     @Transactional
     @Query("update Company c set c.activated = true, c.companyJoinDate = current_date where c.companyId =:companyId")
-    void acceptJoinCompany(String companyId);
+    void acceptJoinCompany(@Param("companyId") String companyId);
 
     boolean existsByCompanyEmail(String CompanyEmail);
     boolean existsByCompanyPhoneNum(String CompanyPhoneNum);
