@@ -1,7 +1,6 @@
 package com.teamproject.petapet.domain.cart;
 
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
@@ -16,7 +16,9 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     @Query("select c from Cart c where c.member.memberId =:memberId order by c.cartId desc ")
     List<Cart> findCartByMember(@Param("memberId") String memberId);
 
-    void deleteAllByMember(@Param("memberId") String memberId);
+    void deleteAllByMember_MemberId(@Param("memberId") String memberId);
+
+    Optional<Cart> findCartByCartIdAndMember(@Param("cartId") Long CartId, @Param("member") Member member);
 
     @Transactional
     @Modifying(clearAutomatically = true)

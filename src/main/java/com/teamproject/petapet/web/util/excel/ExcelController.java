@@ -3,8 +3,8 @@ package com.teamproject.petapet.web.util.excel;
 import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
-import com.teamproject.petapet.web.buy.dto.BuyDTO;
 import com.teamproject.petapet.web.buy.service.BuyService;
+import com.teamproject.petapet.web.buyproduct.BuyProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -76,15 +76,15 @@ public class ExcelController {
         headerRow.createCell(4).setCellValue("구매 상세");
         headerRow.createCell(5).setCellValue("주문 금액");
 
-        List<BuyDTO> companyPageSalesList = buyService.getCompanyPageSalesList(principal.getName());
-        for (BuyDTO buyDTO : companyPageSalesList) {
+        List<BuyProductDTO> companyPageSalesList = buyService.getCompanyPageSalesList(principal.getName());
+        for (BuyProductDTO buyProductDTO : companyPageSalesList) {
             Row row = sheet.createRow(rowNo++);
-            row.createCell(0).setCellValue(buyDTO.getMerchantUID());
-            row.createCell(1).setCellValue(buyDTO.getProductName());
-            row.createCell(2).setCellValue(buyDTO.getMemberId());
-            row.createCell(3).setCellValue(buyDTO.getBuyDate());
-            row.createCell(4).setCellValue(buyDTO.getBuyDetail());
-            row.createCell(5).setCellValue(buyDTO.getTotalPrice());
+            row.createCell(0).setCellValue(buyProductDTO.getMerchantUID());
+            row.createCell(1).setCellValue(buyProductDTO.getProductName());
+            row.createCell(2).setCellValue(buyProductDTO.getMemberId());
+            row.createCell(3).setCellValue(buyProductDTO.getBuyDate());
+            row.createCell(4).setCellValue(buyProductDTO.getBuyDetail());
+            row.createCell(5).setCellValue(buyProductDTO.getTotalPrice());
         }
         response.setContentType("ms-vnd/excel");
         response.setHeader("Content-Disposition", "attachment;filename=list.xls");

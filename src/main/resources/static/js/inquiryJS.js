@@ -32,7 +32,7 @@ $(document).ready(function () {
     $(document).on("click", "#inquiryData", function(){
         var tr = $(this);
         var showId = tr.attr("showId");
-        
+
         // 문의 제목 클릭했을 때 문의 내용과 답변 내용 띄움 (토글)
         if(tr.attr("clicked") === "false"){
             tr.attr("clicked", "true");

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head th:replace="~{fragment/jo_base :: head(~{::title},~{::link})}">
 
     <meta charset="UTF-8">
@@ -38,7 +37,7 @@
                     <td class="customer__col customer__col--1">
                         이름
                     </td>
-                    <td class="customer__col customer__col--2" id="memberName" th:text="${cart.member.memberName}">
+                    <td class="customer__col customer__col--2" id="memberName" th:text="${member.memberName}">
                         조성현
                     </td>
                 </tr>
@@ -46,7 +45,7 @@
                     <td class="customer__col customer__col--1">
                         이메일
                     </td>
-                    <td class="customer__col customer__col--2" id="memberEmail" th:text="${cart.member.memberEmail}" >
+                    <td class="customer__col customer__col--2" id="memberEmail" th:text="${member.memberEmail}" >
                         skyair419@naver.com
                     </td>
                 </tr>
@@ -60,7 +59,7 @@
                                 <div>
                                     <form>
                                         <div>
-                                            <div type="tel" class="customer-phone__input-tel" id="memberPhoneNum" th:text="${cart.member.memberPhoneNum}" ></div>
+                                            <div type="tel" class="customer-phone__input-tel" id="memberPhoneNum" th:text="${member.memberPhoneNum}" ></div>
                                         </div>
                                     </form>
                                 </div>
@@ -84,12 +83,12 @@
                 <tr>
                     <th class="delivery-address__th">이름</th>
                     <td class="delivery-address__td delivery-address__td--name delivery-address__td-rocket-fresh-mvp2">
-                        <span class="delivery-address__name" th:text="${cart.member.memberName}">조성현</span>
+                        <span class="delivery-address__name" th:text="${member.memberName}">조성현</span>
                     </td>
                 </tr>
                 <tr>
                     <th class="delivery-address__th">배송주소</th>
-                    <td class="delivery-address__td" id="buyAddress" th:text="${cart.member.memberAddress}">
+                    <td class="delivery-address__td" id="buyAddress" th:text="${member.memberAddress}">
                         인천광역시 부평구 체육관로 27
                         &nbsp;709동2101호
                         <div id="blocked-address-error-message" class="blocked-address-section">
@@ -100,7 +99,7 @@
                 </tr>
                 <tr>
                     <th class="delivery-address__th delivery-address__th--no-line">연락처</th>
-                    <td class="delivery-address__td delivery-address__td--no-line" th:text="${cart.member.memberPhoneNum}">
+                    <td class="delivery-address__td delivery-address__td--no-line" th:text="${member.memberPhoneNum}">
                         010
                         -
                         3632
@@ -170,17 +169,15 @@
                         </div>
                         <div class="bundle-info__item-list ">
                             <div class="bundle-info__vendor-item-box ">
-                                <input type="hidden" id="buyProduct" th:value="${cart.product.productId}"/>
-                                <input type="hidden" id="buyQuantity" th:value="${cart.quantity}">
-                                <input type="hidden" id="buyCartId" th:value="${cart.cartId}">
+                                <input type="hidden" id="buyProduct" th:value="${product.productId}"/>
+                                <input type="hidden" id="buyQuantity" value="1">
                                 <div class="bundle-info__vendor-item">
-                                    <p th:text="${cart.product.productName}" id="product">
+                                    <p th:text="${product.productName}" id="product">
                                         <span class="bundle-info__vendor-item__offer-condition" ></span>
-                                        코멧 일회용 마스크, 100개입, 1개, 화이트
                                     </p>
                                 </div>
-                                <div class="bundle-info__item-description bundle-info__vendor-item-description--last" th:text="|수량 ${cart.quantity}개|">
-                                    수량 1개 / <span>무료배송</span>
+                                <div class="bundle-info__item-description bundle-info__vendor-item-description--last" th:value="${quantity}"
+                                     th:data-th-text="|'수량 '+${quantity}+'개'+' / 무료배송'|">
                                 </div>
                             </div>
                         </div>
@@ -205,7 +202,7 @@
                     <td>
                         <div class="payOrder">
                             <strong class="price">
-                                <span id="totalPriceDisp" class="use-calculation-for-totalprice" th:with="var1=${cart.quantity}*${cart.product.productPrice}" data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}"></span><span class="unit">원</span>
+                                <span id="totalPriceDisp" class="use-calculation-for-totalprice" data-th-text="${#numbers.formatInteger(product.productPrice*quantity, 3, 'COMMA')}">11590</span><span class="unit">원</span>
                             </strong>
                         </div>
                     </td>
@@ -223,10 +220,18 @@
                 <tr>
                     <th class="wrap-title">쿠폰 할인</th>
                     <td>
-                        <div class="coupon">
+                        <div>
                             <strong class="price">
-                                <span id="couponDisp"> 쿠폰 적용</span><span class="unit">원</span>
+                                <span id="couponDisp" style="color: orangered">0</span><span class="unit">원</span>
                             </strong>
+                            <button class="select-coupon-toggle btn btn-sm bg-secondary" aria-checked="false" style="display: inline-block;">할인쿠폰선택</button>
+
+                            <div class="coupon-selector coupon-selecter blind p-lg-3" data-controller="CouponSelector" style="display: block;">
+                                <ul class="coupons">
+
+                                </ul>
+                            </div>
+
                         </div>
                     </td>
                 </tr>
@@ -235,7 +240,7 @@
                     <td>
                         <div class="payPrice">
                             <strong class="price">
-                                <span id="totalPayPriceDisp" th:with="var1=${cart.quantity}*${cart.product.productPrice}" data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}" >11,490</span><span class="unit">원</span>
+                                <span id="totalPayPriceDisp"  data-th-text="${#numbers.formatInteger(product.productPrice*quantity, 3, 'COMMA')}"></span><span class="unit">원</span>
                             </strong>
                         </div>
                     </td>
@@ -265,101 +270,15 @@
                 <div class="price_area--mS4cPOr5t2 discount--1CgoO7hQt4"><span class="title---U2sFnkh4X">할인예상금액</span><em><span class="num--s28sqtGizJ">-3,680</span>원</em></div>
             </div>
             <div class="total_area--1Gh9HH8mfy">
-                <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 주문금액</span><em><span class="num--s28sqtGizJ" th:with="var1=${cart.quantity}*${cart.product.productPrice}" data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}" >29,420</span>원</em></div>
+                <div class="price_area--mS4cPOr5t2"><span class="title---U2sFnkh4X">총 주문금액</span><em><span class="num--s28sqtGizJ" data-th-text="${#numbers.formatInteger(product.productPrice*quantity, 3, 'COMMA')}" ></span>원</em></div>
             </div>
         </div>
-        <div class="buy_area--1s7Qe73yzk"><button type="button" class="btn_expand--2d-FsCrHVi"><span class="title--cW4o5HCufH">총 주문금액</span><em><span class="num--2CYvhIm-m6" id="card-total" th:with="var1=${cart.quantity}*${cart.product.productPrice}" data-th-text="${#numbers.formatInteger(var1, 3, 'COMMA')}">29,420</span>원<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg" class="ico--3qz69NgEHC">
+        <div class="buy_area--1s7Qe73yzk"><button type="button" class="btn_expand--2d-FsCrHVi"><span class="title--cW4o5HCufH">총 주문금액</span><em><span class="num--2CYvhIm-m6" id="card-total" data-th-text="${#numbers.formatInteger(product.productPrice*quantity, 3, 'COMMA')}"></span>원<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg" class="ico--3qz69NgEHC">
             <path opacity="0.9" d="M5.02414 10.3285L4.57129 9.84852L7.99986 6.21426L11.4284 9.84852L10.9756 10.3285L7.99986 7.1743L5.02414 10.3285Z" fill="white" stroke="white" stroke-width="0.5"></path>
             <rect x="0.5" y="1" width="15" height="15" rx="7.5" stroke="white" stroke-opacity="0.6"></rect>
-        </svg></em><span class="blind">펼치기</span></button><button type="button" class="link_buy--jXvxZ8Agr-" onclick="requestPay()">총 주문하기<span class="badge--ltxr8Ih722" th:text="${cart.quantity}">1</span></button></div>
+        </svg></em><span class="blind">펼치기</span></button><button type="button" class="link_buy--jXvxZ8Agr-">총 주문하기<span class="badge--ltxr8Ih722" data-th-text="${1}"></span></button></div>
     </div>
 </div>
-<script th:inline="javascript">
-
-
-    var IMP = window.IMP; // 생략가능
-    IMP.init('imp34631730'); // <-- 본인 가맹점 식별코드 삽입
-
-    var uid = "order_" + new Date().getTime();
-    var param = {
-        pg : 'kakaopay',
-        pay_method : 'card', //생략 가능
-        merchant_uid: uid , // 상점에서 관리하는 주문 번호
-        name : [[${cart.product.productName}]], // 상품명
-        amount : [[${cart.product.productPrice}]]*[[${cart.quantity}]],
-        buyer_name : [[${cart.member.memberName}]],
-        buyer_tel : [[${cart.member.memberPhoneNum}]],
-        buyerEmail : [[${cart.member.memberEmail}]],
-        buyAddress : [[${cart.member.memberAddress}]],
-        buyQuantity : [[${cart.quantity}]],
-        buyMember : [[${cart.member.memberId}]],
-        buyProduct : [[${cart.product.productId}]]
-    }
-
-    var buyAddress = $('#buyAddress').text();
-    var buyQuantity = $('#buyQuantity').val();
-    var buyProduct = $('#buyProduct').val();
-    var buyerEmail = $('#memberEmail').text();
-    var buyCartId = $('#buyCartId').val();
-
-    var param2 = {
-        "uid" : uid,
-        "buyAddress" : buyAddress,
-        "buyQuantity" : buyQuantity,
-        "buyProduct" : buyProduct,
-        "buyerEmail" : buyerEmail
-    }
-
-    function requestPay() {
-        console.log(buyerEmail);
-        console.log(buyAddress);
-        console.log(buyQuantity);
-        console.log(buyProduct);
-
-        // IMP.request_pay(param, callback) 결제창 호출
-        IMP.request_pay(param, function (rsp) { // callback
-            if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
-                // jQuery로 HTTP 요청
-                addBuyDB();
-                successBuy();
-            } else {
-                alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
-            }
-        });
-    }
-    var postUrl = "/buy";
-    function addBuyDB(){
-        $.ajax({
-            url: "/checkout",
-            type: "POST",
-            data: JSON.stringify(param2),
-            dataType: "text",
-            contentType : "application/json",
-            charset : "UTF-8",
-            success: function (data) {
-                window.location.replace(postUrl)
-            },
-            error: function (jqXHR, status, errorThrown) {
-
-            }
-        });
-    }
-
-    var param3 = {"cartId":buyCartId}
-
-    function successBuy(){
-        $.ajax({
-            url: "/cart/success",
-            type: "POST",
-            data: JSON.stringify(param3),
-            dataType: "text",
-            contentType: "application/json",
-            charset: "UTF-8",
-            error: function (jqXHR, status, errorThrown) {
-
-            }
-        });
-    }
-</script>
 </body>
+<script th:src="@{/js/product/coupon/directCheckout.js}"></script>
 </html>

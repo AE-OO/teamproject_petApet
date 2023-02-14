@@ -314,14 +314,14 @@
                                         <div class="d-flex flex-row">
                                             <div id="dib" class="justify-content-start">
                                                 <th:block th:if="${product.duplicateDibsProduct}">
-                                                    <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
+                                                    <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button" class="addDibs"
+                                                                                                    th:id="${product.productId}"
                                                                                                     style="color: red">♥︎</a>
                                                     </p>
                                                 </th:block>
                                                 <th:block th:if="${!product.duplicateDibsProduct}">
-                                                    <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button"
+                                                    <p class="p-0 m-0" style="font-size: 1.5rem"><a role="button" class="addDibs"
                                                                                                     th:id="${product.productId}"
-                                                                                                    onclick="addDibs(this.getAttribute('id'))"
                                                                                                     style="color: red">♡</a>
                                                     </p>
                                                 </th:block>
@@ -329,8 +329,7 @@
                                             <div class="d-flex flex-fill justify-content-sm-end btn-group-sm">
                                                 <button type="button" class="btn bg-secondary me-1 addCart"
                                                         th:value="*{product.productId}">장바구니</button>
-                                                <button class="btn bg-secondary addBuy"
-                                                        th:onclick="|location.href='@{/product/{productType}/{productId}/details(productType=${product.getProductDiv().name().toLowerCase()},productId=${product.productId})}'|">바로구매</button>
+                                                <button class="btn bg-secondary addBuy" th:value="*{product.productId}">바로구매</button>
                                             </div>
                                         </div>
                                     </div>

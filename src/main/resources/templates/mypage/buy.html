@@ -13,271 +13,300 @@
 <th:block th:replace="~{fragment/header :: header}"></th:block>
 <!-- Navbar End -->
 <th:block th:replace="~{fragment/header :: sidebar}"></th:block>
-    <div id="container">
-        <section id="contents" class="contents">
-            <div class="__mypage-wrap">
-                <div id="__mypage">
-                    <div class="pap-contents">
-                        <div class="sc-vv7pzb-1 dHwqA-d my-area-contents">
-                            <div class="sc-1de9moo-0 jOMCJw">
-                                <div class="sc-173hyd4-0 gdQXGY"><span
-                                        class="sc-1vjn3x9-2 sc-173hyd4-1 izFbWh QxeWJ">주문목록</span></div>
-                                <div class="sc-1lv04u3-0 nmLXi">
-                                    <div class="sc-m8svln-0 hzudCe">
-                                        <div class="sc-m8svln-1 cyJYiM">
-                                            <div class="sc-m8svln-2 eCiRxv"><input value=""
-                                                    placeholder="주문한 상품을 검색할 수 있어요!" class="sc-m8svln-3 ktMLQz"></div>
-                                            <div class="sc-m8svln-4 dKPECc"><svg xmlns="http://www.w3.org/2000/svg"
-                                                    width="20" height="20" viewBox="0 0 24 24" style="fill:#346AFF">
-                                                    <g fill="none" fill-rule="evenodd">
-                                                        <path fill="#000" fill-opacity="0" d="M0 24L24 24 24 0 0 0z">
-                                                        </path>
-                                                        <path fill="#346AFF" fill-rule="nonzero"
-                                                            d="M11 19.5c4.694 0 8.5-3.806 8.5-8.5S15.694 2.5 11 2.5 2.5 6.306 2.5 11s3.806 8.5 8.5 8.5zm0 1c-5.247 0-9.5-4.253-9.5-9.5S5.753 1.5 11 1.5s9.5 4.253 9.5 9.5-4.253 9.5-9.5 9.5zm6.854-3.354l4.5 4.5c.471.472-.236 1.179-.708.708l-4.5-4.5c-.471-.472.236-1.179.708-.708z">
-                                                        </path>
-                                                    </g>
-                                                </svg></div>
-                                        </div>
-                                    </div>
-                                    <div class="sc-1lv04u3-1 ihglTs">
-                                        <div class="sc-py7v18-0 ghaYID">
-                                            <div width="72px" class="sc-py7v18-1 dLgQrg">최근 6개월</div>
-                                            <div class="sc-py7v18-1 krUtDN">2022</div>
-                                            <div class="sc-py7v18-1 krUtDN">2021</div>
-                                            <div class="sc-py7v18-1 krUtDN">2020</div>
-                                            <div class="sc-py7v18-1 krUtDN">2019</div>
-                                            <div class="sc-py7v18-1 krUtDN">2018</div>
-                                            <div class="sc-py7v18-1 krUtDN">2017</div>
+<div id="container">
+    <section id="contents" class="contents">
+        <div class="__mypage-wrap">
+            <div id="__mypage">
+                <div class="pap-contents">
+                    <div class="sc-vv7pzb-1 dHwqA-d my-area-contents">
+                        <div class="sc-1de9moo-0 jOMCJw">
+                            <div class="sc-173hyd4-0 gdQXGY"><span
+                                    class="sc-1vjn3x9-2 sc-173hyd4-1 izFbWh QxeWJ">주문목록</span></div>
+                            <div class="sc-1lv04u3-0 nmLXi">
+                                <div class="sc-m8svln-0 hzudCe">
+                                    <div class="sc-m8svln-1 cyJYiM">
+                                        <div class="sc-m8svln-2 eCiRxv"><input value=""
+                                                                               placeholder="주문한 상품을 검색할 수 있어요!"
+                                                                               class="sc-m8svln-3 ktMLQz"></div>
+                                        <div class="sc-m8svln-4 dKPECc">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="20" height="20" viewBox="0 0 24 24" style="fill:#346AFF">
+                                                <g fill="none" fill-rule="evenodd">
+                                                    <path fill="#000" fill-opacity="0" d="M0 24L24 24 24 0 0 0z">
+                                                    </path>
+                                                    <path fill="#346AFF" fill-rule="nonzero"
+                                                          d="M11 19.5c4.694 0 8.5-3.806 8.5-8.5S15.694 2.5 11 2.5 2.5 6.306 2.5 11s3.806 8.5 8.5 8.5zm0 1c-5.247 0-9.5-4.253-9.5-9.5S5.753 1.5 11 1.5s9.5 4.253 9.5 9.5-4.253 9.5-9.5 9.5zm6.854-3.354l4.5 4.5c.471.472-.236 1.179-.708.708l-4.5-4.5c-.471-.472.236-1.179.708-.708z">
+                                                    </path>
+                                                </g>
+                                            </svg>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="sc-qxzqk9-0 iQgKJk">
-                                    <div class="sc-fimazj-0 gKYVxm" th:each="buy : ${buyList}">
-                                        <div class="sc-abukv2-0 kcHmyx">
-                                            <div class="sc-abukv2-1 kSZYgn" th:text="${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}">2022. 9. 13
-                                                <!-- -->
-                                                <!-- -->주문
-                                            </div>
-                                            <div class="sc-abukv2-2 kThsCL"><span class="sc-abukv2-3 gSIruC">주문
-                                                    상세보기</span><svg width="16" height="16" focusable="false"
-                                                    viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                    style="fill:#346aff;vertical-align:middle;height:100%">
-                                                    <path fill="#346aff" fill-rule="nonzero"
-                                                        d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                    </path>
-                                                </svg></div>
-                                        </div>
-                                        <div class="sc-gnmni8-0 hCVtNj">
-                                            <table class="sc-gnmni8-1 eSpcfO">
-                                                <colgroup>
-                                                    <col width="600">
-                                                    <col width="">
-                                                </colgroup>
-                                                <tbody class="sc-gnmni8-2 hryMPB">
-                                                    <tr class="sc-gnmni8-3 gmGnuU">
-                                                        <td class="sc-gnmni8-5 hUzAOG">
-                                                            <div class="sc-ki5ja7-0 bQVZKC">
-                                                                <div class="sc-ki5ja7-1 krPkOP"><span font-weight="bold"
-                                                                        color="#111111" style="font-size:1.25rem"
-                                                                        class="sc-755zt3-0 hullgd" th:text="${buy.buyDate.plusDays(3).isBefore(curDate)} ? '배송완료' : '배송중'">배송완료</span><span
-                                                                        size="4" class="sc-13xhsmd-0 SWzAJ"><span
-                                                                            size="4"
-                                                                            class="sc-13xhsmd-1 kMeFyN"></span></span><span
-                                                                        font-weight="normal" color="#00891A"
-                                                                        class="sc-755zt3-0 sc-lcvccu-0 jAERXO dhoCVo"
-                                                                        th:text="${#temporals.format(buy.buyDate,'yyyy년 MM월 dd일 주문')}"></span>
-                                                                    <div class="sc-yctqi4-0 cOIBfe">
-                                                                        <div class="sc-16dovgh-0 sc-16dovgh-1 cNcuvY epHmvE">
-                                                                        </div>
-                                                                        <div class="sc-yctqi4-1 foVCUd">
-                                                                            <ul class="sc-yctqi4-2 whbuD">
-                                                                                <li class="sc-yctqi4-3 YtwcJ"><a
-                                                                                        class="sc-yctqi4-4 hurhRo"><span
-                                                                                            font-size="14px"
-                                                                                            color="#E7223D"
-                                                                                            class="delete-order">주문내역
-                                                                                            삭제</span></a></li>
-                                                                            </ul>
-                                                                            <div class="sc-yctqi4-5 heRzqv"><button
-                                                                                    class="sc-1k9quwu-0 gUnqaK sc-yctqi4-6 gAMxLy">닫기</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="sc-ki5ja7-2 grCKyH"><button size="28"
-                                                                        class="sc-izcbvi-0 bScTTg">
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                        <div class="sc-izcbvi-1 JHhgQ"></div>
-                                                                    </button></div>
-                                                            </div>
-                                                            <div class="sc-fe2r96-0 hmCrGF"></div>
-                                                            <div class="sc-1jiyjbz-0 dGiGeF">
-                                                                <div class="sc-gnmni8-9 kCcQTc">
-                                                                    <div class="sc-g8964r-0 oRzGt"></div>
-                                                                    <div class="sc-9cwg9-1 gLgexz">
-                                                                        <div class="sc-9cwg9-2 cNiGzR">
-                                                                            <div class="sc-9cwg9-3 eEDOvs"><a
-                                                                                    class="sc-1uwk3m0-0 kdlGbA sc-9cwg9-0 gujsmv"
-                                                                                    th:href="|@{/product/{productType}/{productId}/details(productType=${buy.product.productDiv.name().toLowerCase()},productId=${buy.product.productId})}|"
-                                                                                    ><img width="64"
-                                                                                        height="64"
-                                                                                        alt="구매 상품 이미지"
-                                                                                        th:src="|@{/product/images/{filename}(filename=${buy.product.getProductImg().get(0).getStoreFileName()})}|"
-                                                                                        class="sc-1uwk3m0-1 cpDxcj"></a>
-                                                                            </div>
-                                                                            <div class="sc-9cwg9-5 bmwSdh">
-                                                                                <div class="sc-9cwg9-6 jBCCpd"><a
-                                                                                        class="sc-gnmni8-10 yma-DD"></a><a
-                                                                                        th:href="|@{/product/{productType}/{productId}/details(productType=${buy.product.productDiv.name().toLowerCase()},productId=${buy.product.productId})}|"
-                                                                                        class="sc-gnmni8-10 sc-8q24ha-0 yma-DD cvhEhM"><span
-                                                                                            color="#111111"
-                                                                                            class="sc-755zt3-1 sc-8q24ha-1 inmgHC ifMZxv" th:text="${buy.product.productName}">구매 상품명</span></a><a
-                                                                                        class="sc-gnmni8-10 yma-DD"></a><a
-                                                                                        class="sc-gnmni8-10 sc-8q24ha-5 yma-DD iDQVMP">
-                                                                                        <div class="sc-8q24ha-3 gFbjJh">
-                                                                                            <div
-                                                                                                class="sc-uaa4l4-0 jxRaeI">
-                                                                                                <span
-                                                                                                    font-weight="normal"
-                                                                                                    class="sc-755zt3-0 kftgZM" data-th-text="${#numbers.formatInteger(buy.product.productPrice, 3, 'COMMA')}+'원'">38,700
-                                                                                                    </span><span
-                                                                                                    class="sc-13xhsmd-0 kYtEGM"><span
-                                                                                                        class="sc-13xhsmd-1 joIhoV"></span></span><span
-                                                                                                    class="sc-755zt3-0 jtWNEg" th:text="${buy.quantity}+'개'">1
-                                                                                                    개</span></div>
-                                                                                        </div>
-                                                                                        <div class="sc-8q24ha-4 cUFnye">
-                                                                                            <input id="productId" type="text" th:value="${buy.product.getProductId()}" />
-                                                                                            <input id="quantity" type="hidden" value="1" />
-                                                                                            <button
-                                                                                                class="sc-1k9quwu-0 iCTfhh sc-xuyxga-0 bZaQeF"
-                                                                                                th:onclick="'javascript:addCart()'">장바구니
-                                                                                                담기</button>
-                                                                                            <div
-                                                                                                class="sc-xuyxga-1 hxalxw">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <div class="sc-fxyxvg-0 igPkOG">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="sc-gnmni8-6 gbTJl">
-                                                            <div class="sc-gnmni8-7 bCQoer"><button
-                                                                    class="sc-1k9quwu-0 fUUUKW sc-4d0nwb-0 iiEWkt">배송조회</button><button
-                                                                    class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">교환,
-                                                                    반품 신청</button><button
-                                                                    class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">리뷰
-                                                                    작성하기</button></div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="sc-h20x0n-0 gcWEbw"></div>
+                                <div class="sc-1lv04u3-1 ihglTs">
+                                    <div class="sc-py7v18-0 ghaYID">
+                                        <div width="72px" class="sc-py7v18-1 dLgQrg">최근 6개월</div>
+                                        <div class="sc-py7v18-1 krUtDN">2022</div>
+                                        <div class="sc-py7v18-1 krUtDN">2021</div>
+                                        <div class="sc-py7v18-1 krUtDN">2020</div>
+                                        <div class="sc-py7v18-1 krUtDN">2019</div>
+                                        <div class="sc-py7v18-1 krUtDN">2018</div>
+                                        <div class="sc-py7v18-1 krUtDN">2017</div>
                                     </div>
-
-                                    <div class="sc-1o307be-0 jOhOoP"><button
-                                            class="sc-1k9quwu-0 frxcub sc-1o307be-1 dTwpud" disabled=""><svg width="14"
-                                                height="14" focusable="false" viewBox="0 0 16 16" aria-hidden="true"
-                                                role="presentation" style="fill:#aab5c0;transform:rotate(180deg)">
-                                                <path fill="#aab5c0" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg> <!-- -->이전</button><button
-                                            class="sc-1k9quwu-0 frxcub sc-1o307be-1 dTwpud">다음
-                                            <!-- --> <svg width="14" height="14" focusable="false" viewBox="0 0 16 16"
-                                                aria-hidden="true" role="presentation" style="fill:#aab5c0">
-                                                <path fill="#aab5c0" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
+                                </div>
+                            </div>
+                            <div class="sc-qxzqk9-0 iQgKJk">
+                                <div class="sc-fimazj-0 gKYVxm" th:each="buy : ${buyList}">
+                                    <div class="sc-abukv2-0 kcHmyx">
+                                        <div class="sc-abukv2-1 kSZYgn"
+                                             th:text="${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}">2022. 9. 13
+                                            <!-- -->
+                                            <!-- -->주문
+                                        </div>
+                                        <div class="sc-abukv2-2 kThsCL"><span class="sc-abukv2-3 gSIruC">주문
+                                                    상세보기</span>
+                                            <svg width="16" height="16" focusable="false"
+                                                 viewBox="0 0 16 16" aria-hidden="true" role="presentation"
+                                                 style="fill:#346aff;vertical-align:middle;height:100%">
+                                                <path fill="#346aff" fill-rule="nonzero"
+                                                      d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
                                                 </path>
                                             </svg>
-                                        </button></div>
-                                </div>
-                                <div class="sc-178zqvr-0 eACeud">
-                                    <div class="sc-178zqvr-1 hsTKMu">
-                                        <div class="sc-178zqvr-2 jTQcSU">
-                                            <div class="sc-178zqvr-3 kXhaGH">
-                                                <h4 class="sc-178zqvr-4 kCXCvA">배송상품 주문상태 안내</h4>
-                                            </div>
-                                            <div class="sc-178zqvr-5 dkXmnJ"><a
-                                                    href="https://www.coupang.com/np/etc/returnPolicy" target="_blank"
-                                                    class="sc-178zqvr-6 fuqhZg">자세한 내용 더보기</a></div>
                                         </div>
-                                        <div class="sc-178zqvr-7 dVjHYH">
-                                            <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 fnQWVX"></i>
-                                                <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span
-                                                            style="color: #111;">주문,결제,확인</span><br><span>이
+                                    </div>
+                                    <div class="sc-gnmni8-0 hCVtNj">
+                                        <table class="sc-gnmni8-1 eSpcfO">
+                                            <colgroup>
+                                                <col width="600">
+                                                <col width="">
+                                            </colgroup>
+                                            <tbody class="sc-gnmni8-2 hryMPB">
+                                            <tr class="sc-gnmni8-3 gmGnuU buyList"
+                                                th:each="buyProduct : ${buy.products}">
+                                                <td class="sc-gnmni8-5 hUzAOG">
+                                                    <div class="sc-ki5ja7-0 bQVZKC">
+                                                        <div class="sc-ki5ja7-1 krPkOP"><span font-weight="bold"
+                                                                                              color="#111111"
+                                                                                              style="font-size:1.25rem"
+                                                                                              class="sc-755zt3-0 hullgd"
+                                                                                              th:text="${buy.buyDate.plusDays(3).isBefore(curDate)} ? '배송완료' : '배송중'">배송완료</span><span
+                                                                size="4" class="sc-13xhsmd-0 SWzAJ"><span
+                                                                size="4"
+                                                                class="sc-13xhsmd-1 kMeFyN"></span></span><span
+                                                                font-weight="normal" color="#00891A"
+                                                                class="sc-755zt3-0 sc-lcvccu-0 jAERXO dhoCVo"
+                                                                th:text="${#temporals.format(buy.buyDate,'yyyy년 MM월 dd일 주문')}"></span>
+                                                            <div class="sc-yctqi4-0 cOIBfe">
+                                                                <div class="sc-16dovgh-0 sc-16dovgh-1 cNcuvY epHmvE">
+                                                                </div>
+                                                                <div class="sc-yctqi4-1 foVCUd">
+                                                                    <ul class="sc-yctqi4-2 whbuD">
+                                                                        <li class="sc-yctqi4-3 YtwcJ"><a
+                                                                                class="sc-yctqi4-4 hurhRo"><span
+                                                                                font-size="14px"
+                                                                                color="#E7223D"
+                                                                                class="delete-order">주문내역
+                                                                                            삭제</span></a></li>
+                                                                    </ul>
+                                                                    <div class="sc-yctqi4-5 heRzqv">
+                                                                        <button
+                                                                                class="sc-1k9quwu-0 gUnqaK sc-yctqi4-6 gAMxLy">
+                                                                            닫기
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="sc-ki5ja7-2 grCKyH">
+                                                            <button size="28"
+                                                                    class="sc-izcbvi-0 bScTTg">
+                                                                <div class="sc-izcbvi-1 JHhgQ"></div>
+                                                                <div class="sc-izcbvi-1 JHhgQ"></div>
+                                                                <div class="sc-izcbvi-1 JHhgQ"></div>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="sc-fe2r96-0 hmCrGF"></div>
+                                                    <div class="sc-1jiyjbz-0 dGiGeF">
+                                                        <div class="sc-gnmni8-9 kCcQTc">
+                                                            <div class="sc-g8964r-0 oRzGt"></div>
+                                                            <div class="sc-9cwg9-1 gLgexz">
+                                                                <div class="sc-9cwg9-2 cNiGzR">
+                                                                    <div class="sc-9cwg9-3 eEDOvs"><a
+                                                                            class="sc-1uwk3m0-0 kdlGbA sc-9cwg9-0 gujsmv"
+                                                                            th:href="|@{/product/{productType}/{productId}/details(productType=${buyProduct.product.productDiv.name().toLowerCase()},productId=${buyProduct.product.productId})}|"
+                                                                    ><img width="64"
+                                                                          height="64"
+                                                                          alt="구매 상품 이미지"
+                                                                          th:src="|@{/product/images/{filename}(filename=${buyProduct.product.getProductImg().get(0).getStoreFileName()})}|"
+                                                                          class="sc-1uwk3m0-1 cpDxcj"></a>
+                                                                    </div>
+                                                                    <div class="sc-9cwg9-5 bmwSdh">
+                                                                        <div class="sc-9cwg9-6 jBCCpd"><a
+                                                                                class="sc-gnmni8-10 yma-DD"></a><a
+                                                                                th:href="|@{/product/{productType}/{productId}/details(productType=${buyProduct.product.productDiv.name().toLowerCase()},productId=${buyProduct.product.productId})}|"
+                                                                                class="sc-gnmni8-10 sc-8q24ha-0 yma-DD cvhEhM"><span
+                                                                                color="#111111"
+                                                                                class="sc-755zt3-1 sc-8q24ha-1 inmgHC ifMZxv"
+                                                                                th:text="${buyProduct.product.productName}">구매 상품명</span></a><a
+                                                                                class="sc-gnmni8-10 yma-DD"></a><a
+                                                                                class="sc-gnmni8-10 sc-8q24ha-5 yma-DD iDQVMP">
+                                                                            <div class="sc-8q24ha-3 gFbjJh">
+                                                                                <div
+                                                                                        class="sc-uaa4l4-0 jxRaeI">
+                                                                                                <span
+                                                                                                        font-weight="normal"
+                                                                                                        class="sc-755zt3-0 kftgZM"
+                                                                                                        data-th-text="${#numbers.formatInteger(buyProduct.product.productPrice, 3, 'COMMA')}+'원'">38,700
+                                                                                                    </span><span
+                                                                                        class="sc-13xhsmd-0 kYtEGM"><span
+                                                                                        class="sc-13xhsmd-1 joIhoV"></span></span><span
+                                                                                        class="sc-755zt3-0 jtWNEg"
+                                                                                        th:text="${buyProduct.quantity}+'개'">1
+                                                                                                    개</span></div>
+                                                                            </div>
+                                                                            <div class="sc-8q24ha-4 cUFnye">
+                                                                                <button
+                                                                                        th:value="${buyProduct.product.getProductId()}"
+                                                                                        class="sc-1k9quwu-0 iCTfhh sc-xuyxga-0 bZaQeF addCart">
+                                                                                    장바구니 담기
+                                                                                </button>
+                                                                                <div
+                                                                                        class="sc-xuyxga-1 hxalxw">
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                            <div class="sc-fxyxvg-0 igPkOG">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="sc-gnmni8-6 gbTJl">
+                                                    <div class="sc-gnmni8-7 bCQoer">
+                                                        <button
+                                                                class="sc-1k9quwu-0 fUUUKW sc-4d0nwb-0 iiEWkt">배송조회
+                                                        </button>
+                                                        <button
+                                                                class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">교환,
+                                                            반품 신청
+                                                        </button>
+                                                        <button
+                                                                class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA">리뷰
+                                                            작성하기
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="sc-h20x0n-0 gcWEbw"></div>
+                                </div>
+
+                                <div class="sc-1o307be-0 jOhOoP">
+                                    <button
+                                            class="sc-1k9quwu-0 frxcub sc-1o307be-1 dTwpud" disabled="">
+                                        <svg width="14"
+                                             height="14" focusable="false" viewBox="0 0 16 16" aria-hidden="true"
+                                             role="presentation" style="fill:#aab5c0;transform:rotate(180deg)">
+                                            <path fill="#aab5c0" fill-rule="nonzero"
+                                                  d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
+                                            </path>
+                                        </svg> <!-- -->이전
+                                    </button>
+                                    <button
+                                            class="sc-1k9quwu-0 frxcub sc-1o307be-1 dTwpud">다음
+                                        <!-- -->
+                                        <svg width="14" height="14" focusable="false" viewBox="0 0 16 16"
+                                             aria-hidden="true" role="presentation" style="fill:#aab5c0">
+                                            <path fill="#aab5c0" fill-rule="nonzero"
+                                                  d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="sc-178zqvr-0 eACeud">
+                                <div class="sc-178zqvr-1 hsTKMu">
+                                    <div class="sc-178zqvr-2 jTQcSU">
+                                        <div class="sc-178zqvr-3 kXhaGH">
+                                            <h4 class="sc-178zqvr-4 kCXCvA">배송상품 주문상태 안내</h4>
+                                        </div>
+                                        <div class="sc-178zqvr-5 dkXmnJ"><a
+                                                href="https://www.coupang.com/np/etc/returnPolicy" target="_blank"
+                                                class="sc-178zqvr-6 fuqhZg">자세한 내용 더보기</a></div>
+                                    </div>
+                                    <div class="sc-178zqvr-7 dVjHYH">
+                                        <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 fnQWVX"></i>
+                                            <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span
+                                                    style="color: #111;">주문,결제,확인</span><br><span>이
                                                             완료되었습니다.</span></span></div>
-                                            </div>
-                                            <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 kNKHIh"></i>
-                                                <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span>판매자가
+                                        </div>
+                                        <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 kNKHIh"></i>
+                                            <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span>판매자가
                                                             발송할</span><br><span style="color: #111;">상품을
                                                             준비중</span><span>입니다.</span></span></div>
-                                            </div>
-                                            <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 kNKvAf"></i>
-                                                <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span>상품준비가
+                                        </div>
+                                        <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 kNKvAf"></i>
+                                            <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span>상품준비가
                                                             완료되어</span><br><span>곧 </span><span
-                                                            style="color: #111;">배송</span><span>될 </span><span
-                                                            style="color: #111;">예정</span><span>입니다.</span></span></div>
-                                            </div>
-                                            <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 kNMjwi"></i>
-                                                <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span>상품이
+                                                    style="color: #111;">배송</span><span>될 </span><span
+                                                    style="color: #111;">예정</span><span>입니다.</span></span></div>
+                                        </div>
+                                        <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 kNMjwi"></i>
+                                            <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span>상품이
                                                             고객님께</span><br><span
-                                                            style="color: #111;">배송중</span><span>입니다.</span></span>
-                                                </div>
+                                                    style="color: #111;">배송중</span><span>입니다.</span></span>
                                             </div>
-                                            <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 kNLvyn"></i>
-                                                <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span>상품이
+                                        </div>
+                                        <div class="sc-178zqvr-8 edyIRv"><i class="sc-178zqvr-9 kNLvyn"></i>
+                                            <div class="sc-178zqvr-10 gYDNlI"><span class="i18n-wrapper"><span>상품이
                                                             주문자에게</span><br><span
-                                                            style="color: #111;">전달완료</span><span>되었습니다.</span></span>
-                                                </div>
+                                                    style="color: #111;">전달완료</span><span>되었습니다.</span></span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="sc-178zqvr-11 UxXQy">
-                                        <div class="sc-178zqvr-12 fQDbaW"><b><i class="sc-178zqvr-13 bQUraS"></i><span
-                                                    class="i18n-wrapper"><span style="color: #e52628;">취소/반품/교환
+                                </div>
+                                <div class="sc-178zqvr-11 UxXQy">
+                                    <div class="sc-178zqvr-12 fQDbaW"><b><i class="sc-178zqvr-13 bQUraS"></i><span
+                                            class="i18n-wrapper"><span style="color: #e52628;">취소/반품/교환
                                                         신청</span>전 확인해주세요!</span></b></div>
-                                        <div class="sc-178zqvr-14 bboIjZ"><strong
-                                                class="sc-178zqvr-15 fWZpfp">취소</strong></div>
-                                        <div class="sc-178zqvr-14 bboIjZ">- <span class="i18n-wrapper">여행/레저/숙박 상품은 취소 시
+                                    <div class="sc-178zqvr-14 bboIjZ"><strong
+                                            class="sc-178zqvr-15 fWZpfp">취소</strong></div>
+                                    <div class="sc-178zqvr-14 bboIjZ">- <span class="i18n-wrapper">여행/레저/숙박 상품은 취소 시
                                                 수수료가 발생할 수 있으며,<br><span style="margin-left:7px;">취소수수료를 확인하여 2일
                                                     이내(주말,공휴일 제외) 처리결과를 문자로 안내해드립니다.</span></span>(
-                                            <!-- -->당일 접수 기준, 마감시간 오후 4시
-                                            <!-- -->)
-                                        </div>
-                                        <div class="sc-178zqvr-14 bboIjZ">-
-                                            <!-- -->문화 상품은 사용 전날 24시까지 취소 신청 시 취소수수료가 발생되지 않습니다.
-                                        </div>
-                                        <div class="sc-178zqvr-14 bboIjZ"><strong
-                                                class="sc-178zqvr-15 fWZpfp">반품</strong></div>
-                                        <div class="sc-178zqvr-14 bboIjZ">-
-                                            <!-- -->상품 수령 후 7일 이내 신청하여 주세요.
-                                        </div>
-                                        <div class="sc-178zqvr-14 bboIjZ">-
-                                            <!-- -->
-                                            <!-- -->상품이 출고된 이후에는 배송 완료 후, 반품 상품을 회수합니다.
-                                        </div>
-                                        <div class="sc-178zqvr-14 bboIjZ">-
-                                            <!-- -->
-                                            <!-- -->설치상품/주문제작/해외배송/신선냉동 상품 등은 고객센터에서만 반품 신청이 가능합니다.
-                                            <!-- --> <a href="/ssr/desktop/contact/inquiry" target="_blank"
-                                                class="sc-178zqvr-16 jgRggD">1:1문의하기</a>
-                                        </div>
-                                        <div class="sc-178zqvr-14 bboIjZ"><strong
-                                                class="sc-178zqvr-15 fWZpfp">교환</strong></div>
-                                        <div class="sc-178zqvr-14 bboIjZ">-
-                                            <!-- -->
-                                            <!-- -->상품의 교환 신청은 고객센터로 문의하여 주세요.<a href="/ssr/desktop/contact/inquiry"
-                                                target="_blank" class="sc-178zqvr-16 jgRggD">1:1문의하기</a>
-                                        </div>
+                                        <!-- -->당일 접수 기준, 마감시간 오후 4시
+                                        <!-- -->)
+                                    </div>
+                                    <div class="sc-178zqvr-14 bboIjZ">-
+                                        <!-- -->문화 상품은 사용 전날 24시까지 취소 신청 시 취소수수료가 발생되지 않습니다.
+                                    </div>
+                                    <div class="sc-178zqvr-14 bboIjZ"><strong
+                                            class="sc-178zqvr-15 fWZpfp">반품</strong></div>
+                                    <div class="sc-178zqvr-14 bboIjZ">-
+                                        <!-- -->상품 수령 후 7일 이내 신청하여 주세요.
+                                    </div>
+                                    <div class="sc-178zqvr-14 bboIjZ">-
+                                        <!-- -->
+                                        <!-- -->상품이 출고된 이후에는 배송 완료 후, 반품 상품을 회수합니다.
+                                    </div>
+                                    <div class="sc-178zqvr-14 bboIjZ">-
+                                        <!-- -->
+                                        <!-- -->설치상품/주문제작/해외배송/신선냉동 상품 등은 고객센터에서만 반품 신청이 가능합니다.
+                                        <!-- --> <a href="/ssr/desktop/contact/inquiry" target="_blank"
+                                                    class="sc-178zqvr-16 jgRggD">1:1문의하기</a>
+                                    </div>
+                                    <div class="sc-178zqvr-14 bboIjZ"><strong
+                                            class="sc-178zqvr-15 fWZpfp">교환</strong></div>
+                                    <div class="sc-178zqvr-14 bboIjZ">-
+                                        <!-- -->
+                                        <!-- -->상품의 교환 신청은 고객센터로 문의하여 주세요.<a href="/ssr/desktop/contact/inquiry"
+                                                                             target="_blank"
+                                                                             class="sc-178zqvr-16 jgRggD">1:1문의하기</a>
                                     </div>
                                 </div>
                             </div>
@@ -285,36 +314,11 @@
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
-    <script th:inline="javascript">
-        var urlBuy = "/cart/buyToCart";
-        var productId = $("#productId").val();
-        var quantityVal  = $("#quantity").val();
-        var param = {"product": productId, "quantity": quantityVal};
-        function addCart(){
-            alert("실행");
-            console.log("product : " + productId);
-            console.log("quantity : " + quantity);
-            $.ajax({
-                url: urlBuy,
-                type: "POST",
-                data: JSON.stringify(param),
-                dataType: "text",
-                contentType : "application/json",
-                charset : "UTF-8",
-                success: function (data) {
-                    alert("장바구니 추가 되었음!! ")
-                },
-                error: function (jqXHR, status, errorThrown) {
-                    alert("에러");
-                }
-            });
-        }
-
-    </script>
-    <script src="js/buy.js" th:src="@{/js/buy.js}"></script>
+<script src="js/buy.js" th:src="@{/js/buy.js}"></script>
 
 </body>
 

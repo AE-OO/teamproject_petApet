@@ -3,7 +3,9 @@ package com.teamproject.petapet.web.buy.service;
 
 import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.buy.BuyRepository;
-import com.teamproject.petapet.web.buy.dto.BuyDTO;
+import com.teamproject.petapet.domain.buyproduct.BuyProduct;
+import com.teamproject.petapet.domain.buyproduct.BuyProductRepository;
+import com.teamproject.petapet.web.buyproduct.BuyProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class BuyServiceImpl implements BuyService {
 
     private final BuyRepository buyRepository;
+    private final BuyProductRepository buyProductRepository;
 
     // 구매 목록
     @Override
@@ -60,9 +63,9 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public List<BuyDTO> getCompanyPageSalesList(String companyId) {
-        List<Buy> buyList = buyRepository.getAllByProduct_Company_CompanyIdOrderByBuyDateDesc(companyId);
-        return buyList.stream().map(list -> BuyDTO.fromEntityForManageSales(list)).collect(Collectors.toList());
+    public List<BuyProductDTO> getCompanyPageSalesList(String companyId) {
+        List<BuyProduct> buyList = buyProductRepository.getAllByProduct_Company_CompanyIdOrderByBuyDesc(companyId);
+        return buyList.stream().map(BuyProductDTO::fromEntityForManageSales).collect(Collectors.toList());
     }
 
     @Override

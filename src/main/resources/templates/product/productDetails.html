@@ -19,7 +19,7 @@
                                 <button type="button" th:each="idx, i : *{productImg}"
                                         data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${i.index}"
                                         class="active"
-                                        aria-current="true" th:aria-label="|@{Slide+${i.index}}|"></button>
+                                        aria-current="true" aria-hidden="true" th:aria-label="|@{Slide+${i.index}}|"></button>
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item" th:each="img : *{productImg}">
@@ -45,17 +45,19 @@
         </div>
         <div class="col-6">
             <div class="d-flex m-lg-3">
-                <div class="col-11">
-                    <h2 class="productTitle" th:text="*{productName}" th:aria-label="${productType}"
+                <div class="col-11" aria-hidden="true" aria-label="asd">
+                    <h2 class="productTitle" th:text="*{productName}" th:aria-label="${productType}" th:aria-hidden="true"
                         th:data-id="${productId}">상품명</h2>
                 </div>
                 <div class="col-1 text-center mt-1">
                     <th:block sec:authorize="!isAuthenticated()">
-                        <p style="font-size: 1.5rem"><a role="button" class="addDibs" style="color: red">♡</a></p>
+                        <p style="font-size: 1.5rem"><a role="button" class="addDibs"
+                                                        style="color: red">♡</a></p>
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">
                         <th:block th:if="${existsDibsProduct}">
-                            <p style="font-size: 1.5rem"><a role="button" style="color: red">♥︎</a></p>
+                            <p style="font-size: 1.5rem"><a role="button" class="addDibs"
+                                                            style="color: red">♥︎</a></p>
                         </th:block>
                         <th:block th:if="${!existsDibsProduct}">
                             <p style="font-size: 1.5rem"><a role="button" class="addDibs"
@@ -456,8 +458,8 @@
         </div>
 
         <div class="d-flex flex-row p-3">
-            <div>
-                <div class="d-flex flex-fill">
+            <div class="row col">
+                <div class="d-flex flex-fill col">
                     <div class="d-flex mb-4 col">
                         <div class="col-11" id="productInquiry">
                             <h4>상품문의</h4>
@@ -473,7 +475,7 @@
 
                 <div class="">
                     <div class="">
-                        <li>구매한 상품의 <em>취소/반품은 마이페이지 구매내역에서 신청</em> 가능합니다.</li>
+                        <li>구매한 상품의 <em>취소/반품은 내 정보 구매내역에서 신청</em> 가능합니다.</li>
                         <li>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
                         <li><em>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는 고객센터 내 1:1 문의하기</em>를 이용해주세요.</li>
                         <li><em>"해당 상품 자체"와 관계없는 글, 양도, 광고성, 욕설, 비방, 도배 등의 글은 예고 없이 이동, 노출제한, 삭제 등의 조치가 취해질 수

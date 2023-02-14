@@ -17,8 +17,6 @@ import java.util.Optional;
  */
 
 public interface ProductService {
-    List<ProductDTO> getCompanyProductList(String companyId);
-
     Page<Product> getProductPage(Pageable pageable);
 
     Page<Product> getProductListByReview(Pageable pageable);
@@ -38,12 +36,6 @@ public interface ProductService {
     Long compareStock(Long id);
 
     Optional<Product> saveProduct(ProductInsertDTO productInsertDTO, List<UploadFile> uploadFiles, Company company);
-
-    Optional<Product> saveProduct(Product product);
-
-    void updateCounterView(Long productId);
-
-    void updateCounterSell(Long productId);
 
     Page<Product> findPage(String searchContent, Pageable pageable);
 

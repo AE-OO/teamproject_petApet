@@ -6,6 +6,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Coupon;
 import com.teamproject.petapet.domain.product.ProductType;
 import com.teamproject.petapet.domain.product.repository.CouponRepository;

@@ -117,7 +117,7 @@
                                                                             <a th:href="|@{/product/{productType}/{productId}/details(productType=${cart.product.productDiv.name().toLowerCase()},productId=${cart.product.productId})}|">
 
                                                                             <img th:src="|@{/product/images/{filename}(filename=${cart.product.getProductImg().get(0).getStoreFileName()})}|" alt="상품이미지"></a>
-                                                                            <input id="productId" class="productId" type="hidden" th:value="${cart.product.productId}"/>
+                                                                            <input id="productId" class="productId" hidden th:value="${cart.product.productId}">
                                                                         </div>
                                                                         <div class="info_area--2AT8d3T9eq">
                                                                             <div class="title--2r7IrJqWav">
@@ -238,8 +238,7 @@
                                     </div>
                                     <div class="store_price_empty_area--1jjMvE5SXu"></div>
                                     <button type="button" class="link_area--14aJI6oflh addBuy" th:value="${cart.product.productId}">
-                                        <a href="#" class="link_buy--KOU5pZhUVG" th:href="|@{/cart/checkout/{idx}(idx=${cart.cartId})}|"><em id="cartTotalQuan"
-                                            th:text="${cart.quantity}">상품수량</em>&nbsp;건 주문하기</a></button>
+                                        <a class="link_buy--KOU5pZhUVG" th:data-id="${cart.cartId}"><em id="cartTotalQuan">1</em>&nbsp;건 주문하기</a></button>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +295,7 @@
                             class="link_buy--jXvxZ8Agr-">총 주문하기<span class="badge--ltxr8Ih722">1</span></button></div>
                 </div>
             </div>
-            <div class="footer_wrap--1aAGSZPMzs type_floating--3kq4kVTZ9j">
+            <div id="footer_wrap--1aAGSZPMzs" class="footer_wrap--1aAGSZPMzs type_floating--3kq4kVTZ9j">
                 <div class="a">
                         </div>
                         <div class="_footer_info_footer_1QV_F">
@@ -306,7 +305,6 @@
                             <div class="_footer_btns_area_2JOr5"><a href="" th:href="@{/logout}"
                                     class="_footer_btn_3JsxB N=a:fot.logout"><span
                                         class="_footer_txt_2I9UX">로그아웃</span></a><a
-                                    href="http://m.naver.com/services.html?f=svc.shopping"
                                     class="_footer_btn_3JsxB N=a:fot.sitemap"><span
                                         class="_footer_txt_2I9UX">전체서비스</span></a></div>
 
@@ -315,8 +313,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <script th:inline="javascript" src="js/cart.js" th:src="@{/js/cart.js}"></script>
+    <script th:inline="javascript" th:src="@{/js/cart.js}"></script>
 </body>
 
 </html>

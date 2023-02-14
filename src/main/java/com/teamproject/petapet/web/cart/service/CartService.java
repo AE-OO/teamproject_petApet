@@ -3,7 +3,6 @@ package com.teamproject.petapet.web.cart.service;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.domain.product.Product;
 
 import java.util.List;
 
@@ -14,6 +13,10 @@ public interface CartService {
     Cart addCart(Cart cart);
 
     Cart findOne(Long cartId);
+
+    Cart findOne(Long cartId, Member member);
+
+    void updateCart(Long cartId, Long quantity);
 
     void removeCartOne(Long cartId);
 

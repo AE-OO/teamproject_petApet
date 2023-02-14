@@ -39,9 +39,9 @@
                         </div>
                     </div>
                     <a th:href="@{/community}" class="nav-link">Community</a>
-                    <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
+                    <a th:href="@{/product/dibs}" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
                         <i class="fa fa-heart"></i></a>
-                    <a href="" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
+                    <a href="/cart" class="nav-item nav-link2" sec:authorize="hasRole('MEMBER')">
                         <i class="fa fa-shopping-bag"></i></a>
                     <div class="nav-item dropdown">
                         <a href="/cart" class="nav-link nav-link2 me-0 h-100" id="dropdownA" data-bs-toggle="dropdown">
@@ -54,7 +54,7 @@
                             <a href="/member/checkInfo" class="dropdown-item" sec:authorize="hasRole('MEMBER')">내 정보</a>
                             <a href="/company/manageProduct" class="dropdown-item" sec:authorize="hasRole('COMPANY')">기업 정보</a>
                             <a href="/cart" class="dropdown-item" sec:authorize="hasRole('MEMBER')">장바구니</a>
-                            <a href="" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
+                            <a th:href="@{/product/dibs}" class="dropdown-item" sec:authorize="hasRole('MEMBER')">찜한 상품</a>
                             <a th:href="@{/member/couponBox}" class="dropdown-item" sec:authorize="hasRole('MEMBER')">쿠폰함</a>
                             <a href="/message" class="dropdown-item" sec:authorize="hasRole('MEMBER')">쪽지함</a>
                             <a href="/logout" class="dropdown-item" sec:authorize="isAuthenticated()">로그아웃</a>
@@ -67,7 +67,7 @@
     <script th:src="@{/js/header.js}"></script>
 </th:block>
 <th:block th:fragment="sidebar">
-    <div id="pap-left-menu">
+    <div id="pap-left-menu" style="top: 5rem">
         <div class="mypage-text">
             <div class="mytext">
                 <span class="tspan">
@@ -89,11 +89,11 @@
                                     class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
                             <li id="mc-order-list-page" class="sc-1liba5b-9 bgmWPR selected"><a
-                                    href="buy.html" th:href="@{/buy}" title="주문목록/배송조회" target="_self"
+                                    th:href="@{/buy}" title="주문목록/배송조회" target="_self"
                                     class="sc-1liba5b-10 eLReSz">주문목록/배송조회<span class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
                             <li id="mc-cancel-return-page" class="sc-1liba5b-9 bgmWPR"><a
-                                    href="" title="취소/반품/교환/환불내역" target="_self"
+                                    title="취소/반품/교환/환불내역" target="_self"
                                     class="sc-1liba5b-10 eLReSz">취소/반품/교환/환불내역<span
                                     class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
@@ -104,7 +104,7 @@
                     <div class="sc-1liba5b-6 OvTJQ">MY 활동</div>
                     <div class="sc-1liba5b-7 gvMCBX">
                         <ul class="sc-1liba5b-8 McnCE">
-                            <li id="mc-cs-main-page" class="sc-1liba5b-9 bgmWPR"><a href="inquiry.html" th:href="@{/inquiry}"
+                            <li id="mc-cs-main-page" class="sc-1liba5b-9 bgmWPR"><a th:href="@{/inquiry}"
                                                                                     title="문의하기" target="_self" class="sc-1liba5b-10 eLReSz">문의하기<span
                                     class="sc-1liba5b-11 fBiFRr"></span></a></li>
                             <li id="mc-product-inquiry-list-page" class="sc-1liba5b-9 bgmWPR"><a
@@ -112,11 +112,11 @@
                                     class="sc-1liba5b-10 eLReSz">문의내역 확인<span class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
                             <li id="mc-product-review-page" class="sc-1liba5b-9 bgmWPR"><a
-                                    href="" title="리뷰관리" target="_self"
+                                    title="리뷰관리" target="_self"
                                     class="sc-1liba5b-10 eLReSz">리뷰관리<span id="productReviewLnbMenuBadge"
                                                                            class="sc-1liba5b-11 fBiFRr" style="display: inline-block;"></span></a></li>
                             <li id="mc-product-wish-page" class="sc-1liba5b-9 bgmWPR"><a
-                                    href="" title="찜 리스트" target="_self"
+                                    th:href="@{/product/dibs}" title="찜 리스트" target="_self"
                                     class="sc-1liba5b-10 eLReSz">찜 리스트<span class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
                         </ul>
@@ -126,14 +126,14 @@
                     <div class="sc-1liba5b-6 OvTJQ">MY 커뮤니티 활동</div>
                     <div class="sc-1liba5b-7 gvMCBX">
                         <ul class="sc-1liba5b-8 McnCE">
-                            <li id="" class="sc-1liba5b-9 bgmWPR"><a href=""
+                            <li id="" class="sc-1liba5b-9 bgmWPR"><a href="/community/insert"
                                                                      title="글 작성" target="_self" class="sc-1liba5b-10 eLReSz">글 작성<span
                                     class="sc-1liba5b-11 fBiFRr"></span></a></li>
                             <li class="sc-1liba5b-9 bgmWPR"><a
-                                    href="" title="글 목록" target="_self"
+                                    title="글 목록" target="_self"
                                     class="sc-1liba5b-10 eLReSz">글 목록<span class="sc-1liba5b-11 fBiFRr"></span></a></li>
                             <li class="sc-1liba5b-9 bgmWPR"><a
-                                    href="" title="쪽지함" target="_self"
+                                    href="/message" title="쪽지함" target="_self"
                                     class="sc-1liba5b-10 eLReSz">쪽지함<span class="sc-1liba5b-11 fBiFRr" style="display: inline-block;"></span></a></li>
                         </ul>
                     </div>
@@ -143,16 +143,15 @@
                     <div class="sc-1liba5b-7 gvMCBX">
                         <ul class="sc-1liba5b-8 McnCE">
                             <li id="mc-user-modify-page" class="sc-1liba5b-9 bgmWPR"><a
-                                    href="" title="개인정보확인/수정"
+                                    href="/member/checkInfo" title="개인정보확인/수정"
                                     target="_self" class="sc-1liba5b-10 eLReSz">개인정보확인/수정<span
                                     class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>
                             <li id="mc-address-book-page" class="sc-1liba5b-9 bgmWPR"><a
-                                    href=""
                                     title="배송지 변경" target="_self" class="sc-1liba5b-10 eLReSz">배송지 변경<span
                                     class="sc-1liba5b-11 fBiFRr"></span></a></li>
                             <li id="mc-coupay-page" class="sc-1liba5b-9 bgmWPR">
-                                <a href="" title="회원탈퇴" target="_self"
+                                <a href="/member/withdrawal" title="회원탈퇴" target="_self"
                                    class="sc-1liba5b-10 eLReSz">
                                     회원 탈퇴<span class="sc-1liba5b-11 fBiFRr"></span></a>
                             </li>

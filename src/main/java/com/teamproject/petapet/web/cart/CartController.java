@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.cart;
 
 import com.teamproject.petapet.domain.cart.Cart;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.exception.NotLoginException;
 import com.teamproject.petapet.web.cart.dto.CartVO;
 import com.teamproject.petapet.web.cart.service.CartService;
 import com.teamproject.petapet.web.member.service.MemberService;
@@ -14,9 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -31,7 +33,6 @@ public class CartController {
     /**
      * 회원 장바구니
      *
-     * @param model
      * @return 추가할것 - 로그인한 회원 일치 검증 에러처리
      */
     @GetMapping()
@@ -53,18 +54,24 @@ public class CartController {
     // 상품 페이지 -> 장바구니 담기
     @ResponseBody
     @RequestMapping(value = "/add", method = {RequestMethod.POST}, produces = "application/json")
-    public void productToCart(@RequestBody CartVO vo, Authentication authentication) throws IOException {
+    public void productToCart(@RequestBody CartVO vo, Authentication authentication) {
 
         String loginMember = checkMember(authentication);
         Long product = vo.getProduct();
         Long quantity = vo.getQuantity();
 
-        Cart cart = new Cart(
-                memberService.findOne(loginMember),
-                productService.findOne(product).orElseThrow(NoSuchElementException::new),
-                quantity);
+        Optional<Cart> checkCart = checkCart(loginMember, product);
 
-        cartService.addCart(cart);
+        if (checkCart.isEmpty()) {
+            Cart cart = new Cart(
+                    memberService.findOne(loginMember),
+                    productService.findOne(product).orElseThrow(NoSuchElementException::new),
+                    quantity);
+            cartService.addCart(cart);
+        } else {
+            cartService.updateCart(checkCart.get().getCartId(), quantity);
+        }
+
     }
 
     @ResponseBody
@@ -87,12 +94,9 @@ public class CartController {
     @ResponseBody
     @RequestMapping(value = "/modify", method = {RequestMethod.POST}, produces = "application/json")
     public void modifyCart(@RequestBody CartVO vo) {
-        log.info("카트 번호>> ={}", vo.getCartId());
-        log.info("수량 변경>> ={}", vo.getQuantity());
         cartService.setQuan(vo.getQuantity(), vo.getCartId());
     }
 
-    // 상품 구매완료 후 장바구니 비우기
     @ResponseBody
     @RequestMapping(value = "/success", method = {RequestMethod.POST}, produces = "application/json")
     public void successBuy(@RequestBody CartVO vo) {
@@ -102,7 +106,6 @@ public class CartController {
     @ResponseBody
     @RequestMapping(value = "/removeOne", method = {RequestMethod.POST}, produces = "application/json")
     public void removeCartOne(@RequestBody CartVO vo) {
-        log.info(">> ={}", vo.getCartId());
         cartService.removeCartOne(vo.getCartId());
     }
 
@@ -114,24 +117,34 @@ public class CartController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "checkout", method = {RequestMethod.POST}, produces = "application/json")
+    @RequestMapping(value = "/checkout", method = {RequestMethod.POST}, produces = "application/json")
     public void checkoutOne(@RequestBody CartVO vo, Authentication authentication) {
         String loginMember = checkMember(authentication);
         cartService.removeCartAll(loginMember);
     }
 
+    @ResponseBody
+    @GetMapping("/isExist")
+    public boolean isExistInCart(Principal principal, @RequestParam("productId") Long productId) {
+        Optional<Cart> cart = checkCart(principal.getName(), productId);
+        return cart.isPresent();
+    }
 
     private String checkMember(Authentication authentication) {
-        if (authentication == null) {
-            throw new IllegalStateException("로그인이 필요한 서비스입니다.");
-        }
+        if (authentication == null) throw new NotLoginException("로그인이 필요한 서비스입니다.");
         User user = (User) authentication.getPrincipal();
         String role = user.getAuthorities().stream().findAny().orElseThrow(NoSuchElementException::new).getAuthority();
         if (role.equals("ROLE_ADMIN") || role.equals("ROLE_COMPANY")) {
-            throw new IllegalStateException("일반회원만 가능한 기능입니다.");
+            throw new NotLoginException("일반회원만 가능한 기능입니다.");
         }
-        Member member = memberService.findOne(user.getUsername());
-        return member.getMemberId();
+        return memberService.findOne(user.getUsername()).getMemberId();
     }
 
+
+    private Optional<Cart> checkCart(String loginMember, Long product) {
+        List<Cart> carts = cartService.findAll(loginMember);
+        return carts.stream().filter(cart ->
+                cart.getProduct().getProductId().equals(product)
+        ).findFirst();
+    }
 }
