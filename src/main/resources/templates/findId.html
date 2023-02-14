@@ -134,7 +134,7 @@
         <div class="modal-content">
             <div class="modal-header py-5">
                 <h5 class="modal-title mx-auto" id="staticBackdropLabel">
-                    <span th:if="${findMemberId}==0">입력하신 정보와 일치하는 사용자가 없습니다.</span>
+                    <span th:if="${findMemberId}==0"><span id="findMemberIdResult">입력하신 정보와 일치하는 사용자가 없습니다.</span>
                     <span th:unless="${findMemberId}==0">회원님의 아이디는 <span id="findMemberIdResult" th:text="${findMemberId}"></span> 입니다</span>
                 </h5>
             </div>
@@ -159,7 +159,7 @@
         <div class="modal-content">
             <div class="modal-header py-5">
                 <h5 class="modal-title mx-auto" id="staticBackdropLabel2">
-                    <span th:if="${findCompanyId}==0" th:text="입력하신 정보와 일치하는 사용자가 없습니다"></span>
+                    <span th:if="${findCompanyId}==0" th:text="입력하신 정보와 일치하는 사용자가 없습니다"><span id="findCompanyIdResult"></span></span>
                     <span th:unless="${findCompanyId}==0">회원님의 아이디는 <span id="findCompanyIdResult" th:text="${findCompanyId}"></span> 입니다</span>
                 </h5>
             </div>

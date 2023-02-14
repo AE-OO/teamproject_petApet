@@ -112,7 +112,7 @@ function checkMemberPhoneNum() {
         mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
         $("#smsBtn").attr("disabled", true);
         return false;
-    }else if(memberPhoneNum() == originalMemberPhoneNum){
+    }else if(memberPhoneNum() === originalMemberPhoneNum){
         mPhoneNumFeedback().text("");
         $("#smsBtn").attr("disabled", false);
         return true;
@@ -459,7 +459,7 @@ let updateProfile = () =>{
     });
 }
 $(document).ready(function () {
-    if(memberImg === "/img/profile.jpg"){
+    if(memberImg == 0){
         $("#basicA").hide();
     }
     $("#updateMemberPwBtn").click(function () {
@@ -513,13 +513,13 @@ $(document).ready(function () {
 
     //인증번호 버튼
     $("#smsBtn").click(function () {
-        if (checkMemberPhoneNum() && ($("#smsBtnName").text() == "인증번호 받기")) {
+        if (checkMemberPhoneNum() && ($("#smsBtnName").text() === "인증번호 받기")) {
             smsConfirmNum().attr("disabled", false);
             smsConfirmNum().val("");
             sendBtnClick();
         }
 
-        if ($("#smsBtnName").text() == "다른번호 인증") {
+        if ($("#smsBtnName").text() === "다른번호 인증") {
             $("#smsBtnName").text("인증번호 받기");
             $("#input-memberPhoneNum").val("");
             $("#smsBtn").attr("disabled", true);

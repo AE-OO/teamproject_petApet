@@ -5,27 +5,8 @@
     <link>
     <script th:src="@{/js/community/comment.js}"></script>
     <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
-    <script>
-        $(function () {
-            getCommunityTitle();
-        });
-        getCommunityTitle = function () {
-            $.ajax({
-                url: "/community/getCommunityTitle",
-                type: "post",
-                data: {communityId: $(location).attr('pathname').split("/")[2]},
-                dateType: "json",
-                success: function (data) {
-                    $("#communityTitle").text(data.communityTitle);
-                    postsMemberId = data.memberId;
-                }
-                , error: function () {
-                    alert('오류가 발생하였습니다.');
-                }
-            })
-        }
-    </script>
     <script th:src="@{/js/member/getLoginInfo.js}"></script>
+    <script th:src="@{/js/community/communityMain.js}"></script>
     <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script th:src="@{/js/community/paginationJS.js}"></script>
 </head>
