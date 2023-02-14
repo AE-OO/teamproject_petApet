@@ -247,7 +247,7 @@ $(function () {
     });
 });
 let nowPage;
-let postsMemberId;
+let postsMemberId
 //댓글 이미지 썸네일
 setThumbnail = function (event) {
     let from = Array.from(event.target.files);

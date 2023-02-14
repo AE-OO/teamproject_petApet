@@ -41,26 +41,26 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Modifying
     @Transactional
     @Query("update Member m set m.memberPw=:memberPw where m.memberId =:memberId")
-    int updateMemberPw(String memberId, String memberPw);
+    int updateMemberPw(@Param("memberId") String memberId,@Param("memberPw") String memberPw);
 
     @Modifying
     @Transactional
     @Query("update Member m " +
             "set m.memberBirthday=:memberBirthday, m.memberPhoneNum=:memberPhoneNum, m.memberGender=:memberGender," +
             "m.memberAddress=:memberAddress, m.memberEmail=:memberEmail where m.memberId =:memberId")
-    void updateMember(String memberId, Date memberBirthday, String memberPhoneNum, String memberGender,
-                      String memberAddress, String memberEmail);
+    void updateMember(@Param("memberId") String memberId,@Param("memberBirthday") Date memberBirthday,@Param("memberPhoneNum") String memberPhoneNum,
+                      @Param("memberGender") String memberGender,@Param("memberAddress")String memberAddress,@Param("memberEmail") String memberEmail);
 
     @Modifying
     @Transactional
     @Query("update Member m set m.activated=true where m.memberId=:memberId")
-    void updateActivated(String memberId);
+    void updateActivated(@Param("memberId") String memberId);
 
     @Query("select m.memberId from Member m where m.memberName=:memberName and m.memberPhoneNum=:memberPhoneNum")
-    Optional<String> findMemberId(String memberName, String memberPhoneNum);
+    Optional<String> findMemberId(@Param("memberName") String memberName,@Param("memberPhoneNum") String memberPhoneNum);
 
     @Query("select m.memberId from Member m where m.memberId=:memberId and m.memberName=:memberName and m.memberPhoneNum=:memberPhoneNum")
-    Optional<String> existMemberId(String memberId, String memberName, String memberPhoneNum);
+    Optional<String> existMemberId(@Param("memberId") String memberId,@Param("memberName") String memberName,@Param("memberPhoneNum") String memberPhoneNum);
 
     boolean existsByMemberPhoneNum(String memberPhoneNum);
     boolean existsByMemberEmail(String memberEmail);
@@ -68,11 +68,11 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Modifying
     @Transactional
     @Query("update Member m set m.memberImg=:memberImg where m.memberId=:memberId")
-    void updateMemberImg(String memberId, String memberImg);
+    void updateMemberImg(@Param("memberId") String memberId,@Param("memberImg") String memberImg);
 
     @Modifying
     @Transactional
     @Query("update Member m set m.memberImg=null where m.memberId=:memberId")
-    void deleteMemberImg(String memberId);
+    void deleteMemberImg(@Param("memberId") String memberId);
 
 }

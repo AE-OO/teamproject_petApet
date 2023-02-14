@@ -6,6 +6,11 @@
     <script th:src="@{/js/member/getLoginInfo.js}"></script>
     <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script th:src="@{/js/community/comment.js}"></script>
+    <script>
+        $(function () {
+        postsMemberId = $("#postsMemberId").text();
+        });
+    </script>
     <script th:src="@{/js/community/paginationJS.js}"></script>
     <script type="text/javascript" th:src="@{/js/reportJS.js}"></script>
 </head>
