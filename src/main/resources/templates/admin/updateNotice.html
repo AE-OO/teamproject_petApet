@@ -1,84 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>petApet 관리자용</title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="/vendors/feather/feather.css">
-  <!-- inject:css -->
-  <link rel="stylesheet" href="/css/vertical-layout-light/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2-alpha1/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<head th:replace="fragment/admin_fragment :: head2"></head>
 
-  <!-- endinject -->
-  <link rel="shortcut icon" href="/images/favicon.png"/>
-  <!-- summernote CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-
-  <style>
-    .col-form-label {
-      text-align: center;
-    }
-
-    .note-editor.note-frame .note-editing-area .note-editable {
-      padding: 2em;
-    }
-
-    .note-editor.note-frame .note-editing-area .note-editable > p {
-      margin-bottom: 0;
-    }
-
-    .note-modal-content {
-      height: 300px;
-    }
-  </style>
-
-</head>
 <body>
 <div class="container-scroller">
-  <!-- partial:partials/_navbar.html -->
-  <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-      petApet Admin Page
-    </div>
-    <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-      <button class="btn btn-light" type="button">
-        Logout
-      </button>
-    </div>
-  </nav>
-  <!-- partial -->
+  <div th:replace="fragment/admin_fragment :: navbar"></div>
   <div class="container-fluid page-body-wrapper">
-    <!-- partial -->
-    <!-- partial:partials/_sidebar.html -->
-    <nav class="sidebar sidebar-offcanvas" id="sidebar">
-      <ul class="nav">
-        <li class="nav-item">
-          <a class="nav-link" href="../index.html">
-            <i class="icon-grid menu-icon"></i>
-            <span class="menu-title">Main</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="registerProduct.html">
-            <i class="icon-grid-2 menu-icon"></i>
-            <span class="menu-title">상품 등록</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/adminPage">
-            <i class="icon-paper menu-icon"></i>
-            <span class="menu-title">FAQ 등록</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <!-- partial -->
+    <div th:replace="fragment/admin_fragment :: sidebar2"></div>
+
     <div class="main-panel">
       <div class="content-wrapper">
         <div class="col-12 grid-margin">
@@ -109,27 +39,8 @@
       </div>
     </div>
   </div>
-  <!-- content-wrapper ends -->
-  <!-- partial:partials/_footer.html -->
-  <footer class="footer">
-    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a
-                    href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-      <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
-              class="ti-heart text-danger ml-1"></i></span>
-    </div>
-    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a
-                    href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
-    </div>
-  </footer>
-  <!-- partial -->
+  <div th:replace="fragment/admin_fragment :: footer"></div>
 </div>
-<!-- main-panel ends -->
-</div>
-<!-- page-body-wrapper ends -->
-</div>
-<!-- container-scroller -->
 <script>
   uploadSummernoteImageFile = (file, el) => {
     data = new FormData();
@@ -166,7 +77,7 @@
       resize: false,
       callbacks: {
         onImageUpload: function (files, editor, welEditable) {
-          //             // 파일 업로드(다중업로드를 위해 반복문 사용)
+          // 파일 업로드(다중업로드를 위해 반복문 사용)
           for (var i = files.length - 1; i >= 0; i--) {
             uploadSummernoteImageFile(files[i],
                     this);
@@ -188,8 +99,7 @@
     })
   })
 </script>
-<script type="text/javascript" src="/js/adminJS.js"></script>
+<script type="text/javascript" src="/js/adminJS.js" />
 </body>
-
 </html>
 

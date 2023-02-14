@@ -88,12 +88,11 @@ public class MemberController {
         }
 
         TokenDTO tokenDTO = memberService.login(loginDTO);
-        System.out.println(tokenDTO.getToken());
         //토큰 쿠키에 저장
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer" + tokenDTO.getToken());
         cookie.setPath("/");
 //        cookie.setMaxAge(60 * 60 * 24); //유효기간 24시간
-        cookie.setHttpOnly(true);
+//        cookie.setHttpOnly(true);
 //        cookie.setSecure(true);
         response.addCookie(cookie);
 

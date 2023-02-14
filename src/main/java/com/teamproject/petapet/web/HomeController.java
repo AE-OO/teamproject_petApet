@@ -8,6 +8,7 @@ import com.teamproject.petapet.web.product.productdtos.ProductListDTO;
 import com.teamproject.petapet.web.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class HomeController {
     private final ProductService productService;
     private final CommunityService communityService;
 
+
     @GetMapping("/")
     public String index() {
         return "index";
@@ -38,15 +40,6 @@ public class HomeController {
         return "integratedSearch";
     }
 
-//    @GetMapping("/searchResult")
-//    @ResponseBody
-//    public ResponseEntity<Page<ProductListDTO.IntegratedSearchDTO>> searchResult(@RequestParam String searchContent) {
-//        Pageable pageable = PageRequest.of(0, 10);
-//        Page<Product> page = productService.findPage(searchContent, pageable);
-//        Page<ProductListDTO.IntegratedSearchDTO> content = getProductListDTO(page);
-//        long totalElements = content.getTotalElements();
-//        return ResponseEntity.ok().body(content);
-//    }
 
     @GetMapping("/searchResult")
     @ResponseBody

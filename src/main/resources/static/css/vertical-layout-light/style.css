@@ -10466,6 +10466,7 @@ pre code {
 .table-responsive {
   display: block;
   width: 100%;
+  height: 400px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -10601,6 +10602,7 @@ select.tt-hint:focus::-ms-value {
   margin-bottom: 0;
   font-size: inherit;
   line-height: 1;
+  text-align: center;
 }
 
 .col-form-label-lg {
@@ -13414,7 +13416,7 @@ input[type="button"].btn-block {
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
   margin-right: 1rem;
-  font-size: 1.25rem;
+  font-size: 3rem;
   line-height: inherit;
   white-space: nowrap;
 }
@@ -30592,4 +30594,18 @@ div.tagsinput span.tag a {
   }
 }
 
+.field-error {
+    border-color: #dc3545;
+    font-size: 12px;
+    color: #dc3545;
+}
+
+.no-Arrow::-webkit-outer-spin-button,
+.no-Arrow::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+}
+
+.registerBtn{
+    float: right;
+}
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */

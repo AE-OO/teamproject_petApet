@@ -42,6 +42,11 @@ v 0. 2. 0 2023/02/13
 ** Buy에 있는 Product와 quantity는 더 이상 쓰면 안 됩니다.
     기존에 구현된 기능은 정상 작동하게 바꿨습니다.
 
+v 0. 2. 1 2023/02/14
+- 신고와 관련된 DTO에서 발생하는 InvalidDefinitionException 처리
+- 사업자 승인, 신고 승인 관련 IllegalStateException 처리
+- 신고 승인 관련 Controller에서 예외 처리 (현재 커뮤니티 신고 승인 컨트롤러에만 구현)
+
 v 0. 2. 3 2023/02/14
 - 회원, 커뮤니티 관련 IllegalStateException 처리 
 - 게시글 작성한 회원이, 게시글 비밀 댓글 볼 수 있도록 수정

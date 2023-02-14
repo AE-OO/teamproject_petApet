@@ -33,7 +33,7 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     public List<CommunityDTO> getCommunityList() {
-        List<Community> communityList = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "communityReport"));
+        List<Community> communityList = communityRepository.findAllByCommunityCategoryIsNotContainingOrderByCommunityReportDesc("공지사항");
         return communityList.stream().map(list -> CommunityDTO.fromEntityForCommunityListOfAdminPage(list)).collect(Collectors.toList());
     }
 

@@ -1,15 +1,11 @@
 package com.teamproject.petapet.web.member.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.teamproject.petapet.domain.member.Member;
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.*;
-
-import javax.persistence.Column;
+import org.springframework.format.datetime.DateFormatter;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -29,6 +25,8 @@ public class MemberDTO {
     private String memberImg;
     private String memberJoinDate;
     private Long memberReport;
+    private boolean memberActivated;
+    private String memberStopDate;
 
     public static MemberDTO fromEntity(Member member) {
         return MemberDTO.builder()
@@ -51,6 +49,8 @@ public class MemberDTO {
                 .memberGender(member.getMemberGender())
                 .memberJoinDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(member.getMemberJoinDate()))
                 .memberReport(member.getMemberReport())
+                .memberActivated(member.isActivated())
+                .memberStopDate(String.valueOf(member.getMemberStopDate()))
                 .build();
     }
 

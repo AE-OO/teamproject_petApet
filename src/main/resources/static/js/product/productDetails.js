@@ -102,7 +102,7 @@ async function updateReview() {
         .then(data => {
 
         })
-    window.location.href = '/product/' + productType + '/' + productId + '/details';
+    location.href = '/product/' + productType + '/' + productId + '/details';
 }
 
 $('.addDibs').click(function () {

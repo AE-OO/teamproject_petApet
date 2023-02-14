@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public interface InquiredRepository extends JpaRepository<Inquired, Long> {
-    @Query("select i from Inquired i where i.inquiredCategory like '%문의'")
+    @Query("select i from Inquired i where i.inquiredCategory like '회원%' order by i.checked, i.inquiredDate")
     public List<Inquired> getOtherInquiries();
 
     @Query("select i from Inquired i where i.member.memberId =:memberId order by i.inquiredId desc ")
