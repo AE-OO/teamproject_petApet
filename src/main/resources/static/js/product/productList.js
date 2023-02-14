@@ -6,53 +6,116 @@ for (var i = 0; i < size; i++) {
         return $(v).attr("value") <= $("#star" + i).attr('value') ? $(v).addClass("on") : $(v).removeClass("on");
     });
 }
-
-function addDibs(id) {
+$('.addDibs').click(function () {
+    let productId = $(this).attr('id');
     $.ajax({
         type: 'post',
         url: '/product/dibs/add',
         async: true,
         dataType: 'text',
-        data: {"productId": id},
+        data: {"productId": productId},
         success: function (result) {
             if (result === 'login') {
-                location.href = '/login'
+                alert("로그인이 필요한 서비스입니다");
+            }
+            if (result === "ok") {
+                alert("상품을 찜했습니다");
             }
             if (result === 'duplicate') {
-            } else {
+
+                fetch('/product/dibs/remove', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: productId
+                })
+                    .then((response) => response.text())
+                    .then((data) => {
+                        if (data === 'ok') {
+                            alert("찜하기 취소했습니다")
+                        }
+                    })
+                    .catch();
             }
         },
         error: function (request, status, error) {
+            alert(request.responseText);
         }
     })
-}
+})
 
 const addCartBtn = $('.addCart');  // 상품 리스트에서 장바구니로 상품을 추가하는 기능
+const addBuyBtn = $('.addBuy');  // 상품 리스트에서 장바구니로 상품을 추가하는 기능
+
+$(addBuyBtn).click(function () {
+
+    let productId = $(this).val();
+    let quantity = 1;
+
+    fetch('/direct/checkout/checkLogin', {
+        method: 'GET',
+    })
+        .then((response) => response.text())
+        .then((data) => {
+            if (data !== 'ok') {
+                alert(data);
+            } else {
+                location.href = '/direct/checkout?productId=' + productId + '&quantity=' + quantity;
+
+            }
+        })
+})
 
 var postUrl = "cart";
 
-$(addCartBtn).click(function () {
-    var productId = $(this).val();
-    var quantity = 1;
-    var param = {"product": productId, "quantity": quantity};
+function checkCart(productId) {
+    let isExist = '';
     $.ajax({
-        url: "/cart/add",
-        type: "POST",
-        data: JSON.stringify(param),
-        dataType: "text",
-        contentType: "application/json",
-        charset: "UTF-8",
+        url: "/cart/isExist?productId=" + productId,
+        type: "GET",
+        async: false,
         success: function (data) {
-            if (confirm("장바구니로 이동 하시겠습니까?") == true) {
-                location.replace(postUrl)
-            } else {
-
-            }
+            isExist = data;
         },
         error: function (jqXHR, status, errorThrown) {
-            alert(jqXHR.responseText);
         }
-    });
+    })
+    return isExist;
+}
+
+$(addCartBtn).click(function () {
+    let productId = $(this).val();
+    let quantity = 1;
+    let param = {"product": productId, "quantity": quantity};
+    let isExist = checkCart(productId);
+    if (isExist === true) {
+        alert('이미 장바구니에 상품이 있습니다.')
+        if (confirm("장바구니로 이동 하시겠습니까?") == true) {
+            location.href = postUrl
+        }
+    } else {
+        $.ajax({
+            url: "/cart/add",
+            type: "POST",
+            data: JSON.stringify(param),
+            dataType: "text",
+            async: false,
+            contentType: "application/json",
+            charset: "UTF-8",
+            success: function (data) {
+                if (confirm("장바구니로 이동 하시겠습니까?") == true) {
+                    location.href = postUrl
+                } else {
+
+                }
+            },
+            error: function (jqXHR, status, errorThrown) {
+                let result = JSON.parse(jqXHR.responseText);
+                alert(result.message);
+            }
+        });
+    }
 });
 
 let urlSearchParams = new URLSearchParams(location.search);

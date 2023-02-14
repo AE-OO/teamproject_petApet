@@ -77,7 +77,7 @@ async function updateReview() {
     let storeFileNameArr = new Array();
     let uploadFileNameArr = new Array();
     let myReviewImgSize = $('.myReviewImg img[class=reviewImage]').length;
-    for (var i = 0; i < myReviewImgSize; i++) {
+    for (let i = 0; i < myReviewImgSize; i++) {
         let src = $('.myReviewImg img[id=reviewImage' + i + ']').attr('src');
         let uploadFileName = $('.myReviewImg img[id=reviewImage' + i + ']').attr('alt');
         let pos = src.lastIndexOf("/");
@@ -106,7 +106,6 @@ async function updateReview() {
 }
 
 $('.addDibs').click(function () {
-
     $.ajax({
         type: 'post',
         url: '/product/dibs/add',
@@ -115,19 +114,35 @@ $('.addDibs').click(function () {
         data: {"productId": productId},
         success: function (result) {
             if (result === 'login') {
-                alert('로그인이 필요 합니다.')
+                alert("로그인이 필요한 서비스입니다");
+            }
+            if (result === "ok") {
+                alert("상품을 찜했습니다");
             }
             if (result === 'duplicate') {
-                alert('찜하기 완료')
-            } else {
+
+                fetch('/product/dibs/remove', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: productId
+                })
+                    .then((response) => response.text())
+                    .then((data) => {
+                        if (data === 'ok') {
+                            alert("찜하기 취소했습니다")
+                        }
+                    })
+                    .catch();
             }
         },
         error: function (request, status, error) {
             alert(request.responseText);
         }
     })
-
 })
+
 
 function review_scroll_move() {
     let offset = $("#reviews").offset();
@@ -295,37 +310,76 @@ $(btnPlus).click(function () {
     }
 });
 
-var postUrl = "/cart";
-
-var urlCart = "/cart/add";
-var urlBuy = "/buy/addByProduct";
-var quantityVal = quantity;
-var param = {"product": productId, "quantity": quantityVal};
-
 $('#addCart').click(function () {
 
-    var param = {"product": productId, "quantity": quantity};
-
-    $.ajax({
-        url: urlCart,
-        type: "POST",
-        data: JSON.stringify(param),
-        dataType: "text",
-        contentType: "application/json",
-        charset: "UTF-8",
-        success: function (data) {
-            if (confirm("장바구니로 이동 하시겠습니까?") == true) {
-                location.replace(postUrl)
+    fetch('/direct/checkout/checkLogin', {
+        method: 'GET',
+    })
+        .then((response) => response.text())
+        .then((data) => {
+            if (data !== 'ok') {
+                alert(data);
             } else {
+                let isExist = checkCart(productId);
+                if (isExist === true) {
+                    alert('이미 장바구니에 상품이 있습니다.');
+                    if (confirm("장바구니로 이동 하시겠습니까?") == true) {
+                        location.href = "/cart"
+                    }
+                } else {
+                    var param = {"product": productId, "quantity": quantity};
 
+                    $.ajax({
+                        url: "/cart/add",
+                        type: "POST",
+                        data: JSON.stringify(param),
+                        dataType: "text",
+                        contentType: "application/json",
+                        charset: "UTF-8",
+                        success: function (data) {
+                            if (confirm("장바구니로 이동 하시겠습니까?") == true) {
+                                location.href = postUrl
+                            } else {
+
+                            }
+                        },
+                        error: function (jqXHR, status, errorThrown) {
+                            let result = JSON.parse(jqXHR.responseText);
+                            alert(result.message)
+                        }
+                    });
+                }
             }
-        },
-        error: function (jqXHR, status, errorThrown) {
-            alert(jqXHR.responseText);
-        }
-    });
+        })
 })
 
 $('#addBuyBtn').click(function () {
-    location.href = '/direct/checkout?productId=' + productId + '&quantity=' + quantity;
+
+    fetch('/direct/checkout/checkLogin', {
+        method: 'GET',
+    })
+        .then((response) => response.text())
+        .then((data) => {
+            if (data !== 'ok') {
+                alert(data);
+            } else {
+                location.href = '/direct/checkout?productId=' + productId + '&quantity=' + quantity;
+
+            }
+        })
 })
+
+function checkCart(productId) {
+    let isExist = '';
+    $.ajax({
+        url: "/cart/isExist?productId=" + productId,
+        type: "GET",
+        async: false,
+        success: function (data) {
+            isExist = data;
+        },
+        error: function (jqXHR, status, errorThrown) {
+        }
+    })
+    return isExist;
+}

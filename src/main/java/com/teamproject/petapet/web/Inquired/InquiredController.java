@@ -64,7 +64,7 @@ public class InquiredController {
 
     @PostMapping("/submit")
     public String inquirySubmit(@Validated @ModelAttribute("Inquired") InquiredSubmitDTO inquiredSubmitDTO,
-                                   Principal principal) throws IOException {
+                                   Principal principal) {
         log.info("실행");
         String login = checkMember(principal);
         Member loginMember = memberService.findOne(login);

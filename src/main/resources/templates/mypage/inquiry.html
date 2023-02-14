@@ -115,62 +115,24 @@
                                 <div class="sc-4clfj5-6 byqNSx">
                                     <form id="inquired" th:action="@{/inquiry/submit}" th:method="post" th:object="${Inquired}" class="row mb-3">
                                         <div class="container-md m-5">
-                                            <label for="" class="col-sm-2 col-form-label">제목</label>
+                                            <label for="title" class="col-sm-2 col-form-label">제목</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="" name="title" th:text="${Inquired.title}">
+                                                <input type="text" class="form-control" id="title" name="title" th:text="${Inquired.title}">
                                             </div>
-                                            <label for="" class="col-sm-2 col-form-label">내용</label>
+                                            <label for="content" class="col-sm-2 col-form-label">내용</label>
                                             <div class="col-sm-10" >
-                                                <textarea class="form-control custom-area" id="" name="inquiredContent" th:text="${Inquired.inquiredContent}"></textarea>
+                                                <textarea class="form-control custom-area" id="content" name="inquiredContent" th:text="${Inquired.inquiredContent}"></textarea>
                                             </div>
-                                            <label for="" class="col-sm-2 col-form-label">구매한 상품명</label>
+                                            <label class="col-sm-2 col-form-label">구매한 상품명</label>
                                             <div class="col-sm-10">
                                             <select type="input" onchange="putValue(this)" id="companyId" class="form-control" required>
                                                 <option value="">-- 선택 --</option>
-                                                <option th:each="buy : ${buyList}" th:value="${buy.product.company.companyId}"
-                                                        data-th-text="|상품명 : ${buy.product.productName} / 수량 : ${buy.quantity}개 / 구매일시 : ${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}">
+                                                <th:block th:each="buy : ${buyList}">
+                                                <option  th:each="buyProduct : ${buy.products}"
+                                                        data-th-text="|상품명 : ${buyProduct.product.productName} / 수량 : ${buyProduct.quantity}개 / 구매일시 : ${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}|">
                                                 </option>
+                                                </th:block>
                                             </select>
-                                            </div>
-                                            <div class="col-sm-10">
-                                                <input type="hidden" class="form-control" name="companyId" value="" text="" />
-                                            </div>
-                                        </div>
-                                        <div class="container">
-                                            <input type="file" id="upload-button" multiple="multiple"/>
-                                            <label for="upload-button"
-                                            ><i class="fa-solid fa-upload"></i>&nbsp; Choose Or Drop Photos
-                                            </label>
-                                            <div id="error"></div>
-                                            <div id="image-display"></div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div id="btn3" class="sc-4clfj5-0 hTYEBQ s1 ddd">
-                                <div class="sc-4clfj5-1 hwgKvp">
-                                    <span class="sc-4clfj5-5 ldyR">문의 폼을 작성해주세요!!</span>
-                                    <button type="submit" form="inquired" th:onclick="" class="btn btn-primary d-flex float-end m-4">제출</button>
-                                </div>
-                                <div class="sc-4clfj5-6 byqNSx">
-                                    <form id="inquired" th:action="@{/inquiry/submit}" th:method="post" th:object="${Inquired}" class="row mb-3">
-                                        <div class="container-md m-5">
-                                            <label for="" class="col-sm-2 col-form-label">제목</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="" name="title" th:text="${Inquired.title}">
-                                            </div>
-                                            <label for="" class="col-sm-2 col-form-label">내용</label>
-                                            <div class="col-sm-10" >
-                                                <textarea class="form-control custom-area" id="" name="inquiredContent" th:text="${Inquired.inquiredContent}"></textarea>
-                                            </div>
-                                            <label for="" class="col-sm-2 col-form-label">구매한 상품명</label>
-                                            <div class="col-sm-10">
-                                                <select type="input" onchange="putValue(this)" id="companyId" class="form-control" required>
-                                                    <option value="">-- 선택 --</option>
-                                                    <option th:each="buy : ${buyList}" th:value="${buy.product.company.companyId}"
-                                                            data-th-text="|상품명 : ${buy.product.productName} / 수량 : ${buy.quantity}개 / 구매일시 : ${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}">
-                                                    </option>
-                                                </select>
                                             </div>
                                             <div class="col-sm-10">
                                                 <input type="hidden" class="form-control" name="companyId" value="" text="" />

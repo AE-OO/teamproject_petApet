@@ -11,6 +11,8 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -24,10 +26,18 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ExceptionAdvice {
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(NotLoginException.class)
+    public ExceptionLog notLoggedInException(NotLoginException e) {
+        log.error("NotLoginException", e);
+        return new ExceptionLog(401, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({NullPointerException.class})
-    public ResponseEntity<String> nullException(NullPointerException e) {
-        log.error("error = {}", e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    public ExceptionLog nullException(NullPointerException e) {
+        log.error("error", e);
+        return new ExceptionLog(500, e.getMessage());
     }
 
     @ExceptionHandler(BadCredentialsException.class)

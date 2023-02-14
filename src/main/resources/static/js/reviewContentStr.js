@@ -1,13 +1,11 @@
 $(document).ready(function () {
 
     $('.review_comment').each(function () {
-        // var content = $(this).children('.content');
         var content = $(this).find('.contentStr');
-
         var content_txt = content.text();
         var content_html = content.html();
         var content_txt_short = content_txt.substring(0, 500) + "...";
-        var btn_more = $('<a href="javascript:void(0)" class="more">더보기</a>');
+        var btn_more = $('<a class="more">더보기</a>');
 
 
         $(this).append(btn_more);

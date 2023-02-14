@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragment/jo_base :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/buy.css" th:href="@{/css/buy.css}">
+    <title>마이페이지 - 찜한 상품</title>
+</head>
+
+<body style="display: block">
+<th:block th:replace="~{fragment/header :: header}"></th:block>
+<th:block th:replace="~{fragment/header :: sidebar}"></th:block>
+<div id="container">
+    <section id="contents" class="contents">
+        <div class="__mypage-wrap">
+            <div class="contents">
+                <div class="sc-vv7pzb-1 dHwqA-d my-area-contents">
+                    <div class="sc-1de9moo-0 jOMCJw">
+                        <div class="sc-173hyd4-0 gdQXGY">
+                                <span class="sc-1vjn3x9-2 sc-173hyd4-1 izFbWh QxeWJ"
+                                      style="font-size:1.5rem">찜한 상품목록</span>
+                        </div>
+                        <div class="sc-qxzqk9-0 iQgKJk">
+                            <div class="sc-fimazj-0 gKYVxm">
+                                <div class="sc-gnmni8-0 hCVtNj">
+                                    <table class="sc-gnmni8-1 eSpcfO d-flex">
+                                        <tbody class="sc-gnmni8-2 hryMPB dibs">
+<!--                                        <tr class="sc-gnmni8-3 gmGnuU" th:each="dib : ${dibs}">-->
+<!--                                            <td class="sc-gnmni8-5 hUzAOG">-->
+<!--                                                <div class="sc-ki5ja7-0 bQVZKC">-->
+<!--                                                    <div class="sc-ki5ja7-1 krPkOP">-->
+
+<!--                                                    </div>-->
+<!--                                                    <div class="sc-ki5ja7-2 grCKyH">-->
+<!--                                                        <button size="28"-->
+<!--                                                                class="sc-izcbvi-0 bScTTg">-->
+<!--                                                            <div class="sc-izcbvi-1 JHhgQ"></div>-->
+<!--                                                            <div class="sc-izcbvi-1 JHhgQ"></div>-->
+<!--                                                            <div class="sc-izcbvi-1 JHhgQ"></div>-->
+<!--                                                        </button>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="d-flex col">-->
+<!--                                                    <a class="col-3"-->
+<!--                                                       th:href="|@{/product/{productType}/{productId}/details(productType=${dib.product.productDiv.name().toLowerCase()},productId=${dib.product.productId})}|">-->
+<!--                                                        <img style="width: 100%; height: auto"-->
+<!--                                                             th:src="|@{/product/images/{filename}(filename=${dib.product.getProductImg().get(0).getStoreFileName()})}|">-->
+<!--                                                    </a>-->
+<!--                                                    <div class="col-6 p-lg-3">-->
+<!--                                                        <span>-->
+<!--                                                            <a th:text="${dib.product.productName}" style="font-size: 1.5rem"/>-->
+<!--                                                        </span>-->
+<!--                                                        <div class="text-secondary"-->
+<!--                                                              th:text="|${#numbers.formatInteger(dib.product.productPrice, 3, 'COMMA') + '원'}|">-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-3">-->
+<!--                                                        <div class="sc-gnmni8-7 bCQoer">-->
+<!--                                                            <button class="sc-1k9quwu-0 fUUUKW sc-4d0nwb-0 iiEWkt" th:data-id="${dib.product.productId}">-->
+<!--                                                                장바구니 담기-->
+<!--                                                            </button>-->
+<!--                                                            <button class="sc-1k9quwu-0 fTrGbC sc-gnmni8-8 kiiuoA" th:data-id="${dib.product.productId}">-->
+<!--                                                                찜하기 취소-->
+<!--                                                            </button>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="sc-1o307be-0 jOhOoP">
+                                <button class="sc-1k9quwu-0 frxcub sc-1o307be-1 dTwpud" disabled="">
+                                    <svg width="14" height="14" focusable="false" viewBox="0 0 16 16"
+                                         aria-hidden="true"
+                                         role="presentation" style="fill:#aab5c0;transform:rotate(180deg)">
+                                        <path fill="#aab5c0" fill-rule="nonzero"
+                                              d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
+                                        </path>
+                                    </svg>
+                                    이전
+                                </button>
+                                <button class="sc-1k9quwu-0 frxcub sc-1o307be-1 dTwpud">다음
+                                    <svg width="14" height="14" focusable="false" viewBox="0 0 16 16"
+                                         aria-hidden="true" role="presentation" style="fill:#aab5c0">
+                                        <path fill="#aab5c0" fill-rule="nonzero"
+                                              d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="/js/product/dibs/dibsProduct.js" th:src="@{/js/product/dibs/dibsProduct.js}"></script>
+
+</body>
+
+</html>
