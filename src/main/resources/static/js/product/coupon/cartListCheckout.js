@@ -78,9 +78,8 @@ function appendCoupons() {
             };
             requestPayment("/cart/request/checkout", param)
                 .then((data) => {
-
                     var IMP = window.IMP; // 생략가능
-                    IMP.init('imp34631730'); // <-- 본인 가맹점 식별코드 삽입
+                    IMP.init(data.importId); // <-- 본인 가맹점 식별코드 삽입
 
                     let uid = "order_" + new Date().getTime(); // <- 주문번호 생성
 
