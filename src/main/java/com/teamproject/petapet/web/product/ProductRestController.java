@@ -2,6 +2,7 @@ package com.teamproject.petapet.web.product;
 
 import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.domain.product.Review;
+import com.teamproject.petapet.web.buyproduct.BuyProductService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
 import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import com.teamproject.petapet.web.product.productdtos.ProductDTO;
@@ -46,6 +47,7 @@ public class ProductRestController {
     private String saveUrl;
     private final ReviewService reviewService;
     private final ProductService productService;
+    private final BuyProductService buyProductService;
     private final FileService fileService;
 
     @PostMapping(value = "/image", produces = "application/json; charset=utf8")
@@ -95,24 +97,38 @@ public class ProductRestController {
         return getProductMainPageListDTOS(productList);
     }
 
-    @PostMapping("/updateReview")
-    public void updateReview(@ModelAttribute ReviewInsertDTO reviewInsertDTO, @RequestParam("productId") Long productId, Principal principal) {
-        Review review = reviewService.findOneByMemId(productId, principal.getName()).orElseThrow(NoSuchElementException::new);
-        List<UploadFile> storeFiles = fileService.storeFiles(reviewInsertDTO.getReviewImg());
-        ArrayList<UploadFile> uploadFiles = new ArrayList<>();
-        List<UploadFile> reviewImg = review.getReviewImg();
+@PostMapping("/updateReview")
+    public void updateReview(@ModelAttribute ReviewInsertDTO reviewInsertDTO,
+                             @RequestParam("productId") Long productId,
+                             Principal principal) {
+        Review review = reviewService.findOneByMemId(productId, principal.getName())
+                .orElseThrow(NoSuchElementException::new);
+
+        List<UploadFile> storedFiles = fileService.storeFiles(reviewInsertDTO.getReviewImg());
+        List<UploadFile> reviewFiles = review.getReviewImg();
+        List<UploadFile> combinedFiles = new ArrayList<>();
+
         if (reviewInsertDTO.getStoreFileName() != null) {
             IntStream.range(0, reviewInsertDTO.getStoreFileName().size()).forEach(i -> {
-                UploadFile uploadFile = new UploadFile(reviewInsertDTO.getUploadFileName().get(i), reviewInsertDTO.getStoreFileName().get(i));
-                uploadFiles.add(uploadFile);
+                UploadFile file = new UploadFile(reviewInsertDTO.getUploadFileName().get(i),
+                        reviewInsertDTO.getStoreFileName().get(i));
+                combinedFiles.add(file);
             });
         }
-        uploadFiles.addAll(reviewImg);
-        List<UploadFile> uploadFileList = uploadFiles.stream().distinct().collect(Collectors.toList());
-        uploadFileList.addAll(storeFiles);
 
-        reviewService.updateReview(review, reviewInsertDTO.getReviewTitle(), reviewInsertDTO.getReviewContent(), LocalDateTime.now(), reviewInsertDTO.getReviewRating(), uploadFileList);
+        combinedFiles.addAll(reviewFiles);
+        List<UploadFile> uniqueFiles = combinedFiles.stream().distinct().collect(Collectors.toList());
+        uniqueFiles.addAll(storedFiles);
+
+        reviewService.updateReview(review,
+                reviewInsertDTO.getReviewTitle(),
+                reviewInsertDTO.getReviewContent(),
+                LocalDateTime.now(),
+                reviewInsertDTO.getReviewRating(),
+                uniqueFiles);
     }
+
+
 
     @PostMapping("/deleteReviewImg")
     @Transactional
@@ -135,9 +151,10 @@ public class ProductRestController {
 
     //22.12.15 박채원 추가 - 이하 3개 메소드(사업자 마이페이지 구현 위함)
     //23.01.23 박채원 수정 - getProductList 메소드 (querydsl로 데이터 가져옴)
+    //23.02.12 오성훈 수정 - getProductList 메소드 수정
     @GetMapping(value="/manageProduct", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProductDTO>> getProductList(Principal principal){
-        List<ProductDTO> companyProductList = productService.getCompanyProductList(principal.getName());
+        List<ProductDTO> companyProductList = buyProductService.getCompanyProductList(principal.getName());
         return new ResponseEntity<>(companyProductList, HttpStatus.OK);
     }
 

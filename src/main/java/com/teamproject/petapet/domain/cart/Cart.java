@@ -43,4 +43,11 @@ public class Cart{
         this.quantity = quantity;
     }
 
+    public Long getTotalPrice() {
+        return getProduct().getProductPrice() * getQuantity();
+    }
+
+    public void updateCart(Long quantity) {
+        this.quantity = quantity;
+    }
 }

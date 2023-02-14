@@ -23,9 +23,10 @@ import java.util.List;
 
 @Entity
 @Builder
-@AllArgsConstructor
-@ToString(exclude = {"company", "review", "cart"})
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = {"company", "review", "cart"})
 @DynamicInsert
 @DynamicUpdate
 @EntityListeners(value = {AuditingEntityListener.class})
@@ -94,24 +95,20 @@ public class Product {
     @JoinColumn(name = "companyId")
     private Company company;
 
-    public Product() {
+    public void subtractStock(Long quantity) {
+        long remainStock = this.productStock - quantity;
+        if (remainStock < quantity) {
+            throw new IllegalStateException("재고가 부족합니다.");
+        }
+        this.productStock = remainStock;
     }
 
-    public Product(String productName, Long productPrice, Long productStock, Long productDiscountRate, Long productUnitPrice, String productStatus, ProductType productDiv, String productContent, Long productRating, Long productReviewCount, Long productViewCount, Long productSellCount, Company company, List<UploadFile> productImg) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productStock = productStock;
-        this.productDiscountRate = productDiscountRate;
-        this.productUnitPrice = productUnitPrice;
-        this.productStatus = productStatus;
-        this.productDiv = productDiv;
-        this.productContent = productContent;
-        this.productRating = productRating;
-        this.productReviewCount = productReviewCount;
-        this.productViewCount = productViewCount;
-        this.productSellCount = productSellCount;
-        this.company = company;
-        this.productImg = productImg;
+    public void increaseSellCount(Long quantity) {
+        this.productSellCount += quantity;
+    }
+
+    public void increaseViewCount() {
+        this.productViewCount += 1L;
     }
 
     public ProductDetailDTO toProductDetailDTO(Product product) {

@@ -25,8 +25,10 @@ public class CouponBoxDTO {
 
     private Long couponDiscRate;
 
+    private Long couponAcceptPrice;
+
     @QueryProjection
-    public CouponBoxDTO(Long couponBoxId, boolean isUsed, LocalDateTime expirationDate, String memberId, Long couponId, String couponName, String couponAcceptType, Long couponDiscRate) {
+    public CouponBoxDTO(Long couponBoxId, boolean isUsed, LocalDateTime expirationDate, String memberId, Long couponId, String couponName, String couponAcceptType, Long couponDiscRate,Long couponAcceptPrice) {
         this.couponBoxId = couponBoxId;
         this.isUsed = isUsed;
         this.expirationDate = expirationDate;
@@ -35,5 +37,6 @@ public class CouponBoxDTO {
         this.couponName = couponName;
         this.couponAcceptType = ProductType.valueOf(couponAcceptType).getProductCategory();
         this.couponDiscRate = couponDiscRate;
+        this.couponAcceptPrice = couponAcceptPrice;
     }
 }

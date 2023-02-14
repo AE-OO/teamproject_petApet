@@ -2,19 +2,19 @@ package com.teamproject.petapet.web.member.service;
 
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.member.MemberRepository;
+import com.teamproject.petapet.exception.NotLoginException;
 import com.teamproject.petapet.jwt.JwtTokenProvider;
 
 import com.teamproject.petapet.web.member.validatiion.PasswordEquals;
 import com.teamproject.petapet.web.member.dto.*;
 
-import com.teamproject.petapet.web.product.fileupload.FileService;
-import com.teamproject.petapet.web.product.fileupload.UploadFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,10 +23,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberDTO> getMemberList() {
         List<Member> memberList = memberRepository.findAll(Sort.by(Sort.Direction.DESC, "memberReport"));
-        return memberList.stream().map(list -> MemberDTO.fromEntityForMemberListOfAdminPage(list)).collect(Collectors.toList());
+        return memberList.stream().map(MemberDTO::fromEntityForMemberListOfAdminPage).collect(Collectors.toList());
     }
 
     @Override
@@ -207,7 +207,6 @@ public class MemberServiceImpl implements MemberService {
         return CommunityMemberDTO.fromEntity(memberRepository.findById(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException(memberId + " -> 데이터베이스에서 찾을 수 없습니다.")));
     }
-
 
 }
 

@@ -1,5 +1,6 @@
 package com.teamproject.petapet.web.product.coupon.service;
 
+import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Coupon;
 import com.teamproject.petapet.web.product.coupon.coupondtos.CouponListDTO;
 import com.teamproject.petapet.web.product.coupon.coupondtos.CouponDTO;

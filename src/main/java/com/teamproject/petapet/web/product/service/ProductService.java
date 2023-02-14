@@ -8,6 +8,7 @@ import com.teamproject.petapet.web.product.productdtos.ProductDTO;
 import com.teamproject.petapet.web.product.productdtos.ProductInsertDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +18,6 @@ import java.util.Optional;
  */
 
 public interface ProductService {
-    List<ProductDTO> getCompanyProductList(String companyId);
-
     Page<Product> getProductPage(Pageable pageable);
 
     Page<Product> getProductListByReview(Pageable pageable);
@@ -39,13 +38,7 @@ public interface ProductService {
 
     Optional<Product> saveProduct(ProductInsertDTO productInsertDTO, List<UploadFile> uploadFiles, Company company);
 
-    Optional<Product> saveProduct(Product product);
-
-    void updateCounterView(Long productId);
-
-    void updateCounterSell(Long productId);
-
-    Page<Product> findPage(String searchContent, Pageable pageable);
+    Page<Product> findPage(@Param("searchContent") String searchContent, Pageable pageable);
 
     Page<Product> findPage(String category, ProductType productType, String sortType, String searchContent, Long starRating, String minPrice, String maxPrice, String isPriceRange, Pageable pageable);
 

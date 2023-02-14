@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
@@ -26,15 +27,18 @@ public class EmailService {
     private final BuyService buyService;
 
     // 구매 영수증 메일
-    public void sendEmailMessage(String email, Long buyId) throws Exception {
+    public void sendEmailMessage(String email, Long buyId) {
 //        String code = createCode(); // <- 인증코드 생성
         Buy buy = buyService.findById(buyId); // 결제메일 맵핑
 
         MimeMessage message = javaMailSender.createMimeMessage();
-
+        try {
         message.addRecipients(MimeMessage.RecipientType.TO, email); // 보낼 이메일 설정
         message.setSubject("[결제 완료] 주식회사 petApet에서 발신한 메일 입니다"); // 이메일 제목
         message.setText(setContextBuy(buy), "utf-8", "html"); // 내용 설정(Template Process)
+        } catch (MessagingException e) {
+            throw new RuntimeException("mail error", e);
+        }
 
         // 보낼 때 이름 설정하고 싶은 경우
         // message.setFrom(new InternetAddress([이메일 계정], [설정할 이름]));
