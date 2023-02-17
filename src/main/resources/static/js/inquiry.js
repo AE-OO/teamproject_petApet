@@ -211,6 +211,5 @@ function fn_delete(){
 const putValue = (target) => {
     let value = $('#companyId').val();
     $('input[name=companyId]').attr('value',value);
-    console.log("companyId => ",value);
 }
 
