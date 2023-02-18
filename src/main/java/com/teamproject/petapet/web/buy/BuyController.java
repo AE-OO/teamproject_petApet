@@ -6,6 +6,7 @@ import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.web.buy.dto.BuyVO;
 import com.teamproject.petapet.web.buy.service.BuyService;
 import com.teamproject.petapet.web.buyproduct.BuyProductDTO;
+import com.teamproject.petapet.web.buyproduct.BuyProductService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.NoSuchElementException;
 public class BuyController {
 
     private final BuyService buyService;
+    private final BuyProductService buyProductService;
     private final MemberService memberService;
     private final ProductService productService;
 
@@ -74,13 +76,13 @@ public class BuyController {
     @ResponseBody
     @GetMapping("/getTotalSalesPerMonth")
     public List<Integer> getTotalSalesPerMonth(Principal principal){
-        return buyService.getTotalSalesPerMonth(principal.getName());
+        return buyService.getTotalSalesVolPerMonth(principal.getName());
     }
     
     @ResponseBody
     @GetMapping("/getProductSales")
     public List<List<String>> getProductSales(Principal principal){
-        return buyService.getProductSales(principal.getName());
+        return buyService.getSalesVolbyProduct(principal.getName());
     }
 
     @ResponseBody

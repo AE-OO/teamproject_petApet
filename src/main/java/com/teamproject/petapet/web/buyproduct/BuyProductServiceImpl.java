@@ -44,4 +44,5 @@ public class BuyProductServiceImpl implements BuyProductService {
                 .where(product.company.companyId.eq(companyId))
                 .fetch();
     }
+
 }

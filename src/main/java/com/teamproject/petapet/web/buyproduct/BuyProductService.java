@@ -10,4 +10,5 @@ public interface BuyProductService {
     BuyProduct save(BuyProduct buyProduct);
 
     List<ProductDTO> getCompanyProductList(String companyId);
+
 }

@@ -48,13 +48,13 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public List<Integer> getTotalSalesPerMonth(String companyId) {
-        return buyRepository.getTotalSalesPerMonth(companyId);
+    public List<Integer> getTotalSalesVolPerMonth(String companyId) {
+        return buyRepository.getTotalSalesVolPerMonth(companyId);
     }
 
     @Override
-    public List<List<String>> getProductSales(String companyId) {
-        return buyRepository.getProductSales(companyId);
+    public List<List<String>> getSalesVolbyProduct(String companyId) {
+        return buyRepository.getSalesVolbyProduct(companyId);
     }
 
     @Override

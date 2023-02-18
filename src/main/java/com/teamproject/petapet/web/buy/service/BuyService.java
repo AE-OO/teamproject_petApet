@@ -17,9 +17,10 @@ public interface BuyService {
 
     boolean existsByPurchaseHistory(Long buyId, String memberId);
 
+    List<Integer> getTotalSalesVolPerMonth(String companyId);
+    List<List<String>> getSalesVolbyProduct(String companyId);
     //박채원 22.12.16 추가 (이하 3개 메소드)
     List<Integer> getTotalSalesPerMonth(String companyId);
-    List<List<String>> getProductSales(String companyId);
     List<Integer> getDetailSalesPerMonth(Long productId);
 
     //박채원 22.12.26 추가 (이하 2개 메소드)
