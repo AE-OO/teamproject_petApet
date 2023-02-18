@@ -21,9 +21,9 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
 
     // 전체 상품 월별 판매량 데이터
     @Query(value = "with recursive Dummy as (\n" +
-            "    select max(date_sub(now(), interval 5 month)) as startMonth from dual\n" +
-            "    union all\n" +
-            "    select startMonth + interval 1 month from Dummy where startMonth < now())\n" +
+            "select max(date_sub(now(), interval 5 month)) as startMonth from dual\n" +
+            "union all\n" +
+            "select startMonth + interval 1 month from Dummy where startMonth < now())\n" +
             "select ifnull(R.salesVol, 0) from Dummy d\n" +
             "left outer join\n" +
             "(select bpP.pId, date_format(buyDate, \"%Y-%m\") as buy_date, bpP.salesVol from Buy,\n" +
@@ -36,18 +36,19 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
 
     // 판매량 순위 데이터
     @Query(value = "with recursive Dummy as (\n" +
-            "    select 1 as startNum\n" +
-            "    union all\n" +
-            "    select startNum + 1 from Dummy where startNum < 5)\n" +
+            "select 1 as startNum\n" +
+            "union all\n" +
+            "select startNum + 1 from Dummy where startNum < 5)\n" +
             "select j.pname, ifnull(j.quantity, 0) from Dummy d\n" +
             "left outer join\n" +
             "(select @ROWNUM :=@ROWNUM + 1 as ROWNUM, p.productName as pname, quantity\n" +
-            "from BuyProduct bp, \n" +
-            "(select productId, productName from Product where companyId = '*company1111') p,\n" +
-            "(select @ROWNUM :=0) tmp\n" +
-            "where bp.productId = p.productId\n" +
-            "group by bp.productId\n" +
+            "    from BuyProduct bp, \n" +
+            "        (select productId, productName from Product where companyId = '*company1111') p,\n" +
+            "        (select @ROWNUM :=0) tmp\n" +
+            "    where bp.productId = p.productId\n" +
+            "    group by bp.productId\n" +
             "order by quantity desc limit 5) j on d.startNum = j.ROWNUM;", nativeQuery = true)
     List<List<String>> getSalesVolbyProduct(String companyId);
+
 
 }
