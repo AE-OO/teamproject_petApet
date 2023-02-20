@@ -31,7 +31,7 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
 
     @Modifying
     @Transactional
-    @Query("update Company c set c.companyEmail =:companyEmail, c.companyPhoneNum=:companyPhoneNum where c.companyId =:companyId")
+    @Query("update Company c set c.companyEmail =:companyEmail, c.companyPhoneNum=:companyPhoneNum where c.companyId = :companyId")
     void updateCompany(String companyId, String companyEmail, String companyPhoneNum);
 
     //22.11.25 박채원 추가
@@ -39,7 +39,7 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
 
     @Modifying
     @Transactional
-    @Query("update Company c set c.activated = true, c.companyJoinDate = current_date where c.companyId =:companyId")
+    @Query("update Company c set c.activated = true, c.companyJoinDate = current_date where c.companyId = :companyId")
     void acceptJoinCompany(@Param("companyId") String companyId);
 
     boolean existsByCompanyEmail(String CompanyEmail);

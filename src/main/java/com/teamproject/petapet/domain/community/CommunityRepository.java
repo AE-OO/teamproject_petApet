@@ -19,7 +19,7 @@ import java.util.List;
 public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Modifying
     @Transactional
-    @Query("update Community c set c.communityReport = c.communityReport + 1 where c.communityId =:communityId")
+    @Query("update Community c set c.communityReport = c.communityReport + 1 where c.communityId = :communityId")
     void addCommunityReport(Long communityId);
 
     @Query(value = "select count(c) from Community c where c.createdDate > current_date")
