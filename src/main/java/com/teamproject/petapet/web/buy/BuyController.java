@@ -74,21 +74,21 @@ public class BuyController {
 
     //박채원 22.12.16 추가 (이하 3개 메소드)
     @ResponseBody
-    @GetMapping("/getTotalSalesPerMonth")
-    public List<Integer> getTotalSalesPerMonth(Principal principal){
+    @GetMapping("/getTotalSalesVolPerMonth")
+    public List<Integer> getTotalSalesVolPerMonth(Principal principal){
         return buyService.getTotalSalesVolPerMonth(principal.getName());
     }
     
     @ResponseBody
-    @GetMapping("/getProductSales")
-    public List<List<String>> getProductSales(Principal principal){
+    @GetMapping("/getSalesVolbyProduct")
+    public List<List<String>> getSalesVolbyProduct(Principal principal){
         return buyService.getSalesVolbyProduct(principal.getName());
     }
 
     @ResponseBody
-    @GetMapping("/getDetailSalesPerMonth/{productId}")
-    public List<Integer> getDetailSalesPerMonth(@PathVariable("productId") Long productId){
-        return buyService.getDetailSalesPerMonth(productId);
+    @GetMapping("/getSalesVolbyProductPerMonth/{productId}")
+    public List<Integer> getSalesVolbyProductPerMonth(@PathVariable("productId") Long productId){
+        return buyService.getSalesVolbyProductPerMonth(productId);
     }
 
     //박채원 22.12.26 추가 (이하 2개 메소드)

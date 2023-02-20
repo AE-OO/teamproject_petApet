@@ -1,6 +1,8 @@
 package com.teamproject.petapet.web.buy.service;
 
 
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.buy.BuyRepository;
 import com.teamproject.petapet.domain.buyproduct.BuyProduct;
@@ -58,8 +60,8 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public List<Integer> getDetailSalesPerMonth(Long productId) {
-        return buyRepository.getDetailSalesPerMonth(productId);
+    public List<Integer> getSalesVolbyProductPerMonth(Long productId) {
+        return buyRepository.getSalesVolbyProductPerMonth(productId);
     }
 
     @Override
@@ -72,4 +74,5 @@ public class BuyServiceImpl implements BuyService {
     public List<Integer> getMonthlySales(String companyId) {
         return buyRepository.getMonthlySales(companyId);
     }
+
 }

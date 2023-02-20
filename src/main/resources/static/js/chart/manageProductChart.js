@@ -203,7 +203,7 @@ function getTotalSalesPerMonth(){
     var salesArray = [];
 
     $.ajax({
-        url: "/buy/getTotalSalesPerMonth", //buy 테이블에서 회사아이디 검색해서 월별 판매량 가져오기
+        url: "/buy/getTotalSalesVolPerMonth", //buy 테이블에서 회사아이디 검색해서 월별 판매량 가져오기
         type: "get",
         async: false,
         dataType: "json",
@@ -224,7 +224,7 @@ function getProductSales(){
     var salesArray = [];
 
     $.ajax({
-        url: "/buy/getProductSales",
+        url: "/buy/getSalesVolbyProduct",
         type: "get",
         async: false,
         dataType: "json",
@@ -246,7 +246,7 @@ function getDetailSalesPerMonth(){
     var salesArray = [];
 
     $.ajax({
-        url: "/buy/getDetailSalesPerMonth/" + $("#detailProductId").val(),
+        url: "/buy/getSalesVolbyProductPerMonth/" + $("#detailProductId").val(),
         type: "get",
         async: false,
         dataType: "json",
