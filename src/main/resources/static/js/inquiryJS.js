@@ -1,6 +1,7 @@
 $(document).ready(function () {
     let page = 0;
     getInquiryList(page);
+    getLoginId
 
     $(document).on("click", ".productInquiry", function() {
         $("#modalTargetProductId").val($('.productTitle').attr('data-id'));
@@ -12,7 +13,7 @@ $(document).ready(function () {
             inquiredContent : $("textarea[name=inquiryContent]").val(),
             productId : $("#modalTargetProductId").val(),
             companyId : $('.productSeller').attr('data-id'),
-            memberId : "member010"                     //여기 세션에서 값 가져오는 걸로 수정하기
+            memberId : loginId
         }
         $.ajax({
             url: "/inquiry/registerProductInquiry",
