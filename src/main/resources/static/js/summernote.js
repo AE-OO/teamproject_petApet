@@ -16,7 +16,7 @@ uploadSummernoteImageFile = (file, el) => {
 }
 
 $(document).ready(function(){
-    $('#noticeContent').summernote({
+    $('#summernoteContent').summernote({
         tabsize: 2,
         fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
         toolbar: [
@@ -43,14 +43,26 @@ $(document).ready(function(){
     })
 
     $("#submitBtn").click(function () {
-        if($("#noticeTitle").val() ==='' || $("#noticeTitle").val() === null){
-            alert("제목을 작성해주세요");
-            return;
-        }else if($("#noticeContent").val() === '' || $("#noticeContent").val() === null){
-            alert("내용을 작성해주세요");
-            return;
-        } else{
-            $("#submitBtn").attr("type", "submit");
-        }
+        selectButton($(this).hasClass("community"));
     })
 })
+
+
+function selectButton(type){
+    if (type) {
+        if($("input[name=communityCategory]").val() ==='' || $("input[name=communityCategory]").val() === null){
+            alert("말머리를 선택해주세요");
+            return;
+        }
+    }
+
+    if($("#summernoteTitle").val() ==='' || $("#summernoteTitle").val() === null){
+        alert("제목을 작성해주세요");
+        return;
+    }else if($("#summernoteContent").val() === '' || $("#summernoteContent").val() === null){
+        alert("내용을 작성해주세요");
+        return;
+    } else{
+        $("#submitBtn").attr("type", "submit");
+    }
+}

@@ -76,6 +76,8 @@ public class BuyController {
     @ResponseBody
     @GetMapping("/getTotalSalesVolPerMonth")
     public List<Integer> getTotalSalesVolPerMonth(Principal principal){
+        System.out.println("이름 : " + principal.getName());
+        System.out.println(buyService.getTotalSalesVolPerMonth(principal.getName()));
         return buyService.getTotalSalesVolPerMonth(principal.getName());
     }
     

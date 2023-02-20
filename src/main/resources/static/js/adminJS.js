@@ -145,7 +145,7 @@ $(document).ready(function () {
     //회사 가입 승인 버튼 클릭
     $("#acceptCompanyJoinBtn").click(function () {
         $.ajax({
-            url: "/acceptJoinCompany/" + $("#modalCompanyId").val(),
+            url: "/admin/acceptJoinCompany/" + $("#modalCompanyId").val(),
             type: "post",
             success() {
                 getCompanyJoinAcceptList();
@@ -162,7 +162,7 @@ $(document).ready(function () {
             success() {
                 alert("메일을 전송했습니다.");
                 $.ajax({
-                    url: "/refuseJoinCompany/" + $("#modalCompanyId").val(),
+                    url: "/admin/refuseJoinCompany/" + $("#modalCompanyId").val(),
                     type: "post",
                     success() {
                         getCompanyJoinAcceptList();
@@ -398,7 +398,7 @@ function getMemberList() {
         }
 
         $(".wholeMemberData").html(list);
-    })
+    });
 }
 
 //신고수가 3 이상이 되면 글씨 빨갛게 바꾸기
@@ -490,10 +490,9 @@ function getReportReason(targetId, type) {
     });
 }
 
-// 사업자 가입 안됨
 //사업자 정보 불러오는 모달
 function getCompanyInfo(companyId) {
-    $.getJSON("/getCompanyInfo/" + companyId, function (data) {
+    $.getJSON("/admin/getCompanyInfo/" + companyId, function (data) {
         $("#modalCompanyName").val(data.companyName);
         $("#modalCompanyId").val(data.companyId);
         $("#modalCompanyPhoneNum").val(data.companyPhoneNum);

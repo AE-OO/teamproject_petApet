@@ -27,7 +27,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
             "select ifnull(R.salesVol, 0) from Dummy d\n" +
             "left outer join\n" +
             "(select bpP.pId, date_format(buyDate, \"%Y-%m\") as buy_date, sum(bpP.quantity) as salesVol from Buy,\n" +
-            "    (select p.productId as pId, buyId, quantity as salesVol from BuyProduct bp,\n" +
+            "    (select p.productId as pId, buyId, quantity from BuyProduct bp,\n" +
             "        (select productId from Product where companyId = ?1) p\n" +
             "    where bp.productId = p.productId) bpP\n" +
             "where Buy.buyId = bpP.buyId\n" +
@@ -41,10 +41,10 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
             "   select startNum + 1 from Dummy where startNum < 5)\n" +
             "select j.pname, ifnull(j.salesVol, 0) from Dummy d\n" +
             "left outer join\n" +
-            "(select @ROWNUM :=@ROWNUM + 1 as ROWNUM, p.productName as pname, sum(quantity) as salesVol\n" +
+            "(select @ROWNUM \\:=@ROWNUM + 1 as ROWNUM, p.productName as pname, sum(quantity) as salesVol\n" +
             "    from BuyProduct bp, \n" +
             "        (select productId, productName from Product where companyId = ?1) p,\n" +
-            "        (select @ROWNUM :=0) tmp\n" +
+            "        (select @ROWNUM \\:=0) tmp\n" +
             "    where bp.productId = p.productId\n" +
             "    group by bp.productId\n" +
             "order by quantity desc limit 5) j on d.startNum = j.ROWNUM;", nativeQuery = true)

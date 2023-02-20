@@ -20,14 +20,14 @@
                             <form class="form-sample" th:method="post" th:action="@{/admin/registerNotice}">
                                 <input type="hidden" name="communityCategory" value="공지사항">
                                 <div class="form-group">
-                                    <label for="noticeTitle">제목</label>
-                                    <input type="text" class="form-control" id="noticeTitle" name="communityTitle" placeholder="Title">
+                                    <label for="summernoteTitle">제목</label>
+                                    <input type="text" class="form-control" id="summernoteTitle" name="communityTitle" placeholder="Title">
                                 </div>
                                 <div class="form-group">
-                                    <label for="noticeContent">공지내용</label>
-                                    <textarea id="noticeContent" name="communityContent"></textarea>
+                                    <label for="summernoteContent">공지내용</label>
+                                    <textarea id="summernoteContent" name="communityContent"></textarea>
                                 </div>
-                                <input type="button" id="submitBtn" class="btn btn-primary mr-2" value="등록">
+                                <button type="button" id="submitBtn" class="btn btn-primary mr-2">등록</button>
                                 <a th:href="@{/admin/adminPage}">
                                     <button class="btn btn-light" type="button">취소</button>
                                 </a>
@@ -41,64 +41,7 @@
     <div th:replace="fragment/admin_fragment :: footer"></div>
 </div>
 
-<script>
-    uploadSummernoteImageFile = (file, el) => {
-        data = new FormData();
-        data.append("file", file);
-        $.ajax({
-            data: data,
-            type: "POST",
-            url: "/product/image",
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function (data) {
-                console.log(data)
-                $(el).summernote('editor.insertImage', data.url);
-            }
-        });
-    }
-
-    $(document).ready(function(){
-        $('#noticeContent').summernote({
-            tabsize: 2,
-            fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
-            toolbar: [
-                ['font', ['fontname', 'fontsize', 'fontsizeunit']],
-                ['fontstyle', ['bold', 'italic', 'underline', 'strikethrough', 'forecolor', 'backcolor', 'superscript', 'subscript', 'clear']],
-                ['style', ['style']],
-                ['paragraph', ['paragraph', 'height', 'ul', 'ol']],
-                ['insert', ['table', 'hr', 'link', 'picture', 'video']],
-                ['codeview'],
-            ],
-            minHeight: 500,
-            maxHeight: null,
-            focus: true,
-            resize: false,
-            callbacks: {
-                onImageUpload: function (files, editor, welEditable) {
-                    // 파일 업로드(다중업로드를 위해 반복문 사용)
-                    for (var i = files.length - 1; i >= 0; i--) {
-                        uploadSummernoteImageFile(files[i],
-                            this);
-                    }
-                }
-            }
-        })
-
-        $("#submitBtn").click(function () {
-            if($("#noticeTitle").val() ==='' || $("#noticeTitle").val() === null){
-                alert("제목을 작성해주세요");
-                return;
-            }else if($("#noticeContent").val() === '' || $("#noticeContent").val() === null){
-                alert("내용을 작성해주세요");
-                return;
-            } else{
-                $("#submitBtn").attr("type", "submit");
-            }
-        })
-    })
-</script>
+<script th:src="@{/js/summernote.js}"></script>
 </body>
 
 </html>

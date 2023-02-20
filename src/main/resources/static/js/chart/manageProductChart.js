@@ -201,6 +201,7 @@ function getFormatDate(date , subNum){
 function getTotalSalesPerMonth(){
     var salesJson = {};
     var salesArray = [];
+    console.log("실행");
 
     $.ajax({
         url: "/buy/getTotalSalesVolPerMonth", //buy 테이블에서 회사아이디 검색해서 월별 판매량 가져오기
@@ -208,11 +209,15 @@ function getTotalSalesPerMonth(){
         async: false,
         dataType: "json",
         success(data){
+            console.log("성공");
             $.each(data, function(key, value){
                 salesJson.id = key;
                 salesJson.val = value;
                 salesArray.push({...salesJson});
             });
+        },
+        error(){
+            alert("데이터를 가져올 수 없습니다.");
         }
     })
     return salesArray;
