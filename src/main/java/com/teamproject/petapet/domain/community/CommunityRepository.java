@@ -26,14 +26,14 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     Long countTodayCommunity();
 
     @Query(value = "select count(c) from Community c where c.createdDate > current_date and c.communityCategory =:communityCategory")
-    Long countTodayCommunity(String communityCategory);
+    Long countTodayCommunity(@Param("communityCategory") String communityCategory);
 
     @Transactional
     @Modifying
     @Query("update Community c set c.viewCount=c.viewCount+1 where c.communityId=:communityId")
     void viewCountPlus(@Param("communityId") Long communityId);
 
-    Page<Community> findAllByCommunityCategory(String communityCategory, Pageable pageable);
+    Page<Community> findAllByCommunityCategory(@Param("communityCategory") String communityCategory, Pageable pageable);
 
     @Query(value = "select c from Community c where c.communityCategory not in ('공지사항')")
     Page<Community> getCommunityList(Pageable pageable);
@@ -51,19 +51,19 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     void updateNotice(String title, String content, Long noticeId);
 
     @Query("select c from Community c where c.communityId=:searchContent and c.communityCategory not in ('공지사항')")
-    Page<Community> searchCommunityIdList(Long searchContent, Pageable pageable);
+    Page<Community> searchCommunityIdList(@Param("searchContent") Long searchContent, Pageable pageable);
 
     @Query("select c from Community c where c.communityTitle like %:searchContent% and c.communityCategory not in ('공지사항')")
-    Page<Community> searchCommunityTitle(String searchContent, Pageable pageable);
+    Page<Community> searchCommunityTitle(@Param("searchContent") String searchContent, Pageable pageable);
 
     @Query("select c from Community c where (c.communityTitle like %:searchContent% or c.communityContent like %:searchContent%) and c.communityCategory not in ('공지사항')")
-    Page<Community> searchCommunityTitleContentList(String searchContent, Pageable pageable);
+    Page<Community> searchCommunityTitleContentList(@Param("searchContent") String searchContent, Pageable pageable);
 
     @Query("select c from Community c where c.member.memberId like %:searchContent% and c.communityCategory not in ('공지사항')")
-    Page<Community> searchMemberIdList(String searchContent, Pageable pageable);
+    Page<Community> searchMemberIdList(@Param("searchContent") String searchContent, Pageable pageable);
 
     @Query("select c from Community c where c.communityId in (select distinct c1.community.communityId from Comment c1 where c1.member.memberId =:memberId)")
-    Page<Community> getCommentWritingCommunityList(String memberId, Pageable pageable);
+    Page<Community> getCommentWritingCommunityList(@Param("memberId") String memberId, Pageable pageable);
 
     @Query(value = "select * from Community where createdDate between date_add(now(),interval -1 week) and now() and communityCategory not in ('공지사항')",nativeQuery = true)
     Page<Community> getPopularList(Pageable pageable);

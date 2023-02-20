@@ -204,27 +204,27 @@ $(document).ready(function () {
             cNumberFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
             return companyNumberResult = false;
         } else {
-            $.ajax({
-                type: "POST",
-                url: "/checkCompanyNumber",
-                data: {
-                    companyNumber: companyNumber(),
-                },
-                dataType: "json",
-                success: function (check) {
-                    if (check) { // 존재
+            // $.ajax({
+            //     type: "POST",
+            //     url: "/checkCompanyNumber",
+            //     data: {
+            //         companyNumber: companyNumber(),
+            //     },
+            //     dataType: "json",
+            //     success: function (check) {
+            //         if (check) { // 존재
                         cNumberFeedback().text("");
                         return companyNumberResult = true;
-                    } else {//조건에 맞을 때
-                        cNumberFeedback().text("가입되지 않은 사업자번호입니다.");
-                        return companyNumberResult = false;
-                    }
-                },
-                error: function () {
-                    console.log("통신 오류");
-                    window.location = "/findId";
-                }
-            });
+                    // } else {//조건에 맞을 때
+                    //     cNumberFeedback().text("가입되지 않은 사업자번호입니다.");
+                    //     return companyNumberResult = false;
+                    // }
+                // },
+                // error: function () {
+                //     console.log("통신 오류");
+                //     window.location = "/findId";
+                // }
+            // });
         }
     });
 
@@ -265,11 +265,11 @@ $(document).ready(function () {
         }
     });
 
-    if($("#findMemberIdResult").val().length > 0){
+    if($("#findMemberIdResult").text().length > 0 ){
         $("#staticBackdrop").modal('show');
     }
 
-    if($("#findCompanyIdResult").val().length > 0){
+    if($("#findCompanyIdResult").text().length > 0){
         $("#staticBackdrop2").modal('show');
     }
 

@@ -133,10 +133,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header py-5">
-                <h5 class="modal-title mx-auto" id="staticBackdropLabel"
-                    th:text="${findMemberId}==0? '입력하신 정보와 일치하는 사용자가 없습니다.':'회원님의 아이디는 '+${findMemberId}+' 입니다'"></h5>
+                <h5 class="modal-title mx-auto" id="staticBackdropLabel">
+                    <span th:if="${findMemberId}==0"><span id="findMemberIdResult">입력하신 정보와 일치하는 사용자가 없습니다.</span>
+                    <span th:unless="${findMemberId}==0">회원님의 아이디는 <span id="findMemberIdResult" th:text="${findMemberId}"></span> 입니다</span>
+                </h5>
             </div>
-            <input type="hidden" id="findMemberIdResult" th:value="${findMemberId}" >
+<!--            <input type="hidden" id="findMemberIdResult" th:value="${findMemberId}" >-->
             <div class="modal-footer" th:if="${findMemberId}==0">
                 <button type="button" class="mx-auto col-4 btn btn-link" onclick="goFindId()">닫기</button>
             </div>
@@ -156,10 +158,11 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header py-5">
-                <h5 class="modal-title mx-auto" id="staticBackdropLabel2"
-                    th:text="${findCompanyId}==0? '입력하신 정보와 일치하는 사용자가 없습니다.':'회원님의 아이디는 '+${findCompanyId}+' 입니다'"></h5>
+                <h5 class="modal-title mx-auto" id="staticBackdropLabel2">
+                    <span th:if="${findCompanyId}==0" th:text="입력하신 정보와 일치하는 사용자가 없습니다"><span id="findCompanyIdResult"></span></span>
+                    <span th:unless="${findCompanyId}==0">회원님의 아이디는 <span id="findCompanyIdResult" th:text="${findCompanyId}"></span> 입니다</span>
+                </h5>
             </div>
-            <input type="hidden" id="findCompanyIdResult" th:value="${findCompanyId}" >
             <div class="modal-footer" th:if="${findCompanyId}==0">
                 <button type="button" class="mx-auto col-4 btn btn-link" onclick="goFindId()">닫기</button>
             </div>
@@ -169,6 +172,7 @@
                 <button type="button" class="mx-auto ms-1 col-5 btn btn-primary" onclick="goLogin()">로그인하기</button>
             </div>
         </div>
+
     </div>
 </div>
 <!-- findMemberId Modal end-->

@@ -29,7 +29,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
 
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String userId) {

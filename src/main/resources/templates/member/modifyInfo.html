@@ -7,8 +7,11 @@
     <link href="/css/myPageSidebar.css" rel="stylesheet">
     <script th:inline="javaScript">
         let originalMemberEmail = [[${memberDTO.memberEmail}]];
-        let originalMemberPhoneNum = [[${memberDTO.memberPhoneNum}]]
+        // let originalMemberEmail = $("input[name=memberEmail]").val();
+        let originalMemberPhoneNum = [[${memberDTO.memberPhoneNum}]];
+        // let originalMemberPhoneNum = $("input[name=memberPhoneNum]").val();
         let memberImg = [[${memberDTO.memberImg}]];
+        // let memberImg = $("#profileImg").attr("src");
     </script>
 </head>
 <body>

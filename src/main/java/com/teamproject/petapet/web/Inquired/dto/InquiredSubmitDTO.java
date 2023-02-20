@@ -8,7 +8,6 @@ import javax.validation.constraints.Pattern;
 @Data
 public class InquiredSubmitDTO {
 
-
     @NotBlank(message = "글 제목을 입력해주세요")
     private String title;
 
@@ -16,9 +15,5 @@ public class InquiredSubmitDTO {
     private String inquiredContent;
 
     private String companyId;
-//
-//    @NotNull
-//    @NotEmpty
-//    private List<MultipartFile> inquiredImg;
-
+    
 }

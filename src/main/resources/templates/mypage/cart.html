@@ -149,8 +149,7 @@
                                                                                     stroke="white"></path>
                                                                         </svg><a th:href="@{/product/dibs/add}" class="blind">찜하기</a></button>
                                                                         <div class="product-removal">
-                                                                            <button th:value="${cart.cartId}" type="button" class="remove-product">
-                                                                                <!--                                                                            <a href="">삭제</a>-->삭제
+                                                                            <button th:value="${cart.cartId}" type="button" class="remove-product">삭제
                                                                             </button>
                                                                             <input id="cartId" type="hidden" th:value="${cart.cartId}">
                                                                         </div>

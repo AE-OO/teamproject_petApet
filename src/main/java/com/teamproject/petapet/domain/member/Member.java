@@ -51,7 +51,7 @@ public class Member{
     @Column
     private Date memberBirthday;
 
-    @Column(length = 45)
+    @Column(length = 100)
     private String memberAddress;
 
     @Column(length = 45, nullable = false, unique = true)

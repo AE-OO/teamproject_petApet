@@ -5,8 +5,10 @@
     <script src="/js/company/modifyCompanyInfo.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
     <script th:inline="javaScript">
-        let originalCompanyEmail = [[${companyDTO.CompanyEmail}]];
-        let originalCompanyPhoneNum = [[${companyDTO.CompanyPhoneNum}]]
+        // let originalCompanyEmail = [[${companyDTO.CompanyEmail}]];
+        let originalCompanyEmail = $("input[name=CompanyEmail]").val();
+        // let originalCompanyPhoneNum = [[${companyDTO.CompanyPhoneNum}]]
+        let originalCompanyPhoneNum = $("input[name=CompanyPhoneNum]").val()
     </script>
 </head>
 <body>
