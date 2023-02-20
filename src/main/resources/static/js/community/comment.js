@@ -40,7 +40,6 @@ $(function () {
         // window.location = "/community";
         history.go(-1);
     });
-
     $("#backBtn").click(function () {
         history.go(-1);
     });
@@ -219,7 +218,6 @@ $(function () {
             submitRecomment($(this).closest('.memberDiv').find(".sideMenu").attr('id'));
         }
     });
-
     //답글,댓글수정 취소버튼
     $(document).on("click", "#cancelBtn", function () {
         $("#commentForm").remove();

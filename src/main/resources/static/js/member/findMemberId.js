@@ -13,11 +13,11 @@ cNameFeedback = () => $("#feedback-companyName");
 cNumberFeedback = () => $("#feedback-companyNumber");
 
 //이름 정규식 (한글, 2-6글자)
-const mNameRegExp = /^[가-힣]{2,6}$/;
+// const mNameRegExp = /^[가-힣]{2,6}$/;
 //휴대전화 정규식 (-빼고 입력 01로 시작, 총 10-11글자)
-const mPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
-const cNameRegExp = /^[가-힣|a-z|A-Z]{1,20}$/;
-const cNumberRegExp = /([0-9]{3})([0-9]{2})([0-9]{5})/;
+// const mPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
+// const cNameRegExp = /^[가-힣|a-z|A-Z]{1,20}$/;
+// const cNumberRegExp = /([0-9]{3})([0-9]{2})([0-9]{5})/;
 
 //인증시간 변수
 let timer = null;
@@ -154,7 +154,7 @@ $(document).ready(function () {
         if (memberName() === null || memberName() === "") { //값이 없을 때
             mNameFeedback().text("필수 정보입니다.");
             return memberNameResult = false;
-        } else if (!(mNameRegExp.test(memberName()))) { //정규식에 맞지 않을 때
+        } else if (!(nameRegExp.test(memberName()))) { //정규식에 맞지 않을 때
             mNameFeedback().text("한글을 사용하세요. (특수기호, 공백 사용 불가)");
             return memberNameResult = false;
         } else { // 조건에 맞을 때
@@ -168,7 +168,7 @@ $(document).ready(function () {
         if (memberPhoneNum() === null || memberPhoneNum() === "") {
             mPhoneNumFeedback().text("인증이 필요합니다.");
             return memberPhoneNumResult = false;
-        } else if (!(mPhoneNumRegExp.test(memberPhoneNum()))) {ZZ
+        } else if (!(phoneNumRegExp.test(memberPhoneNum()))) {ZZ
             mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
             return memberPhoneNumResult = false;
         } else {
@@ -231,7 +231,7 @@ $(document).ready(function () {
     $("#smsBtn").click(function () {
         if (memberPhoneNum() === null || memberPhoneNum() === "") { //값이 없을 때
             mPhoneNumFeedback().text("인증이 필요합니다.");
-        } else if (!(mPhoneNumRegExp.test(memberPhoneNum()))) { //정규식에 맞지 않을 때
+        } else if (!(phoneNumRegExp.test(memberPhoneNum()))) { //정규식에 맞지 않을 때
             mPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
         } else {
             sendBtnClick();

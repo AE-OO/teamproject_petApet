@@ -20,7 +20,7 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Modifying
     @Transactional
     @Query("update Community c set c.communityReport = c.communityReport + 1 where c.communityId =:communityId")
-    void addCommunityReport(Long communityId);
+    void addCommunityReport(@Param("communityId") Long communityId);
 
     @Query(value = "select count(c) from Community c where c.createdDate > current_date")
     Long countTodayCommunity();
@@ -48,7 +48,7 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Modifying
     @Transactional
     @Query("update Community c set c.communityTitle =:title, c.communityContent =:content where c.communityId =:noticeId")
-    void updateNotice(String title, String content, Long noticeId);
+    void updateNotice(@Param("title") String title, @Param("content") String content, @Param("noticeId") Long noticeId);
 
     @Query("select c from Community c where c.communityId=:searchContent and c.communityCategory not in ('공지사항')")
     Page<Community> searchCommunityIdList(@Param("searchContent") Long searchContent, Pageable pageable);
