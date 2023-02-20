@@ -11,27 +11,27 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
-    @Query("update Product p set p.productStatus =:selectStatus, p.productStock =:productStock where p.productId =:productId")
+    @Query("update Product p set p.productStatus = :selectStatus, p.productStock = :productStock where p.productId = :productId")
     void updateProductStatus(@Param("selectStatus") String selectStatus, @Param("productStock") Long productStock, @Param("productId") Long productId);
 
     @Modifying
-    @Query("update Product p set p.productStock =:productStock where p.productId =:productId")
+    @Query("update Product p set p.productStock = :productStock where p.productId = :productId")
     void updateProductStock(Long productStock, Long productId);
 
     @Modifying
-    @Query("update Product p set p.productStatus =:productStatus where p.productId =:productId")
+    @Query("update Product p set p.productStatus = :productStatus where p.productId = :productId")
     void updateProductStatus(@Param("productStatus") String productStatus, @Param("productId") Long productId);
 
-    @Query("select p.productStock from Product p where p.productId =:productId")
+    @Query("select p.productStock from Product p where p.productId = :productId")
     Long findQuantity(@Param("productId") Long productId);
 
     Page<Product> findAllByProductStatus(Pageable pageable, String status);
 
     @Modifying
-    @Query("update Product p set p.productReviewCount=:reviewCount where p.productId=:productId")
+    @Query("update Product p set p.productReviewCount = :reviewCount where p.productId = :productId")
     void updateProductReviewCount(@Param("productId") Long productId, @Param("reviewCount") Long reviewCount);
 
-    @Query("select p from Product p where p.productStatus='판매중' order by p.review.size desc")
+    @Query("select p from Product p where p.productStatus = '판매중' order by p.review.size desc")
     Page<Product> findAllOrderByReviewCount(Pageable pageable);
 
     @Modifying
@@ -39,6 +39,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     void updateProductRating(@Param("id") Long id);
 
     @Modifying
-    @Query("update Product p set p.productReport = p.productReport + 1 where p.productId =:productId")
+    @Query("update Product p set p.productReport = p.productReport + 1 where p.productId = :productId")
     void addProductReport(@Param("productId") Long productId);
 }

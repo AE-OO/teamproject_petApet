@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    @Query("select count(r) from Review r where r.product.productId=:productId")
+    @Query("select count(r) from Review r where r.product.productId = :productId")
     Long countReviewByProduct(@Param("productId")Long productId);
 
     @Query(value = "select a from Review a where a.product.productId = :id")

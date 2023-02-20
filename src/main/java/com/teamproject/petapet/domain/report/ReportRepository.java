@@ -20,6 +20,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     Report getReportByReportId(Long reportId);
     @Modifying
     @Transactional
-    @Query("update Report r set r.responseStatus = 1 where r.reportId =:reportId")
+    @Query("update Report r set r.responseStatus = 1 where r.reportId = :reportId")
     void setResponseStatusTrue(@Param("reportId") Long reportId);
 }
