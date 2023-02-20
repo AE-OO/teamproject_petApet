@@ -83,7 +83,6 @@ public class Inquired {
         this.member = member;
         this.company = company;
         this.checked = checked;
-//        this.inquiredImg = inquiredImg;
     }
 
     public Inquired(Long inquiredId, Boolean checked) {

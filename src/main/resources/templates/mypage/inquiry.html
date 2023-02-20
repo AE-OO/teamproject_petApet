@@ -56,7 +56,7 @@
                                     class="sc-nc5wvm-0 gLLYzi">아이디/비밀번호 찾기</a></div>
                             <div class="sc-12nmnou-1 ilXMXz"></div>
                             <div class="sc-15254j6-0 kpgzYC">
-                                <div>고객센터<span class="sc-15254j6-1 hHuJts">1577-7011
+                                <div>고객센터<span class="sc-15254j6-1 hHuJts">123-4567
                                     </span></div>
                                 <div>365일, 24시간 운영</div>
                             </div>
@@ -99,7 +99,7 @@
                                     <div class="sc-10d7xix-0 p-3 myInquiry" data-btn="btn3" th:each="inquiry : ${myInquiry}">
                                         <span class="btn btn-primary state" th:text="${inquiry.checked} ? '답변완료':'답변대기'">답변완료</span>
                                         <button type="button" class="btn btn-primary float-end mySubmitInQuiry">X</button>
-                                        <p class="sc-10d7xix-1 m-3 myInquiry-title" th:text="${inquiry.inquiredTitle}">문의 타이틀입니다.</p>
+                                        <p class="sc-10d7xix-1 m-3 myInquiry-title" th:text="${inquiry.checked} ? '이메일로 문의 답변 확인해주세요':${inquiry.inquiredTitle}">문의 타이틀입니다.</p>
                                     </div>
                                 </div>
                             </div>
@@ -126,16 +126,17 @@
                                             <label class="col-sm-2 col-form-label">구매한 상품명</label>
                                             <div class="col-sm-10">
                                             <select type="input" onchange="putValue(this)" id="companyId" class="form-control" required>
-                                                <option value="">-- 선택 --</option>
+                                                <option disabled selected>-- 선택 --</option>
                                                 <th:block th:each="buy : ${buyList}">
                                                 <option  th:each="buyProduct : ${buy.products}"
+                                                         th:value="${buyProduct.product.company.companyId}"
                                                         data-th-text="|상품명 : ${buyProduct.product.productName} / 수량 : ${buyProduct.quantity}개 / 구매일시 : ${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}|">
                                                 </option>
                                                 </th:block>
                                             </select>
                                             </div>
                                             <div class="col-sm-10">
-                                                <input type="hidden" class="form-control" name="companyId" value="" text="" />
+                                                <input type="hidden" class="form-control" name="companyId" value=""/>
                                             </div>
                                         </div>
                                         <div class="container">
@@ -153,18 +154,18 @@
                         <div id="tab2" class="sc-1pgb0b5-1">
                             <ul class="sc-nly1np-0 belqZG">
                                 <li data-tab="qna1" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">배송문의</span></li>
-                                <li data-tab="qna2" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">반품/교환/환불</span></li>
-                                <li data-tab="qna3" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">정기배송</span></li>
-                                <li data-tab="qna4" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">주문/결제</span></li>
-                                <li data-tab="qna5" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">로켓모바일</span></li>
-                                <li data-tab="qna6" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">쿠팡캐시</span></li>
+                                <li data-tab="qna2" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">반품</span></li>
+                                <li data-tab="qna3" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">교환</span></li>
+                                <li data-tab="qna4" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">환불</span></li>
+                                <li data-tab="qna5" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">주문</span></li>
+                                <li data-tab="qna6" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">결제</span></li>
                                 <li data-tab="qna7" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">회원서비스</span></li>
-                                <li data-tab="qna8" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">여행/티켓</span></li>
+                                <li data-tab="qna8" class="sc-8mvsno-0 dSWQUC"><span class="sc-8mvsno-1 laopsh">쿠폰</span></li>
                             </ul>
                             <ul class="sc-12647rk-0 kRuDMc">
                                 <li class="sc-w7jy57-0 kLBJZv">
                                     <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">알 수 없는 번호(스미싱)로 쿠팡 관련 문자를 받았어요.</span><span
+                                            class="sc-1qu6ltb-2 gyfphq">질문 등록</span><span
                                             class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
                                                 viewBox="0 0 16 16" aria-hidden="true" role="presentation"
                                                 style="fill: rgb(136, 136, 136);">
@@ -175,224 +176,8 @@
                                             <div class="sc-to1spv-0 yiRAk">
                                                 <div class="cancle-aws">A</div>
                                                 <div class="cancle-faq">X</div>
-                                                <table><tbody><tr><td width="70px" valign="top"><div class="sc-to1spv-2 jEVPZG">A</div></td><td valign="top"><div class="sc-to1spv-3 kKzMQa"><p><b>&nbsp;※ 피싱/스미싱 사기에 주의하시기 바랍니다. (쿠팡/쿠팡 배송직원 사칭 포함) </b></p><p><br></p><p>1577-7011(쿠팡 공식 번호)로 발송되었는지 확인해주시기 바랍니다.</p><p>다른 번호로 쿠팡 관련 문자를 수신한 경우, 절대 문자 내 링크를 클릭하거나 해당 번호로 연락하지 마시고, 쿠팡 고객센터로 연락해주시기 바랍니다.<b></b></p><p></p><p><br></p><p><b>쿠팡 고객센터 </b></p><p>• 전화번호 : 1577-7011 </p><p> • 운영시간 : 365일 24시간 연중무휴 </p><p>• 전화 문의가 어려우신 경우, 채팅 상담 또는 <a href="https://mc.coupang.com/ssr/desktop/contact/voc">고객의 소리</a>에 의견을 남겨주시기 바랍니다.</p><p><br></p><p><b>만약 링크를 클릭하여 피해가 발생하였다면, 아래 신고 기관으로 신고하시기 바랍니다.</b></p><p>- 휴대폰 소액결제 내역을 확인하고 통신사에 소액결제 사용중지를 요청하시기 바랍니다.<b><br></b></p><p><b><br></b></p><p><b>[신고기관]</b></p><p><b>ECRM 경찰청 사이버범죄 신고시스템 </b></p><p>• (국번 없이) 182<b><br></b></p><p>• <a href="https://ecrm.police.go.kr/minwon/main">https://ecrm.police.go.kr/minwon/main</a></p><p><b><br></b></p><p><b>KISA 인터넷 침해 대응센터</b> </p><p>• (국번 없이) 118</p><p>• <a href="http://www.krcert.or.kr">http://www.krcert.or.kr</a></p><p><b><br></b></p><p><b>KISA 불법스팸 대응센터</b></p><p>• (국번 없이) 118</p><p>•&nbsp;<a href="https://spam.kisa.or.kr/spam/main.do">https://spam.kisa.or.kr/spam/main.do</a> <b><br></b></p><p><b><br></b></p><p><br></p></div></td></tr></tbody></table></div>
+                                            </div>
                                 </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[배송일정] 배송중인 상품의 위치를 알고 싶어요.</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[배송일정] 주문한 상품은 언제 배송되나요 ?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[배송완료미수령] 상품을 받지 못했는데 배송완료로 확인됩니다.</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[배송일정] 주문한 상품의 배송조회가 안됩니다.</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[상품누락] 상품을 구매했는데 일부만 배송되었어요.</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[배송일정] 운송장번호로 배송조회를 했는데 배송정보가 없다고
-                                            나와요.</span><span class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24"
-                                                focusable="false" viewBox="0 0 16 16" aria-hidden="true"
-                                                role="presentation" style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[배송일정] 휴일에 상품을 받을 수 있나요?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[반품] 배송받은 상품을 반품하고 싶어요. 어떻게 하면 되나요?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[교환] 상품 교환하고 싶어요. 어떻게 하면 되나요?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[반품/교환] 교환,반품이 가능한 기준은 무엇인가요?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[반품] 상품의 포장을 훼손했는데 반품할 수 있나요?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[와우멤버십] 상품을 주문하지 않았는데, 매월 금액이 결제됩니다.</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[회원정보] 회원정보 수정은 어떻게 하나요?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[교환] 교환접수 후 회수와 새상품 배송은 어떻게 진행되나요?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[배송일정] 주문한 상품의 배송상태가 계속 상품준비중으로
-                                            표시됩니다.</span><span class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24"
-                                                focusable="false" viewBox="0 0 16 16" aria-hidden="true"
-                                                role="presentation" style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[반품] 반품 신청을 취소(철회)하고 싶어요.</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[반품] 마이쿠팡에서 반품접수가 안돼요.</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[상품분실] 택배사에서 상품을 분실했다고 합니다. 어떻게 해야
-                                            하나요?</span><span class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24"
-                                                focusable="false" viewBox="0 0 16 16" aria-hidden="true"
-                                                role="presentation" style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <li class="sc-w7jy57-0 kLBJZv">
-                                    <div class="sc-1qu6ltb-0 bDyzQR"><span class="sc-1qu6ltb-1 fzrPGs">Q</span><span
-                                            class="sc-1qu6ltb-2 gyfphq">[와우멤버십] 새벽배송 배송일과 배송시간을 지정할 수 있나요?</span><span
-                                            class="sc-1qu6ltb-3 eobgeA"><svg width="24" height="24" focusable="false"
-                                                viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                                style="fill: rgb(136, 136, 136);">
-                                                <path fill="#888888" fill-rule="nonzero"
-                                                    d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                                </path>
-                                            </svg></span></div>
-                                </li>
-                                <div class="sc-yvmyzy-0 gGJNMm">더보기<svg width="14" height="14" focusable="false"
-                                        viewBox="0 0 16 16" aria-hidden="true" role="presentation"
-                                        style="fill: rgb(0, 81, 245);">
-                                        <path fill="#0051f5" fill-rule="nonzero"
-                                            d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z">
-                                        </path>
-                                    </svg></div>
                             </ul>
                         </div>
                     </div>
@@ -400,7 +185,7 @@
             </div>
         </section>
     </div>
-    <script src="js/inquiry.js" th:src="@{/js/inquiry.js}"></script>
+    <script th:inline="javascript" th:src="@{/js/inquiry.js}"></script>
 </body>
 
 </html>
