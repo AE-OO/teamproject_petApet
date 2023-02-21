@@ -46,15 +46,11 @@ $(document).ready(function() {
                     data: inquiredList,
                     type: "POST",
                     dataType: "text",
-                    success : function(){
-                        alert("답변을 등록하였습니다.");
-                        $("#inquiryDetailInfo").css("display","none");
-                        getInquiredList();
-                    },
-                    error : function() {
-                        alert("답변을 등록할 수 없습니다.");
-                    }
-                });
+                }).done(function(){
+                    alert("답변을 등록하였습니다.");
+                    $("#inquiryDetailInfo").css("display","none");
+                    getInquiredList();
+                })
             }
         }
     });
