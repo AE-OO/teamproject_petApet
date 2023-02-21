@@ -103,6 +103,7 @@ $(document).ready(function () {
                 data: {communityId: $("#modalTargetId").val()},
                 type: "get",
                 success() {
+                    alert("신고를 승인하였습니다.");
                     getCommunityReportList();
                     getCommunityList();
                 }
@@ -113,6 +114,7 @@ $(document).ready(function () {
                 data: {productId: $("#modalTargetId").val()},
                 type: "get",
                 success() {
+                    alert("신고를 승인하였습니다.");
                     getProductReportList();
                 }
             })
@@ -122,6 +124,7 @@ $(document).ready(function () {
                 data: {memberId: $("#modalTargetId").val()},
                 type: "get",
                 success() {
+                    alert("신고를 승인하였습니다.");
                     getMemberReportList();
                     getMemberList();
                 }
@@ -135,6 +138,7 @@ $(document).ready(function () {
             url: "/admin/refuseReport/" + $("#modalReportId").val(),
             type: "post",
             success() {
+                alert("신고를 반려하였습니다.");
                 getProductReportList();
                 getMemberReportList();
                 getProductReportList();
@@ -148,6 +152,7 @@ $(document).ready(function () {
             url: "/admin/acceptJoinCompany/" + $("#modalCompanyId").val(),
             type: "post",
             success() {
+                alert("가입을 승인하였습니다.");
                 getCompanyJoinAcceptList();
             }
         })
@@ -183,8 +188,6 @@ function loadingFirst() {
     getCompanyJoinAcceptList();
     getCommunityList();
     getMemberList();
-
-    reportColor();
 }
 
 //공지사항 리스트 출력
@@ -357,8 +360,7 @@ function getCommunityList() {
                             <td>${community.memberId}</td>
                             <td>${community.communityCategory}</td>
                             <td>${community.communityDate}</td>
-                            <td class="text-success" id="report">${community.communityReport}
-                            </td>
+                            <td class=${community.communityReport >= 3 ? "text-danger" : "text-success"} id="report">${community.communityReport}</td>
                             <td>
                                 <button class="btn btn-danger btn-sm communityModal" type="button"
                                         id="${community.communityId}">게시글 삭제
@@ -385,7 +387,7 @@ function getMemberList() {
                             <td>${member.memberName}</td>
                             <td>${member.memberGender}</td>
                             <td>${member.memberJoinDate}</td>
-                            <td class="text-success" id="report">${member.memberReport}</td>
+                            <td class=${member.memberReport >= 3 ? "text-danger" : "text-success"} id="report">${member.memberReport}</td>
                             <td>`;
 
                 if (member.memberActivated) {
@@ -399,13 +401,6 @@ function getMemberList() {
 
         $(".wholeMemberData").html(list);
     });
-}
-
-//신고수가 3 이상이 되면 글씨 빨갛게 바꾸기
-function reportColor() {
-    if ($("#report").text() >= 3) {
-        $("#report").attr("class", "text-danger");
-    }
 }
 
 //재고 0인 상품 판매상태를 재고없음으로 바꿈
