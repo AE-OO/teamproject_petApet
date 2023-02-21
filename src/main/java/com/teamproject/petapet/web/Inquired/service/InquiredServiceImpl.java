@@ -72,7 +72,7 @@ public class InquiredServiceImpl implements InquiredService {
 
     @Override
     public Page<InquiryDTO> getProductDetailPageInquiryList(Long productId, int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum, 10, Sort.by("inquiredDate").descending()); // 왜 그룹핑된 상태에서 정렬을 하는지..
+        Pageable pageable = PageRequest.of(pageNum, 10, Sort.by("inquiredDate")); // 왜 그룹핑된 상태에서 정렬을 하는지..
         Page<Inquired> inquiryDTOList = inquiredRepository.findAllByProduct_ProductIdOrderByInquiredDate(productId, pageable);
         return inquiryDTOList.map(list -> InquiryDTO.fromEntityForProductDetailPage(list));
     }

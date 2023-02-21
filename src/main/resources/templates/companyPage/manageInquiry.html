@@ -7,7 +7,6 @@
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>
-<!-- manageInquiry Start -->
 <div class="container-xxl px-0 mx-0">
     <th:block th:replace="~{fragment/layout :: sidebar}"></th:block>
     <div class="container py-7" style="right:0">
@@ -58,19 +57,6 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-lg-6 grid-margin stretch-card">
-                                            <div class="card">
-                                                <div class="card-body" id="detail">
-                                                    <h5 class="card-title"><b>문의 사진 넣기</b></h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 grid-margin stretch-card">
-                                            <div class="input-group input-group mb-3">
-                                                <span class="input-group-text">&nbsp;&nbsp;&nbsp;제목&nbsp;&nbsp;&nbsp;</span>
-                                                <input type="text" class="form-control"
-                                                       aria-label="Sizing example input"
-                                                       aria-describedby="inputGroup-sizing-sm" id="detailTitle" readonly>
-                                            </div>
                                             <div class="input-group input-group mb-3">
                                                 <span class="input-group-text">문의번호</span>
                                                 <input type="text" class="form-control"
@@ -78,11 +64,13 @@
                                                        aria-describedby="inputGroup-sizing-sm" id="detailNum" readonly>
                                             </div>
                                             <div class="input-group input-group mb-3">
-                                                <span class="input-group-text">&nbsp;작성자&nbsp;&nbsp;</span>
+                                                <span class="input-group-text">문의일시</span>
                                                 <input type="text" class="form-control"
                                                        aria-label="Sizing example input"
-                                                       aria-describedby="inputGroup-sizing-sm" id="detailWriter" readonly>
+                                                       aria-describedby="inputGroup-sizing-sm" id="detailDate" readonly>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 grid-margin stretch-card">
                                             <div class="input-group input-group mb-3">
                                                 <span class="input-group-text">문의분류</span>
                                                 <input type="text" class="form-control"
@@ -90,11 +78,17 @@
                                                        aria-describedby="inputGroup-sizing-sm" id="detailCategory" readonly>
                                             </div>
                                             <div class="input-group input-group mb-3">
-                                                <span class="input-group-text">문의일시</span>
+                                                <span class="input-group-text">&nbsp;작성자&nbsp;&nbsp;</span>
                                                 <input type="text" class="form-control"
                                                        aria-label="Sizing example input"
-                                                       aria-describedby="inputGroup-sizing-sm" id="detailDate" readonly>
+                                                       aria-describedby="inputGroup-sizing-sm" id="detailWriter" readonly>
                                             </div>
+                                        </div>
+                                        <div class="input-group input-group mb-3">
+                                            <span class="input-group-text">&nbsp;&nbsp;&nbsp;제목&nbsp;&nbsp;&nbsp;</span>
+                                            <input type="text" class="form-control"
+                                                   aria-label="Sizing example input"
+                                                   aria-describedby="inputGroup-sizing-sm" id="detailTitle" readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label for="detailContent" class="form-label">문의내용</label>
@@ -117,32 +111,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="answerList">
-                    <div class="col-md-12 stretch-card grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <div id="questionPart">
-                                    <div class="mb-3">
-                                        <h5 class="card-title mx-2 mb-0 float-left mb-4">
-                                            <b>자주하는 답변</b>
-                                        </h5>
-                                    </div>
-                                    <div class="row mb-3">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
 </div>
-<!-- manageInquiry End -->
-
-<!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 <th:block th:replace="~{fragment/layout :: mainFooter}"></th:block>
 </body>

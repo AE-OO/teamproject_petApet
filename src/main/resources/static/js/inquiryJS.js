@@ -1,7 +1,7 @@
 $(document).ready(function () {
     let page = 0;
     getInquiryList(page);
-    getLoginId
+    getLoginId();
 
     $(document).on("click", ".productInquiry", function() {
         $("#modalTargetProductId").val($('.productTitle').attr('data-id'));
@@ -24,7 +24,7 @@ $(document).ready(function () {
                 if(result === 'success'){
                     alert("문의가 등록되었습니다.")
                     modalClear();
-                    getInquiryList();
+                    getInquiryList(0);
                 }
             }
         })

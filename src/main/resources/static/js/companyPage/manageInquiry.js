@@ -45,12 +45,16 @@ $(document).ready(function() {
                     url: "/inquiry/addAnswer/" + $("#detailNum").val(),
                     data: inquiredList,
                     type: "POST",
-                    dataType: "text"
-                }).done(function(){
-                    alert("답변을 등록하였습니다.");
-                    $("#inquiryDetailInfo").css("display","none");
-                    getInquiredList();
-                })
+                    dataType: "text",
+                    success : function(){
+                        alert("답변을 등록하였습니다.");
+                        $("#inquiryDetailInfo").css("display","none");
+                        getInquiredList();
+                    },
+                    error : function() {
+                        alert("답변을 등록할 수 없습니다.");
+                    }
+                });
             }
         }
     });
@@ -63,28 +67,25 @@ function getInquiredList(){
         if(result.length > 0){
             $.each(result, function(idx, inquiry) {
                 list += `<tr id="inquiryData`+ idx +`">
-                                    <td class="pl-0" id="inquiryId">${inquiry.inquiredId}</td>
-                                    <td>${inquiry.inquiredCategory}</td>
-                                    <td>${inquiry.inquiredTitle}</td>
-                                    <td>${inquiry.memberId}</td>
-                                    <td>${inquiry.inquiredDate}</td>
-                                    <td style="display: none">${inquiry.inquiredContent}</td>
-                                    <td style="display: none">${inquiry.answer}</td>
-                                    <td>`;
+                            <td class="pl-0" id="inquiryId">${inquiry.inquiredId}</td>
+                            <td>${inquiry.inquiredCategory}</td>
+                            <td>${inquiry.inquiredTitle}</td>
+                            <td>${inquiry.memberId}</td>
+                            <td>${inquiry.inquiredDate}</td>
+                            <td style="display: none">${inquiry.inquiredContent}</td>
+                            <td style="display: none">${inquiry.answer}</td>
+                            <td>`;
                 
-                //th:if 안먹어서 이렇게 함
                 if(inquiry.checked == 0){
                     list += `<label class="btn btn-secondary btn-sm checked">답변대기</label>`;
                 }else if(inquiry.checked == 1){
                     list += `<label class="btn btn-primary btn-sm checked">답변완료</label>`;
                 }
-
                 list += `</td> </tr>`;
             })
         }else{
             $("#noData").text("문의 내역이 없습니다.");
         }
-
         $(".inquiryData").html(list);
     })
 }
