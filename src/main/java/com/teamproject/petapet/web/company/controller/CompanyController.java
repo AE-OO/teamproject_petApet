@@ -1,6 +1,8 @@
 package com.teamproject.petapet.web.company.controller;
 
+import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.jwt.JwtAuthenticationFilter;
+import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
@@ -11,8 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,7 @@ public class CompanyController {
 
     private final CompanyService companyService;
     private final MemberService memberService;
+    private final InquiredService inquiredService;
 
     //기업 회원가입
     @GetMapping("/companyJoin")
@@ -63,7 +65,7 @@ public class CompanyController {
         //토큰 쿠키에 저장
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer" + tokenDTO.getToken());
         cookie.setPath("/");
-        cookie.setDomain("petapet.store");
+//        cookie.setDomain("petapet.store");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         response.addCookie(cookie);
@@ -149,4 +151,10 @@ public class CompanyController {
         return "/companyPage/manageSales";
     }
 
+    @GetMapping("/company/canclePayment/{inquiredId}")
+    public String canclePaymentData(@PathVariable Long inquiredId, Model model){
+        Inquired inquired = inquiredService.findOne(inquiredId);
+        model.addAttribute("inquired", inquired);
+        return "company/canclePayment";
+    }
 }

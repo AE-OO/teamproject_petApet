@@ -1,6 +1,7 @@
 package com.teamproject.petapet.domain.inquired;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.teamproject.petapet.domain.buy.Buy;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.member.Member;
 import com.teamproject.petapet.domain.product.Product;
@@ -53,13 +54,11 @@ public class Inquired {
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
-//    // 구매한 상품
-//    @JsonBackReference
-//    @ManyToOne
-//    @JoinColumn(name = "memberId", nullable = false)
-//    private Buy buy;
+    // 구매한 상품
+    @ManyToOne
+    @JoinColumn(name = "buyId")
+    private Buy buy;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "companyId")
     private Company company;
@@ -76,13 +75,15 @@ public class Inquired {
     @CollectionTable(name = "InquiredImg", joinColumns = @JoinColumn(name = "inquiredImgId", referencedColumnName = "inquiredId"))
     private List<UploadFile> inquiredImg;
 
-    public Inquired(String inquiredTitle, String inquiredContent,String inquiredCategory, Member member, Company company, boolean checked) {
+    public Inquired(String inquiredTitle, String inquiredContent,String inquiredCategory, Member member, Company company, boolean checked, Buy buy, Product product) {
         this.inquiredTitle = inquiredTitle;
         this.inquiredContent = inquiredContent;
         this.inquiredCategory = inquiredCategory;
         this.member = member;
         this.company = company;
         this.checked = checked;
+        this.buy = buy;
+        this.product = product;
     }
 
     public Inquired(Long inquiredId, Boolean checked) {

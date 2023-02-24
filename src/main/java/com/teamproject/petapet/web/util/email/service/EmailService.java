@@ -65,6 +65,18 @@ public class EmailService {
         javaMailSender.send(message);
     }
 
+//    public void sendEmailMessage3(String email, Long inquiredId) throws Exception {
+//        Inquired inquired = inquiredService.findOne(inquiredId);
+//
+//        MimeMessage message = javaMailSender.createMimeMessage();
+//
+//        message.addRecipients(MimeMessage.RecipientType.TO, email);
+//        message.setSubject("[문의 답변] 주식회사 petApet에서 발신한 메일 입니다");
+//        message.setText(setContextInquired(inquired), "utf-8", "html");
+//
+//        javaMailSender.send(message);
+//    }
+
     private String setContextInquired(Inquired inquired) { // 타임리프 설정하는 코드
         Context context = new Context();
         context.setVariable("inquired", inquired); // Template에 전달할 데이터 설정

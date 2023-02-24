@@ -44,4 +44,9 @@ public class BuyProductServiceImpl implements BuyProductService {
                 .where(product.company.companyId.eq(companyId))
                 .fetch();
     }
+
+    @Override
+    public Long getProduct(Long buyId) {
+        return buyProductRepository.findProduct(buyId);
+    }
 }

@@ -125,19 +125,22 @@
                                             </div>
                                             <label class="col-sm-2 col-form-label">구매한 상품명</label>
                                             <div class="col-sm-10">
-                                            <select type="input" onchange="putValue(this)" id="companyId" class="form-control" required>
+                                            <select type="input" onchange="putValue(this)" id="buyId" class="form-control" required>
                                                 <option disabled selected>-- 선택 --</option>
                                                 <th:block th:each="buy : ${buyList}">
                                                 <option  th:each="buyProduct : ${buy.products}"
-                                                         th:value="${buyProduct.product.company.companyId}"
-                                                        data-th-text="|상품명 : ${buyProduct.product.productName} / 수량 : ${buyProduct.quantity}개 / 구매일시 : ${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}|">
+                                                         th:value="${buyProduct.buy.buyId}"
+                                                        data-th-text="| 상품명 : ${buyProduct.product.productName} / 수량 : ${buyProduct.quantity}개 / 구매일시 : ${#temporals.format(buy.buyDate, 'yyyy. MM. dd')}|">
                                                 </option>
                                                 </th:block>
                                             </select>
                                             </div>
                                             <div class="col-sm-10">
-                                                <input type="hidden" class="form-control" name="companyId" value=""/>
+                                                <input type="hidden" class="form-control" name="buyId" value=""/>
                                             </div>
+<!--                                            <div class="col-sm-10">-->
+<!--                                                <input type="hidden" class="form-control" name="buyId" />-->
+<!--                                            </div>-->
                                         </div>
                                         <div class="container">
                                             <input type="file" id="upload-button" multiple="multiple"/>

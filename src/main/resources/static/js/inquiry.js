@@ -209,7 +209,7 @@ function fn_delete(){
 }
 
 const putValue = (target) => {
-    let value = $('#companyId').val();
-    $('input[name=companyId]').attr('value',value);
+    let value = $('#buyId').val();
+    $('input[name=buyId]').attr('value',value);
 }
 

@@ -2,16 +2,20 @@ package com.teamproject.petapet.web.Inquired;
 
 
 import com.teamproject.petapet.domain.buy.Buy;
+import com.teamproject.petapet.domain.buyproduct.BuyProduct;
 import com.teamproject.petapet.domain.company.Company;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.domain.member.Member;
+import com.teamproject.petapet.domain.product.Product;
 import com.teamproject.petapet.exception.NotLoginException;
 import com.teamproject.petapet.web.Inquired.dto.InquiredSubmitDTO;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
 import com.teamproject.petapet.web.buy.service.BuyService;
+import com.teamproject.petapet.web.buyproduct.BuyProductService;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.service.MemberService;
 import com.teamproject.petapet.web.product.fileupload.FileService;
+import com.teamproject.petapet.web.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,10 +23,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -44,6 +46,10 @@ public class InquiredController {
     private final CompanyService companyService;
 
     private final BuyService buyService;
+
+    private final ProductService productService;
+
+    private final BuyProductService buyProductService;
 
     public final String INQUIRED_CATEGORY1 = "기업 문의";
 
@@ -63,13 +69,18 @@ public class InquiredController {
                                 Authentication authentication) {
         String login = checkMember(authentication);
         Member loginMember = memberService.findOne(login);
+        Long buyId = inquiredSubmitDTO.getBuyId();
+        Long productId = buyProductService.getProduct(buyId);
+        Buy buy = buyService.findById(inquiredSubmitDTO.getBuyId());
         Inquired inquired = new Inquired(
                 inquiredSubmitDTO.getTitle(),
                 inquiredSubmitDTO.getInquiredContent(),
                 INQUIRED_CATEGORY1,
                 loginMember,
-                companyService.findOne(inquiredSubmitDTO.getCompanyId()).orElseThrow(NoSuchElementException::new),
-                false
+                companyService.findOne(productService.getCompanyId(productId)).orElseThrow(NoSuchElementException::new),
+                false,
+                buy,
+                productService.findOne(productId).orElseThrow(NoSuchElementException::new)
         );
 
         inquiredService.inquiredSubmit(inquired);

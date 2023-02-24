@@ -14,6 +14,6 @@ public class InquiredSubmitDTO {
     @NotBlank(message = "글 내용을 입력하세요")
     private String inquiredContent;
 
-    private String companyId;
-    
+
+    private Long buyId;
 }
