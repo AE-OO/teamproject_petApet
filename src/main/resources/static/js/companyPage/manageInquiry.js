@@ -64,48 +64,6 @@ $(document).ready(function() {
         window.open('/company/canclePayment/' + $("#detailNum").val(), '_blank',
             'width=' + _width + ', height=' + _height + ', left=' + _left + ', top=' + _top + ', location=no,resizeable=no,menubar=no,scrollbars=no,status=no');
     })
-//     // 환불 처리 시
-//     $("#canclePaymentBTN").click(function(){
-//         if($("#answerContent").val() === ''){
-//             alert("환불하시겠습니까?");
-//         }else {
-//             var inquiredList = {
-//                 inquiredId : $("#deleteNum").val()
-//             }
-//             if(confirm("답변을 등록하시겠습니까? 등록된 답변은 수정할 수 없습니다.")){
-//                 $.ajax({
-//                     url: "/inquiry/canclePayment/" + $("#detailNum").val(),
-//                     data: inquiredList,
-//                     type: "POST",
-//                     dataType: "text"
-//                 }).done(function(){
-//                     alert("답변을 등록하였습니다.");
-//                     $("#inquiryDetailInfo").css("display","none");
-//                     getInquiredList();
-//                 })
-//             }
-//         }
-//     });
-// });
-//
-// function cancelPay() {
-//     var cancleDetails = {
-//         merchant_uid : $("#detailContent").val(),
-//         cancel_request_amount : $("#detailContent").val(),
-//         reason : $("#detailContent").val()
-//     }
-//     jQuery.ajax({
-//         "url": "/inquiry/payment/cancel",
-//         "type": "POST",
-//         "contentType": "application/json",
-//         "data": JSON.stringify({
-//             "merchant_uid": "", // 예: ORD20180131-0000011
-//             "cancel_request_amount": "", // 환불금액
-//             "reason": cancleDetails.reason // 환불사유
-//         }),
-//         "dataType": "json"
-//     });
-// }
 
 //회사 마이페이지에 문의 내역 리스트 출력
     function getInquiredList() {

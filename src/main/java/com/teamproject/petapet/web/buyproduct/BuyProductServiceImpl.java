@@ -49,4 +49,9 @@ public class BuyProductServiceImpl implements BuyProductService {
     public Long getProduct(Long buyId) {
         return buyProductRepository.findProduct(buyId);
     }
+
+    @Override
+    public Long getQuan(Long buyId) {
+        return buyProductRepository.findQuan(buyId);
+    }
 }

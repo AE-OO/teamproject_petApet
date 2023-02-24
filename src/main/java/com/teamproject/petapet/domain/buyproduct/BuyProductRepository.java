@@ -11,4 +11,7 @@ public interface BuyProductRepository extends JpaRepository<BuyProduct, Long> {
 
     @Query("select b.product.productId from BuyProduct b where b.buy.buyId =:buyId")
     Long findProduct(Long buyId);
+
+    @Query("select b.quantity from BuyProduct b where b.buy.buyId =:buyId")
+    Long findQuan(Long buyId);
 }

@@ -3,6 +3,7 @@ package com.teamproject.petapet.web.company.controller;
 import com.teamproject.petapet.domain.inquired.Inquired;
 import com.teamproject.petapet.jwt.JwtAuthenticationFilter;
 import com.teamproject.petapet.web.Inquired.service.InquiredService;
+import com.teamproject.petapet.web.buyproduct.BuyProductService;
 import com.teamproject.petapet.web.company.dto.CompanyRequestDTO;
 import com.teamproject.petapet.web.company.service.CompanyService;
 import com.teamproject.petapet.web.member.dto.MemberRequestDTO;
@@ -29,6 +30,8 @@ public class CompanyController {
     private final CompanyService companyService;
     private final MemberService memberService;
     private final InquiredService inquiredService;
+
+    private final BuyProductService buyProductService;
 
     //기업 회원가입
     @GetMapping("/companyJoin")
@@ -154,7 +157,10 @@ public class CompanyController {
     @GetMapping("/company/canclePayment/{inquiredId}")
     public String canclePaymentData(@PathVariable Long inquiredId, Model model){
         Inquired inquired = inquiredService.findOne(inquiredId);
+        Long buyId = inquired.getBuy().getBuyId();
+        Long quan = buyProductService.getQuan(buyId);
         model.addAttribute("inquired", inquired);
+        model.addAttribute("quan", quan);
         return "company/canclePayment";
     }
 }

@@ -12,4 +12,6 @@ public interface BuyProductService {
     List<ProductDTO> getCompanyProductList(String companyId);
 
     Long getProduct(Long buyId);
+
+    Long getQuan(Long buyId);
 }
