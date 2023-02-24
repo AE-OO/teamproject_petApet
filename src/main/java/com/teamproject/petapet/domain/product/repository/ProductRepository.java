@@ -25,6 +25,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p.productStock from Product p where p.productId =:productId")
     Long findQuantity(@Param("productId") Long productId);
 
+    @Modifying
+    @Query("update Product p set p.productStock =:productStock where p.productId =:productId")
+    void cancleProductStock(Long productStock, Long productId);
+
     Page<Product> findAllByProductStatus(Pageable pageable, String status);
 
     @Modifying
@@ -41,4 +45,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
     @Query("update Product p set p.productReport = p.productReport + 1 where p.productId =:productId")
     void addProductReport(@Param("productId") Long productId);
+
+    @Query("select p.company.companyId from Product p where p.productId =:productId")
+    String getCompanyId(Long productId);
 }

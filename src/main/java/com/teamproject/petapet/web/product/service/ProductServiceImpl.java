@@ -219,4 +219,13 @@ public class ProductServiceImpl implements ProductService {
                 .fetchFirst();
     }
 
+    @Override
+    public void canclePayment(Long productStock, Long productId) {
+        productRepository.cancleProductStock(productStock,productId);
+    }
+
+    @Override
+    public String getCompanyId(Long productId) {
+        return productRepository.getCompanyId(productId);
+    }
 }

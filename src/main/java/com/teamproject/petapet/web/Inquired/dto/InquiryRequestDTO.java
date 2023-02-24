@@ -18,6 +18,12 @@ public class InquiryRequestDTO {
         private String answer;
     }
 
+    @Data
+    public static class GetCancleDTO {
+        private String answer;
+        private Long inquiredId;
+    }
+
     // 상품 상세페이지에서 사업자한테 상품관련 문의하기 DTO
     @Data
     @Builder

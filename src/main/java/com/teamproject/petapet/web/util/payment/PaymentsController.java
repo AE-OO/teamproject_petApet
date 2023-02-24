@@ -170,6 +170,12 @@ public class PaymentsController {
                         IMPORT));
     }
 
+    @PostMapping("/inquiry/payment/cancel")
+    @Transactional
+    public String paymentCancle(){
+        return "";
+    }
+
     @PostMapping("/direct/checkout/success")
     @Transactional
     @ResponseBody
