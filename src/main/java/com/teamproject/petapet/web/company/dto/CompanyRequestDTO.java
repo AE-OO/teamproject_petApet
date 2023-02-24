@@ -26,7 +26,7 @@ public  class CompanyRequestDTO {
         private String companyId;
 
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        @Pattern(regexp = "^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$",message = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
+        @Pattern(regexp = "^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$",message = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
         @NotBlank(message = "비밀번호는 필수 입력값입니다.")
         private String companyPw;
 
@@ -82,7 +82,7 @@ public  class CompanyRequestDTO {
 //        @DuplicateCompanyId
         private String companyId;
 
-        @Pattern(regexp = "^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$",message = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
+        @Pattern(regexp = "^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$",message = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
         @NotBlank(message = "비밀번호는 필수 입력값입니다.")
         private String companyPw;
     }
@@ -118,7 +118,7 @@ public  class CompanyRequestDTO {
     public static class UpdateCompanyPwDTO {
         @NotBlank
         private String originalCompanyPw;
-        @Pattern(regexp = "^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$")
+        @Pattern(regexp = "^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$")
         @NotBlank
         private String newCompanyPw;
         @NotBlank

@@ -60,7 +60,6 @@
                     $("#noticeList").show();
                 }
             })
-
         });
     </script>
 </head>
@@ -117,7 +116,7 @@
                 <div class="mt-4">
                     <div sec:authorize="hasAnyRole('MEMBER','ADMIN')">
                         <button id="writeBtn" class="btn btn-danger float-start">글쓰기</button>
-                        <button id="myPostsBtn" class="btn btn-primary float-end">내글보기</button>
+                        <button sec:authorize="hasRole('MEMBER')" id="myPostsBtn" class="btn btn-primary float-end">내글보기</button>
                     </div>
                     <div id="page"></div>
                 </div>

@@ -19,12 +19,6 @@ cPhoneNumFeedback = () => $("#feedback-companyPhoneNum");
 smsConfirmNumFeedback = () => $("#feedback-smsConfirmNum");
 smsConfirmNumFeedback2 = () => $("#feedback-smsConfirmNum2");
 
-//비밀번호 정규식 (영어 대소문자,특수문자,숫자 필수입력, 8-16글자)
-const cPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
-//휴대전화 정규식 (-빼고 입력 01로 시작, 총 10-11글자)
-const cPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
-const cEmailRegExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-
 
 //현재 비밀번호 체크
 function checkOriginalCompanyPw() {
@@ -68,7 +62,7 @@ function checkNewCompanyPw() {
     } else if (newCompanyPw() === originalCompanyPw()) {
         cNewPwFeedback().text("현재 비밀번호와 동일합니다.");
         return false;
-    } else if (!(cPwRegExp.test(newCompanyPw()))) { //정규식에 맞지 않을 때
+    } else if (!(pwRegExp.test(newCompanyPw()))) { //정규식에 맞지 않을 때
         cNewPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
         return false;
     } else {
@@ -102,7 +96,7 @@ function checkCompanyPhoneNum() {
         $("#smsBtn").attr("disabled", true);
         cPhoneNumFeedback().text("휴대폰 번호를 입력해주세요.");
         return false;
-    } else if (!(cPhoneNumRegExp.test(companyPhoneNum()))) {
+    } else if (!(phoneNumRegExp.test(companyPhoneNum()))) {
         cPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
         $("#smsBtn").attr("disabled", true);
         return false;
@@ -142,7 +136,7 @@ function checkCompanyEmail() {
     if (companyEmail() === null || companyEmail() === "") { //값이 없을 때
         cEmailFeedback().text("필수 정보입니다.");
         return false;
-    } else if (!(cEmailRegExp.test(companyEmail()))) { //정규식에 맞지 않을 때
+    } else if (!(emailRegExp.test(companyEmail()))) { //정규식에 맞지 않을 때
         cEmailFeedback().text("이메일주소를 정확하게 입력해주세요. (예: petapet@pet.com) ");
         return false;
     } else if (companyEmail() === originalCompanyEmail) {

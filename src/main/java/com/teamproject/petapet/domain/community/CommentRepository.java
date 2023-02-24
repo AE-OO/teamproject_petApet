@@ -14,7 +14,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Modifying
     @Transactional
-    @Query("update Comment c set c.replyId =:commentId where c.commentId =:commentId")
+    @Query("update Comment c set c.replyId = :commentId where c.commentId = :commentId")
     void updateReplyId(@Param("commentId") Long commentId);
 
     //댓글 리스트 -> 삭제된 부모댓글 표시하기위한 쿼리
@@ -25,15 +25,15 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "from (SELECT if(result = 1, result, 0) AS result, b.* " +
             "from (SELECT replyId, 1 AS result " +
             "from Comment " +
-            "WHERE communityId =:communityId " +
+            "WHERE communityId = :communityId " +
             "GROUP BY replyId " +
             "having avg(depth) = 1) a " +
             "right JOIN Comment b ON b.replyId = a.replyId) a " +
             "WHERE a.result = 1 " +
             "GROUP BY a.replyId) b " +
             "ON a.replyId = b.replyId AND a.createdDate = b.minOrder " +
-            "WHERE communityId =:communityId "
-            ,countQuery = "select count(*) from Comment where communityId =:communityId"
+            "WHERE communityId = :communityId "
+            ,countQuery = "select count(*) from Comment where communityId = :communityId"
             ,nativeQuery = true)
     Page<Comment> commentList(@Param("communityId") Long communityId, Pageable pageable);
 

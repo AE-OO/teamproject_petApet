@@ -56,7 +56,7 @@ public interface MemberService {
 
     String findEmail(String memberId);
 
-    String getOriginalMemberImg(String memberId);
+    String getMemberImg(String memberId);
 
     void updateMemberImg(String memberId, String memberImg);
 

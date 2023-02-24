@@ -16,12 +16,12 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     @Modifying
     @Transactional
-    @Query("update Member m set m.memberReport = m.memberReport + 1 where m.memberId =:memberId")
+    @Query("update Member m set m.memberReport = m.memberReport + 1 where m.memberId = :memberId")
     void addMemberReport(@Param("memberId") String memberId);
 
     @Modifying
     @Transactional
-    @Query("update Member m set m.memberStopDate = current_date + 3, m.activated = false where m.memberId =:memberId")
+    @Query("update Member m set m.memberStopDate = current_date + 3, m.activated = false where m.memberId = :memberId")
     void updateMemberStopDate(@Param("memberId") String memberId);
 
     @Query("select m.memberGender from Member m")
@@ -40,26 +40,26 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     @Modifying
     @Transactional
-    @Query("update Member m set m.memberPw=:memberPw where m.memberId =:memberId")
+    @Query("update Member m set m.memberPw = :memberPw where m.memberId = :memberId")
     int updateMemberPw(@Param("memberId") String memberId,@Param("memberPw") String memberPw);
 
     @Modifying
     @Transactional
     @Query("update Member m " +
-            "set m.memberBirthday=:memberBirthday, m.memberPhoneNum=:memberPhoneNum, m.memberGender=:memberGender," +
-            "m.memberAddress=:memberAddress, m.memberEmail=:memberEmail where m.memberId =:memberId")
+            "set m.memberBirthday = :memberBirthday, m.memberPhoneNum = :memberPhoneNum, m.memberGender = :memberGender," +
+            "m.memberAddress = :memberAddress, m.memberEmail = :memberEmail where m.memberId = :memberId")
     void updateMember(@Param("memberId") String memberId,@Param("memberBirthday") Date memberBirthday,@Param("memberPhoneNum") String memberPhoneNum,
                       @Param("memberGender") String memberGender,@Param("memberAddress")String memberAddress,@Param("memberEmail") String memberEmail);
 
     @Modifying
     @Transactional
-    @Query("update Member m set m.activated=true where m.memberId=:memberId")
+    @Query("update Member m set m.activated = true where m.memberId = :memberId")
     void updateActivated(@Param("memberId") String memberId);
 
-    @Query("select m.memberId from Member m where m.memberName=:memberName and m.memberPhoneNum=:memberPhoneNum")
+    @Query("select m.memberId from Member m where m.memberName = :memberName and m.memberPhoneNum = :memberPhoneNum")
     Optional<String> findMemberId(@Param("memberName") String memberName,@Param("memberPhoneNum") String memberPhoneNum);
 
-    @Query("select m.memberId from Member m where m.memberId=:memberId and m.memberName=:memberName and m.memberPhoneNum=:memberPhoneNum")
+    @Query("select m.memberId from Member m where m.memberId = :memberId and m.memberName = :memberName and m.memberPhoneNum = :memberPhoneNum")
     Optional<String> existMemberId(@Param("memberId") String memberId,@Param("memberName") String memberName,@Param("memberPhoneNum") String memberPhoneNum);
 
     boolean existsByMemberPhoneNum(String memberPhoneNum);
@@ -67,12 +67,12 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     @Modifying
     @Transactional
-    @Query("update Member m set m.memberImg=:memberImg where m.memberId=:memberId")
+    @Query("update Member m set m.memberImg = :memberImg where m.memberId = :memberId")
     void updateMemberImg(@Param("memberId") String memberId,@Param("memberImg") String memberImg);
 
     @Modifying
     @Transactional
-    @Query("update Member m set m.memberImg=null where m.memberId=:memberId")
+    @Query("update Member m set m.memberImg = null where m.memberId = :memberId")
     void deleteMemberImg(@Param("memberId") String memberId);
 
     @Query("select m from Member m where m.memberId not like 'admin%' order by m.activated, m.memberReport desc")

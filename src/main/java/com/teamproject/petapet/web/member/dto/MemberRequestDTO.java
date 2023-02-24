@@ -25,7 +25,7 @@ public class MemberRequestDTO {
         private String memberId;
 
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        @Pattern(regexp = "^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$",message = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
+        @Pattern(regexp = "^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$",message = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
         @NotBlank(message = "비밀번호는 필수 입력값입니다.")
         private String memberPw;
 
@@ -89,7 +89,7 @@ public class MemberRequestDTO {
 //        @DuplicateMemberId
         private String memberId;
 
-        @Pattern(regexp = "^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$",message = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
+        @Pattern(regexp = "^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$",message = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
         @NotBlank(message = "비밀번호는 필수 입력값입니다.")
         private String memberPw;
     }
@@ -100,7 +100,7 @@ public class MemberRequestDTO {
     public static class UpdateMemberPwDTO {
         @NotBlank
         private String originalMemberPw;
-        @Pattern(regexp = "^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$")
+        @Pattern(regexp = "^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,16}$")
         @NotBlank
         private String newMemberPw;
         @NotBlank

@@ -2,7 +2,9 @@
 <html lang="en">
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 내 정보 수정</title>
-    <script src="/js/member/checkInfo.js"></script>
+    <script th:src="@{/js/member/checkInfo.js}"></script>
+    <script th:src="@{/js/member/memberValue.js}"></script>
+    <script th:src="@{/js/member/regExpJS.js}"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
 </head>
 <body>

@@ -35,17 +35,6 @@ function textDanger(value) {
     }
 }
 
-//아이디 정규식(영문 소문자, 숫자, 특수문자(-,_)  5-20 글자만 가능)
-const cIdRegExp = /^[a-z0-9_-]{5,20}$/;
-//비밀번호 정규식 (영어 대소문자,특수문자,숫자 필수입력, 8-16글자)
-const cPwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
-//이름 정규식 (한글 또는 영문만 20자 입력 가능)
-const cNameRegExp = /^[가-힣|a-z|A-Z]{1,20}$/;
-//휴대전화 정규식 (-빼고 입력 01로 시작, 총 10-11글자)
-const cPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
-const cNumberRegExp = /([0-9]{3})([0-9]{2})([0-9]{5})/;
-const cEmailRegExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-
 //인증시간 변수
 let timer = null;
 let certificationNum = null;
@@ -180,7 +169,7 @@ $(document).ready(function () {
             textDanger(cIdFeedback());
             cIdFeedback().text("필수 정보입니다.");
             return companyIdResult = false;
-        } else if (!(cIdRegExp.test(companyId()))) { //정규식에 맞지 않을 때
+        } else if (!(idRegExp.test(companyId()))) { //정규식에 맞지 않을 때
             textDanger(cIdFeedback());
             cIdFeedback().text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
             return companyIdResult = false;
@@ -217,7 +206,7 @@ $(document).ready(function () {
         if (companyPw() === null || companyPw() === "") { //값이 없을 때
             cPwFeedback().text("필수 정보입니다.");
             companyPwResult = false;
-        } else if (!(cPwRegExp.test(companyPw()))) { //정규식에 맞지 않을 때
+        } else if (!(pwRegExp.test(companyPw()))) { //정규식에 맞지 않을 때
             cPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
             companyPwResult = false;
         } else { // 조건에 맞을 때
@@ -305,7 +294,7 @@ $(document).ready(function () {
             textDanger(cEmailFeedback());
             cEmailFeedback().text("필수 정보입니다.");
             return companyEmailResult = false;
-        } else if (!(cEmailRegExp.test(companyEmail()))) { //정규식에 맞지 않을 때
+        } else if (!(emailRegExp.test(companyEmail()))) { //정규식에 맞지 않을 때
             textDanger(cEmailFeedback());
             cEmailFeedback().text("이메일을 올바르게 입력해주세요. (예: petapet@pet.com)");
             return companyEmailResult = false;
@@ -343,7 +332,7 @@ $(document).ready(function () {
         if (companyPhoneNum() === null || companyPhoneNum() === "") {
             cPhoneNumFeedback().text("인증이 필요합니다.");
             return companyPhoneNumResult = false;
-        } else if (!(cPhoneNumRegExp.test(companyPhoneNum()))) {
+        } else if (!(phoneNumRegExp.test(companyPhoneNum()))) {
             cPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
             return companyPhoneNumResult = false;
         } else {
@@ -380,7 +369,7 @@ $(document).ready(function () {
         textDanger(cPhoneNumFeedback());
         if (companyPhoneNum() === null || companyPhoneNum() === "") { //값이 없을 때
             cPhoneNumFeedback().text("인증이 필요합니다.");
-        } else if (!(cPhoneNumRegExp.test(companyPhoneNum()))) { //정규식에 맞지 않을 때
+        } else if (!(phoneNumRegExp.test(companyPhoneNum()))) { //정규식에 맞지 않을 때
             cPhoneNumFeedback().text("형식에 맞지 않는 번호입니다. (-)제외하여 숫자만 정확히 입력해주세요.");
         } else {
             $.ajax({

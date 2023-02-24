@@ -6,6 +6,7 @@
     <script th:src="@{/js/member/getLoginInfo.js}"></script>
     <script th:src="@{/js/community/goCommunityMemberInfo.js}"></script>
     <script th:src="@{/js/community/comment.js}"></script>
+    <script th:src="@{/js/community/communityPosts.js}"></script>
     <script>
         $(function () {
         postsMemberId = $("#postsMemberId").text();
@@ -34,7 +35,7 @@
                 </div>
             </div>
             <div class="text-center mt-3">
-                <button type="button" id="backBtn" class="btn btn-info">되돌아가기</button>
+                <button type="button" id="communityBtn" class="btn btn-info">글목록</button>
                 <button type="button" id="loginBtn" class="btn btn-primary">로그인</button>
                 <button type="button" id="joinBtn" class="btn btn-danger">회원가입</button>
             </div>

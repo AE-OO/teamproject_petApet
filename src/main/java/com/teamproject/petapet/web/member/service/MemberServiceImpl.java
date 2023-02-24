@@ -189,7 +189,7 @@ public class MemberServiceImpl implements MemberService {
     public String findEmail(String memberId) {return memberRepository.findById(memberId).get().getMemberEmail();}
 
     @Override
-    public String getOriginalMemberImg(String memberId) {
+    public String getMemberImg(String memberId) {
         return memberRepository.findById(memberId).get().getMemberImg();
     }
 

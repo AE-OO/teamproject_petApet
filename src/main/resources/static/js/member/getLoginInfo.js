@@ -17,4 +17,6 @@ getLoginId = function () {
         }
     })
 }
-
+$(function () {
+    getLoginId();
+});

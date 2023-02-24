@@ -12,13 +12,6 @@ smsConfirmNumFeedback = () => $("#feedback-smsConfirmPhoneNum");
 cNameFeedback = () => $("#feedback-companyName");
 cNumberFeedback = () => $("#feedback-companyNumber");
 
-//이름 정규식 (한글, 2-6글자)
-// const mNameRegExp = /^[가-힣]{2,6}$/;
-//휴대전화 정규식 (-빼고 입력 01로 시작, 총 10-11글자)
-// const mPhoneNumRegExp = /^([01]{2})([0|1|6|7|8|9]{1})([0-9]{3,4})([0-9]{4})$/;
-// const cNameRegExp = /^[가-힣|a-z|A-Z]{1,20}$/;
-// const cNumberRegExp = /([0-9]{3})([0-9]{2})([0-9]{5})/;
-
 //인증시간 변수
 let timer = null;
 let certificationNum = null;

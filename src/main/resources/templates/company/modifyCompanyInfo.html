@@ -2,13 +2,12 @@
 <html lang="en">
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 사업자 정보 수정</title>
-    <script src="/js/company/modifyCompanyInfo.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <script th:src="@{/js/member/regExpJS.js}"></script>
+    <script th:src="@{/js/company/modifyCompanyInfo.js}"></script>
     <script th:inline="javaScript">
-        // let originalCompanyEmail = [[${companyDTO.CompanyEmail}]];
-        let originalCompanyEmail = $("input[name=CompanyEmail]").val();
-        // let originalCompanyPhoneNum = [[${companyDTO.CompanyPhoneNum}]]
-        let originalCompanyPhoneNum = $("input[name=CompanyPhoneNum]").val()
+        let originalCompanyEmail = [[${companyDTO.CompanyEmail}]];
+        let originalCompanyPhoneNum = [[${companyDTO.CompanyPhoneNum}]]
     </script>
 </head>
 <body>

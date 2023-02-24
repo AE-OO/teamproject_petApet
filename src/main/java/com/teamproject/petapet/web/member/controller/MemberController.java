@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +33,6 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-//@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
@@ -91,7 +88,7 @@ public class MemberController {
         //토큰 쿠키에 저장
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer" + tokenDTO.getToken());
         cookie.setPath("/");
-        cookie.setDomain("petapet.store");
+//        cookie.setDomain("petapet.store");
         cookie.setMaxAge(60 * 60 * 24); //유효기간 24시간
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
@@ -161,6 +158,9 @@ public class MemberController {
 
     @PostMapping("/member/withdrawal")
     public String withdrawal(Principal principal, HttpServletResponse response){
+        if(memberService.getMemberImg(principal.getName()) != null) {
+            fileService.deleteFile(memberService.getMemberImg(principal.getName()));
+        }
         memberService.deleteMember(principal.getName());
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, null);
         cookie.setMaxAge(0);
