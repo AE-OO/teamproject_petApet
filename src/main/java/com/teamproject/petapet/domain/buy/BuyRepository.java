@@ -13,10 +13,10 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
      * @param memberId
      * @return
      */
-    @Query("select b from Buy b where b.member.memberId =:memberId order by b.buyDate desc ")
+    @Query("select b from Buy b where b.member.memberId = :memberId order by b.buyDate desc ")
     List<Buy> findBuyByMember(@Param("memberId") String memberId);
 
-    @Query("select CASE WHEN COUNT(b) > 0 THEN true ELSE false END from BuyProduct b where b.product.productId=:productId and exists (select m from Member m where m.memberId=:memberId)")
+    @Query("select CASE WHEN COUNT(b) > 0 THEN true ELSE false END from BuyProduct b where b.product.productId = :productId and exists (select m from Member m where m.memberId = :memberId)")
     boolean existsByBuyIdAndMember(@Param("productId") Long productId, @Param("memberId") String memberId);
 
     // 전체 상품 월별 판매량 데이터
