@@ -17,9 +17,9 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     Optional<Company> findOneWithAuthoritiesByCompanyId(String companyId);
     Boolean existsByCompanyNumber(String companyNumber);
     @Query("select c.companyId from Company c where c.companyName = :companyName and c.companyNumber = :companyNumber")
-    Optional<String> findCompanyId(@Param("companyName") String companyName, String companyNumber);
+    Optional<String> findCompanyId(@Param("companyName") String companyName, @Param("companyNumber") String companyNumber);
     @Query("select c.companyId from Company c where c.companyId = :companyId and c.companyName = :companyName and c.companyNumber = :companyNumber")
-    Optional<String> existFindCompanyId(@Param("companyId") String companyId, String companyName, String companyNumber);
+    Optional<String> existFindCompanyId(@Param("companyId") String companyId, @Param("companyName") String companyName, @Param("companyNumber") String companyNumber);
 
     @Modifying
     @Transactional

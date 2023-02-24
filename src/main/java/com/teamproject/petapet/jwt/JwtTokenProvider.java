@@ -109,6 +109,8 @@ public class JwtTokenProvider implements InitializingBean {
             Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, null);
             cookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
             cookie.setPath("/"); // 모든 경로에서 삭제 됐음을 알린다.
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
             response.addCookie(cookie);
 //            response.sendRedirect("/login");
 

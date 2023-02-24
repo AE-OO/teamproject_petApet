@@ -56,7 +56,9 @@ public class SecurityConfig {
                 .antMatchers("/community/memberWriting/**").authenticated()
                 .antMatchers("/company/**","/inquiry/manageInquiry").hasAnyRole("COMPANY","ADMIN")
                 .antMatchers("/login","/join","/sms/send","/companyJoin").permitAll()
+                .antMatchers("/product/insert","/product/update").hasRole("COMPANY")
                 .antMatchers("/product/**","/community/**").permitAll()
+                .antMatchers("/cart/add/").hasRole("MEMBER")
                 .antMatchers("/").permitAll()
                 //나머지 경로는 인증 없이 접근 불가
 //                .anyRequest().authenticated()

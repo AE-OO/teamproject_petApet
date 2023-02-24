@@ -79,6 +79,7 @@ function checkCart(productId) {
             isExist = data;
         },
         error: function (jqXHR, status, errorThrown) {
+            alert('로그인이 필요한 서비스입니다.')
         }
     })
     return isExist;
@@ -94,7 +95,7 @@ $(addCartBtn).click(function () {
         if (confirm("장바구니로 이동 하시겠습니까?") == true) {
             location.href = postUrl
         }
-    } else {
+    } if (isExist === false) {
         $.ajax({
             url: "/cart/add",
             type: "POST",

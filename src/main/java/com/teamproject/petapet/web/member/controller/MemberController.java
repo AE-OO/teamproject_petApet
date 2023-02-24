@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,7 +89,6 @@ public class MemberController {
         //토큰 쿠키에 저장
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer" + tokenDTO.getToken());
         cookie.setPath("/");
-//        cookie.setDomain("petapet.store");
         cookie.setMaxAge(60 * 60 * 24); //유효기간 24시간
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
@@ -165,6 +165,8 @@ public class MemberController {
         Cookie cookie = new Cookie(JwtAuthenticationFilter.AUTHORIZATION_HEADER, null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         response.addCookie(cookie);
         return "redirect:/";
     }

@@ -126,6 +126,7 @@ public class CartController {
     @ResponseBody
     @GetMapping("/isExist")
     public boolean isExistInCart(Principal principal, @RequestParam("productId") Long productId) {
+        if (principal == null) throw new NotLoginException("로그인이 필요한 서비스입니다.");
         Optional<Cart> cart = checkCart(principal.getName(), productId);
         return cart.isPresent();
     }
