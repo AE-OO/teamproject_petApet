@@ -2,16 +2,16 @@
 <html lang="en">
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 내 정보 수정</title>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="/js/member/modifyInfo.js"></script>
     <link href="/css/myPageSidebar.css" rel="stylesheet">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/member/regExpJS.js}"></script>
+    <script th:src="@{/js/member/modifyInfo.js}"></script>
+    <script th:src="@{/js/member/kakaoFindAddressJS.js}"></script>
+
     <script th:inline="javaScript">
         let originalMemberEmail = [[${memberDTO.memberEmail}]];
-        // let originalMemberEmail = $("input[name=memberEmail]").val();
         let originalMemberPhoneNum = [[${memberDTO.memberPhoneNum}]];
-        // let originalMemberPhoneNum = $("input[name=memberPhoneNum]").val();
         let memberImg = [[${memberDTO.memberImg}]];
-        // let memberImg = $("#profileImg").attr("src");
     </script>
 </head>
 <body>

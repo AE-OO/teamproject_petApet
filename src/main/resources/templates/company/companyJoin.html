@@ -3,7 +3,8 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 사업자 회원가입</title>
     <link>
-    <script src="/js/company/companyJoin.js"></script>
+    <script th:src="@{/js/member/regExpJS.js}"></script>
+    <script th:src="@{/js/company/companyJoin.js}"></script>
 </head>
 
 <body>

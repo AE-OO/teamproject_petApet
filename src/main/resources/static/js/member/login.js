@@ -7,10 +7,6 @@ companyId = () => $("#input-companyId");
 companyPw = () => $("#input-companyPw");
 cIdFeedback = () => $("#feedback-companyId");
 cPwFeedback = () => $("#feedback-companyPw");
-//비밀번호 정규식 (영어 대소문자,특수문자,숫자 필수입력, 8-16글자)
-const PwRegExp = /^(?=.*[a-zA-z0-9])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
-//이 문자가 포함된 아이디는 에러메세지 안없어짐
-// const secret = window.atob("YWRtaW4=");
 
 $(document).ready(function () {
     let memberIdResult = false;
@@ -57,7 +53,7 @@ $(document).ready(function () {
         if (memberPw().val() == "") { //PW란이 비어있다면
             mPwFeedback().text("비밀번호를 입력해주세요.");
             return memberPwResult = false;
-        } else if (!(PwRegExp.test(memberPw().val()))) {
+        } else if (!(pwRegExp.test(memberPw().val()))) {
             mPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
             return memberPwResult = false;
         } else {
@@ -121,7 +117,7 @@ $(document).ready(function () {
         if (companyPw().val() == "") { //PW란이 비어있다면
             cPwFeedback().text("비밀번호를 입력해주세요.");
             return companyPwResult = false;
-        } else if (!(PwRegExp.test(companyPw().val()))) {
+        } else if (!(pwRegExp.test(companyPw().val()))) {
             cPwFeedback().text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
             return companyPwResult = false;
         } else {

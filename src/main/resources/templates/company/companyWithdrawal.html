@@ -2,8 +2,8 @@
 <html lang="en">
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 회원탈퇴</title>
-    <link href="/css/myPageSidebar.css" rel="stylesheet">
-    <script src="/js/company/companyWithdrawal.js"></script>
+    <link th:href="@{/css/myPageSidebar.css}" rel="stylesheet">
+    <script th:src="@{/js/company/companyWithdrawal.js}"></script>
 </head>
 <body>
 <th:block th:replace="~{fragment/header :: header}"></th:block>

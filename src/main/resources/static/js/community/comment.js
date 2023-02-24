@@ -1,5 +1,4 @@
 $(function () {
-    getLoginId();
     getCommentList();
     //댓글 글자수
     $("#commentContent").keyup(function () {
@@ -31,26 +30,13 @@ $(function () {
         $("#thumbnailImgDiv").addClass(' d-none');
         $("#thumbnailImg").attr("src", "");
     });
-    //닫기 버튼
+    //댓글 팝업 확인(닫기) 버튼
     $("#closeBtn").click(function () {
         window.close();
     });
-    //글목록 버튼
-    $("#communityBtn").click(function () {
-        // window.location = "/community";
-        history.go(-1);
-    });
-
     $("#backBtn").click(function () {
         history.go(-1);
-    });
-    //로그인 버튼
-    $("#loginBtn").click(function () {
-        window.location = "/login";
-    });
-    //회원가입 버튼
-    $("#joinBtn").click(function () {
-        window.location = "/join";
+        // window.location = "/community";
     });
     //commentMain 팝업 창 로그인 버튼
     $("#commentLoginBtn").click(function () {
@@ -62,54 +48,6 @@ $(function () {
         opener.parent.location.href = '/join'
         window.close();
     });
-    //게시물 삭제버튼
-    $("#postsDelete").click(function () {
-        let arr = [];
-        if (confirm("정말로 삭제하시겠습니까?") == true) {
-            $("#postsContent").find("img").each(function () {
-                arr.push($(this).attr('src').substring(16))
-            });
-            $.ajax({
-                type: "POST",
-                url: "/community/delete",
-                data: {
-                    communityId: $(location).attr('pathname').split("/")[2],
-                    deleteImg: arr,
-                },
-                dataType: "json",
-                success: function () {
-                    alert("삭제가 완료되었습니다.");
-                    window.location = "/community";
-                },
-                // error: function () {
-                //     alert("오류가 발생했습니다.");
-                // },
-                complete: function (data) {
-                    alert("삭제가 완료되었습니다.");
-                    window.location = "/community";
-                    //  실패했어도 완료가 되었을 때 처리
-                }
-            });
-        } else {
-            return;
-        }
-
-    });
-    //게시물 수정버튼
-    $("#postsUpdate").click(function () {
-        let form = document.createElement('form');
-        let communityId;
-        communityId = document.createElement('input');
-        communityId.setAttribute('type', 'hidden');
-        communityId.setAttribute('name', 'communityId');
-        communityId.setAttribute('value', $(location).attr('pathname').split("/")[2]);
-        form.appendChild(communityId);
-        form.setAttribute('method', 'post');
-        form.setAttribute('action', '/community/update');
-        document.body.appendChild(form);
-        form.submit();
-    });
-
     //댓글 이전 페이지
     $(document).on("click", "#prevPage", function () {
         if ($(this).hasClass('disabled')) {
@@ -219,7 +157,6 @@ $(function () {
             submitRecomment($(this).closest('.memberDiv').find(".sideMenu").attr('id'));
         }
     });
-
     //답글,댓글수정 취소버튼
     $(document).on("click", "#cancelBtn", function () {
         $("#commentForm").remove();
@@ -424,178 +361,6 @@ goCommentPage = function (value) {
         }
     });
 }
-
-//댓글 리스트 태그
-// showList = function (data) {
-//     let str = '';
-//     $.each(data.content, function (idx, val) {
-//         //부모 댓글이 삭제되었을 때
-//         if (val.isDeleted === 1) {
-//             str += `<div class="memberDiv px-5 py-2">
-//                     <div class="d-inline-block align-middle py-2">
-//                     <i class="bi bi-exclamation-circle me-1"></i>
-//                     <span class="pt-0 m-0">삭제된 댓글입니다.</span>
-//                     </div>
-//                     </div><hr class="m-0">`
-//         }
-//
-//         //본인이 작성한 댓글이면 댓글 배경색 다르게 구현
-//         str += `<div class="memberDiv px-5 py-2`
-//         if (val.memberId === loginId) {
-//             str += ` bg-light`
-//         }
-//         str += `">`
-//
-//         //대댓글이면 아이콘 추가
-//         if (val.commentId !== val.replyId) {
-//             str += `<i class="bi bi-arrow-return-right fs-5 px-3 align-middle"></i>`
-//         }
-//
-//         //비밀 댓글일 때
-//         if (val.commentSecret === "Y") {
-//             //관리자, 댓글,게시글 작성자만 댓글 확인 가능
-//             if (val.memberId === loginId || postsMemberId === loginId || authorities === "[ROLE_ADMIN]") {
-//                 str += `<div class="d-inline-block me-2">`
-//                 //프로필 사진이 0이면 기본 프로필사진, 0이 아니면 DB에 저장된 memberImg 가져옴
-//                 if (val.memberRole === "ROLE_ADMIN") {
-//                     str += `<img class="rounded-circle border border-1" src="/img/adminProfile.jpg" width="50" height="50" style="object-fit:cover">`
-//                 } else if (val.memberImg == 0) {
-//                     str += `<img class="rounded-circle border border-1" src="/img/profile.jpg" width="50" height="50" style="object-fit:cover">`
-//                 } else {
-//                     str += `<img class="rounded-circle border border-1" src="/image/${val.memberImg}" width="50" height="50" style="object-fit:cover">`
-//                 }
-//                 str += `</div>
-//                         <div class="d-inline-block align-middle">
-//                         <div class="dropdown me-1 d-inline-block">
-//                         <a href="javascript:" role="button" class="memberId" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
-//                         <ul class="dropdown-menu" style="min-width: auto;">
-//                         <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
-//                         <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
-//
-//                 //권한 = MEMBER 이면서 본인이 작성한 댓글이 아닐 시
-//                 if (val.memberId !== loginId && authorities === "[ROLE_MEMBER]") {
-//                     str += `<li><a class="dropdown-item sendMessage" href="javascript:">쪽지보내기</a></li>
-//                             <button type="button" class="dropdown-item memberReport" id="addProductReport"
-//                                     data-bs-toggle="modal" data-bs-target="#addReportModal"
-//                                     title="신고하기">신고하기
-//                             </button>`
-//                 }
-//                 str += `</ul>
-//                         </div>
-//                         <span class="float-none mx-1">${val.modifiedDate}</span>
-//                         <p class="pt-0 m-0">
-//                         <i class="bi bi-lock-fill text-secondary me-1"></i>
-//                         <span class="commentContent">${val.commentContent}</span>
-//                         </p>
-//                         </div>`
-//                 //대댓글인 경우
-//                 if (val.commentId === val.replyId) {
-//                     str += `<div class="dropdown mt-1 float-end">
-//                         <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-//                         <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-//                         <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;">
-//                         <li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
-//                     if (val.memberId === loginId) {
-//                         str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
-//                             <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
-//                     }
-//                     str += '</ul></div>'
-//                 } else {
-//                     if (val.memberId === loginId) {
-//                         str += `<div class="dropdown mt-1 float-end">
-//                             <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-//                             <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-//                             <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
-//                             <li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
-//                             <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
-//                             </ul></div>`
-//                     }
-//                 }
-//                 if (val.commentImg != 0) {
-//                     str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
-//                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
-//                             </div>`
-//                 }
-//             } else {
-//                 str += `<div class="d-inline-block align-middle py-2">
-//                         <i class="bi bi-lock-fill text-secondary me-1"></i>
-//                         <span class="pt-0 m-0">해당 댓글은 작성자와 운영자만 볼 수 있습니다.</span>
-//                         <span class="float-none mx-1">${val.modifiedDate}</span>
-//                         </div>`
-//             }
-//
-//             //비밀 댓글이 아닐 때
-//         } else if (val.commentSecret === "N") {
-//             str += `<div class="d-inline-block me-2">`
-//             if (val.memberRole === "ROLE_ADMIN") {
-//                 str += `<img class="rounded-circle border border-1" src="/img/adminProfile.jpg" width="50" height="50" style="object-fit:cover">`
-//             } else if (val.memberImg == 0) {
-//                 str += `<img class="rounded-circle border border-1" src="/img/profile.jpg" width="50" height="50" style="object-fit:cover">`
-//             } else {
-//                 str += `<img class="rounded-circle border border-1" src="/image/${val.memberImg}" width="50" height="50" style="object-fit:cover">`
-//             }
-//             str += `</div>
-//                     <div class="d-inline-block align-middle">
-//                     <div class="dropdown me-1 d-inline-block">
-//                     <a href="javascript:"  class="memberId" role="button" data-bs-toggle="dropdown" aria-expanded="false">${val.memberId}</a>
-//                     <ul class="dropdown-menu" style="min-width: auto;">
-//                     <li><a class="dropdown-item memberProfile" href="javascript:">회원정보</a></li>
-//                     <li><a class="dropdown-item memberWriting" href="javascript:">작성글보기</a></li>`
-//             if (val.memberId !== loginId && authorities === "[ROLE_MEMBER]") {
-//                 str += `<li><a class="dropdown-item" href="javascript:">쪽지보내기</a></li>
-//                         <button type="button" class="dropdown-item memberReport" id="addProductReport"
-//                                     data-bs-toggle="modal" data-bs-target="#addReportModal"
-//                                     title="신고하기">신고하기
-//                         </button>`
-//             }
-//             str += `</ul>
-//                     </div>
-//                     <span class="float-none mx-1">${val.modifiedDate}</span>
-//                     <p class="pt-0 m-0"><span class="commentContent">${val.commentContent}</span></p>
-//                     </div>`
-//             if (val.commentId === val.replyId) {
-//                 if (authorities === "[ROLE_MEMBER]" || authorities === "[ROLE_ADMIN]") {
-//                     str += `<div class="dropdown mt-1 float-end">
-//                             <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-//                             <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-//                             <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
-//                             <li><a class="dropdown-item recomment" href="javascript:">답글</a></li>`
-//                     if (val.memberId === loginId) {
-//                         str += `<li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
-//                                 <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
-//                     }
-//                     str += `</ul></div>`
-//                 }
-//                 if (val.commentImg != 0) {
-//                     str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
-//                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
-//                             </div>`
-//                 }
-//             } else {
-//                 if (val.memberId === loginId) {
-//                     str += `<div class="dropdown mt-1 float-end">
-//                             <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">
-//                             <i class="bi bi-three-dots-vertical m-auto fs-5"></i></button>
-//                             <ul id="${val.commentId}" class="dropdown-menu sideMenu" style="min-width:auto;" >
-//                             <li><a class="dropdown-item commentUpdate" href="javascript:">수정</a></li>
-//                             <li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>
-//                             </ul></div>`
-//                 }
-//                 if (val.commentImg != 0) {
-//                     str += `<div class="ms-5 ps-3 mt-2 commentImgDiv">
-//                             <img src="/image/${val.commentImg}" class="zoom-in commentImg" width="130" height="130" style="object-fit: cover;">
-//                             </div>`
-//                 }
-//             }
-//         }
-//         str += `</div>
-//                 <hr class="m-0">`
-//     });
-//     $("#commentListSize").text(data.length);
-//     $("#commentList").html(str);
-// }
-
-
 //댓글 태그 (댓글 수정, 대댓글용)
 commentForm = function () {
     $("#commentForm").remove();
@@ -625,10 +390,16 @@ commentForm = function () {
             </div>`
     return str;
 }
-
+//댓글 리스트 태그
 showList = function (data) {
     let str = '';
+    let parentId;
+    let parentMemberId;
     $.each(data.content, function (idx, val) {
+        if(val.commentId === val.replyId){
+            parentId = val.commentId;
+            parentMemberId = val.memberId;
+        }
         //부모 댓글이 삭제되었을 때
         if (val.isDeleted === 1) {
             str += `<div class="memberDiv px-5 py-2">
@@ -648,13 +419,14 @@ showList = function (data) {
         }
         str += `">`
 
-        //대댓글이면 아이콘 추가
+        //대댓글이면 ㄴ> 아이콘 추가
         if (val.commentId !== val.replyId) {
             str += `<i class="bi bi-arrow-return-right fs-5 px-3 align-middle"></i>`
         }
 
         //비밀댓글 + 댓글 작성자, 게시글 작성자, 권한이 관리자가 아닐 때
-        if (val.commentSecret === "Y" && !(val.memberId === loginId || postsMemberId === loginId || authorities === "[ROLE_ADMIN]")) {
+        if (val.commentSecret === "Y" &&
+            !(val.memberId === loginId || postsMemberId === loginId || authorities === "[ROLE_ADMIN]" || (val.commentId !== val.replyId && val.replyId === parentId && loginId === parentMemberId))) {
             str += `<div class="d-inline-block align-middle py-2">
                         <i class="bi bi-lock-fill text-secondary me-1"></i>
                         <span class="pt-0 m-0">해당 댓글은 작성자와 운영자만 볼 수 있습니다.</span>
@@ -704,6 +476,7 @@ showList = function (data) {
             str += `<span class="commentContent">${val.commentContent}</span>
                     </p>
                     </div>`
+
             //부모 댓글일 경우
             if (val.commentId === val.replyId) {
                 str += `<div class="dropdown mt-1 float-end">
@@ -718,9 +491,10 @@ showList = function (data) {
                     str += `<li><a class="dropdown-item commentDelete" href="javascript:">삭제</a></li>`
                 }
                 str += '</ul></div>'
-
-                //대댓글일 경우
+            //대댓글일 경우
             } else {
+
+                //로그인 회원 = 댓글 작성회원일경우........
                 if (val.memberId === loginId) {
                     str += `<div class="dropdown mt-1 float-end">
                             <button class="btn btn-link2" type="button" data-bs-toggle="dropdown">

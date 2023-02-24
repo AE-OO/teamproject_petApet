@@ -1,5 +1,4 @@
 $(function () {
-    getLoginId();
     //댓글 보기
     $(document).on("click", ".badge2", function () {
         let communityId = $(this).parent().prev().text().trim();

@@ -3,10 +3,8 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 비밀번호 찾기</title>
     <link>
-    <!-- findMemberPw Script Start -->
-    <script src="/js/member/findMemberPw.js"></script>
-    <!-- findMemberPw Script End -->
-
+    <script th:src="@{/js/member/findMemberPw.js}"></script>
+    <script th:src="@{/js/member/regExpJS.js}"></script>
 </head>
 <body>
 

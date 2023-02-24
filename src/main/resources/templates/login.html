@@ -3,7 +3,8 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 로그인</title>
     <link>
-    <script src="/js/member/login.js"></script>
+    <script th:src="@{/js/member/login.js}"></script>
+    <script th:src="@{/js/member/regExpJS.js}"></script>
 </head>
 
 <body>

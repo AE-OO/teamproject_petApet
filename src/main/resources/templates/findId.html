@@ -3,9 +3,8 @@
 <head th:replace="fragment/saron_base :: base(~{::title},~{::link},~{::script})">
     <title>petApet - 아이디 찾기</title>
     <link>
-    <!-- findMemberId Script Start -->
-    <script src="/js/member/findMemberId.js"></script>
-    <!-- findMemberId Script End -->
+    <script th:src="@{/js/member/findMemberId.js}"></script>
+    <script th:src="@{/js/member/regExpJS.js}"></script>
 <body>
 <main class="container-xxl text-center py-7 my-auto">
     <div class="container join">

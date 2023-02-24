@@ -64,7 +64,7 @@ public class MemberRestController {
     }
 
     //비밀번호 변경
-    @PostMapping("/updateMemberPw")
+    @PostMapping("/member/updateMemberPw")
     int updateMemberPw(Principal principal, @Valid @RequestBody MemberRequestDTO.UpdateMemberPwDTO updateMemberPwDTO) {
         if (!memberService.checkMemberPw(principal.getName(), updateMemberPwDTO.getNewMemberPw())) {
             return memberService.updateMemberPw(principal.getName(), updateMemberPwDTO.getNewMemberPw());
@@ -73,9 +73,9 @@ public class MemberRestController {
     }
 
     //프로필 사진 변경
-    @PostMapping("/updateMemberImg")
+    @PostMapping("/member/updateMemberImg")
     void updateMemberImg(Principal principal, @RequestParam(required = false) MultipartFile memberImg) throws IOException {
-        fileService.deleteFile(memberService.getOriginalMemberImg(principal.getName()));
+        fileService.deleteFile(memberService.getMemberImg(principal.getName()));
         if (memberImg == null) {
             memberService.deleteMemberImg(principal.getName());
         } else {
@@ -102,7 +102,7 @@ public class MemberRestController {
     }
 
     //내정보 - 글목록 회원정보
-    @PostMapping("/getLoginMemberProfile")
+    @PostMapping("/member/getLoginMemberProfile")
     public ResponseEntity<CommunityMemberDTO> getLoginMemberProfile(Principal principal){
         return new ResponseEntity<>(memberService.memberProfile(principal.getName()),HttpStatus.OK);
     }

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -97,7 +98,7 @@ public class JwtTokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    public boolean validateToken(String token,HttpServletResponse response) {
+    public boolean validateToken(String token,HttpServletResponse response) throws IOException {
         try {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
@@ -109,6 +110,7 @@ public class JwtTokenProvider implements InitializingBean {
             cookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
             cookie.setPath("/"); // 모든 경로에서 삭제 됐음을 알린다.
             response.addCookie(cookie);
+//            response.sendRedirect("/login");
 
             logger.info("만료된 Jwt 토큰입니다.");
             return true;
